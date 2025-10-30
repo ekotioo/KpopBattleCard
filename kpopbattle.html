@@ -1,0 +1,3181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Of Idol</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #ff6b9d;
+            --secondary: #6a5af9;
+            --accent: #ffd166;
+            --light: #f8f9fa;
+            --dark: #2d3047;
+            --success: #06d6a0;
+            --danger: #ef476f;
+            --soft-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-light: #e6e6e6;
+            --secret: linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd);
+            --stars: linear-gradient(135deg, #ff00cc, #3333ff, #00ccff, #ffcc00);
+        }
+
+        body {
+            background-color: var(--soft-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            color: white;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .player-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 0.9rem;
+        }
+
+        .coins {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .coin-icon {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        /* Navigation Styles */
+        nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            padding: 10px 5px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-btn i {
+            font-size: 1.1rem;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Screen Styles */
+        .screen {
+            display: none;
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Home Screen */
+        .home-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            gap: 30px;
+        }
+
+        .home-logo {
+            font-size: 3rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+
+        .home-title {
+            font-size: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .home-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .featured-cards {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .featured-card {
+            width: 120px;
+            height: 170px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .featured-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-card-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .home-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .home-features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .feature-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+        }
+
+        /* Battle Screen */
+        .battle-field {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .player-card, .enemy-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card {
+            width: 180px;
+            height: 250px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .player-card .card {
+            border: 3px solid var(--success);
+        }
+
+        .enemy-card .card {
+            border: 3px solid var(--danger);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-name {
+            font-weight: 600;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .health-bar-container {
+            width: 100%;
+            height: 12px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .health-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .player-health {
+            background: linear-gradient(90deg, var(--success), #4cd964);
+        }
+
+        .enemy-health {
+            background: linear-gradient(90deg, var(--danger), #ff6b6b);
+        }
+
+        .battle-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            flex: 1;
+            max-width: 200px;
+            align-self: center;
+        }
+
+        .shield-btn, .boost-btn {
+            background: linear-gradient(135deg, var(--secondary), #8a82ff);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            align-self: center;
+        }
+
+        .play-btn:active, .shield-btn:active, .boost-btn:active {
+            transform: scale(0.95);
+        }
+
+        .battle-log {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            height: 100px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .player-log {
+            background: rgba(6, 214, 160, 0.1);
+            border-left: 3px solid var(--success);
+        }
+
+        .enemy-log {
+            background: rgba(239, 71, 111, 0.1);
+            border-left: 3px solid var(--danger);
+        }
+
+        /* Collection Screen */
+        .collection-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .collection-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .collection-card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .collection-card-info {
+            padding: 10px;
+        }
+
+        .collection-card-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .collection-card-group {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .collection-card-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .win-rate {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .equip-btn, .upgrade-btn, .sell-btn, .favorite-btn, .sell-all-btn {
+            flex: 1;
+            padding: 6px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            min-width: 60px;
+        }
+
+        .equip-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .equip-btn:hover {
+            background: #ff4d8d;
+        }
+
+        .upgrade-btn {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .upgrade-btn:hover {
+            background: #5a4ff0;
+        }
+
+        .upgrade-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        .sell-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .sell-btn:hover {
+            background: #e8355f;
+        }
+
+        .favorite-btn {
+            background: #ffd700;
+            color: #333;
+        }
+
+        .favorite-btn:hover {
+            background: #ffcc00;
+        }
+
+        .favorite-btn.favorited {
+            background: #ff9900;
+            color: white;
+        }
+
+        .sell-all-btn {
+            background: #ff6b00;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .sell-all-btn:hover {
+            background: #e55a00;
+        }
+
+        /* Inventory Section */
+        .inventory-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .inventory-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .inventory-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .inventory-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            min-width: 70px;
+        }
+
+        .inventory-item-icon {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .inventory-item-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .inventory-item-name {
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        /* Store Screen */
+        .store-categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .category-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            color: var(--text-light);
+        }
+
+        .category-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .store-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .store-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .store-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .store-item-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+        }
+
+        .store-item-info {
+            padding: 12px;
+        }
+
+        .store-item-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .store-item-desc {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .store-item-price {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 8px;
+            background: var(--accent);
+            color: var(--dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .buy-btn:hover {
+            background: #ffc145;
+        }
+
+        .buy-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        /* Quests Screen */
+        .quest-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quest-tab {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            border-radius: 10px;
+            color: var(--text-light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quest-tab.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .quest-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .quest-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quest-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .quest-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .quest-reward {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .quest-desc {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .quest-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .quest-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .claim-btn {
+            flex: 1;
+            padding: 8px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .claim-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        /* Battle Pass Styles */
+        .battle-pass-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .battle-pass-levels {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .battle-pass-level {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .battle-pass-level.unlocked {
+            background: rgba(106, 90, 249, 0.2);
+            border: 1px solid var(--secondary);
+        }
+
+        .battle-pass-level.current {
+            background: rgba(255, 107, 157, 0.2);
+            border: 1px solid var(--primary);
+            transform: scale(1.05);
+        }
+
+        .battle-pass-level.rewarded {
+            background: rgba(6, 214, 160, 0.2);
+            border: 1px solid var(--success);
+        }
+
+        .level-number {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .level-reward {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .battle-pass-reward {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .reward-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .reward-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .reward-desc {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+
+        .unlock-battle-pass-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff6b00, #ff0080);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .unlock-battle-pass-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 0, 128, 0.3);
+        }
+
+        .unlock-battle-pass-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: modalAppear 0.3s ease;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .gacha-animation {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .gacha-card {
+            width: 200px;
+            height: 280px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease;
+        }
+
+        .gacha-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .gacha-card-front, .gacha-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+        }
+
+        .gacha-card-front {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .gacha-card-back {
+            background: white;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gacha-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gacha-result {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .gacha-result-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+
+        .gacha-result-group {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Battle Result Modal */
+        .battle-result {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .win .result-icon {
+            color: var(--success);
+            animation: pulse 1s infinite;
+        }
+
+        .lose .result-icon {
+            color: var(--danger);
+            animation: shake 0.5s ease;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .win .result-title {
+            color: var(--success);
+        }
+
+        .lose .result-title {
+            color: var(--danger);
+        }
+
+        .result-desc {
+            margin-bottom: 20px;
+            color: #aaa;
+        }
+
+        .result-rewards {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .reward-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .reward-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .reward-amount {
+            font-weight: 600;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 400px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                width: 150px;
+                height: 210px;
+            }
+            
+            .collection-card-img {
+                height: 150px;
+            }
+            
+            .store-item-img {
+                height: 120px;
+            }
+            
+            nav {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+            }
+            
+            .nav-btn {
+                font-size: 0.7rem;
+                padding: 8px 3px;
+            }
+            
+            .featured-card {
+                width: 100px;
+                height: 140px;
+            }
+            
+            .battle-pass-levels {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 107, 157, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 107, 157, 0.8); }
+        }
+
+        .glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes secretGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            25% { box-shadow: 0 0 20px rgba(255, 107, 0, 0.7); }
+            50% { box-shadow: 0 0 30px rgba(255, 0, 128, 0.8); }
+            75% { box-shadow: 0 0 20px rgba(157, 78, 221, 0.7); }
+        }
+
+        .secret-glow {
+            animation: secretGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes starsGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 204, 0.5); }
+            25% { box-shadow: 0 0 20px rgba(51, 51, 255, 0.7); }
+            50% { box-shadow: 0 0 30px rgba(0, 204, 255, 0.8); }
+            75% { box-shadow: 0 0 20px rgba(255, 204, 0, 0.7); }
+        }
+
+        .stars-glow {
+            animation: starsGlow 2s ease-in-out infinite;
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
+
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .rarity-common {
+            border: 2px solid #aaa;
+        }
+
+        .rarity-rare {
+            border: 2px solid #6a5af9;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .rarity-epic {
+            border: 2px solid #ff6b9d;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .rarity-legendary {
+            border: 2px solid #ffd166;
+            animation: glow 1s ease-in-out infinite;
+        }
+
+        .rarity-secret {
+            border: 3px solid transparent;
+            background: linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: secretGlow 2s ease-in-out infinite;
+        }
+
+        .rarity-stars {
+            border: 3px solid transparent;
+            background: linear-gradient(135deg, #ff00cc, #3333ff, #00ccff, #ffcc00) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: starsGlow 2s ease-in-out infinite;
+        }
+
+        /* Battle Effects */
+        .shield-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(106, 90, 249, 0.3);
+            border-radius: 15px;
+            z-index: 1;
+        }
+
+        .boost-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 107, 157, 0.3);
+            border-radius: 15px;
+            z-index: 1;
+        }
+
+        /* Sell Card Modal */
+        .sell-confirmation {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .sell-card-preview {
+            width: 150px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .sell-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sell-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .sell-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .confirm-sell-btn, .cancel-sell-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .confirm-sell-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .confirm-sell-btn:hover {
+            background: #05c28e;
+        }
+
+        .cancel-sell-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .cancel-sell-btn:hover {
+            background: #e8355f;
+        }
+
+        /* Collection Full Image */
+        .collection-card-full {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        /* Bot Status Notification */
+        .bot-status {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--danger);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 10;
+            animation: pulse 1s infinite;
+        }
+
+        .bot-status.shield {
+            background: var(--secondary);
+        }
+
+        .bot-status.boost {
+            background: var(--primary);
+        }
+
+        /* Special Effects for Secret Cards */
+        .secret-card-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 0, 0.2), rgba(255, 0, 128, 0.2), rgba(157, 78, 221, 0.2));
+            border-radius: 15px;
+            z-index: 1;
+        }
+
+        /* Gacha Special Effects */
+        .gacha-special {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gacha-special::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        /* Favorite Star */
+        .favorite-star {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #ffd700;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Battle Of Idol</h1>
+            <div class="player-info">
+                <div class="level">Level: <span id="player-level">1</span></div>
+                <div class="coins">
+                    <i class="fas fa-coins coin-icon"></i> <span id="coin-count">500</span>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" data-screen="home">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="nav-btn" data-screen="battle">
+                <i class="fas fa-fist-raised"></i> Battle
+            </button>
+            <button class="nav-btn" data-screen="collection">
+                <i class="fas fa-id-card"></i> Collection
+            </button>
+            <button class="nav-btn" data-screen="store">
+                <i class="fas fa-shopping-cart"></i> Store
+            </button>
+            <button class="nav-btn" data-screen="quests">
+                <i class="fas fa-tasks"></i> Quests
+            </button>
+        </nav>
+
+        <!-- Home Screen -->
+        <section id="home" class="screen active">
+            <div class="home-container">
+                <div class="home-logo">
+                    <i class="fas fa-star float"></i>
+                </div>
+                <div>
+                    <h1 class="home-title">Battle Of Idol</h1>
+                    <p class="home-subtitle">Collect your favorite K-Pop idols and battle against others!</p>
+                </div>
+
+                <div class="featured-cards">
+                    <div class="featured-card">
+                        <img src="hanni.jpg" alt="Hanni" class="featured-card-img">
+                        <div class="featured-card-name">Hanni</div>
+                    </div>
+                    <div class="featured-card">
+                        <img src="jennie.jpg" alt="Jennie" class="featured-card-img">
+                        <div class="featured-card-name">Jennie</div>
+                    </div>
+                    <div class="featured-card">
+                        <img src="karina.jpg" alt="Karina" class="featured-card-img">
+                        <div class="featured-card-name">Karina</div>
+                    </div>
+                </div>
+
+                <div class="home-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-cards">1</div>
+                        <div class="stat-label">Total Cards</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-wins">0</div>
+                        <div class="stat-label">Total Wins</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-coins">500</div>
+                        <div class="stat-label">Total Coins</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="player-level-home">1</div>
+                        <div class="stat-label">Player Level</div>
+                    </div>
+                </div>
+
+                <div class="home-features">
+                    <div class="feature-item">
+                        <i class="fas fa-fist-raised feature-icon"></i>
+                        <div class="feature-text">Auto Battle System - Watch your idols fight!</div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-id-card feature-icon"></i>
+                        <div class="feature-text">Collect and upgrade K-Pop idol cards</div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shopping-cart feature-icon"></i>
+                        <div class="feature-text">Buy attack upgrades and shields</div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-tasks feature-icon"></i>
+                        <div class="feature-text">Complete quests for rewards</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Battle Screen -->
+        <section id="battle" class="screen">
+            <h2 class="screen-title">Battle Arena</h2>
+            <div class="battle-field">
+                <div class="enemy-card">
+                    <div class="card rarity-common">
+                        <img src="random.jpg" alt="Enemy Idol" class="card-img">
+                        <div id="enemy-shield-effect" class="shield-effect hidden"></div>
+                        <div id="enemy-boost-effect" class="boost-effect hidden"></div>
+                        <div id="enemy-shield-status" class="bot-status shield hidden">SHIELD</div>
+                        <div id="enemy-boost-status" class="bot-status boost hidden">BOOST</div>
+                    </div>
+                    <div class="card-name">Enemy Idol</div>
+                    <div class="card-stats">
+                        <span>HP: <span id="enemy-max-health">100</span></span>
+                        <span>ATK: <span id="enemy-attack">10</span></span>
+                    </div>
+                    <div class="health-bar-container">
+                        <div class="health-bar enemy-health" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <div class="player-card">
+                    <div class="card rarity-common">
+                        <img src="hanni.jpg" alt="Your Idol" class="card-img">
+                        <div id="player-shield-effect" class="shield-effect hidden"></div>
+                        <div id="player-boost-effect" class="boost-effect hidden"></div>
+                    </div>
+                    <div class="card-name">Your Idol</div>
+                    <div class="card-stats">
+                        <span>HP: <span id="player-max-health">100</span></span>
+                        <span>ATK: <span id="player-attack">10</span></span>
+                    </div>
+                    <div class="health-bar-container">
+                        <div class="health-bar player-health" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <div class="battle-controls">
+                    <button class="action-btn play-btn" id="play-btn">START BATTLE</button>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <button class="action-btn shield-btn" id="shield-btn">🛡️</button>
+                        <button class="action-btn boost-btn" id="boost-btn">⚡</button>
+                    </div>
+                </div>
+
+                <div class="battle-log">
+                    <div class="log-entry player-log">Press START BATTLE to begin!</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collection Screen -->
+        <section id="collection" class="screen">
+            <h2 class="screen-title">Your Collection</h2>
+            <div class="collection-container">
+                <!-- Cards will be populated by JavaScript -->
+            </div>
+            
+            <button class="sell-all-btn" id="sell-all-btn">SELL ALL NON-FAVORITE CARDS</button>
+            
+            <div class="inventory-section">
+                <h3 class="inventory-title">Your Inventory</h3>
+                <div class="inventory-items">
+                    <div class="inventory-item">
+                        <i class="fas fa-sword inventory-item-icon"></i>
+                        <div class="inventory-item-count" id="attack-upgrade-count">0</div>
+                        <div class="inventory-item-name">Attack Upgrades</div>
+                    </div>
+                    <div class="inventory-item">
+                        <i class="fas fa-shield-alt inventory-item-icon"></i>
+                        <div class="inventory-item-count" id="shield-count">0</div>
+                        <div class="inventory-item-name">Shields</div>
+                    </div>
+                    <div class="inventory-item">
+                        <i class="fas fa-bolt inventory-item-icon"></i>
+                        <div class="inventory-item-count" id="boost-count">0</div>
+                        <div class="inventory-item-name">Attack Boosts</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Store Screen -->
+        <section id="store" class="screen">
+            <h2 class="screen-title">Store</h2>
+            <div class="store-categories">
+                <button class="category-btn active" data-category="crates">Gacha Crates</button>
+                <button class="category-btn" data-category="upgrades">Attack Upgrades</button>
+                <button class="category-btn" data-category="shields">Shields</button>
+                <button class="category-btn" data-category="boosts">Attack Boosts</button>
+                <button class="category-btn" data-category="photocards">Photocards</button>
+            </div>
+            <div class="store-items">
+                <!-- Store items will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Quests Screen -->
+        <section id="quests" class="screen">
+            <h2 class="screen-title">Quests</h2>
+            <div class="quest-tabs">
+                <button class="quest-tab active" data-tab="main">Main Quest</button>
+                <button class="quest-tab" data-tab="daily">Daily Quest</button>
+                <button class="quest-tab" data-tab="battlepass">Battle Pass</button>
+            </div>
+            <div class="quest-list">
+                <!-- Quests will be populated by JavaScript -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Gacha Result Modal -->
+    <div id="gacha-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Gacha Result</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="gacha-animation">
+                <div class="gacha-card">
+                    <div class="gacha-card-front">
+                        Battle Of Idol
+                    </div>
+                    <div class="gacha-card-back">
+                        <img src="" alt="Gacha Result" class="gacha-card-img">
+                    </div>
+                </div>
+                <div class="gacha-result">
+                    <div class="gacha-result-name">New Idol</div>
+                    <div class="gacha-result-group">Group Name</div>
+                    <div class="gacha-result-rarity" style="margin-top: 10px; font-weight: 600;"></div>
+                </div>
+            </div>
+            <button class="action-btn play-btn" id="gacha-ok-btn" style="margin-top: 15px;">OK</button>
+        </div>
+    </div>
+
+    <!-- Battle Result Modal -->
+    <div id="battle-result-modal" class="modal">
+        <div class="modal-content">
+            <div class="battle-result">
+                <div class="result-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 class="result-title">Victory!</h2>
+                <p class="result-desc">You defeated the enemy idol!</p>
+                <div class="result-rewards">
+                    <div class="reward-item">
+                        <i class="fas fa-coins reward-icon"></i>
+                        <span class="reward-amount">+50</span>
+                    </div>
+                    <div class="reward-item">
+                        <i class="fas fa-star reward-icon"></i>
+                        <span class="reward-amount">+10 XP</span>
+                    </div>
+                </div>
+                <button class="action-btn play-btn" id="battle-continue-btn" style="margin-top: 15px;">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sell Card Modal -->
+    <div id="sell-card-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Sell Card</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="sell-confirmation">
+                <div class="sell-card-preview">
+                    <img src="" alt="Card to Sell" class="sell-card-img">
+                </div>
+                <div class="sell-price">
+                    Sell Price: <span id="sell-price-value">0</span> <i class="fas fa-coins"></i>
+                </div>
+                <div class="sell-actions">
+                    <button class="confirm-sell-btn" id="confirm-sell-btn">Confirm</button>
+                    <button class="cancel-sell-btn" id="cancel-sell-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sell All Confirmation Modal -->
+    <div id="sell-all-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Sell All Non-Favorite Cards</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="sell-confirmation">
+                <p>Are you sure you want to sell all non-favorite cards?</p>
+                <div class="sell-price">
+                    Total Value: <span id="sell-all-price-value">0</span> <i class="fas fa-coins"></i>
+                </div>
+                <p style="font-size: 0.8rem; color: #aaa; margin: 10px 0;">Favorite cards will not be sold.</p>
+                <div class="sell-actions">
+                    <button class="confirm-sell-btn" id="confirm-sell-all-btn">Confirm</button>
+                    <button class="cancel-sell-btn" id="cancel-sell-all-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game Data
+        const gameData = {
+            coins: 50000,
+            level: 1,
+            xp: 0,
+            xpToNextLevel: 100,
+            currentCard: null,
+            isBattleActive: false,
+            attackUpgrades: 0,
+            attackBoosts: [],
+            cards: [
+                { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false },
+            ],
+            shields: [],
+            storeItems: {
+                crates: [
+                    { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common or rare idols" },
+                    { id: 2, name: "Premium Crate", price: 100, type: "crate", rarity: "rare", image: "premium.jpg", description: "Contains rare or epic idols" },
+                    { id: 3, name: "Elite Crate", price: 200, type: "crate", rarity: "epic", image: "elite.jpg", description: "Contains epic or legendary idols" },
+                    { id: 4, name: "Secret Crate", price: 500, type: "crate", rarity: "secret", image: "secret.jpg", description: "Contains legendary or secret idols" }
+                ],
+                upgrades: [
+                    { id: 1, name: "Attack Upgrade", price: 100, type: "upgrade", image: "attack.jpg", description: "Increase attack by 1 for any card" }
+                ],
+                shields: [
+                    { id: 1, name: "Basic Shield", price: 30, defense: 10, duration: 30, image: "Shield.jpg", description: "Reduces damage by 10 for 30 seconds" },
+                    { id: 2, name: "Strong Shield", price: 60, defense: 20, duration: 25, image: "Shield.jpg", description: "Reduces damage by 20 for 25 seconds" },
+                    { id: 3, name: "Epic Shield", price: 120, defense: 35, duration: 20, image: "Shield.jpg", description: "Reduces damage by 35 for 20 seconds" }
+                ],
+                boosts: [
+                    { id: 1, name: "Basic Boost", price: 40, multiplier: 1.5, duration: 15, image: "boost.jpg", description: "Increase attack by 50% for 15 seconds" },
+                    { id: 2, name: "Strong Boost", price: 80, multiplier: 2, duration: 12, image: "boost.jpg", description: "Double attack for 12 seconds" },
+                    { id: 3, name: "Epic Boost", price: 150, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" }
+                ],
+                photocards: [
+                    { id: 100, name: "Special Hanni", group: "NewJeans", image: "hanni_special.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", price: 300, description: "Exclusive photocard not available in gacha" },
+                    { id: 101, name: "Special Jennie", group: "BLACKPINK", image: "jennie_special.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "epic", price: 500, description: "Exclusive photocard not available in gacha" },
+                    { id: 102, name: "Special Karina", group: "aespa", image: "karina_special.jpg", health: 170, maxHealth: 170, attack: 22, rarity: "legendary", price: 800, description: "Exclusive photocard not available in gacha" },
+                    { id: 103, name: "Special IU", group: "Soloist", image: "iu_special.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret", price: 1200, description: "Exclusive photocard not available in gacha" }
+                ]
+            },
+            gachaPool: [
+                { id: 3, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false },
+                { id: 4, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 5, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 110, maxHealth: 110, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 6, name: "Winter", group: "aespa", image: "winter.jpg", health: 115, maxHealth: 115, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 7, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false },
+                { id: 8, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false },
+                { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 135, maxHealth: 135, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false },
+                { id: 10, name: "Moka", group: "ILLIT", image: "moka.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false },
+                { id: 11, name: "Sakura", group: "LE SSERAFIM", image: "sakura.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 12, name: "Kazuha", group: "LE SSERAFIM", image: "kazuha.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 13, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 14, name: "Giselle", group: "aespa", image: "gisel.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 15, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false },
+                { id: 16, name: "Haerin", group: "NewJeans", image: "haerin.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 17, name: "Hyein", group: "NewJeans", image: "hyein.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 18, name: "Jisoo", group: "BLACKPINK", image: "jisso.jpg", health: 130, maxHealth: 130, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 19, name: "Rose", group: "BLACKPINK", image: "rose.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 20, name: "Rei", group: "IVE", image: "rei.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 21, name: "Liz", group: "IVE", image: "liz.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 22, name: "Leeseo", group: "IVE", image: "leseo.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false },
+                { id: 23, name: "Yunjin", group: "LE SSERAFIM", image: "yunjin.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false },
+                { id: 24, name: "Eunchae", group: "LE SSERAFIM", image: "eunchae.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false },
+                { id: 25, name: "Wonhee", group: "ILLIT", image: "wonhee.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 26, name: "Iroha", group: "ILLIT", image: "iroha.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 27, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false },
+                { id: 28, name: "Minju", group: "ILLIT", image: "minju.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 29, name: "Yoona", group: "SNSD", image: "yoona.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false },
+                { id: 30, name: "IU", group: "Soloist", image: "iu.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false },
+                { id: 31, name: "Taeyeon", group: "SNSD", image: "taeyon.jpg", health: 135, maxHealth: 135, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false },
+                { id: 32, name: "Jiwoo", group: "HEARTS2HEARTS", image: "jiwoo.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false },
+                { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "legendary", wins: 0, battles: 0, favorite: false },
+                
+                { id: 50, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret", wins: 0, battles: 0, favorite: false },
+                { id: 51, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false },
+                { id: 52, name: "Hanni", group: "NewJeans", image: "hanni2.jpg", health: 210, maxHealth: 210, attack: 26, rarity: "secret", wins: 0, battles: 0, favorite: false },
+                { id: 53, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false },
+                { id: 54, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false },
+                { id: 55, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false }
+            ],
+            quests: {
+                main: [
+                    { id: 1, name: "First Victory", description: "Win your first battle", progress: 0, target: 1, reward: { type: "card", value: 4 }, completed: false, claimed: false },
+                    { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 200 }, completed: false, claimed: false },
+                    { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
+                    { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
+                    { id: 7, name: "Secret Hunter", description: "Collect a Secret Card", progress: 0, target: 1, reward: { type: "card", value: 54 }, completed: false, claimed: false },
+                    { id: 8, name: "Ultimate Collector", description: "Collect 15 different idols", progress: 0, target: 15, reward: { type: "card", value: 55 }, completed: false, claimed: false },
+                    { id: 9, name: "Battle Legend", description: "Win 50 battles", progress: 0, target: 50, reward: { type: "card", value: 53 }, completed: false, claimed: false }
+                ],
+                daily: [
+                    { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 50 }, completed: false, claimed: false },
+                    { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 30 }, completed: false, claimed: false }
+                ]
+            },
+            battlePass: {
+                unlocked: false,
+                currentLevel: 1,
+                xp: 0,
+                xpToNextLevel: 100,
+                levels: [
+                    { level: 1, reward: { type: "coins", value: 50 }, unlocked: true, claimed: false },
+                    { level: 2, reward: { type: "attackUpgrade", value: 1 }, unlocked: false, claimed: false },
+                    { level: 3, reward: { type: "card", value: 5 }, unlocked: false, claimed: false },
+                    { level: 4, reward: { type: "coins", value: 100 }, unlocked: false, claimed: false },
+                    { level: 5, reward: { type: "shield", value: 2 }, unlocked: false, claimed: false },
+                    { level: 6, reward: { type: "gachaCoupon", value: 1 }, unlocked: false, claimed: false },
+                    { level: 7, reward: { type: "coins", value: 150 }, unlocked: false, claimed: false },
+                    { level: 8, reward: { type: "card", value: 15 }, unlocked: false, claimed: false },
+                    { level: 9, reward: { type: "attackBoost", value: 2 }, unlocked: false, claimed: false },
+                    { level: 10, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
+                    { level: 11, reward: { type: "coins", value: 200 }, unlocked: false, claimed: false },
+                    { level: 12, reward: { type: "card", value: 29 }, unlocked: false, claimed: false },
+                    { level: 13, reward: { type: "gachaCoupon", value: 3 }, unlocked: false, claimed: false },
+                    { level: 14, reward: { type: "coins", value: 300 }, unlocked: false, claimed: false },
+                    { level: 15, reward: { type: "card", value: 56, rarity: "stars" }, unlocked: false, claimed: false }
+                ]
+            },
+            enemyCards: [
+                { id: 101, name: "Hanni", group: "NewJeans", image: "hannii.png", health: 100, maxHealth: 100, attack: 10, rarity: "common" },
+                { id: 102, name: "Jennie", group: "BLACKPINK", image: "jennie.jpg", health: 100, maxHealth: 100, attack: 12, rarity: "common" },
+                { id: 103, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common" },
+                { id: 104, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare" },
+                { id: 105, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 110, maxHealth: 110, attack: 15, rarity: "rare" },
+                { id: 106, name: "Secret Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret" },
+                { id: 107, name: "Secret Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "secret" },
+                { id: 108, name: "Stars Idol", group: "SPECIAL", image: "stars.jpg", health: 250, maxHealth: 250, attack: 35, rarity: "stars" }
+            ]
+        };
+
+        // DOM Elements
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const screens = document.querySelectorAll('.screen');
+        const coinCountElement = document.getElementById('coin-count');
+        const playerLevelElement = document.getElementById('player-level');
+        const playButton = document.getElementById('play-btn');
+        const shieldButton = document.getElementById('shield-btn');
+        const boostButton = document.getElementById('boost-btn');
+        const playerHealthBar = document.querySelector('.player-health');
+        const enemyHealthBar = document.querySelector('.enemy-health');
+        const battleLog = document.querySelector('.battle-log');
+        const collectionContainer = document.querySelector('.collection-container');
+        const storeItemsContainer = document.querySelector('.store-items');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const questTabs = document.querySelectorAll('.quest-tab');
+        const questList = document.querySelector('.quest-list');
+        const gachaModal = document.getElementById('gacha-modal');
+        const battleResultModal = document.getElementById('battle-result-modal');
+        const sellCardModal = document.getElementById('sell-card-modal');
+        const sellAllModal = document.getElementById('sell-all-modal');
+        const closeModalButtons = document.querySelectorAll('.close-modal');
+        const gachaCard = document.querySelector('.gacha-card');
+        const gachaCardImg = document.querySelector('.gacha-card-img');
+        const gachaResultName = document.querySelector('.gacha-result-name');
+        const gachaResultGroup = document.querySelector('.gacha-result-group');
+        const gachaResultRarity = document.querySelector('.gacha-result-rarity');
+        const gachaOkButton = document.getElementById('gacha-ok-btn');
+        const battleContinueButton = document.getElementById('battle-continue-btn');
+        const attackUpgradeCountElement = document.getElementById('attack-upgrade-count');
+        const shieldCountElement = document.getElementById('shield-count');
+        const boostCountElement = document.getElementById('boost-count');
+        const sellPriceValue = document.getElementById('sell-price-value');
+        const sellAllPriceValue = document.getElementById('sell-all-price-value');
+        const confirmSellButton = document.getElementById('confirm-sell-btn');
+        const cancelSellButton = document.getElementById('cancel-sell-btn');
+        const confirmSellAllButton = document.getElementById('confirm-sell-all-btn');
+        const cancelSellAllButton = document.getElementById('cancel-sell-all-btn');
+        const sellCardImg = document.querySelector('.sell-card-img');
+        const sellAllButton = document.getElementById('sell-all-btn');
+        
+        // Home screen elements
+        const totalCardsElement = document.getElementById('total-cards');
+        const totalWinsElement = document.getElementById('total-wins');
+        const totalCoinsElement = document.getElementById('total-coins');
+        const playerLevelHomeElement = document.getElementById('player-level-home');
+
+        // Game State
+        let playerHealth = 100;
+        let enemyHealth = 100;
+        let isPlayerTurn = true;
+        let activeShield = null;
+        let activeBoost = null;
+        let shieldTimeLeft = 0;
+        let boostTimeLeft = 0;
+        let enemyCard = null;
+        let enemyShield = null;
+        let enemyBoost = null;
+        let enemyShieldTimeLeft = 0;
+        let enemyBoostTimeLeft = 0;
+        let battleInterval = null;
+        let cardToSell = null;
+
+        // Initialize Game
+        function initGame() {
+            updateCoinDisplay();
+            updateLevelDisplay();
+            updateHomeStats();
+            updateInventoryDisplay();
+            loadCollection();
+            loadStoreItems('crates');
+            loadQuests('main');
+            setCurrentCard(gameData.cards[0]);
+            
+            // Set up event listeners
+            setupEventListeners();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Navigation
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const screenId = button.getAttribute('data-screen');
+                    switchScreen(screenId);
+                    
+                    // Update active nav button
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                });
+            });
+
+            // Battle controls
+            playButton.addEventListener('click', startBattle);
+            shieldButton.addEventListener('click', activateShield);
+            boostButton.addEventListener('click', activateBoost);
+
+            // Store categories
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category');
+                    loadStoreItems(category);
+                    
+                    // Update active category button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                });
+            });
+
+            // Quest tabs
+            questTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const questType = tab.getAttribute('data-tab');
+                    loadQuests(questType);
+                    
+                    // Update active quest tab
+                    questTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                });
+            });
+
+            // Modal controls
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    gachaModal.classList.remove('active');
+                    battleResultModal.classList.remove('active');
+                    sellCardModal.classList.remove('active');
+                    sellAllModal.classList.remove('active');
+                });
+            });
+
+            gachaOkButton.addEventListener('click', () => {
+                gachaModal.classList.remove('active');
+            });
+
+            battleContinueButton.addEventListener('click', () => {
+                battleResultModal.classList.remove('active');
+                resetBattle();
+            });
+
+            // Sell card modal
+            confirmSellButton.addEventListener('click', confirmSellCard);
+            cancelSellButton.addEventListener('click', () => {
+                sellCardModal.classList.remove('active');
+            });
+
+            // Sell all modal
+            sellAllButton.addEventListener('click', showSellAllModal);
+            confirmSellAllButton.addEventListener('click', confirmSellAllCards);
+            cancelSellAllButton.addEventListener('click', () => {
+                sellAllModal.classList.remove('active');
+            });
+
+            // Gacha card flip
+            gachaCard.addEventListener('click', () => {
+                gachaCard.classList.toggle('flipped');
+            });
+        }
+
+        // Switch between screens
+        function switchScreen(screenId) {
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            
+            // Update home stats when switching to home screen
+            if (screenId === 'home') {
+                updateHomeStats();
+            }
+            
+            // Update inventory when switching to collection screen
+            if (screenId === 'collection') {
+                updateInventoryDisplay();
+            }
+        }
+
+        // Update coin display
+        function updateCoinDisplay() {
+            coinCountElement.textContent = gameData.coins;
+        }
+
+        // Update level display
+        function updateLevelDisplay() {
+            playerLevelElement.textContent = gameData.level;
+        }
+
+        // Update home screen stats
+        function updateHomeStats() {
+            totalCardsElement.textContent = gameData.cards.length;
+            
+            // Calculate total wins
+            const totalWins = gameData.cards.reduce((total, card) => total + card.wins, 0);
+            totalWinsElement.textContent = totalWins;
+            
+            totalCoinsElement.textContent = gameData.coins;
+            playerLevelHomeElement.textContent = gameData.level;
+        }
+
+        // Update inventory display
+        function updateInventoryDisplay() {
+            attackUpgradeCountElement.textContent = gameData.attackUpgrades;
+            shieldCountElement.textContent = gameData.shields.length;
+            boostCountElement.textContent = gameData.attackBoosts.length;
+        }
+
+        // Set current card
+        function setCurrentCard(card) {
+            gameData.currentCard = card;
+            const playerCardImg = document.querySelector('.player-card .card-img');
+            const playerCardName = document.querySelector('.player-card .card-name');
+            const playerMaxHealth = document.getElementById('player-max-health');
+            const playerAttack = document.getElementById('player-attack');
+            
+            playerCardImg.src = card.image;
+            playerCardName.textContent = card.name;
+            playerMaxHealth.textContent = card.maxHealth;
+            playerAttack.textContent = card.attack;
+            
+            // Update card rarity class
+            const playerCard = document.querySelector('.player-card .card');
+            playerCard.className = 'card';
+            playerCard.classList.add(`rarity-${card.rarity}`);
+        }
+
+        // Load collection
+        function loadCollection() {
+            collectionContainer.innerHTML = '';
+            
+            gameData.cards.forEach(card => {
+                const winRate = card.battles > 0 ? Math.round((card.wins / card.battles) * 100) : 0;
+                
+                const cardElement = document.createElement('div');
+                cardElement.className = 'collection-card';
+                cardElement.innerHTML = `
+                    ${card.favorite ? '<div class="favorite-star"><i class="fas fa-star"></i></div>' : ''}
+                    <img src="${card.image}" alt="${card.name}" class="collection-card-full">
+                    <div class="collection-card-info">
+                        <div class="collection-card-name">${card.name}</div>
+                        <div class="collection-card-group">${card.group} - <span class="rarity-${card.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${card.rarity.toUpperCase()}</span></div>
+                        <div class="collection-card-stats">
+                            <span>HP: ${card.maxHealth}</span>
+                            <span>ATK: ${card.attack}</span>
+                        </div>
+                        <div class="win-rate">
+                            <i class="fas fa-trophy"></i>
+                            <span>Win Rate: ${winRate}% (${card.wins}/${card.battles})</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="equip-btn" data-id="${card.id}">${gameData.currentCard && gameData.currentCard.id === card.id ? 'EQUIPPED' : 'EQUIP'}</button>
+                            <button class="upgrade-btn" data-id="${card.id}" ${gameData.attackUpgrades <= 0 ? 'disabled' : ''}>UPGRADE</button>
+                            <button class="favorite-btn ${card.favorite ? 'favorited' : ''}" data-id="${card.id}">${card.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
+                            <button class="sell-btn" data-id="${card.id}">SELL</button>
+                        </div>
+                    </div>
+                `;
+                collectionContainer.appendChild(cardElement);
+            });
+
+            // Add event listeners to equip buttons
+            document.querySelectorAll('.equip-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    if (card) {
+                        setCurrentCard(card);
+                        loadCollection(); // Refresh to update equip status
+                    }
+                });
+            });
+
+            // Add event listeners to upgrade buttons
+            document.querySelectorAll('.upgrade-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    upgradeCardAttack(cardId);
+                });
+            });
+
+            // Add event listeners to favorite buttons
+            document.querySelectorAll('.favorite-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    toggleFavoriteCard(cardId);
+                });
+            });
+
+            // Add event listeners to sell buttons
+            document.querySelectorAll('.sell-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    if (card && gameData.cards.length > 1) {
+                        showSellCardModal(card);
+                    } else {
+                        addToBattleLog("You can't sell your only card!", 'player');
+                    }
+                });
+            });
+        }
+
+        // Toggle favorite status of a card
+        function toggleFavoriteCard(cardId) {
+            const card = gameData.cards.find(c => c.id === cardId);
+            if (card) {
+                card.favorite = !card.favorite;
+                loadCollection();
+                addToBattleLog(`${card.name} ${card.favorite ? 'added to' : 'removed from'} favorites!`, 'player');
+            }
+        }
+
+        // Show sell all modal
+        function showSellAllModal() {
+            // Calculate total value of non-favorite cards
+            let totalValue = 0;
+            const nonFavoriteCards = gameData.cards.filter(card => !card.favorite);
+            
+            if (nonFavoriteCards.length === 0) {
+                addToBattleLog("No non-favorite cards to sell!", 'player');
+                return;
+            }
+            
+            nonFavoriteCards.forEach(card => {
+                totalValue += calculateSellPrice(card);
+            });
+            
+            sellAllPriceValue.textContent = totalValue;
+            sellAllModal.classList.add('active');
+        }
+
+        // Confirm sell all non-favorite cards
+        function confirmSellAllCards() {
+            const nonFavoriteCards = gameData.cards.filter(card => !card.favorite);
+            let totalValue = 0;
+            
+            nonFavoriteCards.forEach(card => {
+                totalValue += calculateSellPrice(card);
+            });
+            
+            // Remove non-favorite cards
+            gameData.cards = gameData.cards.filter(card => card.favorite);
+            
+            // Add coins
+            gameData.coins += totalValue;
+            updateCoinDisplay();
+            updateHomeStats();
+            
+            // If current card was sold, equip first available card
+            if (gameData.currentCard && !gameData.currentCard.favorite) {
+                if (gameData.cards.length > 0) {
+                    setCurrentCard(gameData.cards[0]);
+                } else {
+                    gameData.currentCard = null;
+                }
+            }
+            
+            addToBattleLog(`Sold ${nonFavoriteCards.length} cards for ${totalValue} coins!`, 'player');
+            
+            // Close modal and refresh collection
+            sellAllModal.classList.remove('active');
+            loadCollection();
+        }
+
+        // Calculate sell price for a card
+        function calculateSellPrice(card) {
+            let sellPrice = 0;
+            if (card.rarity === 'common') sellPrice = 20 + card.attack * 2;
+            else if (card.rarity === 'rare') sellPrice = 50 + card.attack * 3;
+            else if (card.rarity === 'epic') sellPrice = 100 + card.attack * 4;
+            else if (card.rarity === 'legendary') sellPrice = 200 + card.attack * 5;
+            else if (card.rarity === 'secret') sellPrice = 500 + card.attack * 10;
+            else if (card.rarity === 'stars') sellPrice = 1000 + card.attack * 15;
+            return sellPrice;
+        }
+
+        // Show sell card modal
+        function showSellCardModal(card) {
+            cardToSell = card;
+            
+            // Calculate sell price
+            const sellPrice = calculateSellPrice(card);
+            
+            sellPriceValue.textContent = sellPrice;
+            sellCardImg.src = card.image;
+            
+            sellCardModal.classList.add('active');
+        }
+
+        // Confirm sell card
+        function confirmSellCard() {
+            if (!cardToSell) return;
+            
+            // Calculate sell price
+            const sellPrice = calculateSellPrice(cardToSell);
+            
+            // Remove card from collection
+            const cardIndex = gameData.cards.findIndex(c => c.id === cardToSell.id);
+            if (cardIndex !== -1) {
+                gameData.cards.splice(cardIndex, 1);
+                
+                // Add coins
+                gameData.coins += sellPrice;
+                updateCoinDisplay();
+                updateHomeStats();
+                
+                // If sold card was equipped, equip first available card
+                if (gameData.currentCard && gameData.currentCard.id === cardToSell.id) {
+                    if (gameData.cards.length > 0) {
+                        setCurrentCard(gameData.cards[0]);
+                    } else {
+                        gameData.currentCard = null;
+                    }
+                }
+                
+                addToBattleLog(`Sold ${cardToSell.name} for ${sellPrice} coins!`, 'player');
+            }
+            
+            // Close modal and refresh collection
+            sellCardModal.classList.remove('active');
+            loadCollection();
+            cardToSell = null;
+        }
+
+        // Upgrade card attack
+        function upgradeCardAttack(cardId) {
+            if (gameData.attackUpgrades <= 0) {
+                addToBattleLog("No attack upgrades available! Buy them from the store.", 'player');
+                return;
+            }
+            
+            const card = gameData.cards.find(c => c.id === cardId);
+            if (!card) return;
+            
+            gameData.attackUpgrades--;
+            card.attack += 1;
+            
+            updateInventoryDisplay();
+            loadCollection();
+            
+            // If upgraded card is equipped, update battle display
+            if (gameData.currentCard && gameData.currentCard.id === cardId) {
+                setCurrentCard(card);
+            }
+            
+            addToBattleLog(`Upgraded ${card.name}'s attack to ${card.attack}!`, 'player');
+        }
+
+        // Load store items
+        function loadStoreItems(category) {
+            storeItemsContainer.innerHTML = '';
+            
+            const items = gameData.storeItems[category];
+            
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'store-item';
+                if (item.rarity === 'secret' || item.rarity === 'stars') {
+                    itemElement.classList.add('gacha-special');
+                }
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="store-item-img">
+                    <div class="store-item-info">
+                        <div class="store-item-name">${item.name}</div>
+                        <div class="store-item-desc">${item.description}</div>
+                        <div class="store-item-price">
+                            <i class="fas fa-coins"></i> ${item.price}
+                        </div>
+                        <button class="buy-btn" data-id="${item.id}" data-type="${category.slice(0, -1)}" ${gameData.coins < item.price ? 'disabled' : ''}>BUY</button>
+                    </div>
+                `;
+                storeItemsContainer.appendChild(itemElement);
+            });
+
+            // Add event listeners to buy buttons
+            document.querySelectorAll('.buy-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.getAttribute('data-id'));
+                    const itemType = e.target.getAttribute('data-type');
+                    buyItem(itemId, itemType);
+                });
+            });
+        }
+
+        // Load quests
+        function loadQuests(questType) {
+            questList.innerHTML = '';
+            
+            if (questType === 'battlepass') {
+                loadBattlePass();
+                return;
+            }
+            
+            const quests = gameData.quests[questType];
+            
+            quests.forEach(quest => {
+                const progressPercent = Math.min((quest.progress / quest.target) * 100, 100);
+                const isCompleted = quest.progress >= quest.target;
+                
+                const questElement = document.createElement('div');
+                questElement.className = 'quest-item';
+                questElement.innerHTML = `
+                    <div class="quest-header">
+                        <div class="quest-name">${quest.name}</div>
+                        <div class="quest-reward">
+                            <i class="fas ${quest.reward.type === 'coins' ? 'fa-coins' : 'fa-id-card'}"></i>
+                            <span>${quest.reward.value}</span>
+                        </div>
+                    </div>
+                    <div class="quest-desc">${quest.description}</div>
+                    <div class="quest-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <span>${quest.progress}/${quest.target}</span>
+                    </div>
+                    <div class="quest-actions">
+                        <button class="claim-btn" ${!isCompleted || quest.claimed ? 'disabled' : ''}>
+                            ${quest.claimed ? 'Claimed' : 'Claim Reward'}
+                        </button>
+                    </div>
+                `;
+                questList.appendChild(questElement);
+            });
+
+            // Add event listeners to claim buttons
+            document.querySelectorAll('.claim-btn').forEach(button => {
+                if (!button.disabled) {
+                    button.addEventListener('click', (e) => {
+                        const questName = e.target.closest('.quest-item').querySelector('.quest-name').textContent;
+                        claimQuestReward(questName, questType);
+                    });
+                }
+            });
+        }
+
+        // Load battle pass
+        function loadBattlePass() {
+            const battlePassContainer = document.createElement('div');
+            battlePassContainer.className = 'battle-pass-container';
+            
+            // Battle pass levels
+            const levelsContainer = document.createElement('div');
+            levelsContainer.className = 'battle-pass-levels';
+            
+            gameData.battlePass.levels.forEach(level => {
+                const levelElement = document.createElement('div');
+                levelElement.className = 'battle-pass-level';
+                
+                if (level.unlocked) {
+                    levelElement.classList.add('unlocked');
+                }
+                
+                if (level.level === gameData.battlePass.currentLevel) {
+                    levelElement.classList.add('current');
+                }
+                
+                if (level.claimed) {
+                    levelElement.classList.add('rewarded');
+                }
+                
+                let rewardText = '';
+                if (level.reward.type === 'coins') {
+                    rewardText = `${level.reward.value} Coins`;
+                } else if (level.reward.type === 'attackUpgrade') {
+                    rewardText = `${level.reward.value} Attack Upgrade`;
+                } else if (level.reward.type === 'card') {
+                    rewardText = `Card #${level.reward.value}`;
+                } else if (level.reward.type === 'shield') {
+                    rewardText = `${level.reward.value} Shields`;
+                } else if (level.reward.type === 'gachaCoupon') {
+                    rewardText = `${level.reward.value} Gacha Coupon`;
+                } else if (level.reward.type === 'attackBoost') {
+                    rewardText = `${level.reward.value} Attack Boosts`;
+                }
+                
+                levelElement.innerHTML = `
+                    <div class="level-number">${level.level}</div>
+                    <div class="level-reward">${rewardText}</div>
+                `;
+                
+                levelElement.addEventListener('click', () => {
+                    claimBattlePassReward(level.level);
+                });
+                
+                levelsContainer.appendChild(levelElement);
+            });
+            
+            battlePassContainer.appendChild(levelsContainer);
+            
+            // Current level progress
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'quest-item';
+            progressContainer.innerHTML = `
+                <div class="quest-header">
+                    <div class="quest-name">Battle Pass Progress</div>
+                    <div class="quest-reward">
+                        <i class="fas fa-star"></i>
+                        <span>Level ${gameData.battlePass.currentLevel}</span>
+                    </div>
+                </div>
+                <div class="quest-desc">Earn XP by winning battles and completing quests</div>
+                <div class="quest-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${(gameData.battlePass.xp / gameData.battlePass.xpToNextLevel) * 100}%"></div>
+                    </div>
+                    <span>${gameData.battlePass.xp}/${gameData.battlePass.xpToNextLevel}</span>
+                </div>
+            `;
+            
+            battlePassContainer.appendChild(progressContainer);
+            
+            // Unlock battle pass button
+            if (!gameData.battlePass.unlocked) {
+                const unlockButton = document.createElement('button');
+                unlockButton.className = 'unlock-battle-pass-btn';
+                unlockButton.textContent = 'UNLOCK BATTLE PASS (2500 Coins)';
+                unlockButton.disabled = gameData.coins < 2500;
+                
+                unlockButton.addEventListener('click', () => {
+                    unlockBattlePass();
+                });
+                
+                battlePassContainer.appendChild(unlockButton);
+            }
+            
+            questList.appendChild(battlePassContainer);
+        }
+
+        // Unlock battle pass
+        function unlockBattlePass() {
+            if (gameData.coins >= 2500) {
+                gameData.coins -= 2500;
+                gameData.battlePass.unlocked = true;
+                updateCoinDisplay();
+                updateHomeStats();
+                loadQuests('battlepass');
+                addToBattleLog("Battle Pass unlocked! You can now claim rewards!", 'player');
+            }
+        }
+
+        // Claim battle pass reward
+        function claimBattlePassReward(level) {
+            const levelData = gameData.battlePass.levels.find(l => l.level === level);
+            
+            if (!levelData || !levelData.unlocked || levelData.claimed) {
+                return;
+            }
+            
+            // Give reward
+            if (levelData.reward.type === 'coins') {
+                gameData.coins += levelData.reward.value;
+                updateCoinDisplay();
+                updateHomeStats();
+            } else if (levelData.reward.type === 'attackUpgrade') {
+                gameData.attackUpgrades += levelData.reward.value;
+                updateInventoryDisplay();
+            } else if (levelData.reward.type === 'card') {
+                const cardId = levelData.reward.value;
+                const card = gameData.gachaPool.find(c => c.id === cardId);
+                if (card) {
+                    gameData.cards.push({...card});
+                    loadCollection();
+                    updateHomeStats();
+                }
+            } else if (levelData.reward.type === 'shield') {
+                for (let i = 0; i < levelData.reward.value; i++) {
+                    gameData.shields.push(gameData.storeItems.shields[0]);
+                }
+                updateInventoryDisplay();
+            } else if (levelData.reward.type === 'gachaCoupon') {
+                // Add gacha coupons to inventory (implement if needed)
+                addToBattleLog(`Received ${levelData.reward.value} gacha coupon(s)!`, 'player');
+            } else if (levelData.reward.type === 'attackBoost') {
+                for (let i = 0; i < levelData.reward.value; i++) {
+                    gameData.attackBoosts.push(gameData.storeItems.boosts[0]);
+                }
+                updateInventoryDisplay();
+            }
+            
+            // Mark as claimed
+            levelData.claimed = true;
+            
+            // Refresh battle pass
+            loadQuests('battlepass');
+            
+            addToBattleLog(`Claimed Battle Pass Level ${level} reward!`, 'player');
+        }
+
+        // Add XP to battle pass
+        function addBattlePassXP(xp) {
+            if (!gameData.battlePass.unlocked) return;
+            
+            gameData.battlePass.xp += xp;
+            
+            // Check for level up
+            while (gameData.battlePass.xp >= gameData.battlePass.xpToNextLevel && gameData.battlePass.currentLevel < 15) {
+                gameData.battlePass.xp -= gameData.battlePass.xpToNextLevel;
+                gameData.battlePass.currentLevel++;
+                
+                // Unlock the next level
+                const nextLevel = gameData.battlePass.levels.find(l => l.level === gameData.battlePass.currentLevel);
+                if (nextLevel) {
+                    nextLevel.unlocked = true;
+                }
+                
+                gameData.battlePass.xpToNextLevel = Math.floor(gameData.battlePass.xpToNextLevel * 1.2);
+                
+                addToBattleLog(`Battle Pass Level Up! Reached Level ${gameData.battlePass.currentLevel}!`, 'player');
+            }
+        }
+
+        // Claim quest reward
+        function claimQuestReward(questName, questType) {
+            let quest = null;
+            
+            // Find the quest
+            const foundQuest = gameData.quests[questType].find(q => q.name === questName);
+            if (foundQuest) {
+                quest = foundQuest;
+            }
+            
+            if (!quest || quest.claimed) return;
+            
+            // Mark as claimed
+            quest.claimed = true;
+            
+            // Give reward
+            if (quest.reward.type === 'coins') {
+                gameData.coins += quest.reward.value;
+                updateCoinDisplay();
+                updateHomeStats();
+                addToBattleLog(`Claimed ${quest.reward.value} coins from ${quest.name}!`, 'player');
+            } else if (quest.reward.type === 'card') {
+                const cardId = quest.reward.value;
+                const card = gameData.gachaPool.find(c => c.id === cardId);
+                if (card) {
+                    gameData.cards.push({...card});
+                    loadCollection();
+                    updateHomeStats();
+                    addToBattleLog(`Claimed ${card.name} from ${quest.name}!`, 'player');
+                    
+                    // Update quest progress for secret hunter
+                    if (card.rarity === 'secret') {
+                        updateQuestProgress('Secret Hunter', 1);
+                    }
+                }
+            }
+            
+            // Refresh quests
+            loadQuests(questType);
+        }
+
+        // Buy item from store
+        function buyItem(itemId, itemType) {
+            let item;
+            
+            if (itemType === 'crate') {
+                item = gameData.storeItems.crates.find(c => c.id === itemId);
+            } else if (itemType === 'shield') {
+                item = gameData.storeItems.shields.find(s => s.id === itemId);
+            } else if (itemType === 'upgrade') {
+                item = gameData.storeItems.upgrades.find(u => u.id === itemId);
+            } else if (itemType === 'boost') {
+                item = gameData.storeItems.boosts.find(b => b.id === itemId);
+            } else if (itemType === 'photocard') {
+                item = gameData.storeItems.photocards.find(p => p.id === itemId);
+            }
+            
+            if (!item) return;
+            
+            if (gameData.coins >= item.price) {
+                gameData.coins -= item.price;
+                updateCoinDisplay();
+                updateHomeStats();
+                
+                if (itemType === 'crate') {
+                    openGachaCrate(item.rarity);
+                } else if (itemType === 'shield') {
+                    gameData.shields.push(item);
+                    updateInventoryDisplay();
+                    addToBattleLog(`You bought a ${item.name}!`, 'player');
+                } else if (itemType === 'upgrade') {
+                    gameData.attackUpgrades++;
+                    updateInventoryDisplay();
+                    addToBattleLog(`You bought an Attack Upgrade! You now have ${gameData.attackUpgrades} upgrade(s) available.`, 'player');
+                } else if (itemType === 'boost') {
+                    gameData.attackBoosts.push(item);
+                    updateInventoryDisplay();
+                    addToBattleLog(`You bought an Attack Boost! You now have ${gameData.attackBoosts.length} boost(s) available.`, 'player');
+                } else if (itemType === 'photocard') {
+                    // Add photocard to collection
+                    gameData.cards.push({
+                        id: item.id,
+                        name: item.name,
+                        group: item.group,
+                        image: item.image,
+                        health: item.health,
+                        maxHealth: item.maxHealth,
+                        attack: item.attack,
+                        rarity: item.rarity,
+                        wins: 0,
+                        battles: 0,
+                        favorite: false
+                    });
+                    
+                    loadCollection();
+                    updateHomeStats();
+                    addToBattleLog(`You bought ${item.name}!`, 'player');
+                    
+                    // Update quest progress
+                    updateQuestProgress('Idol Collector', 1);
+                    if (item.rarity === 'secret') {
+                        updateQuestProgress('Secret Hunter', 1);
+                    }
+                }
+                
+                // Refresh store to update button states
+                if (itemType === 'crate') {
+                    loadStoreItems('crates');
+                } else if (itemType === 'upgrade') {
+                    loadStoreItems('upgrades');
+                } else if (itemType === 'shield') {
+                    loadStoreItems('shields');
+                } else if (itemType === 'boost') {
+                    loadStoreItems('boosts');
+                } else if (itemType === 'photocard') {
+                    loadStoreItems('photocards');
+                }
+            } else {
+                addToBattleLog("Not enough coins!", 'player');
+            }
+        }
+
+        // Open gacha crate
+        function openGachaCrate(rarity) {
+            // Filter gacha pool by rarity with different probabilities
+            let availableCards = [];
+            let probabilities = [];
+            
+            if (rarity === 'common') {
+                // Common crate: 70% common, 25% rare, 5% epic
+                availableCards = gameData.gachaPool.filter(card => 
+                    card.rarity === 'common' || card.rarity === 'rare' || card.rarity === 'epic'
+                );
+                probabilities = availableCards.map(card => {
+                    if (card.rarity === 'common') return 0.7;
+                    if (card.rarity === 'rare') return 0.25;
+                    if (card.rarity === 'epic') return 0.05;
+                    return 0;
+                });
+            } else if (rarity === 'rare') {
+                // Rare crate: 60% rare, 30% epic, 10% legendary
+                availableCards = gameData.gachaPool.filter(card => 
+                    card.rarity === 'rare' || card.rarity === 'epic' || card.rarity === 'legendary'
+                );
+                probabilities = availableCards.map(card => {
+                    if (card.rarity === 'rare') return 0.6;
+                    if (card.rarity === 'epic') return 0.3;
+                    if (card.rarity === 'legendary') return 0.1;
+                    return 0;
+                });
+            } else if (rarity === 'epic') {
+                // Epic crate: 50% epic, 40% legendary, 10% secret
+                availableCards = gameData.gachaPool.filter(card => 
+                    card.rarity === 'epic' || card.rarity === 'legendary' || card.rarity === 'secret'
+                );
+                probabilities = availableCards.map(card => {
+                    if (card.rarity === 'epic') return 0.5;
+                    if (card.rarity === 'legendary') return 0.4;
+                    if (card.rarity === 'secret') return 0.1;
+                    return 0;
+                });
+            } else if (rarity === 'secret') {
+                // Secret crate: 40% legendary, 60% secret
+                availableCards = gameData.gachaPool.filter(card => 
+                    card.rarity === 'legendary' || card.rarity === 'secret'
+                );
+                probabilities = availableCards.map(card => {
+                    if (card.rarity === 'legendary') return 0.4;
+                    if (card.rarity === 'secret') return 0.6;
+                    return 0;
+                });
+            }
+            
+            // Randomly select a card based on probabilities
+            const randomValue = Math.random();
+            let cumulativeProbability = 0;
+            let wonCard = availableCards[0]; // Default to first card
+            
+            for (let i = 0; i < availableCards.length; i++) {
+                cumulativeProbability += probabilities[i];
+                if (randomValue <= cumulativeProbability) {
+                    wonCard = availableCards[i];
+                    break;
+                }
+            }
+            
+            // Add to collection
+            gameData.cards.push({...wonCard});
+            
+            // Update quest progress
+            updateQuestProgress('Gacha Enthusiast', 1);
+            updateQuestProgress('Idol Collector', 1);
+            
+            // Show gacha result
+            showGachaResult(wonCard);
+            
+            // Refresh collection
+            loadCollection();
+            updateHomeStats();
+        }
+
+        // Show gacha result modal
+        function showGachaResult(card) {
+            gachaCardImg.src = card.image;
+            gachaResultName.textContent = card.name;
+            gachaResultGroup.textContent = card.group;
+            
+            // Set rarity text with appropriate color
+            let rarityColor = '#aaa';
+            if (card.rarity === 'rare') rarityColor = '#6a5af9';
+            else if (card.rarity === 'epic') rarityColor = '#ff6b9d';
+            else if (card.rarity === 'legendary') rarityColor = '#ffd166';
+            else if (card.rarity === 'secret') rarityColor = '#ffd700';
+            else if (card.rarity === 'stars') rarityColor = '#ff00cc';
+            
+            gachaResultRarity.textContent = card.rarity.toUpperCase();
+            gachaResultRarity.style.color = rarityColor;
+            
+            // Add special class for secret and stars cards
+            if (card.rarity === 'secret' || card.rarity === 'stars') {
+                gachaCard.classList.add('gacha-special');
+            } else {
+                gachaCard.classList.remove('gacha-special');
+            }
+            
+            gachaModal.classList.add('active');
+            gachaCard.classList.remove('flipped');
+            
+            // Auto-flip after a delay
+            setTimeout(() => {
+                gachaCard.classList.add('flipped');
+            }, 1000);
+        }
+
+        // Start battle
+        function startBattle() {
+            if (gameData.isBattleActive) return;
+            
+            gameData.isBattleActive = true;
+            playerHealth = gameData.currentCard.maxHealth;
+            enemyHealth = 100;
+            
+            // Select random enemy card
+            const randomIndex = Math.floor(Math.random() * gameData.enemyCards.length);
+            enemyCard = {...gameData.enemyCards[randomIndex]};
+            
+            // Adjust enemy stats based on player level
+            enemyCard.health += (gameData.level - 1) * 10;
+            enemyCard.maxHealth = enemyCard.health;
+            enemyCard.attack += (gameData.level - 1) * 2;
+            
+            // Update enemy display
+            const enemyCardImg = document.querySelector('.enemy-card .card-img');
+            const enemyCardName = document.querySelector('.enemy-card .card-name');
+            const enemyMaxHealth = document.getElementById('enemy-max-health');
+            const enemyAttack = document.getElementById('enemy-attack');
+            
+            enemyCardImg.src = enemyCard.image;
+            enemyCardName.textContent = enemyCard.name;
+            enemyMaxHealth.textContent = enemyCard.maxHealth;
+            enemyAttack.textContent = enemyCard.attack;
+            
+            // Update enemy card rarity
+            const enemyCardElement = document.querySelector('.enemy-card .card');
+            enemyCardElement.className = 'card';
+            enemyCardElement.classList.add(`rarity-${enemyCard.rarity}`);
+            
+            // Update health bars
+            playerHealthBar.style.width = '100%';
+            enemyHealthBar.style.width = '100%';
+            
+            // Clear battle log
+            battleLog.innerHTML = '';
+            addToBattleLog("Battle started! Auto battle engaged!", 'player');
+            
+            // Switch to battle screen
+            switchScreen('battle');
+            
+            // Start auto battle interval
+            battleInterval = setInterval(autoBattle, 1500);
+        }
+
+        // Auto battle system
+        function autoBattle() {
+            if (!gameData.isBattleActive) return;
+            
+            // Player attacks
+            let playerAttackPower = gameData.currentCard.attack;
+            
+            // Apply boost if active
+            if (activeBoost && boostTimeLeft > 0) {
+                playerAttackPower = Math.floor(playerAttackPower * activeBoost.multiplier);
+                boostTimeLeft--;
+                
+                if (boostTimeLeft <= 0) {
+                    activeBoost = null;
+                    document.getElementById('player-boost-effect').classList.add('hidden');
+                    addToBattleLog("Your attack boost expired!", 'player');
+                }
+            }
+            
+            // Apply enemy shield if active
+            let actualDamage = playerAttackPower;
+            if (enemyShield && enemyShieldTimeLeft > 0) {
+                actualDamage = Math.max(1, playerAttackPower - enemyShield.defense);
+                enemyShieldTimeLeft--;
+                
+                if (enemyShieldTimeLeft <= 0) {
+                    enemyShield = null;
+                    document.getElementById('enemy-shield-effect').classList.add('hidden');
+                    document.getElementById('enemy-shield-status').classList.add('hidden');
+                    addToBattleLog("Enemy's shield broke!", 'enemy');
+                }
+            }
+            
+            enemyHealth -= actualDamage;
+            
+            if (enemyHealth < 0) enemyHealth = 0;
+            
+            enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+            addToBattleLog(`${gameData.currentCard.name} attacked for ${actualDamage} damage!`, 'player');
+            
+            // Visual feedback
+            const enemyCardElement = document.querySelector('.enemy-card .card');
+            enemyCardElement.classList.add('shake');
+            setTimeout(() => {
+                enemyCardElement.classList.remove('shake');
+            }, 500);
+            
+            // Check if enemy is defeated
+            if (enemyHealth <= 0) {
+                endBattle(true);
+                return;
+            }
+            
+            // Enemy attacks after a short delay
+            setTimeout(() => {
+                if (!gameData.isBattleActive) return;
+                
+                // Enemy AI: Randomly decide to use shield or boost (15% chance each)
+                if (Math.random() < 0.15 && !enemyShield) {
+                    // Use a random shield
+                    const shieldTypes = ['Basic Shield', 'Strong Shield', 'Epic Shield'];
+                    const randomShield = shieldTypes[Math.floor(Math.random() * shieldTypes.length)];
+                    const shield = gameData.storeItems.shields.find(s => s.name === randomShield);
+                    
+                    if (shield) {
+                        enemyShield = shield;
+                        enemyShieldTimeLeft = shield.duration;
+                        document.getElementById('enemy-shield-effect').classList.remove('hidden');
+                        document.getElementById('enemy-shield-status').classList.remove('hidden');
+                        addToBattleLog(`${enemyCard.name} activated a shield!`, 'enemy');
+                    }
+                }
+                
+                if (Math.random() < 0.15 && !enemyBoost) {
+                    // Use a random boost
+                    const boostTypes = ['Basic Boost', 'Strong Boost', 'Epic Boost'];
+                    const randomBoost = boostTypes[Math.floor(Math.random() * boostTypes.length)];
+                    const boost = gameData.storeItems.boosts.find(b => b.name === randomBoost);
+                    
+                    if (boost) {
+                        enemyBoost = boost;
+                        enemyBoostTimeLeft = boost.duration;
+                        document.getElementById('enemy-boost-effect').classList.remove('hidden');
+                        document.getElementById('enemy-boost-status').classList.remove('hidden');
+                        addToBattleLog(`${enemyCard.name} activated an attack boost!`, 'enemy');
+                    }
+                }
+                
+                let enemyAttackPower = enemyCard.attack + Math.floor(Math.random() * 5);
+                
+                // Apply enemy boost if active
+                if (enemyBoost && enemyBoostTimeLeft > 0) {
+                    enemyAttackPower = Math.floor(enemyAttackPower * enemyBoost.multiplier);
+                    enemyBoostTimeLeft--;
+                    
+                    if (enemyBoostTimeLeft <= 0) {
+                        enemyBoost = null;
+                        document.getElementById('enemy-boost-effect').classList.add('hidden');
+                        document.getElementById('enemy-boost-status').classList.add('hidden');
+                        addToBattleLog("Enemy's attack boost expired!", 'enemy');
+                    }
+                }
+                
+                let damage = enemyAttackPower;
+                
+                // Apply shield reduction if active
+                if (activeShield && shieldTimeLeft > 0) {
+                    damage = Math.max(1, damage - activeShield.defense);
+                    shieldTimeLeft--;
+                    
+                    if (shieldTimeLeft <= 0) {
+                        activeShield = null;
+                        document.getElementById('player-shield-effect').classList.add('hidden');
+                        addToBattleLog("Your shield broke!", 'player');
+                    }
+                }
+                
+                playerHealth -= damage;
+                
+                if (playerHealth < 0) playerHealth = 0;
+                
+                playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+                addToBattleLog(`${enemyCard.name} attacked for ${damage} damage!`, 'enemy');
+                
+                // Visual feedback
+                const playerCardElement = document.querySelector('.player-card .card');
+                playerCardElement.classList.add('shake');
+                setTimeout(() => {
+                    playerCardElement.classList.remove('shake');
+                }, 500);
+                
+                // Check if player is defeated
+                if (playerHealth <= 0) {
+                    endBattle(false);
+                }
+            }, 700);
+        }
+
+        // Activate shield
+        function activateShield() {
+            if (!gameData.isBattleActive || gameData.shields.length === 0) {
+                addToBattleLog("No shields available!", 'player');
+                return;
+            }
+            
+            // Use the first shield in inventory
+            activeShield = gameData.shields[0];
+            shieldTimeLeft = activeShield.duration;
+            
+            // Remove from inventory
+            gameData.shields.shift();
+            updateInventoryDisplay();
+            
+            // Show shield effect
+            document.getElementById('player-shield-effect').classList.remove('hidden');
+            
+            addToBattleLog(`You activated ${activeShield.name}!`, 'player');
+            
+            // Visual feedback
+            shieldButton.classList.add('pulse');
+            setTimeout(() => {
+                shieldButton.classList.remove('pulse');
+            }, 300);
+        }
+
+        // Activate boost
+        function activateBoost() {
+            if (!gameData.isBattleActive || gameData.attackBoosts.length === 0) {
+                addToBattleLog("No attack boosts available!", 'player');
+                return;
+            }
+            
+            // Use the first boost in inventory
+            activeBoost = gameData.attackBoosts[0];
+            boostTimeLeft = activeBoost.duration;
+            
+            // Remove from inventory
+            gameData.attackBoosts.shift();
+            updateInventoryDisplay();
+            
+            // Show boost effect
+            document.getElementById('player-boost-effect').classList.remove('hidden');
+            
+            addToBattleLog(`You activated ${activeBoost.name}!`, 'player');
+            
+            // Visual feedback
+            boostButton.classList.add('pulse');
+            setTimeout(() => {
+                boostButton.classList.remove('pulse');
+            }, 300);
+        }
+
+        // End battle
+        function endBattle(playerWon) {
+            gameData.isBattleActive = false;
+            clearInterval(battleInterval);
+            
+            // Update card stats
+            gameData.currentCard.battles++;
+            if (playerWon) {
+                gameData.currentCard.wins++;
+            }
+            
+            // Update quest progress
+            updateQuestProgress('First Victory', playerWon ? 1 : 0);
+            updateQuestProgress('Battle Master', playerWon ? 1 : 0);
+            updateQuestProgress('Daily Battle', playerWon ? 1 : 0);
+            updateQuestProgress('Battle Legend', playerWon ? 1 : 0);
+            
+            if (playerWon) {
+                const coinsWon = 20 + Math.floor(Math.random() * 10) + (gameData.level * 5);
+                const xpWon = 10 + Math.floor(Math.random() * 5);
+                
+                gameData.coins += coinsWon;
+                gameData.xp += xpWon;
+                
+                // Add XP to battle pass
+                addBattlePassXP(xpWon);
+                
+                // Check for level up
+                if (gameData.xp >= gameData.xpToNextLevel) {
+                    gameData.level++;
+                    gameData.xp = gameData.xp - gameData.xpToNextLevel;
+                    gameData.xpToNextLevel = Math.floor(gameData.xpToNextLevel * 1.5);
+                    updateLevelDisplay();
+                    addToBattleLog("You leveled up!", 'player');
+                    
+                    // Update level quest progress
+                    updateQuestProgress('Level Up!', gameData.level);
+                }
+                
+                updateCoinDisplay();
+                updateHomeStats();
+                
+                // Show victory modal
+                showBattleResult(true, coinsWon, xpWon);
+                
+                addToBattleLog(`You won the battle! Earned ${coinsWon} coins and ${xpWon} XP.`, 'player');
+            } else {
+                // Show defeat modal
+                showBattleResult(false, 0, 0);
+                addToBattleLog("You lost the battle!", 'enemy');
+            }
+            
+            // Update collection to reflect new stats
+            loadCollection();
+        }
+
+        // Show battle result modal
+        function showBattleResult(isWin, coins, xp) {
+            const modal = document.getElementById('battle-result-modal');
+            const resultSection = modal.querySelector('.battle-result');
+            const resultIcon = resultSection.querySelector('.result-icon i');
+            const resultTitle = resultSection.querySelector('.result-title');
+            const resultDesc = resultSection.querySelector('.result-desc');
+            const rewardCoins = resultSection.querySelector('.reward-item:nth-child(1) .reward-amount');
+            const rewardXp = resultSection.querySelector('.reward-item:nth-child(2) .reward-amount');
+            
+            if (isWin) {
+                resultSection.className = 'battle-result win';
+                resultIcon.className = 'fas fa-trophy';
+                resultTitle.textContent = 'Victory!';
+                resultDesc.textContent = 'You defeated the enemy idol!';
+                rewardCoins.textContent = `+${coins}`;
+                rewardXp.textContent = `+${xp} XP`;
+            } else {
+                resultSection.className = 'battle-result lose';
+                resultIcon.className = 'fas fa-times';
+                resultTitle.textContent = 'Defeat!';
+                resultDesc.textContent = 'Your idol was defeated!';
+                rewardCoins.textContent = '+0';
+                rewardXp.textContent = '+0 XP';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        // Reset battle
+        function resetBattle() {
+            playerHealth = gameData.currentCard.maxHealth;
+            enemyHealth = 100;
+            playerHealthBar.style.width = '100%';
+            enemyHealthBar.style.width = '100%';
+            isPlayerTurn = true;
+            activeShield = null;
+            activeBoost = null;
+            shieldTimeLeft = 0;
+            boostTimeLeft = 0;
+            enemyShield = null;
+            enemyBoost = null;
+            enemyShieldTimeLeft = 0;
+            enemyBoostTimeLeft = 0;
+            
+            // Hide effects
+            document.getElementById('player-shield-effect').classList.add('hidden');
+            document.getElementById('player-boost-effect').classList.add('hidden');
+            document.getElementById('enemy-shield-effect').classList.add('hidden');
+            document.getElementById('enemy-boost-effect').classList.add('hidden');
+            document.getElementById('enemy-shield-status').classList.add('hidden');
+            document.getElementById('enemy-boost-status').classList.add('hidden');
+            
+            battleLog.innerHTML = '<div class="log-entry player-log">Press START BATTLE to begin a new battle!</div>';
+        }
+
+        // Update quest progress
+        function updateQuestProgress(questName, increment) {
+            for (const type in gameData.quests) {
+                const quest = gameData.quests[type].find(q => q.name === questName);
+                if (quest && !quest.completed) {
+                    quest.progress = Math.min(quest.progress + increment, quest.target);
+                    if (quest.progress >= quest.target) {
+                        quest.completed = true;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Add message to battle log
+        function addToBattleLog(message, type) {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}-log`;
+            logEntry.textContent = message;
+            
+            battleLog.appendChild(logEntry);
+            battleLog.scrollTop = battleLog.scrollHeight;
+        }
+
+        // Initialize the game when the page loads
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
