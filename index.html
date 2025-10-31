@@ -1617,6 +1617,66 @@
             z-index: 2001 !important;
             position: relative;
         }
+
+        /* Enhanced Battle Animations */
+        @keyframes attackFlash {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+            100% { filter: brightness(1); }
+        }
+
+        .attack-flash {
+            animation: attackFlash 0.3s ease;
+        }
+
+        @keyframes damageText {
+            0% { opacity: 0; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-20px); }
+            100% { opacity: 0; transform: translateY(-40px); }
+        }
+
+        .damage-text {
+            position: absolute;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            z-index: 10;
+            animation: damageText 1s ease forwards;
+        }
+
+        @keyframes criticalHit {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .critical-hit {
+            animation: criticalHit 0.5s ease;
+            color: #ff0000;
+        }
+
+        @keyframes battleBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .battle-active {
+            animation: battleBackground 10s ease infinite;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+            background-size: 400% 400%;
+        }
+
+        @keyframes powerUp {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 157, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 107, 157, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 157, 0); }
+        }
+
+        .power-up {
+            animation: powerUp 1s ease;
+        }
     </style>
 </head>
 <body>
@@ -1983,7 +2043,7 @@
     <script>
         // Game Data
         const gameData = {
-            coins: 0,
+            coins: 100000,
             level: 1,
             xp: 0,
             xpToNextLevel: 100,
@@ -2027,37 +2087,37 @@
                 { id: 3, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 15, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 22, name: "Leeseo", group: "IVE", image: "leseo.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 61, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 61, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // Rare Cards (55% in Premium, 35% in Elite, 25% in Secret)
-                { id: 4, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 5, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 110, maxHealth: 110, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 6, name: "Winter", group: "aespa", image: "winter.jpg", health: 115, maxHealth: 115, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 4, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 5, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 6, name: "Winter", group: "aespa", image: "winter.jpg", health: 130, maxHealth: 130, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 11, name: "Sakura", group: "LE SSERAFIM", image: "sakura.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 12, name: "Kazuha", group: "LE SSERAFIM", image: "kazuha.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 13, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 14, name: "Giselle", group: "aespa", image: "gisel.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 13, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 14, name: "Giselle", group: "aespa", image: "gisel.jpg", health: 125, maxHealth: 125, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 16, name: "Haerin", group: "NewJeans", image: "haerin.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 17, name: "Hyein", group: "NewJeans", image: "hyein.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 18, name: "Jisoo", group: "BLACKPINK", image: "jisso.jpg", health: 130, maxHealth: 130, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 19, name: "Rose", group: "BLACKPINK", image: "rose.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 20, name: "Rei", group: "IVE", image: "rei.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 21, name: "Liz", group: "IVE", image: "liz.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 21, name: "Liz", group: "IVE", image: "liz.jpg", health: 115, maxHealth: 115, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 25, name: "Wonhee", group: "ILLIT", image: "wonhee.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 26, name: "Iroha", group: "ILLIT", image: "iroha.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 28, name: "Minju", group: "ILLIT", image: "minju.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 28, name: "Minju", group: "ILLIT", image: "minju.jpg", health: 115, maxHealth: 115, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 32, name: "Jiwoo", group: "HEARTS2HEARTS", image: "jiwoo.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 56, name: "Rumi", group: "HUNTRIX", image: "rumi.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 62, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 145, maxHealth: 145, attack: 17, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 62, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // Epic Cards (45% in Elite, 58% in Secret)
-                { id: 7, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 8, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 135, maxHealth: 135, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 7, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 8, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 23, name: "Yunjin", group: "LE SSERAFIM", image: "yunjin.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 24, name: "Eunchae", group: "LE SSERAFIM", image: "eunchae.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 27, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 63, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 24, name: "Eunchae", group: "LE SSERAFIM", image: "eunchae.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 27, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 63, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // Legendary Cards (2% in Secret)
                 { id: 10, name: "Moka", group: "ILLIT", image: "moka.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -2065,7 +2125,7 @@
                 { id: 30, name: "IU", group: "Soloist", image: "iu.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 31, name: "Taeyeon", group: "SNSD", image: "taeyon.jpg", health: 135, maxHealth: 135, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 64, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 155, maxHealth: 155, attack: 19, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 64, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 155, maxHealth: 155, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // Secret Cards (2% in Secret)
                 { id: 50, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -2074,7 +2134,7 @@
                 { id: 53, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 54, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 55, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 59, name: "Mira", group: "HUNTRIX", image: "mira.jpg", health: 180, maxHealth: 180, attack: 24, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 59, name: "Mira", group: "HUNTRIX", image: "mira.jpg", health: 185, maxHealth: 185, attack: 24, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 65, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 66, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 21, rarity: "stars", wins: 0, battles: 0, favorite: false, upgrades: 0 }
             ],
@@ -2117,20 +2177,20 @@
                 ]
             },
             enemyCards: [
-                { id: 101, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common" },
-                { id: 102, name: "Jennie", group: "BLACKPINK", image: "jennie.jpg", health: 100, maxHealth: 100, attack: 12, rarity: "common" },
-                { id: 103, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common" },
-                { id: 104, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare" },
-                { id: 105, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 110, maxHealth: 110, attack: 15, rarity: "rare" },
+                { id: 101, name: "Hanni", group: "NewJeans", image: "hanni0.jpg", health: 80, maxHealth: 80, attack: 8, rarity: "common" },
+                { id: 102, name: "Jennie", group: "BLACKPINK", image: "jennie0.jpg", health: 85, maxHealth: 85, attack: 9, rarity: "common" },
+                { id: 103, name: "Karina", group: "aespa", image: "karina.jpg", health: 90, maxHealth: 90, attack: 10, rarity: "common" },
+                { id: 104, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "rare" },
+                { id: 105, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 95, maxHealth: 95, attack: 12, rarity: "rare" },
                 { id: 106, name: "Secret Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret" },
                 { id: 107, name: "Secret Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "secret" },
-                { id: 108, name: "Rumi", group: "HUNTRIX", image: "rumi.jpg", health: 250, maxHealth: 250, attack: 35, rarity: "stars" },
-                { id: 109, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "common" },
-                { id: 110, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 145, maxHealth: 145, attack: 17, rarity: "rare" },
-                { id: 111, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "epic" },
-                { id: 112, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 155, maxHealth: 155, attack: 19, rarity: "legendary" },
-                { id: 113, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "secret" },
-                { id: 114, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 21, rarity: "stars" }
+                { id: 108, name: "Rumi", group: "HUNTRIX", image: "rumi.jpg", health: 180, maxHealth: 180, attack: 35, rarity: "stars" },
+                { id: 109, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "common" },
+                { id: 110, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "rare" },
+                { id: 111, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "epic" },
+                { id: 112, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 140, maxHealth: 140, attack: 19, rarity: "legendary" },
+                { id: 113, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 25, rarity: "secret" },
+                { id: 114, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 23, rarity: "stars" }
             ],
             settings: {
                 bgmEnabled: true,
@@ -2363,7 +2423,7 @@
                     hideTutorialForAction = true;
                     break;
                 case 6:
-                    message = "Oh tidak! Kamu kalah di pertarungan pertamamu. Ayo kita dapatkan beberapa item untuk membantumu menang di pertarungan berikutnya.";
+                    message = "Bagus! Kamu menang di pertarungan pertamamu. Ayo kita dapatkan beberapa item untuk membantumu menang di pertarungan berikutnya.";
                     targetElement = document.querySelector('[data-screen="store"]');
                     position = 'bottom';
                     autoNavigate = true;
@@ -3703,6 +3763,9 @@
             playerHealth = gameData.currentCard.maxHealth;
             enemyHealth = 100;
             
+            // Add battle-active class for enhanced background animation
+            document.getElementById('battle').classList.add('battle-active');
+            
             // Play battle start sound
             if (gameData.settings.sfxEnabled) {
                 sounds.battleStart.play().catch(e => console.log("Audio play failed"));
@@ -3712,10 +3775,18 @@
             const randomIndex = Math.floor(Math.random() * gameData.enemyCards.length);
             enemyCard = {...gameData.enemyCards[randomIndex]};
             
-            // Adjust enemy stats based on player level
-            enemyCard.health += (gameData.level - 1) * 10;
-            enemyCard.maxHealth = enemyCard.health;
-            enemyCard.attack += (gameData.level - 1) * 2;
+            // For tutorial battles, ensure the player wins
+            if (tutorialActive && tutorialStep === 5) {
+                // Make enemy weaker for tutorial
+                enemyCard.health = 50;
+                enemyCard.maxHealth = 50;
+                enemyCard.attack = 5;
+            } else {
+                // Adjust enemy stats based on player level
+                enemyCard.health += (gameData.level - 1) * 10;
+                enemyCard.maxHealth = enemyCard.health;
+                enemyCard.attack += (gameData.level - 1) * 2;
+            }
             
             // Update enemy display
             const enemyCardImg = document.querySelector('.enemy-card .card-img');
@@ -3791,11 +3862,15 @@
                 sounds.attack.play().catch(e => console.log("Audio play failed"));
             }
             
-            // Visual feedback
+            // Enhanced visual feedback
             const enemyCardElement = document.querySelector('.enemy-card .card');
-            enemyCardElement.classList.add('shake');
+            enemyCardElement.classList.add('shake', 'attack-flash');
+            
+            // Show damage text
+            showDamageText(enemyCardElement, actualDamage, false);
+            
             setTimeout(() => {
-                enemyCardElement.classList.remove('shake');
+                enemyCardElement.classList.remove('shake', 'attack-flash');
             }, 500);
             
             // Check if enemy is defeated
@@ -3880,11 +3955,15 @@
                     sounds.attack.play().catch(e => console.log("Audio play failed"));
                 }
                 
-                // Visual feedback
+                // Enhanced visual feedback
                 const playerCardElement = document.querySelector('.player-card .card');
-                playerCardElement.classList.add('shake');
+                playerCardElement.classList.add('shake', 'attack-flash');
+                
+                // Show damage text
+                showDamageText(playerCardElement, damage, true);
+                
                 setTimeout(() => {
-                    playerCardElement.classList.remove('shake');
+                    playerCardElement.classList.remove('shake', 'attack-flash');
                 }, 500);
                 
                 // Check if player is defeated
@@ -3892,6 +3971,32 @@
                     endBattle(false);
                 }
             }, 700);
+        }
+
+        // Show damage text animation
+        function showDamageText(targetElement, damage, isPlayer) {
+            const damageText = document.createElement('div');
+            damageText.className = 'damage-text';
+            damageText.textContent = `-${damage}`;
+            
+            // Position the damage text
+            const rect = targetElement.getBoundingClientRect();
+            damageText.style.left = `${rect.left + rect.width / 2}px`;
+            damageText.style.top = `${rect.top + rect.height / 2}px`;
+            
+            // Color based on who is taking damage
+            if (isPlayer) {
+                damageText.style.color = '#ff6b6b'; // Red for player damage
+            } else {
+                damageText.style.color = '#4cd964'; // Green for enemy damage
+            }
+            
+            document.body.appendChild(damageText);
+            
+            // Remove the element after animation completes
+            setTimeout(() => {
+                damageText.remove();
+            }, 1000);
         }
 
         // Activate shield
@@ -3919,11 +4024,11 @@
             
             addToBattleLog(`You activated ${activeShield.name}!`, 'player');
             
-            // Visual feedback
-            shieldButton.classList.add('pulse');
+            // Enhanced visual feedback
+            shieldButton.classList.add('pulse', 'power-up');
             setTimeout(() => {
-                shieldButton.classList.remove('pulse');
-            }, 300);
+                shieldButton.classList.remove('pulse', 'power-up');
+            }, 1000);
         }
 
         // Activate boost
@@ -3951,17 +4056,20 @@
             
             addToBattleLog(`You activated ${activeBoost.name}!`, 'player');
             
-            // Visual feedback
-            boostButton.classList.add('pulse');
+            // Enhanced visual feedback
+            boostButton.classList.add('pulse', 'power-up');
             setTimeout(() => {
-                boostButton.classList.remove('pulse');
-            }, 300);
+                boostButton.classList.remove('pulse', 'power-up');
+            }, 1000);
         }
 
         // End battle
         function endBattle(playerWon) {
             gameData.isBattleActive = false;
             clearInterval(battleInterval);
+            
+            // Remove battle-active class
+            document.getElementById('battle').classList.remove('battle-active');
             
             // Update card stats
             gameData.currentCard.battles++;
@@ -3970,7 +4078,7 @@
             }
             
             // Update quest progress
-            updateQuestProgress('First VICTORY', playerWon ? 1 : 0);
+            updateQuestProgress('First Victory', playerWon ? 1 : 0);
             updateQuestProgress('Battle Master', playerWon ? 1 : 0);
             updateQuestProgress('Daily Battle', playerWon ? 1 : 0);
             updateQuestProgress('Battle Legend', playerWon ? 1 : 0);
@@ -4115,7 +4223,3 @@
     </script>
 </body>
 </html>
-
-
-
-
