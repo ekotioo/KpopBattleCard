@@ -50,7 +50,9 @@
             text-align: center;
             margin-bottom: 20px;
             padding: 15px 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('header-bg.jpg');
+            background-size: cover;
+            background-position: center;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             color: white;
@@ -83,6 +85,15 @@
         .coin-icon {
             color: var(--accent);
             font-size: 1.1rem;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 10px;
         }
 
         /* Navigation Styles */
@@ -191,8 +202,8 @@
         }
 
         .featured-card {
-            width: 120px;
-            height: 170px;
+            width: 160px;
+            height: 220px;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
@@ -1106,6 +1117,80 @@
             font-weight: 600;
         }
 
+        /* Settings Modal */
+        .settings-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .setting-label {
+            font-weight: 600;
+        }
+
+        .setting-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--secondary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .volume-slider {
+            width: 100px;
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 400px) {
             .container {
@@ -1419,6 +1504,119 @@
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
             z-index: 5;
         }
+
+        /* Tutorial Styles */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: none;
+        }
+
+        .tutorial-overlay.active {
+            display: block;
+        }
+
+        .tutorial-message {
+            position: absolute;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 280px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 2001;
+            animation: modalAppear 0.3s ease;
+        }
+
+        .tutorial-message h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .tutorial-message p {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .tutorial-arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            z-index: 2002;
+        }
+
+        .tutorial-arrow.top {
+            border-width: 0 10px 15px 10px;
+            border-color: transparent transparent var(--card-bg) transparent;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .tutorial-arrow.bottom {
+            border-width: 15px 10px 0 10px;
+            border-color: var(--card-bg) transparent transparent transparent;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .tutorial-arrow.left {
+            border-width: 10px 15px 10px 0;
+            border-color: transparent var(--card-bg) transparent transparent;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .tutorial-arrow.right {
+            border-width: 10px 0 10px 15px;
+            border-color: transparent transparent transparent var(--card-bg);
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .tutorial-next-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .tutorial-next-btn:hover {
+            background: #5a4ff0;
+        }
+
+        .tutorial-skip-btn {
+            background: transparent;
+            color: #aaa;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            width: 100%;
+        }
+
+        /* Highlight untuk elemen tutorial */
+        .tutorial-highlight {
+            box-shadow: 0 0 0 3px var(--accent) !important;
+            z-index: 2001 !important;
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -1428,7 +1626,10 @@
             <div class="player-info">
                 <div class="level">Level: <span id="player-level">1</span></div>
                 <div class="coins">
-                    <i class="fas fa-coins coin-icon"></i> <span id="coin-count">500</span>
+                    <i class="fas fa-coins coin-icon"></i> <span id="coin-count">0</span>
+                    <button class="settings-btn" id="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
                 </div>
             </div>
         </header>
@@ -1461,25 +1662,27 @@
                     <h1 class="home-title">Battle Of Idol</h1>
                     <p class="home-subtitle">Collect your favorite K-Pop idols and battle against others!</p>
                 </div>
+                
+                <h2 class="home-subtitle">Secret Photocard</h2>
 
                 <div class="featured-cards">
                     <div class="featured-card">
-                        <img src="hanni.jpg" alt="Hanni" class="featured-card-img">
+                        <img src="hanni2.jpg" alt="Hanni" class="featured-card-img">
                         <div class="featured-card-name">Hanni</div>
                     </div>
                     <div class="featured-card">
-                        <img src="jennie.jpg" alt="Jennie" class="featured-card-img">
-                        <div class="featured-card-name">Jennie</div>
+                        <img src="iu2.jpg" alt="IU" class="featured-card-img">
+                        <div class="featured-card-name">IU</div>
                     </div>
                     <div class="featured-card">
-                        <img src="karina.jpg" alt="Karina" class="featured-card-img">
-                        <div class="featured-card-name">Karina</div>
+                        <img src="yoona2.jpg" alt="Yoona" class="featured-card-img">
+                        <div class="featured-card-name">Yoona</div>
                     </div>
                 </div>
 
                 <div class="home-stats">
                     <div class="stat-card">
-                        <div class="stat-value" id="total-cards">1</div>
+                        <div class="stat-value" id="total-cards">0</div>
                         <div class="stat-label">Total Cards</div>
                     </div>
                     <div class="stat-card">
@@ -1487,7 +1690,7 @@
                         <div class="stat-label">Total Wins</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value" id="total-coins">500</div>
+                        <div class="stat-value" id="total-coins">0</div>
                         <div class="stat-label">Total Coins</div>
                     </div>
                     <div class="stat-card">
@@ -1499,19 +1702,19 @@
                 <div class="home-features">
                     <div class="feature-item">
                         <i class="fas fa-fist-raised feature-icon"></i>
-                        <div class="feature-text">Auto Battle System - Watch your idols fight!</div>
+                        <div class="feature-text">Sistem Pertempuran Otomatis - Saksikan idola Anda bertarung</div>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-id-card feature-icon"></i>
-                        <div class="feature-text">Collect and upgrade K-Pop idol cards</div>
+                        <div class="feature-text">Kumpulkan dan tingkatkan kartu idola K-Pop</div>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-shopping-cart feature-icon"></i>
-                        <div class="feature-text">Buy attack upgrades and shields</div>
+                        <div class="feature-text">Beli peningkatan serangan dan perisai</div>
                     </div>
                     <div class="feature-item">
                         <i class="fas fa-tasks feature-icon"></i>
-                        <div class="feature-text">Complete quests for rewards</div>
+                        <div class="feature-text">Selesaikan misi untuk mendapatkan hadiah</div>
                     </div>
                 </div>
             </div>
@@ -1523,7 +1726,7 @@
             <div class="battle-field">
                 <div class="enemy-card">
                     <div class="card rarity-common">
-                        <img src="random.jpg" alt="Enemy Idol" class="card-img">
+                        <img src="random1.jpg" alt="Enemy Idol" class="card-img">
                         <div id="enemy-shield-effect" class="shield-effect hidden"></div>
                         <div id="enemy-boost-effect" class="boost-effect hidden"></div>
                         <div id="enemy-shield-status" class="bot-status shield hidden">SHIELD</div>
@@ -1541,17 +1744,17 @@
 
                 <div class="player-card">
                     <div class="card rarity-common">
-                        <img src="hanni.jpg" alt="Your Idol" class="card-img">
+                        <img src="placeholder.jpg" alt="Your Idol" class="card-img">
                         <div id="player-shield-effect" class="shield-effect hidden"></div>
                         <div id="player-boost-effect" class="boost-effect hidden"></div>
                     </div>
-                    <div class="card-name">Your Idol</div>
+                    <div class="card-name">No Card Equipped</div>
                     <div class="card-stats">
-                        <span>HP: <span id="player-max-health">100</span></span>
-                        <span>ATK: <span id="player-attack">10</span></span>
+                        <span>HP: <span id="player-max-health">0</span></span>
+                        <span>ATK: <span id="player-attack">0</span></span>
                     </div>
                     <div class="health-bar-container">
-                        <div class="health-bar player-health" style="width: 100%"></div>
+                        <div class="health-bar player-health" style="width: 0%"></div>
                     </div>
                 </div>
 
@@ -1564,7 +1767,7 @@
                 </div>
 
                 <div class="battle-log">
-                    <div class="log-entry player-log">Press START BATTLE to begin!</div>
+                    <div class="log-entry player-log">Equip a card first to start battle!</div>
                 </div>
             </div>
         </section>
@@ -1605,10 +1808,11 @@
             <h2 class="screen-title">Store</h2>
             <div class="store-categories">
                 <button class="category-btn active" data-category="crates">Gacha Crates</button>
+               <button class="category-btn" data-category="photocards">Photocards</button>                
                 <button class="category-btn" data-category="upgrades">Attack Upgrades</button>
                 <button class="category-btn" data-category="shields">Shields</button>
                 <button class="category-btn" data-category="boosts">Attack Boosts</button>
-                <button class="category-btn" data-category="photocards">Photocards</button>
+ 
             </div>
             <div class="store-items">
                 <!-- Store items will be populated by JavaScript -->
@@ -1722,10 +1926,64 @@
         </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Settings</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="settings-container">
+                <div class="setting-item">
+                    <div class="setting-label">Background Music</div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="bgm-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <input type="range" min="0" max="100" value="50" class="volume-slider" id="bgm-volume">
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Sound Effects</div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="sfx-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <input type="range" min="0" max="100" value="70" class="volume-slider" id="sfx-volume">
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Vibration</div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="vibration-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Notifications</div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notifications-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <button class="action-btn play-btn" id="settings-save-btn" style="margin-top: 15px;">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay" class="tutorial-overlay"></div>
+
     <script>
         // Game Data
         const gameData = {
-            coins: 500,
+            coins: 0,
             level: 1,
             xp: 0,
             xpToNextLevel: 100,
@@ -1733,16 +1991,14 @@
             isBattleActive: false,
             attackUpgrades: 0,
             attackBoosts: [],
-            cards: [
-                { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false },
-            ],
+            cards: [],
             shields: [],
             storeItems: {
                 crates: [
-                    { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common or rare idols" },
-                    { id: 2, name: "Premium Crate", price: 100, type: "crate", rarity: "rare", image: "premium.jpg", description: "Contains rare or epic idols" },
-                    { id: 3, name: "Elite Crate", price: 200, type: "crate", rarity: "epic", image: "elite.jpg", description: "Contains epic or legendary idols" },
-                    { id: 4, name: "Secret Crate", price: 500, type: "crate", rarity: "secret", image: "secret.jpg", description: "Contains legendary or secret idols" }
+                    { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common idols only" },
+                    { id: 2, name: "Premium Crate", price: 100, type: "crate", rarity: "rare", image: "premium.jpg", description: "Contains common and rare idols" },
+                    { id: 3, name: "Elite Crate", price: 200, type: "crate", rarity: "epic", image: "elite.jpg", description: "Contains common, rare and epic idols" },
+                    { id: 4, name: "Secret Crate", price: 500, type: "crate", rarity: "secret", image: "secret.jpg", description: "Contains common, rare, epic and secret idols" }
                 ],
                 upgrades: [
                     { id: 1, name: "Attack Upgrade", price: 100, type: "upgrade", image: "attack.jpg", description: "Increase attack by 1 for any card" }
@@ -1758,55 +2014,73 @@
                     { id: 3, name: "Epic Boost", price: 150, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" }
                 ],
                 photocards: [
-                    { id: 100, name: "Special Hanni", group: "NewJeans", image: "hanni_special.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", price: 2000, description: "Exclusive photocard not available in gacha" },
-                    { id: 101, name: "Special Jennie", group: "BLACKPINK", image: "jennie_special.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "epic", price: 2500, description: "Exclusive photocard not available in gacha" },
-                    { id: 102, name: "Special Karina", group: "aespa", image: "karina_special.jpg", health: 170, maxHealth: 170, attack: 22, rarity: "legendary", price: 2800, description: "Exclusive photocard not available in gacha" },
-                    { id: 103, name: "Special IU", group: "Soloist", image: "iu_special.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret", price: 2200, description: "Exclusive photocard not available in gacha" }
+                    { id: 100, name: "Special Hanni", group: "NewJeans", image: "hanni_special.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", price: 5800, description: "Exclusive photocard not available in gacha" },
+                    { id: 101, name: "Special Jennie", group: "BLACKPINK", image: "jennie_special.jpg", health: 155, maxHealth: 155, attack: 20, rarity: "epic", price: 6500, description: "Exclusive photocard not available in gacha" },
+                    { id: 102, name: "Special Karina", group: "aespa", image: "karina_special.jpg", health: 165, maxHealth: 165, attack: 20, rarity: "legendary", price: 6500, description: "Exclusive photocard not available in gacha" },
+                    { id: 103, name: "Special IU", group: "Soloist", image: "iu_special.jpg", health: 167, maxHealth: 167, attack: 19, rarity: "legendary", price: 6200, description: "Exclusive photocard not available in gacha" },
+                    { id: 59, name: "Special Mira", group: "HUNTRIX", image: "mira.jpg", health: 145, maxHealth: 145, attack: 17, rarity: "rare", price: 6100, description: "Exclusive photocard not available in gacha" }
                 ]
             },
             gachaPool: [
-                { id: 3, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false },
-                { id: 4, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 5, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 110, maxHealth: 110, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 6, name: "Winter", group: "aespa", image: "winter.jpg", health: 115, maxHealth: 115, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 7, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false },
-                { id: 8, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false },
-                { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 135, maxHealth: 135, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false },
-                { id: 10, name: "Moka", group: "ILLIT", image: "moka.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false },
-                { id: 11, name: "Sakura", group: "LE SSERAFIM", image: "sakura.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 12, name: "Kazuha", group: "LE SSERAFIM", image: "kazuha.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 13, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 14, name: "Giselle", group: "aespa", image: "gisel.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 15, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false },
-                { id: 16, name: "Haerin", group: "NewJeans", image: "haerin.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 17, name: "Hyein", group: "NewJeans", image: "hyein.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 18, name: "Jisoo", group: "BLACKPINK", image: "jisso.jpg", health: 130, maxHealth: 130, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 19, name: "Rose", group: "BLACKPINK", image: "rose.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 20, name: "Rei", group: "IVE", image: "rei.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 21, name: "Liz", group: "IVE", image: "liz.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 22, name: "Leeseo", group: "IVE", image: "leseo.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false },
-                { id: 23, name: "Yunjin", group: "LE SSERAFIM", image: "yunjin.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false },
-                { id: 24, name: "Eunchae", group: "LE SSERAFIM", image: "eunchae.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false },
-                { id: 25, name: "Wonhee", group: "ILLIT", image: "wonhee.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 26, name: "Iroha", group: "ILLIT", image: "iroha.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 27, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false },
-                { id: 28, name: "Minju", group: "ILLIT", image: "minju.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 29, name: "Yoona", group: "SNSD", image: "yoona.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false },
-                { id: 30, name: "IU", group: "Soloist", image: "iu.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false },
-                { id: 31, name: "Taeyeon", group: "SNSD", image: "taeyon.jpg", health: 135, maxHealth: 135, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false },
-                { id: 32, name: "Jiwoo", group: "HEARTS2HEARTS", image: "jiwoo.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false },
-                { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "legendary", wins: 0, battles: 0, favorite: false },
+                // Common Cards (100% in Basic Crate, 45% in Premium, 20% in Elite, 15% in Secret)
+                { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 3, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 15, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 22, name: "Leeseo", group: "IVE", image: "leseo.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 61, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
-                { id: 50, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret", wins: 0, battles: 0, favorite: false },
-                { id: 51, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false },
-                { id: 52, name: "Hanni", group: "NewJeans", image: "hanni2.jpg", health: 210, maxHealth: 210, attack: 26, rarity: "secret", wins: 0, battles: 0, favorite: false },
-                { id: 53, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false },
-                { id: 54, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false },
-                { id: 55, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false }
+                // Rare Cards (55% in Premium, 35% in Elite, 25% in Secret)
+                { id: 4, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 5, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 110, maxHealth: 110, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 6, name: "Winter", group: "aespa", image: "winter.jpg", health: 115, maxHealth: 115, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 11, name: "Sakura", group: "LE SSERAFIM", image: "sakura.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 12, name: "Kazuha", group: "LE SSERAFIM", image: "kazuha.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 13, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 14, name: "Giselle", group: "aespa", image: "gisel.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 16, name: "Haerin", group: "NewJeans", image: "haerin.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 17, name: "Hyein", group: "NewJeans", image: "hyein.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 18, name: "Jisoo", group: "BLACKPINK", image: "jisso.jpg", health: 130, maxHealth: 130, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 19, name: "Rose", group: "BLACKPINK", image: "rose.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 20, name: "Rei", group: "IVE", image: "rei.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 21, name: "Liz", group: "IVE", image: "liz.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 25, name: "Wonhee", group: "ILLIT", image: "wonhee.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 26, name: "Iroha", group: "ILLIT", image: "iroha.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 28, name: "Minju", group: "ILLIT", image: "minju.jpg", health: 115, maxHealth: 115, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 32, name: "Jiwoo", group: "HEARTS2HEARTS", image: "jiwoo.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 56, name: "Rumi", group: "HUNTRIX", image: "rumi.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 62, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 145, maxHealth: 145, attack: 17, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                
+                // Epic Cards (45% in Elite, 58% in Secret)
+                { id: 7, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 8, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 135, maxHealth: 135, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 23, name: "Yunjin", group: "LE SSERAFIM", image: "yunjin.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 24, name: "Eunchae", group: "LE SSERAFIM", image: "eunchae.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 27, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 63, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                
+                // Legendary Cards (2% in Secret)
+                { id: 10, name: "Moka", group: "ILLIT", image: "moka.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 29, name: "Yoona", group: "SNSD", image: "yoona.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 30, name: "IU", group: "Soloist", image: "iu.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 31, name: "Taeyeon", group: "SNSD", image: "taeyon.jpg", health: 135, maxHealth: 135, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 64, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 155, maxHealth: 155, attack: 19, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                
+                // Secret Cards (2% in Secret)
+                { id: 50, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 51, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 52, name: "Hanni", group: "NewJeans", image: "hanni2.jpg", health: 210, maxHealth: 210, attack: 26, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 53, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 54, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 55, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 59, name: "Mira", group: "HUNTRIX", image: "mira.jpg", health: 180, maxHealth: 180, attack: 24, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 65, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 66, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 21, rarity: "stars", wins: 0, battles: 0, favorite: false, upgrades: 0 }
             ],
             quests: {
                 main: [
-                    { id: 1, name: "First Victory", description: "Win your first battle", progress: 0, target: 1, reward: { type: "card", value: 4 }, completed: false, claimed: false },
+                    { id: 1, name: "First Victory", description: "Win your first battle", progress: 0, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
                     { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 200 }, completed: false, claimed: false },
                     { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
                     { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
@@ -1843,15 +2117,29 @@
                 ]
             },
             enemyCards: [
-                { id: 101, name: "Hanni", group: "NewJeans", image: "hannii.png", health: 100, maxHealth: 100, attack: 10, rarity: "common" },
+                { id: 101, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common" },
                 { id: 102, name: "Jennie", group: "BLACKPINK", image: "jennie.jpg", health: 100, maxHealth: 100, attack: 12, rarity: "common" },
                 { id: 103, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common" },
                 { id: 104, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare" },
                 { id: 105, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 110, maxHealth: 110, attack: 15, rarity: "rare" },
                 { id: 106, name: "Secret Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret" },
                 { id: 107, name: "Secret Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "secret" },
-                { id: 108, name: "Stars Idol", group: "SPECIAL", image: "stars.jpg", health: 250, maxHealth: 250, attack: 35, rarity: "stars" }
-            ]
+                { id: 108, name: "Rumi", group: "HUNTRIX", image: "rumi.jpg", health: 250, maxHealth: 250, attack: 35, rarity: "stars" },
+                { id: 109, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "common" },
+                { id: 110, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 145, maxHealth: 145, attack: 17, rarity: "rare" },
+                { id: 111, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "epic" },
+                { id: 112, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 155, maxHealth: 155, attack: 19, rarity: "legendary" },
+                { id: 113, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "secret" },
+                { id: 114, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 21, rarity: "stars" }
+            ],
+            settings: {
+                bgmEnabled: true,
+                bgmVolume: 50,
+                sfxEnabled: true,
+                sfxVolume: 70,
+                vibration: false,
+                notifications: true
+            }
         };
 
         // DOM Elements
@@ -1874,6 +2162,7 @@
         const battleResultModal = document.getElementById('battle-result-modal');
         const sellCardModal = document.getElementById('sell-card-modal');
         const sellAllModal = document.getElementById('sell-all-modal');
+        const settingsModal = document.getElementById('settings-modal');
         const closeModalButtons = document.querySelectorAll('.close-modal');
         const gachaCard = document.querySelector('.gacha-card');
         const gachaCardImg = document.querySelector('.gacha-card-img');
@@ -1893,12 +2182,17 @@
         const cancelSellAllButton = document.getElementById('cancel-sell-all-btn');
         const sellCardImg = document.querySelector('.sell-card-img');
         const sellAllButton = document.getElementById('sell-all-btn');
+        const settingsButton = document.getElementById('settings-btn');
+        const settingsSaveButton = document.getElementById('settings-save-btn');
         
         // Home screen elements
         const totalCardsElement = document.getElementById('total-cards');
         const totalWinsElement = document.getElementById('total-wins');
         const totalCoinsElement = document.getElementById('total-coins');
         const playerLevelHomeElement = document.getElementById('player-level-home');
+
+        // Tutorial elements
+        const tutorialOverlay = document.getElementById('tutorial-overlay');
 
         // Game State
         let playerHealth = 100;
@@ -1915,6 +2209,28 @@
         let enemyBoostTimeLeft = 0;
         let battleInterval = null;
         let cardToSell = null;
+        let firstGachaDone = false;
+        let tutorialStep = 0;
+        let tutorialActive = false;
+        let tutorialWaitingForAction = false;
+        let tutorialActionCompleted = false;
+
+        // Sound Effects
+        const sounds = {
+            battleStart: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-game-show-intro-331.mp3'),
+            attack: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-spell-attack-2761.mp3'),
+            shield: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-defensive-spell-2760.mp3'),
+            boost: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-power-up-2759.mp3'),
+            victory: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3'),
+            defeat: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-sad-game-over-trombone-471.mp3'),
+            gacha: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-arcade-mechanical-bling-210.mp3'),
+            levelUp: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3')
+        };
+
+        // Background Music
+        const backgroundMusic = new Audio('https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3');
+        backgroundMusic.loop = true;
+        backgroundMusic.volume = gameData.settings.bgmVolume / 100;
 
         // Initialize Game
         function initGame() {
@@ -1925,12 +2241,489 @@
             loadCollection();
             loadStoreItems('crates');
             loadQuests('main');
-            setCurrentCard(gameData.cards[0]);
             
             // Set up event listeners
             setupEventListeners();
+            
+            // Apply settings
+            applySettings();
+            
+            // Start background music
+            if (gameData.settings.bgmEnabled) {
+                backgroundMusic.play().catch(e => {
+                    console.log("Autoplay prevented. User interaction required to play audio.");
+                });
+            }
+            
+            // Start tutorial for new players
+            if (gameData.cards.length === 0) {
+                startTutorial();
+            }
         }
 
+        // Apply settings
+        function applySettings() {
+            // Background music
+            backgroundMusic.volume = gameData.settings.bgmVolume / 100;
+            if (gameData.settings.bgmEnabled && !backgroundMusic.paused) {
+                backgroundMusic.play().catch(e => console.log("Audio play failed"));
+            } else {
+                backgroundMusic.pause();
+            }
+            
+            // Sound effects volume
+            for (const key in sounds) {
+                sounds[key].volume = gameData.settings.sfxVolume / 100;
+            }
+            
+            // Update settings modal UI
+            document.getElementById('bgm-toggle').checked = gameData.settings.bgmEnabled;
+            document.getElementById('bgm-volume').value = gameData.settings.bgmVolume;
+            document.getElementById('sfx-toggle').checked = gameData.settings.sfxEnabled;
+            document.getElementById('sfx-volume').value = gameData.settings.sfxVolume;
+            document.getElementById('vibration-toggle').checked = gameData.settings.vibration;
+            document.getElementById('notifications-toggle').checked = gameData.settings.notifications;
+        }
+
+        // Start tutorial
+        function startTutorial() {
+            tutorialActive = true;
+            tutorialStep = 0;
+            tutorialWaitingForAction = false;
+            tutorialActionCompleted = false;
+            showTutorialStep();
+        }
+
+        // Show tutorial step
+        function showTutorialStep() {
+            tutorialOverlay.classList.add('active');
+            
+            // Remove any existing tutorial message
+            const existingMessage = document.querySelector('.tutorial-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Remove any existing tutorial arrow
+            const existingArrow = document.querySelector('.tutorial-arrow');
+            if (existingArrow) {
+                existingArrow.remove();
+            }
+            
+            // Remove highlight dari semua elemen
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.classList.remove('tutorial-highlight');
+            });
+            
+            let message = '';
+            let targetElement = null;
+            let position = 'bottom';
+            let autoNavigate = false;
+            let hideTutorialForAction = false;
+            
+            switch(tutorialStep) {
+                case 0:
+                    message = "Selamat datang di Battle of Idol! Ayo dapatkan kartu idola pertamamu dari toko.";
+                    targetElement = document.querySelector('[data-screen="store"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+                case 1:
+                    message = "Klik tombol 'GET FREE' untuk membuka Basic Crate gratis pertama Anda!";
+                    targetElement = document.querySelector('.buy-btn');
+                    position = 'bottom';
+                    tutorialWaitingForAction = true;
+                    hideTutorialForAction = true;
+                    break;
+                case 2:
+                    message = "Bagus! Sekarang mari lengkapi kartu barumu di koleksi.";
+                    targetElement = document.querySelector('[data-screen="collection"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+                case 3:
+                    message = "Klik tombol 'EQUIP' untuk melengkapi kartu pertama Anda!";
+                    targetElement = document.querySelector('.equip-btn');
+                    position = 'bottom';
+                    tutorialWaitingForAction = true;
+                    hideTutorialForAction = true;
+                    break;
+                case 4:
+                    message = "Sekarang mari kita coba pertarungan pertamamu. Jangan khawatir jika kalah, kami akan membantumu menjadi lebih kuat.";
+                    targetElement = document.querySelector('[data-screen="battle"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+                case 5:
+                    message = "Klik 'START BATTLE' untuk memulai pertarungan pertama Anda!";
+                    targetElement = document.getElementById('play-btn');
+                    position = 'bottom';
+                    tutorialWaitingForAction = true;
+                    hideTutorialForAction = true;
+                    break;
+                case 6:
+                    message = "Oh tidak! Kamu kalah di pertarungan pertamamu. Ayo kita dapatkan beberapa item untuk membantumu menang di pertarungan berikutnya.";
+                    targetElement = document.querySelector('[data-screen="store"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+                case 7:
+                    message = "Pilih kategori 'Shields' untuk membeli perisai gratis!";
+                    targetElement = document.querySelector('.category-btn[data-category="shields"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+                case 8:
+                    message = "Klik tombol 'GET FREE' untuk mendapatkan perisai gratis!";
+                    targetElement = document.querySelector('.buy-btn');
+                    position = 'bottom';
+                    tutorialWaitingForAction = true;
+                    hideTutorialForAction = true;
+                    break;
+                case 9:
+                    message = "Sekarang pilih kategori 'Attack Boosts' untuk mendapatkan peningkatan serangan gratis!";
+                    targetElement = document.querySelector('.category-btn[data-category="boosts"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+                case 10:
+                    message = "Klik tombol 'GET FREE' untuk mendapatkan peningkatan serangan gratis!";
+                    targetElement = document.querySelector('.buy-btn');
+                    position = 'bottom';
+                    tutorialWaitingForAction = true;
+                    hideTutorialForAction = true;
+                    break;
+                case 11:
+                    message = "Sekarang mari kita coba pertempuran lain. Kali ini, gunakan perisai dan tingkatkan kemampuanmu saat dibutuhkan!";
+                    targetElement = document.querySelector('[data-screen="battle"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+                case 12:
+                    message = "Gunakan tombol perisai dan peningkatan serangan selama pertempuran untuk meningkatkan peluang kemenangan!";
+                    targetElement = document.querySelector('.battle-controls');
+                    position = 'top';
+                    tutorialWaitingForAction = true;
+                    break;
+                case 13:
+                    message = "Kerja bagus! Kamu menang! Sekarang, ayo klaim hadiahmu dari misi.";
+                    targetElement = document.querySelector('[data-screen="quests"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+                case 14:
+                    message = "Klik tombol 'Claim Reward' untuk mengklaim hadiah misi pertama Anda!";
+                    targetElement = document.querySelector('.claim-btn');
+                    position = 'bottom';
+                    tutorialWaitingForAction = true;
+                    hideTutorialForAction = true;
+                    break;
+                case 15:
+                    message = "Selamat! Anda telah menyelesaikan tutorial. Sekarang Anda siap untuk bermain sendiri!";
+                    targetElement = document.querySelector('[data-screen="home"]');
+                    position = 'bottom';
+                    autoNavigate = true;
+                    break;
+            }
+            
+            if (targetElement && !hideTutorialForAction) {
+                const rect = targetElement.getBoundingClientRect();
+                const messageElement = document.createElement('div');
+                messageElement.className = 'tutorial-message';
+                messageElement.innerHTML = `
+                    <h3>Tutorial</h3>
+                    <p>${message}</p>
+                    <button class="tutorial-next-btn" ${tutorialWaitingForAction ? 'disabled' : ''}>${tutorialStep === 15 ? 'Finish' : 'Next'}</button>
+                    <button class="tutorial-skip-btn">Skip Tutorial</button>
+                `;
+                
+                // Hitung posisi yang aman untuk message
+                let messageTop, messageLeft;
+                let arrowPosition = position;
+                
+                // Default positioning
+                const messageWidth = 280;
+                const messageHeight = 150;
+                const arrowSize = 15;
+                const margin = 10;
+                
+                if (position === 'bottom') {
+                    messageTop = rect.bottom + margin;
+                    messageLeft = Math.max(margin, Math.min(rect.left, window.innerWidth - messageWidth - margin));
+                    
+                    // Jika tidak muat di bawah, pindah ke atas
+                    if (messageTop + messageHeight > window.innerHeight - margin) {
+                        messageTop = rect.top - messageHeight - margin;
+                        arrowPosition = 'top';
+                    }
+                } else if (position === 'top') {
+                    messageTop = rect.top - messageHeight - margin;
+                    messageLeft = Math.max(margin, Math.min(rect.left, window.innerWidth - messageWidth - margin));
+                    
+                    // Jika tidak muat di atas, pindah ke bawah
+                    if (messageTop < margin) {
+                        messageTop = rect.bottom + margin;
+                        arrowPosition = 'bottom';
+                    }
+                } else if (position === 'left') {
+                    messageLeft = rect.left - messageWidth - margin;
+                    messageTop = Math.max(margin, Math.min(rect.top, window.innerHeight - messageHeight - margin));
+                    
+                    // Jika tidak muat di kiri, pindah ke kanan
+                    if (messageLeft < margin) {
+                        messageLeft = rect.right + margin;
+                        arrowPosition = 'right';
+                    }
+                } else if (position === 'right') {
+                    messageLeft = rect.right + margin;
+                    messageTop = Math.max(margin, Math.min(rect.top, window.innerHeight - messageHeight - margin));
+                    
+                    // Jika tidak muat di kanan, pindah ke kiri
+                    if (messageLeft + messageWidth > window.innerWidth - margin) {
+                        messageLeft = rect.left - messageWidth - margin;
+                        arrowPosition = 'left';
+                    }
+                }
+                
+                // Pastikan posisi tidak keluar dari layar
+                messageTop = Math.max(margin, Math.min(messageTop, window.innerHeight - messageHeight - margin));
+                messageLeft = Math.max(margin, Math.min(messageLeft, window.innerWidth - messageWidth - margin));
+                
+                // Set posisi message
+                messageElement.style.top = `${messageTop}px`;
+                messageElement.style.left = `${messageLeft}px`;
+                
+                // Buat arrow
+                const arrow = document.createElement('div');
+                arrow.className = `tutorial-arrow ${arrowPosition}`;
+                
+                // Posisi arrow berdasarkan arah
+                if (arrowPosition === 'bottom') {
+                    arrow.style.top = `${rect.bottom - 5}px`;
+                    arrow.style.left = `${Math.max(rect.left + rect.width/2, messageLeft + 20)}px`;
+                    arrow.style.left = `${Math.min(parseInt(arrow.style.left), messageLeft + messageWidth - 20)}px`;
+                } else if (arrowPosition === 'top') {
+                    arrow.style.top = `${rect.top - 10}px`;
+                    arrow.style.left = `${Math.max(rect.left + rect.width/2, messageLeft + 20)}px`;
+                    arrow.style.left = `${Math.min(parseInt(arrow.style.left), messageLeft + messageWidth - 20)}px`;
+                } else if (arrowPosition === 'left') {
+                    arrow.style.left = `${rect.left - 10}px`;
+                    arrow.style.top = `${Math.max(rect.top + rect.height/2, messageTop + 20)}px`;
+                    arrow.style.top = `${Math.min(parseInt(arrow.style.top), messageTop + messageHeight - 20)}px`;
+                } else if (arrowPosition === 'right') {
+                    arrow.style.left = `${rect.right - 5}px`;
+                    arrow.style.top = `${Math.max(rect.top + rect.height/2, messageTop + 20)}px`;
+                    arrow.style.top = `${Math.min(parseInt(arrow.style.top), messageTop + messageHeight - 20)}px`;
+                }
+                
+                document.body.appendChild(messageElement);
+                document.body.appendChild(arrow);
+                
+                // Add event listeners to tutorial buttons
+                const nextButton = messageElement.querySelector('.tutorial-next-btn');
+                if (!tutorialWaitingForAction) {
+                    nextButton.addEventListener('click', nextTutorialStep);
+                }
+                messageElement.querySelector('.tutorial-skip-btn').addEventListener('click', skipTutorial);
+                
+                // Highlight the target element
+                targetElement.classList.add('tutorial-highlight');
+            }
+            
+            // Auto-navigate untuk beberapa tutorial steps
+            if (autoNavigate) {
+                setTimeout(() => {
+                    if (targetElement && !targetElement.classList.contains('active')) {
+                        if (targetElement.hasAttribute('data-screen')) {
+                            switchScreen(targetElement.getAttribute('data-screen'));
+                            
+                            // Update active nav button
+                            navButtons.forEach(btn => btn.classList.remove('active'));
+                            targetElement.classList.add('active');
+                        } else if (targetElement.hasAttribute('data-category')) {
+                            const category = targetElement.getAttribute('data-category');
+                            loadStoreItems(category);
+                            
+                            // Update active category button
+                            categoryButtons.forEach(btn => btn.classList.remove('active'));
+                            targetElement.classList.add('active');
+                        }
+                    }
+                }, 500);
+            }
+            
+            // Jika tutorial memerlukan aksi dan harus disembunyikan sementara
+            if (hideTutorialForAction) {
+                // Sembunyikan tutorial agar tidak menutupi tombol
+                setTimeout(() => {
+                    hideTutorialForActionStep();
+                }, 1000);
+            }
+        }
+
+        // Hide tutorial untuk step yang memerlukan aksi
+        function hideTutorialForActionStep() {
+            tutorialOverlay.classList.remove('active');
+            
+            // Remove any existing tutorial message
+            const existingMessage = document.querySelector('.tutorial-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Remove any existing tutorial arrow
+            const existingArrow = document.querySelector('.tutorial-arrow');
+            if (existingArrow) {
+                existingArrow.remove();
+            }
+            
+            // Highlight the target element
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.classList.remove('tutorial-highlight');
+            });
+            
+            // Highlight the target element for action steps
+            let targetElement = null;
+            switch(tutorialStep) {
+                case 1: case 8: case 10:
+                    targetElement = document.querySelector('.buy-btn');
+                    break;
+                case 3:
+                    targetElement = document.querySelector('.equip-btn');
+                    break;
+                case 5:
+                    targetElement = document.getElementById('play-btn');
+                    break;
+                case 14:
+                    targetElement = document.querySelector('.claim-btn');
+                    break;
+            }
+            
+            if (targetElement) {
+                targetElement.classList.add('tutorial-highlight');
+            }
+        }
+
+        // Show tutorial kembali setelah aksi selesai
+        function showTutorialAfterAction() {
+            tutorialActionCompleted = true;
+            tutorialWaitingForAction = false;
+            
+            // Remove highlight
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.classList.remove('tutorial-highlight');
+            });
+            
+            // Tampilkan tutorial kembali
+            showTutorialStep();
+        }
+
+        // Next tutorial step
+        function nextTutorialStep() {
+            // Remove highlight dari current target
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.classList.remove('tutorial-highlight');
+            });
+            
+            tutorialStep++;
+            tutorialWaitingForAction = false;
+            tutorialActionCompleted = false;
+            
+            if (tutorialStep > 15) {
+                endTutorial();
+            } else {
+                showTutorialStep();
+            }
+        }
+
+        // Skip tutorial
+        function skipTutorial() {
+            // Remove highlight dari semua elemen
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.classList.remove('tutorial-highlight');
+            });
+            
+            endTutorial();
+        }
+
+        // End tutorial
+        function endTutorial() {
+            tutorialActive = false;
+            tutorialOverlay.classList.remove('active');
+            
+            // Remove any existing tutorial message
+            const existingMessage = document.querySelector('.tutorial-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Remove any existing tutorial arrow
+            const existingArrow = document.querySelector('.tutorial-arrow');
+            if (existingArrow) {
+                existingArrow.remove();
+            }
+            
+            // Remove highlight dari semua elemen
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(el => {
+                el.classList.remove('tutorial-highlight');
+            });
+        }
+        
+        // Check tutorial action completion
+        function checkTutorialAction(actionType) {
+            if (!tutorialActive || !tutorialWaitingForAction) return;
+            
+            let shouldAdvance = false;
+            
+            switch(tutorialStep) {
+                case 1: // First gacha
+                    if (actionType === 'gacha') {
+                        shouldAdvance = true;
+                    }
+                    break;
+                case 3: // Equip card
+                    if (actionType === 'equip') {
+                        shouldAdvance = true;
+                    }
+                    break;
+                case 5: // Start battle
+                    if (actionType === 'battle') {
+                        shouldAdvance = true;
+                    }
+                    break;
+                case 8: // Buy shield
+                    if (actionType === 'buyShield') {
+                        shouldAdvance = true;
+                    }
+                    break;
+                case 10: // Buy boost
+                    if (actionType === 'buyBoost') {
+                        shouldAdvance = true;
+                    }
+                    break;
+                case 12: // Use item in battle
+                    if (actionType === 'useItem') {
+                        shouldAdvance = true;
+                    }
+                    break;
+                case 14: // Claim quest
+                    if (actionType === 'claimQuest') {
+                        shouldAdvance = true;
+                    }
+                    break;
+            }
+            
+            if (shouldAdvance) {
+                showTutorialAfterAction();
+            }
+        }
+        
         // Set up event listeners
         function setupEventListeners() {
             // Navigation
@@ -1946,9 +2739,18 @@
             });
 
             // Battle controls
-            playButton.addEventListener('click', startBattle);
-            shieldButton.addEventListener('click', activateShield);
-            boostButton.addEventListener('click', activateBoost);
+            playButton.addEventListener('click', () => {
+                startBattle();
+                checkTutorialAction('battle');
+            });
+            shieldButton.addEventListener('click', () => {
+                activateShield();
+                checkTutorialAction('useItem');
+            });
+            boostButton.addEventListener('click', () => {
+                activateBoost();
+                checkTutorialAction('useItem');
+            });
 
             // Store categories
             categoryButtons.forEach(button => {
@@ -1981,11 +2783,13 @@
                     battleResultModal.classList.remove('active');
                     sellCardModal.classList.remove('active');
                     sellAllModal.classList.remove('active');
+                    settingsModal.classList.remove('active');
                 });
             });
 
             gachaOkButton.addEventListener('click', () => {
                 gachaModal.classList.remove('active');
+                checkTutorialAction('gacha');
             });
 
             battleContinueButton.addEventListener('click', () => {
@@ -2006,9 +2810,35 @@
                 sellAllModal.classList.remove('active');
             });
 
+            // Settings modal
+            settingsButton.addEventListener('click', () => {
+                settingsModal.classList.add('active');
+            });
+
+            settingsSaveButton.addEventListener('click', () => {
+                // Save settings
+                gameData.settings.bgmEnabled = document.getElementById('bgm-toggle').checked;
+                gameData.settings.bgmVolume = document.getElementById('bgm-volume').value;
+                gameData.settings.sfxEnabled = document.getElementById('sfx-toggle').checked;
+                gameData.settings.sfxVolume = document.getElementById('sfx-volume').value;
+                gameData.settings.vibration = document.getElementById('vibration-toggle').checked;
+                gameData.settings.notifications = document.getElementById('notifications-toggle').checked;
+                
+                applySettings();
+                settingsModal.classList.remove('active');
+            });
+
             // Gacha card flip
             gachaCard.addEventListener('click', () => {
                 gachaCard.classList.toggle('flipped');
+            });
+
+            // Music toggle
+            document.addEventListener('click', () => {
+                // Resume background music on user interaction
+                if (gameData.settings.bgmEnabled && backgroundMusic.paused) {
+                    backgroundMusic.play().catch(e => console.log("Audio play failed"));
+                }
             });
         }
 
@@ -2076,14 +2906,25 @@
             const playerCard = document.querySelector('.player-card .card');
             playerCard.className = 'card';
             playerCard.classList.add(`rarity-${card.rarity}`);
+            
+            // Update health bar
+            playerHealthBar.style.width = '100%';
+            
+            checkTutorialAction('equip');
         }
 
         // Load collection
         function loadCollection() {
             collectionContainer.innerHTML = '';
             
+            if (gameData.cards.length === 0) {
+                collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px;">You don\'t have any cards yet. Go to the Store to get your first card!</div>';
+                return;
+            }
+            
             gameData.cards.forEach(card => {
                 const winRate = card.battles > 0 ? Math.round((card.wins / card.battles) * 100) : 0;
+                const canUpgrade = card.upgrades < 8 && gameData.attackUpgrades > 0;
                 
                 const cardElement = document.createElement('div');
                 cardElement.className = 'collection-card';
@@ -2095,7 +2936,7 @@
                         <div class="collection-card-group">${card.group} - <span class="rarity-${card.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${card.rarity.toUpperCase()}</span></div>
                         <div class="collection-card-stats">
                             <span>HP: ${card.maxHealth}</span>
-                            <span>ATK: ${card.attack}</span>
+                            <span>ATK: ${card.attack} ${card.upgrades > 0 ? `(+${card.upgrades})` : ''}</span>
                         </div>
                         <div class="win-rate">
                             <i class="fas fa-trophy"></i>
@@ -2103,7 +2944,7 @@
                         </div>
                         <div class="card-actions">
                             <button class="equip-btn" data-id="${card.id}">${gameData.currentCard && gameData.currentCard.id === card.id ? 'EQUIPPED' : 'EQUIP'}</button>
-                            <button class="upgrade-btn" data-id="${card.id}" ${gameData.attackUpgrades <= 0 ? 'disabled' : ''}>UPGRADE</button>
+                            <button class="upgrade-btn" data-id="${card.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${card.upgrades}/8)</button>
                             <button class="favorite-btn ${card.favorite ? 'favorited' : ''}" data-id="${card.id}">${card.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
                             <button class="sell-btn" data-id="${card.id}">SELL</button>
                         </div>
@@ -2286,8 +3127,14 @@
             const card = gameData.cards.find(c => c.id === cardId);
             if (!card) return;
             
+            if (card.upgrades >= 8) {
+                addToBattleLog("This card has reached the maximum upgrade limit!", 'player');
+                return;
+            }
+            
             gameData.attackUpgrades--;
             card.attack += 1;
+            card.upgrades += 1;
             
             updateInventoryDisplay();
             loadCollection();
@@ -2307,20 +3154,34 @@
             const items = gameData.storeItems[category];
             
             items.forEach(item => {
+                // Check if this is a photocard that's already owned
+                const isPhotocardOwned = category === 'photocards' && 
+                    gameData.cards.some(card => card.id === item.id);
+                
+                // Check if this is the first gacha and it's a basic crate
+                const isFirstGacha = !firstGachaDone && category === 'crates' && item.id === 1;
+                
+                // Tutorial: Make shields and boosts free for tutorial
+                const isTutorialFree = tutorialActive && (category === 'shields' || category === 'boosts') && 
+                                      (tutorialStep === 8 || tutorialStep === 10);
+                
                 const itemElement = document.createElement('div');
                 itemElement.className = 'store-item';
                 if (item.rarity === 'secret' || item.rarity === 'stars') {
                     itemElement.classList.add('gacha-special');
                 }
+                
                 itemElement.innerHTML = `
                     <img src="${item.image}" alt="${item.name}" class="store-item-img">
                     <div class="store-item-info">
                         <div class="store-item-name">${item.name}</div>
                         <div class="store-item-desc">${item.description}</div>
                         <div class="store-item-price">
-                            <i class="fas fa-coins"></i> ${item.price}
+                            <i class="fas fa-coins"></i> ${isFirstGacha || isTutorialFree ? 'FREE' : item.price}
                         </div>
-                        <button class="buy-btn" data-id="${item.id}" data-type="${category.slice(0, -1)}" ${gameData.coins < item.price ? 'disabled' : ''}>BUY</button>
+                        <button class="buy-btn" data-id="${item.id}" data-type="${category.slice(0, -1)}" ${isPhotocardOwned || (!isFirstGacha && !isTutorialFree && gameData.coins < item.price) ? 'disabled' : ''}>
+                            ${isPhotocardOwned ? 'OWNED' : (isFirstGacha || isTutorialFree ? 'GET FREE' : 'BUY')}
+                        </button>
                     </div>
                 `;
                 storeItemsContainer.appendChild(itemElement);
@@ -2332,6 +3193,15 @@
                     const itemId = parseInt(e.target.getAttribute('data-id'));
                     const itemType = e.target.getAttribute('data-type');
                     buyItem(itemId, itemType);
+                    
+                    // Tutorial: Check if we need to advance after buying items
+                    if (tutorialActive) {
+                        if (tutorialStep === 8 && itemType === 'shield') {
+                            checkTutorialAction('buyShield');
+                        } else if (tutorialStep === 10 && itemType === 'boost') {
+                            checkTutorialAction('buyBoost');
+                        }
+                    }
                 });
             });
         }
@@ -2383,6 +3253,7 @@
                     button.addEventListener('click', (e) => {
                         const questName = e.target.closest('.quest-item').querySelector('.quest-name').textContent;
                         claimQuestReward(questName, questType);
+                        checkTutorialAction('claimQuest');
                     });
                 }
             });
@@ -2433,9 +3304,12 @@
                     <div class="level-reward">${rewardText}</div>
                 `;
                 
-                levelElement.addEventListener('click', () => {
-                    claimBattlePassReward(level.level);
-                });
+                // Only allow claiming if battle pass is unlocked
+                if (gameData.battlePass.unlocked) {
+                    levelElement.addEventListener('click', () => {
+                        claimBattlePassReward(level.level);
+                    });
+                }
                 
                 levelsContainer.appendChild(levelElement);
             });
@@ -2495,6 +3369,12 @@
 
         // Claim battle pass reward
         function claimBattlePassReward(level) {
+            // Only allow claiming if battle pass is unlocked
+            if (!gameData.battlePass.unlocked) {
+                addToBattleLog("You need to unlock the Battle Pass first!", 'player');
+                return;
+            }
+            
             const levelData = gameData.battlePass.levels.find(l => l.level === level);
             
             if (!levelData || !levelData.unlocked || levelData.claimed) {
@@ -2623,8 +3503,20 @@
             
             if (!item) return;
             
-            if (gameData.coins >= item.price) {
-                gameData.coins -= item.price;
+            // Check if this is the first free gacha
+            const isFirstGacha = !firstGachaDone && itemType === 'crate' && item.id === 1;
+            
+            // Tutorial: Make shields and boosts free for tutorial
+            const isTutorialFree = tutorialActive && (itemType === 'shield' || itemType === 'boost') && 
+                                  (tutorialStep === 8 || tutorialStep === 10);
+            
+            if (isFirstGacha || isTutorialFree || gameData.coins >= item.price) {
+                if (!isFirstGacha && !isTutorialFree) {
+                    gameData.coins -= item.price;
+                } else if (isFirstGacha) {
+                    firstGachaDone = true;
+                }
+                
                 updateCoinDisplay();
                 updateHomeStats();
                 
@@ -2655,7 +3547,8 @@
                         rarity: item.rarity,
                         wins: 0,
                         battles: 0,
-                        favorite: false
+                        favorite: false,
+                        upgrades: 0
                     });
                     
                     loadCollection();
@@ -2688,70 +3581,68 @@
 
         // Open gacha crate
         function openGachaCrate(rarity) {
-            // Filter gacha pool by rarity with different probabilities
-            let availableCards = [];
-            let probabilities = [];
-            
-            if (rarity === 'common') {
-                // Common crate: 70% common, 25% rare, 5% epic
-                availableCards = gameData.gachaPool.filter(card => 
-                    card.rarity === 'common' || card.rarity === 'rare' || card.rarity === 'epic'
-                );
-                probabilities = availableCards.map(card => {
-                    if (card.rarity === 'common') return 0.7;
-                    if (card.rarity === 'rare') return 0.25;
-                    if (card.rarity === 'epic') return 0.05;
-                    return 0;
-                });
-            } else if (rarity === 'rare') {
-                // Rare crate: 60% rare, 30% epic, 10% legendary
-                availableCards = gameData.gachaPool.filter(card => 
-                    card.rarity === 'rare' || card.rarity === 'epic' || card.rarity === 'legendary'
-                );
-                probabilities = availableCards.map(card => {
-                    if (card.rarity === 'rare') return 0.6;
-                    if (card.rarity === 'epic') return 0.3;
-                    if (card.rarity === 'legendary') return 0.1;
-                    return 0;
-                });
-            } else if (rarity === 'epic') {
-                // Epic crate: 50% epic, 40% legendary, 10% secret
-                availableCards = gameData.gachaPool.filter(card => 
-                    card.rarity === 'epic' || card.rarity === 'legendary' || card.rarity === 'secret'
-                );
-                probabilities = availableCards.map(card => {
-                    if (card.rarity === 'epic') return 0.5;
-                    if (card.rarity === 'legendary') return 0.4;
-                    if (card.rarity === 'secret') return 0.1;
-                    return 0;
-                });
-            } else if (rarity === 'secret') {
-                // Secret crate: 40% legendary, 60% secret
-                availableCards = gameData.gachaPool.filter(card => 
-                    card.rarity === 'legendary' || card.rarity === 'secret'
-                );
-                probabilities = availableCards.map(card => {
-                    if (card.rarity === 'legendary') return 0.4;
-                    if (card.rarity === 'secret') return 0.6;
-                    return 0;
-                });
+            // Play gacha sound
+            if (gameData.settings.sfxEnabled) {
+                sounds.gacha.play().catch(e => console.log("Audio play failed"));
             }
             
-            // Randomly select a card based on probabilities
-            const randomValue = Math.random();
-            let cumulativeProbability = 0;
-            let wonCard = availableCards[0]; // Default to first card
+            // Filter gacha pool by crate type with different probabilities
+            let availableCards = [];
             
-            for (let i = 0; i < availableCards.length; i++) {
-                cumulativeProbability += probabilities[i];
-                if (randomValue <= cumulativeProbability) {
-                    wonCard = availableCards[i];
-                    break;
+            if (rarity === 'common') {
+                // Basic Crate: 100% common
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+            } else if (rarity === 'rare') {
+                // Premium Crate: 45% common, 55% rare
+                const commonCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+                const rareCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+                
+                if (Math.random() < 0.45) {
+                    // 45% chance for common
+                    availableCards = commonCards;
+                } else {
+                    // 55% chance for rare
+                    availableCards = rareCards;
+                }
+            } else if (rarity === 'epic') {
+                // Elite Crate: 20% common, 35% rare, 45% epic
+                const randomValue = Math.random();
+                if (randomValue < 0.20) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+                } else if (randomValue < 0.55) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+                } else {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+                }
+            } else if (rarity === 'secret') {
+                // Secret Crate: 15% common, 25% rare, 58% epic, 2% secret/legendary
+                const randomValue = Math.random();
+                if (randomValue < 0.15) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+                } else if (randomValue < 0.40) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+                } else if (randomValue < 0.98) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+                } else {
+                    // 2% chance for legendary or secret
+                    const legendaryAndSecret = gameData.gachaPool.filter(card => 
+                        card.rarity === 'legendary' || card.rarity === 'secret' || card.rarity === 'stars'
+                    );
+                    availableCards = legendaryAndSecret;
                 }
             }
             
+            // Randomly select a card from available pool
+            const randomIndex = Math.floor(Math.random() * availableCards.length);
+            const wonCard = availableCards[randomIndex];
+            
             // Add to collection
             gameData.cards.push({...wonCard});
+            
+            // Auto-equip if this is the first card
+            if (gameData.cards.length === 1) {
+                setCurrentCard(wonCard);
+            }
             
             // Update quest progress
             updateQuestProgress('Gacha Enthusiast', 1);
@@ -2767,6 +3658,7 @@
 
         // Show gacha result modal
         function showGachaResult(card) {
+            // Fix: Ensure the image path is correctly set
             gachaCardImg.src = card.image;
             gachaResultName.textContent = card.name;
             gachaResultGroup.textContent = card.group;
@@ -2802,9 +3694,19 @@
         function startBattle() {
             if (gameData.isBattleActive) return;
             
+            if (!gameData.currentCard) {
+                addToBattleLog("You need to equip a card first!", 'player');
+                return;
+            }
+            
             gameData.isBattleActive = true;
             playerHealth = gameData.currentCard.maxHealth;
             enemyHealth = 100;
+            
+            // Play battle start sound
+            if (gameData.settings.sfxEnabled) {
+                sounds.battleStart.play().catch(e => console.log("Audio play failed"));
+            }
             
             // Select random enemy card
             const randomIndex = Math.floor(Math.random() * gameData.enemyCards.length);
@@ -2821,6 +3723,7 @@
             const enemyMaxHealth = document.getElementById('enemy-max-health');
             const enemyAttack = document.getElementById('enemy-attack');
             
+            // Fix: Ensure the enemy card image is correctly set
             enemyCardImg.src = enemyCard.image;
             enemyCardName.textContent = enemyCard.name;
             enemyMaxHealth.textContent = enemyCard.maxHealth;
@@ -2838,9 +3741,6 @@
             // Clear battle log
             battleLog.innerHTML = '';
             addToBattleLog("Battle started! Auto battle engaged!", 'player');
-            
-            // Switch to battle screen
-            switchScreen('battle');
             
             // Start auto battle interval
             battleInterval = setInterval(autoBattle, 1500);
@@ -2885,6 +3785,11 @@
             
             enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
             addToBattleLog(`${gameData.currentCard.name} attacked for ${actualDamage} damage!`, 'player');
+            
+            // Play attack sound
+            if (gameData.settings.sfxEnabled) {
+                sounds.attack.play().catch(e => console.log("Audio play failed"));
+            }
             
             // Visual feedback
             const enemyCardElement = document.querySelector('.enemy-card .card');
@@ -2970,6 +3875,11 @@
                 playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
                 addToBattleLog(`${enemyCard.name} attacked for ${damage} damage!`, 'enemy');
                 
+                // Play attack sound
+                if (gameData.settings.sfxEnabled) {
+                    sounds.attack.play().catch(e => console.log("Audio play failed"));
+                }
+                
                 // Visual feedback
                 const playerCardElement = document.querySelector('.player-card .card');
                 playerCardElement.classList.add('shake');
@@ -3002,6 +3912,11 @@
             // Show shield effect
             document.getElementById('player-shield-effect').classList.remove('hidden');
             
+            // Play shield sound
+            if (gameData.settings.sfxEnabled) {
+                sounds.shield.play().catch(e => console.log("Audio play failed"));
+            }
+            
             addToBattleLog(`You activated ${activeShield.name}!`, 'player');
             
             // Visual feedback
@@ -3028,6 +3943,11 @@
             
             // Show boost effect
             document.getElementById('player-boost-effect').classList.remove('hidden');
+            
+            // Play boost sound
+            if (gameData.settings.sfxEnabled) {
+                sounds.boost.play().catch(e => console.log("Audio play failed"));
+            }
             
             addToBattleLog(`You activated ${activeBoost.name}!`, 'player');
             
@@ -3073,6 +3993,11 @@
                     updateLevelDisplay();
                     addToBattleLog("You leveled up!", 'player');
                     
+                    // Play level up sound
+                    if (gameData.settings.sfxEnabled) {
+                        sounds.levelUp.play().catch(e => console.log("Audio play failed"));
+                    }
+                    
                     // Update level quest progress
                     updateQuestProgress('Level Up!', gameData.level);
                 }
@@ -3083,10 +4008,21 @@
                 // Show victory modal
                 showBattleResult(true, coinsWon, xpWon);
                 
+                // Play victory sound
+                if (gameData.settings.sfxEnabled) {
+                    sounds.victory.play().catch(e => console.log("Audio play failed"));
+                }
+                
                 addToBattleLog(`You won the battle! Earned ${coinsWon} coins and ${xpWon} XP.`, 'player');
             } else {
                 // Show defeat modal
                 showBattleResult(false, 0, 0);
+                
+                // Play defeat sound
+                if (gameData.settings.sfxEnabled) {
+                    sounds.defeat.play().catch(e => console.log("Audio play failed"));
+                }
+                
                 addToBattleLog("You lost the battle!", 'enemy');
             }
             
@@ -3125,9 +4061,9 @@
 
         // Reset battle
         function resetBattle() {
-            playerHealth = gameData.currentCard.maxHealth;
+            playerHealth = gameData.currentCard ? gameData.currentCard.maxHealth : 0;
             enemyHealth = 100;
-            playerHealthBar.style.width = '100%';
+            playerHealthBar.style.width = gameData.currentCard ? '100%' : '0%';
             enemyHealthBar.style.width = '100%';
             isPlayerTurn = true;
             activeShield = null;
