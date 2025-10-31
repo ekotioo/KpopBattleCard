@@ -1990,9 +1990,9 @@
             currentCard: null,
             isBattleActive: false,
             attackUpgrades: 0,
-            attackBoosts: [],
+            attackBoosts: [1],
             cards: [],
-            shields: [],
+            shields: [1],
             storeItems: {
                 crates: [
                     { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common idols only" },
@@ -2080,7 +2080,7 @@
             ],
             quests: {
                 main: [
-                    { id: 1, name: "First Victory", description: "Win your first battle", progress: 0, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+                    { id: 1, name: "First Victory", description: "Play your first battle", progress: 0, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
                     { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 200 }, completed: false, claimed: false },
                     { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
                     { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
@@ -3970,7 +3970,7 @@
             }
             
             // Update quest progress
-            updateQuestProgress('First Victory', playerWon ? 1 : 0);
+            updateQuestProgress('First VICTORY', playerWon ? 1 : 0);
             updateQuestProgress('Battle Master', playerWon ? 1 : 0);
             updateQuestProgress('Daily Battle', playerWon ? 1 : 0);
             updateQuestProgress('Battle Legend', playerWon ? 1 : 0);
@@ -4115,3 +4115,7 @@
     </script>
 </body>
 </html>
+
+
+
+
