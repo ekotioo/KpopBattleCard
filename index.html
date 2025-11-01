@@ -1505,119 +1505,6 @@
             z-index: 5;
         }
 
-        /* Tutorial Styles */
-        .tutorial-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            display: none;
-        }
-
-        .tutorial-overlay.active {
-            display: block;
-        }
-
-        .tutorial-message {
-            position: absolute;
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            max-width: 280px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            z-index: 2001;
-            animation: modalAppear 0.3s ease;
-        }
-
-        .tutorial-message h3 {
-            color: var(--accent);
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .tutorial-message p {
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        .tutorial-arrow {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            z-index: 2002;
-        }
-
-        .tutorial-arrow.top {
-            border-width: 0 10px 15px 10px;
-            border-color: transparent transparent var(--card-bg) transparent;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .tutorial-arrow.bottom {
-            border-width: 15px 10px 0 10px;
-            border-color: var(--card-bg) transparent transparent transparent;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .tutorial-arrow.left {
-            border-width: 10px 15px 10px 0;
-            border-color: transparent var(--card-bg) transparent transparent;
-            right: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .tutorial-arrow.right {
-            border-width: 10px 0 10px 15px;
-            border-color: transparent transparent transparent var(--card-bg);
-            left: -15px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .tutorial-next-btn {
-            background: var(--secondary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            width: 100%;
-            font-size: 0.9rem;
-        }
-
-        .tutorial-next-btn:hover {
-            background: #5a4ff0;
-        }
-
-        .tutorial-skip-btn {
-            background: transparent;
-            color: #aaa;
-            border: none;
-            margin-top: 10px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            width: 100%;
-        }
-
-        /* Highlight untuk elemen tutorial */
-        .tutorial-highlight {
-            box-shadow: 0 0 0 3px var(--accent) !important;
-            z-index: 2001 !important;
-            position: relative;
-        }
-
         /* Enhanced Battle Animations */
         @keyframes attackFlash {
             0% { filter: brightness(1); }
@@ -1676,6 +1563,115 @@
 
         .power-up {
             animation: powerUp 1s ease;
+        }
+
+        /* Special Gacha Effects */
+        @keyframes legendaryGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.7), 
+                            0 0 40px rgba(255, 215, 0, 0.5),
+                            0 0 60px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.9), 
+                            0 0 60px rgba(255, 215, 0, 0.7),
+                            0 0 90px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        @keyframes secretGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 0, 128, 0.7), 
+                            0 0 40px rgba(255, 107, 0, 0.5),
+                            0 0 60px rgba(157, 78, 221, 0.3);
+            }
+            25% { 
+                box-shadow: 0 0 30px rgba(255, 107, 0, 0.9), 
+                            0 0 60px rgba(255, 0, 128, 0.7),
+                            0 0 90px rgba(157, 78, 221, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 0, 128, 0.9), 
+                            0 0 60px rgba(157, 78, 221, 0.7),
+                            0 0 90px rgba(255, 107, 0, 0.5);
+            }
+            75% { 
+                box-shadow: 0 0 30px rgba(157, 78, 221, 0.9), 
+                            0 0 60px rgba(255, 107, 0, 0.7),
+                            0 0 90px rgba(255, 0, 128, 0.5);
+            }
+        }
+
+        .legendary-glow {
+            animation: legendaryGlow 1.5s ease-in-out infinite;
+        }
+
+        .secret-glow {
+            animation: secretGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent);
+            animation: confetti 3s linear forwards;
+            z-index: 1001;
+        }
+
+        /* Luck Boost Indicator */
+        .luck-boost-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--accent);
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Tutorial Section in Settings */
+        .tutorial-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .tutorial-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .tutorial-content {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #aaa;
+        }
+
+        .tutorial-step {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .tutorial-step h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -1859,6 +1855,11 @@
                         <div class="inventory-item-count" id="boost-count">0</div>
                         <div class="inventory-item-name">Attack Boosts</div>
                     </div>
+                    <div class="inventory-item">
+                        <i class="fas fa-clover inventory-item-icon"></i>
+                        <div class="inventory-item-count" id="luck-boost-count">0</div>
+                        <div class="inventory-item-name">Luck Boosts</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1868,11 +1869,11 @@
             <h2 class="screen-title">Store</h2>
             <div class="store-categories">
                 <button class="category-btn active" data-category="crates">Gacha Crates</button>
-               <button class="category-btn" data-category="photocards">Photocards</button>                
+                <button class="category-btn" data-category="photocards">Photocards</button>                
                 <button class="category-btn" data-category="upgrades">Attack Upgrades</button>
                 <button class="category-btn" data-category="shields">Shields</button>
                 <button class="category-btn" data-category="boosts">Attack Boosts</button>
- 
+                <button class="category-btn" data-category="luck">Luck Boosts</button>
             </div>
             <div class="store-items">
                 <!-- Store items will be populated by JavaScript -->
@@ -2032,13 +2033,48 @@
                         </label>
                     </div>
                 </div>
+                
+                <!-- Tutorial Section -->
+                <div class="tutorial-section">
+                    <h3 class="tutorial-title">Game Tutorial</h3>
+                    <div class="tutorial-content">
+                        <div class="tutorial-step">
+                            <h4>Getting Started</h4>
+                            <p>Welcome to Battle Of Idol! Start by opening your first free gacha crate in the Store to get your first idol card.</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <h4>Equipping Cards</h4>
+                            <p>Go to the Collection screen and equip your card to use it in battles.</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <h4>Battling</h4>
+                            <p>In the Battle screen, press START BATTLE to begin. The battle is automatic, but you can use shields and attack boosts during the fight.</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <h4>Quests & Rewards</h4>
+                            <p>Complete quests in the Quests screen to earn coins, cards, and other rewards.</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <h4>Gacha System</h4>
+                            <p>Open crates in the Store to get new idol cards. Higher rarity crates have better chances for rare cards.</p>
+                        </div>
+                        <div class="tutorial-step">
+                            <h4>Luck Boosts</h4>
+                            <p>Buy Luck Boosts in the Store to increase your chances of getting rare cards from gacha crates. Each boost lasts for 10 gacha openings.</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <button class="action-btn play-btn" id="settings-save-btn" style="margin-top: 15px;">Save Settings</button>
             </div>
         </div>
     </div>
 
-    <!-- Tutorial Overlay -->
-    <div id="tutorial-overlay" class="tutorial-overlay"></div>
+    <!-- Luck Boost Indicator -->
+    <div id="luck-boost-indicator" class="luck-boost-indicator hidden">
+        <i class="fas fa-clover"></i>
+        <span id="luck-boost-remaining">0</span>
+    </div>
 
     <script>
         // Game Data
@@ -2053,6 +2089,11 @@
             attackBoosts: [1],
             cards: [],
             shields: [1],
+            luckBoosts: {
+                active: false,
+                remainingUses: 0,
+                boostAmount: 1
+            },
             storeItems: {
                 crates: [
                     { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common idols only" },
@@ -2072,6 +2113,9 @@
                     { id: 1, name: "Basic Boost", price: 40, multiplier: 1.5, duration: 15, image: "boost.jpg", description: "Increase attack by 50% for 15 seconds" },
                     { id: 2, name: "Strong Boost", price: 80, multiplier: 2, duration: 12, image: "boost.jpg", description: "Double attack for 12 seconds" },
                     { id: 3, name: "Epic Boost", price: 150, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" }
+                ],
+                luck: [
+                    { id: 1, name: "Luck Boost", price: 200, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1% for 10 openings" }
                 ],
                 photocards: [
                     { id: 100, name: "Special Hanni", group: "NewJeans", image: "hanni_special.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", price: 5800, description: "Exclusive photocard not available in gacha" },
@@ -2140,7 +2184,8 @@
             ],
             quests: {
                 main: [
-                    { id: 1, name: "First Victory", description: "Play your first battle", progress: 0, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+                { id: 1, name: "New player Coins", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 100000 }, completed: false, claimed: false },
+                    
                     { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
                     { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
                     { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
@@ -2234,6 +2279,7 @@
         const attackUpgradeCountElement = document.getElementById('attack-upgrade-count');
         const shieldCountElement = document.getElementById('shield-count');
         const boostCountElement = document.getElementById('boost-count');
+        const luckBoostCountElement = document.getElementById('luck-boost-count');
         const sellPriceValue = document.getElementById('sell-price-value');
         const sellAllPriceValue = document.getElementById('sell-all-price-value');
         const confirmSellButton = document.getElementById('confirm-sell-btn');
@@ -2244,15 +2290,14 @@
         const sellAllButton = document.getElementById('sell-all-btn');
         const settingsButton = document.getElementById('settings-btn');
         const settingsSaveButton = document.getElementById('settings-save-btn');
+        const luckBoostIndicator = document.getElementById('luck-boost-indicator');
+        const luckBoostRemaining = document.getElementById('luck-boost-remaining');
         
         // Home screen elements
         const totalCardsElement = document.getElementById('total-cards');
         const totalWinsElement = document.getElementById('total-wins');
         const totalCoinsElement = document.getElementById('total-coins');
         const playerLevelHomeElement = document.getElementById('player-level-home');
-
-        // Tutorial elements
-        const tutorialOverlay = document.getElementById('tutorial-overlay');
 
         // Game State
         let playerHealth = 100;
@@ -2270,10 +2315,6 @@
         let battleInterval = null;
         let cardToSell = null;
         let firstGachaDone = false;
-        let tutorialStep = 0;
-        let tutorialActive = false;
-        let tutorialWaitingForAction = false;
-        let tutorialActionCompleted = false;
 
         // Sound Effects
         const sounds = {
@@ -2284,7 +2325,9 @@
             victory: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3'),
             defeat: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-sad-game-over-trombone-471.mp3'),
             gacha: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-arcade-mechanical-bling-210.mp3'),
-            levelUp: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3')
+            levelUp: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3'),
+            legendary: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3'),
+            secret: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkle-sound-3091.mp3')
         };
 
         // Background Music
@@ -2294,12 +2337,17 @@
 
         // Initialize Game
         function initGame() {
+            // Give player initial items
+            gameData.shields.push(gameData.storeItems.shields[0]);
+            gameData.attackBoosts.push(gameData.storeItems.boosts[0]);
+            
             updateCoinDisplay();
             updateLevelDisplay();
             updateHomeStats();
             updateInventoryDisplay();
             loadCollection();
             loadStoreItems('crates');
+            loadStoreItems('luck');
             loadQuests('main');
             
             // Set up event listeners
@@ -2313,11 +2361,6 @@
                 backgroundMusic.play().catch(e => {
                     console.log("Autoplay prevented. User interaction required to play audio.");
                 });
-            }
-            
-            // Start tutorial for new players
-            if (gameData.cards.length === 0) {
-                startTutorial();
             }
         }
 
@@ -2344,445 +2387,6 @@
             document.getElementById('vibration-toggle').checked = gameData.settings.vibration;
             document.getElementById('notifications-toggle').checked = gameData.settings.notifications;
         }
-
-        // Start tutorial
-        function startTutorial() {
-            tutorialActive = true;
-            tutorialStep = 0;
-            tutorialWaitingForAction = false;
-            tutorialActionCompleted = false;
-            showTutorialStep();
-        }
-
-        // Show tutorial step
-        function showTutorialStep() {
-            tutorialOverlay.classList.add('active');
-            
-            // Remove any existing tutorial message
-            const existingMessage = document.querySelector('.tutorial-message');
-            if (existingMessage) {
-                existingMessage.remove();
-            }
-            
-            // Remove any existing tutorial arrow
-            const existingArrow = document.querySelector('.tutorial-arrow');
-            if (existingArrow) {
-                existingArrow.remove();
-            }
-            
-            // Remove highlight dari semua elemen
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(el => {
-                el.classList.remove('tutorial-highlight');
-            });
-            
-            let message = '';
-            let targetElement = null;
-            let position = 'bottom';
-            let autoNavigate = false;
-            let hideTutorialForAction = false;
-            
-            switch(tutorialStep) {
-                case 0:
-                    message = "Selamat datang di Battle of Idol! Ayo dapatkan kartu idola pertamamu dari toko.";
-                    targetElement = document.querySelector('[data-screen="store"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-                case 1:
-                    message = "Klik tombol 'GET FREE' untuk membuka Basic Crate gratis pertama Anda!";
-                    targetElement = document.querySelector('.buy-btn');
-                    position = 'bottom';
-                    tutorialWaitingForAction = true;
-                    hideTutorialForAction = true;
-                    break;
-                case 2:
-                    message = "Bagus! Sekarang mari lengkapi kartu barumu di koleksi.";
-                    targetElement = document.querySelector('[data-screen="collection"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-                case 3:
-                    message = "Klik tombol 'EQUIP' untuk melengkapi kartu pertama Anda!";
-                    targetElement = document.querySelector('.equip-btn');
-                    position = 'bottom';
-                    tutorialWaitingForAction = true;
-                    hideTutorialForAction = true;
-                    break;
-                case 4:
-                    message = "Sekarang mari kita coba pertarungan pertamamu. Jangan khawatir jika kalah, kami akan membantumu menjadi lebih kuat.";
-                    targetElement = document.querySelector('[data-screen="battle"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-                case 5:
-                    message = "Klik 'START BATTLE' untuk memulai pertarungan pertama Anda!";
-                    targetElement = document.getElementById('play-btn');
-                    position = 'bottom';
-                    tutorialWaitingForAction = true;
-                    hideTutorialForAction = true;
-                    break;
-                case 6:
-                    message = "Bagus! Kamu menang di pertarungan pertamamu. Ayo kita dapatkan beberapa item untuk membantumu menang di pertarungan berikutnya.";
-                    targetElement = document.querySelector('[data-screen="store"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-                case 7:
-                    message = "Pilih kategori 'Shields' untuk membeli perisai gratis!";
-                    targetElement = document.querySelector('.category-btn[data-category="shields"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-                case 8:
-                    message = "Klik tombol 'GET FREE' untuk mendapatkan perisai gratis!";
-                    targetElement = document.querySelector('.buy-btn');
-                    position = 'bottom';
-                    tutorialWaitingForAction = true;
-                    hideTutorialForAction = true;
-                    break;
-                case 9:
-                    message = "Sekarang pilih kategori 'Attack Boosts' untuk mendapatkan peningkatan serangan gratis!";
-                    targetElement = document.querySelector('.category-btn[data-category="boosts"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-                case 10:
-                    message = "Klik tombol 'GET FREE' untuk mendapatkan peningkatan serangan gratis!";
-                    targetElement = document.querySelector('.buy-btn');
-                    position = 'bottom';
-                    tutorialWaitingForAction = true;
-                    hideTutorialForAction = true;
-                    break;
-                case 11:
-                    message = "Sekarang mari kita coba pertempuran lain. Kali ini, gunakan perisai dan tingkatkan kemampuanmu saat dibutuhkan!";
-                    targetElement = document.querySelector('[data-screen="battle"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-                case 12:
-                    message = "Gunakan tombol perisai dan peningkatan serangan selama pertempuran untuk meningkatkan peluang kemenangan!";
-                    targetElement = document.querySelector('.battle-controls');
-                    position = 'top';
-                    tutorialWaitingForAction = true;
-                    break;
-                case 13:
-                    message = "Kerja bagus! Kamu menang! Sekarang, ayo klaim hadiahmu dari misi.";
-                    targetElement = document.querySelector('[data-screen="quests"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-                case 14:
-                    message = "Klik tombol 'Claim Reward' untuk mengklaim hadiah misi pertama Anda!";
-                    targetElement = document.querySelector('.claim-btn');
-                    position = 'bottom';
-                    tutorialWaitingForAction = true;
-                    hideTutorialForAction = true;
-                    break;
-                case 15:
-                    message = "Selamat! Anda telah menyelesaikan tutorial. Sekarang Anda siap untuk bermain sendiri!";
-                    targetElement = document.querySelector('[data-screen="home"]');
-                    position = 'bottom';
-                    autoNavigate = true;
-                    break;
-            }
-            
-            if (targetElement && !hideTutorialForAction) {
-                const rect = targetElement.getBoundingClientRect();
-                const messageElement = document.createElement('div');
-                messageElement.className = 'tutorial-message';
-                messageElement.innerHTML = `
-                    <h3>Tutorial</h3>
-                    <p>${message}</p>
-                    <button class="tutorial-next-btn" ${tutorialWaitingForAction ? 'disabled' : ''}>${tutorialStep === 15 ? 'Finish' : 'Next'}</button>
-                    <button class="tutorial-skip-btn">Skip Tutorial</button>
-                `;
-                
-                // Hitung posisi yang aman untuk message
-                let messageTop, messageLeft;
-                let arrowPosition = position;
-                
-                // Default positioning
-                const messageWidth = 280;
-                const messageHeight = 150;
-                const arrowSize = 15;
-                const margin = 10;
-                
-                if (position === 'bottom') {
-                    messageTop = rect.bottom + margin;
-                    messageLeft = Math.max(margin, Math.min(rect.left, window.innerWidth - messageWidth - margin));
-                    
-                    // Jika tidak muat di bawah, pindah ke atas
-                    if (messageTop + messageHeight > window.innerHeight - margin) {
-                        messageTop = rect.top - messageHeight - margin;
-                        arrowPosition = 'top';
-                    }
-                } else if (position === 'top') {
-                    messageTop = rect.top - messageHeight - margin;
-                    messageLeft = Math.max(margin, Math.min(rect.left, window.innerWidth - messageWidth - margin));
-                    
-                    // Jika tidak muat di atas, pindah ke bawah
-                    if (messageTop < margin) {
-                        messageTop = rect.bottom + margin;
-                        arrowPosition = 'bottom';
-                    }
-                } else if (position === 'left') {
-                    messageLeft = rect.left - messageWidth - margin;
-                    messageTop = Math.max(margin, Math.min(rect.top, window.innerHeight - messageHeight - margin));
-                    
-                    // Jika tidak muat di kiri, pindah ke kanan
-                    if (messageLeft < margin) {
-                        messageLeft = rect.right + margin;
-                        arrowPosition = 'right';
-                    }
-                } else if (position === 'right') {
-                    messageLeft = rect.right + margin;
-                    messageTop = Math.max(margin, Math.min(rect.top, window.innerHeight - messageHeight - margin));
-                    
-                    // Jika tidak muat di kanan, pindah ke kiri
-                    if (messageLeft + messageWidth > window.innerWidth - margin) {
-                        messageLeft = rect.left - messageWidth - margin;
-                        arrowPosition = 'left';
-                    }
-                }
-                
-                // Pastikan posisi tidak keluar dari layar
-                messageTop = Math.max(margin, Math.min(messageTop, window.innerHeight - messageHeight - margin));
-                messageLeft = Math.max(margin, Math.min(messageLeft, window.innerWidth - messageWidth - margin));
-                
-                // Set posisi message
-                messageElement.style.top = `${messageTop}px`;
-                messageElement.style.left = `${messageLeft}px`;
-                
-                // Buat arrow
-                const arrow = document.createElement('div');
-                arrow.className = `tutorial-arrow ${arrowPosition}`;
-                
-                // Posisi arrow berdasarkan arah
-                if (arrowPosition === 'bottom') {
-                    arrow.style.top = `${rect.bottom - 5}px`;
-                    arrow.style.left = `${Math.max(rect.left + rect.width/2, messageLeft + 20)}px`;
-                    arrow.style.left = `${Math.min(parseInt(arrow.style.left), messageLeft + messageWidth - 20)}px`;
-                } else if (arrowPosition === 'top') {
-                    arrow.style.top = `${rect.top - 10}px`;
-                    arrow.style.left = `${Math.max(rect.left + rect.width/2, messageLeft + 20)}px`;
-                    arrow.style.left = `${Math.min(parseInt(arrow.style.left), messageLeft + messageWidth - 20)}px`;
-                } else if (arrowPosition === 'left') {
-                    arrow.style.left = `${rect.left - 10}px`;
-                    arrow.style.top = `${Math.max(rect.top + rect.height/2, messageTop + 20)}px`;
-                    arrow.style.top = `${Math.min(parseInt(arrow.style.top), messageTop + messageHeight - 20)}px`;
-                } else if (arrowPosition === 'right') {
-                    arrow.style.left = `${rect.right - 5}px`;
-                    arrow.style.top = `${Math.max(rect.top + rect.height/2, messageTop + 20)}px`;
-                    arrow.style.top = `${Math.min(parseInt(arrow.style.top), messageTop + messageHeight - 20)}px`;
-                }
-                
-                document.body.appendChild(messageElement);
-                document.body.appendChild(arrow);
-                
-                // Add event listeners to tutorial buttons
-                const nextButton = messageElement.querySelector('.tutorial-next-btn');
-                if (!tutorialWaitingForAction) {
-                    nextButton.addEventListener('click', nextTutorialStep);
-                }
-                messageElement.querySelector('.tutorial-skip-btn').addEventListener('click', skipTutorial);
-                
-                // Highlight the target element
-                targetElement.classList.add('tutorial-highlight');
-            }
-            
-            // Auto-navigate untuk beberapa tutorial steps
-            if (autoNavigate) {
-                setTimeout(() => {
-                    if (targetElement && !targetElement.classList.contains('active')) {
-                        if (targetElement.hasAttribute('data-screen')) {
-                            switchScreen(targetElement.getAttribute('data-screen'));
-                            
-                            // Update active nav button
-                            navButtons.forEach(btn => btn.classList.remove('active'));
-                            targetElement.classList.add('active');
-                        } else if (targetElement.hasAttribute('data-category')) {
-                            const category = targetElement.getAttribute('data-category');
-                            loadStoreItems(category);
-                            
-                            // Update active category button
-                            categoryButtons.forEach(btn => btn.classList.remove('active'));
-                            targetElement.classList.add('active');
-                        }
-                    }
-                }, 500);
-            }
-            
-            // Jika tutorial memerlukan aksi dan harus disembunyikan sementara
-            if (hideTutorialForAction) {
-                // Sembunyikan tutorial agar tidak menutupi tombol
-                setTimeout(() => {
-                    hideTutorialForActionStep();
-                }, 1000);
-            }
-        }
-
-        // Hide tutorial untuk step yang memerlukan aksi
-        function hideTutorialForActionStep() {
-            tutorialOverlay.classList.remove('active');
-            
-            // Remove any existing tutorial message
-            const existingMessage = document.querySelector('.tutorial-message');
-            if (existingMessage) {
-                existingMessage.remove();
-            }
-            
-            // Remove any existing tutorial arrow
-            const existingArrow = document.querySelector('.tutorial-arrow');
-            if (existingArrow) {
-                existingArrow.remove();
-            }
-            
-            // Highlight the target element
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(el => {
-                el.classList.remove('tutorial-highlight');
-            });
-            
-            // Highlight the target element for action steps
-            let targetElement = null;
-            switch(tutorialStep) {
-                case 1: case 8: case 10:
-                    targetElement = document.querySelector('.buy-btn');
-                    break;
-                case 3:
-                    targetElement = document.querySelector('.equip-btn');
-                    break;
-                case 5:
-                    targetElement = document.getElementById('play-btn');
-                    break;
-                case 14:
-                    targetElement = document.querySelector('.claim-btn');
-                    break;
-            }
-            
-            if (targetElement) {
-                targetElement.classList.add('tutorial-highlight');
-            }
-        }
-
-        // Show tutorial kembali setelah aksi selesai
-        function showTutorialAfterAction() {
-            tutorialActionCompleted = true;
-            tutorialWaitingForAction = false;
-            
-            // Remove highlight
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(el => {
-                el.classList.remove('tutorial-highlight');
-            });
-            
-            // Tampilkan tutorial kembali
-            showTutorialStep();
-        }
-
-        // Next tutorial step
-        function nextTutorialStep() {
-            // Remove highlight dari current target
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(el => {
-                el.classList.remove('tutorial-highlight');
-            });
-            
-            tutorialStep++;
-            tutorialWaitingForAction = false;
-            tutorialActionCompleted = false;
-            
-            if (tutorialStep > 15) {
-                endTutorial();
-            } else {
-                showTutorialStep();
-            }
-        }
-
-        // Skip tutorial
-        function skipTutorial() {
-            // Remove highlight dari semua elemen
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(el => {
-                el.classList.remove('tutorial-highlight');
-            });
-            
-            endTutorial();
-        }
-
-        // End tutorial
-        function endTutorial() {
-            tutorialActive = false;
-            tutorialOverlay.classList.remove('active');
-            
-            // Remove any existing tutorial message
-            const existingMessage = document.querySelector('.tutorial-message');
-            if (existingMessage) {
-                existingMessage.remove();
-            }
-            
-            // Remove any existing tutorial arrow
-            const existingArrow = document.querySelector('.tutorial-arrow');
-            if (existingArrow) {
-                existingArrow.remove();
-            }
-            
-            // Remove highlight dari semua elemen
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(el => {
-                el.classList.remove('tutorial-highlight');
-            });
-        }
-        
-        // Check tutorial action completion
-        function checkTutorialAction(actionType) {
-            if (!tutorialActive || !tutorialWaitingForAction) return;
-            
-            let shouldAdvance = false;
-            
-            switch(tutorialStep) {
-                case 1: // First gacha
-                    if (actionType === 'gacha') {
-                        shouldAdvance = true;
-                    }
-                    break;
-                case 3: // Equip card
-                    if (actionType === 'equip') {
-                        shouldAdvance = true;
-                    }
-                    break;
-                case 5: // Start battle
-                    if (actionType === 'battle') {
-                        shouldAdvance = true;
-                    }
-                    break;
-                case 8: // Buy shield
-                    if (actionType === 'buyShield') {
-                        shouldAdvance = true;
-                    }
-                    break;
-                case 10: // Buy boost
-                    if (actionType === 'buyBoost') {
-                        shouldAdvance = true;
-                    }
-                    break;
-                case 12: // Use item in battle
-                    if (actionType === 'useItem') {
-                        shouldAdvance = true;
-                    }
-                    break;
-                case 14: // Claim quest
-                    if (actionType === 'claimQuest') {
-                        shouldAdvance = true;
-                    }
-                    break;
-            }
-            
-            if (shouldAdvance) {
-                showTutorialAfterAction();
-            }
-        }
         
         // Set up event listeners
         function setupEventListeners() {
@@ -2801,15 +2405,12 @@
             // Battle controls
             playButton.addEventListener('click', () => {
                 startBattle();
-                checkTutorialAction('battle');
             });
             shieldButton.addEventListener('click', () => {
                 activateShield();
-                checkTutorialAction('useItem');
             });
             boostButton.addEventListener('click', () => {
                 activateBoost();
-                checkTutorialAction('useItem');
             });
 
             // Store categories
@@ -2849,7 +2450,6 @@
 
             gachaOkButton.addEventListener('click', () => {
                 gachaModal.classList.remove('active');
-                checkTutorialAction('gacha');
             });
 
             battleContinueButton.addEventListener('click', () => {
@@ -2947,6 +2547,15 @@
             attackUpgradeCountElement.textContent = gameData.attackUpgrades;
             shieldCountElement.textContent = gameData.shields.length;
             boostCountElement.textContent = gameData.attackBoosts.length;
+            luckBoostCountElement.textContent = gameData.luckBoosts.active ? gameData.luckBoosts.remainingUses : 0;
+            
+            // Update luck boost indicator
+            if (gameData.luckBoosts.active) {
+                luckBoostIndicator.classList.remove('hidden');
+                luckBoostRemaining.textContent = gameData.luckBoosts.remainingUses;
+            } else {
+                luckBoostIndicator.classList.add('hidden');
+            }
         }
 
         // Set current card
@@ -2969,8 +2578,6 @@
             
             // Update health bar
             playerHealthBar.style.width = '100%';
-            
-            checkTutorialAction('equip');
         }
 
         // Load collection
@@ -2983,6 +2590,9 @@
             }
             
             gameData.cards.forEach(card => {
+                // Check if card is from gacha (not from store)
+                const isGachaCard = card.id <= 66; // IDs 1-66 are from gacha
+                
                 const winRate = card.battles > 0 ? Math.round((card.wins / card.battles) * 100) : 0;
                 const canUpgrade = card.upgrades < 8 && gameData.attackUpgrades > 0;
                 
@@ -3006,7 +2616,7 @@
                             <button class="equip-btn" data-id="${card.id}">${gameData.currentCard && gameData.currentCard.id === card.id ? 'EQUIPPED' : 'EQUIP'}</button>
                             <button class="upgrade-btn" data-id="${card.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${card.upgrades}/8)</button>
                             <button class="favorite-btn ${card.favorite ? 'favorited' : ''}" data-id="${card.id}">${card.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
-                            <button class="sell-btn" data-id="${card.id}">SELL</button>
+                            ${isGachaCard ? `<button class="sell-btn" data-id="${card.id}">SELL</button>` : ''}
                         </div>
                     </div>
                 `;
@@ -3069,10 +2679,10 @@
         function showSellAllModal() {
             // Calculate total value of non-favorite cards
             let totalValue = 0;
-            const nonFavoriteCards = gameData.cards.filter(card => !card.favorite);
+            const nonFavoriteCards = gameData.cards.filter(card => !card.favorite && card.id <= 66); // Only gacha cards
             
             if (nonFavoriteCards.length === 0) {
-                addToBattleLog("No non-favorite cards to sell!", 'player');
+                addToBattleLog("No non-favorite gacha cards to sell!", 'player');
                 return;
             }
             
@@ -3086,7 +2696,7 @@
 
         // Confirm sell all non-favorite cards
         function confirmSellAllCards() {
-            const nonFavoriteCards = gameData.cards.filter(card => !card.favorite);
+            const nonFavoriteCards = gameData.cards.filter(card => !card.favorite && card.id <= 66); // Only gacha cards
             let totalValue = 0;
             
             nonFavoriteCards.forEach(card => {
@@ -3094,7 +2704,7 @@
             });
             
             // Remove non-favorite cards
-            gameData.cards = gameData.cards.filter(card => card.favorite);
+            gameData.cards = gameData.cards.filter(card => card.favorite || card.id > 66); // Keep favorites and store-bought cards
             
             // Add coins
             gameData.coins += totalValue;
@@ -3102,7 +2712,7 @@
             updateHomeStats();
             
             // If current card was sold, equip first available card
-            if (gameData.currentCard && !gameData.currentCard.favorite) {
+            if (gameData.currentCard && !gameData.currentCard.favorite && gameData.currentCard.id <= 66) {
                 if (gameData.cards.length > 0) {
                     setCurrentCard(gameData.cards[0]);
                 } else {
@@ -3221,10 +2831,6 @@
                 // Check if this is the first gacha and it's a basic crate
                 const isFirstGacha = !firstGachaDone && category === 'crates' && item.id === 1;
                 
-                // Tutorial: Make shields and boosts free for tutorial
-                const isTutorialFree = tutorialActive && (category === 'shields' || category === 'boosts') && 
-                                      (tutorialStep === 8 || tutorialStep === 10);
-                
                 const itemElement = document.createElement('div');
                 itemElement.className = 'store-item';
                 if (item.rarity === 'secret' || item.rarity === 'stars') {
@@ -3237,10 +2843,10 @@
                         <div class="store-item-name">${item.name}</div>
                         <div class="store-item-desc">${item.description}</div>
                         <div class="store-item-price">
-                            <i class="fas fa-coins"></i> ${isFirstGacha || isTutorialFree ? 'FREE' : item.price}
+                            <i class="fas fa-coins"></i> ${isFirstGacha ? 'FREE' : item.price}
                         </div>
-                        <button class="buy-btn" data-id="${item.id}" data-type="${category.slice(0, -1)}" ${isPhotocardOwned || (!isFirstGacha && !isTutorialFree && gameData.coins < item.price) ? 'disabled' : ''}>
-                            ${isPhotocardOwned ? 'OWNED' : (isFirstGacha || isTutorialFree ? 'GET FREE' : 'BUY')}
+                        <button class="buy-btn" data-id="${item.id}" data-type="${category.slice(0, -1)}" ${isPhotocardOwned || (!isFirstGacha && gameData.coins < item.price) ? 'disabled' : ''}>
+                            ${isPhotocardOwned ? 'OWNED' : (isFirstGacha ? 'GET FREE' : 'BUY')}
                         </button>
                     </div>
                 `;
@@ -3253,15 +2859,6 @@
                     const itemId = parseInt(e.target.getAttribute('data-id'));
                     const itemType = e.target.getAttribute('data-type');
                     buyItem(itemId, itemType);
-                    
-                    // Tutorial: Check if we need to advance after buying items
-                    if (tutorialActive) {
-                        if (tutorialStep === 8 && itemType === 'shield') {
-                            checkTutorialAction('buyShield');
-                        } else if (tutorialStep === 10 && itemType === 'boost') {
-                            checkTutorialAction('buyBoost');
-                        }
-                    }
                 });
             });
         }
@@ -3313,7 +2910,6 @@
                     button.addEventListener('click', (e) => {
                         const questName = e.target.closest('.quest-item').querySelector('.quest-name').textContent;
                         claimQuestReward(questName, questType);
-                        checkTutorialAction('claimQuest');
                     });
                 }
             });
@@ -3557,6 +3153,8 @@
                 item = gameData.storeItems.upgrades.find(u => u.id === itemId);
             } else if (itemType === 'boost') {
                 item = gameData.storeItems.boosts.find(b => b.id === itemId);
+            } else if (itemType === 'luck') {
+                item = gameData.storeItems.luck.find(l => l.id === itemId);
             } else if (itemType === 'photocard') {
                 item = gameData.storeItems.photocards.find(p => p.id === itemId);
             }
@@ -3566,12 +3164,8 @@
             // Check if this is the first free gacha
             const isFirstGacha = !firstGachaDone && itemType === 'crate' && item.id === 1;
             
-            // Tutorial: Make shields and boosts free for tutorial
-            const isTutorialFree = tutorialActive && (itemType === 'shield' || itemType === 'boost') && 
-                                  (tutorialStep === 8 || tutorialStep === 10);
-            
-            if (isFirstGacha || isTutorialFree || gameData.coins >= item.price) {
-                if (!isFirstGacha && !isTutorialFree) {
+            if (isFirstGacha || gameData.coins >= item.price) {
+                if (!isFirstGacha) {
                     gameData.coins -= item.price;
                 } else if (isFirstGacha) {
                     firstGachaDone = true;
@@ -3594,6 +3188,13 @@
                     gameData.attackBoosts.push(item);
                     updateInventoryDisplay();
                     addToBattleLog(`You bought an Attack Boost! You now have ${gameData.attackBoosts.length} boost(s) available.`, 'player');
+                } else if (itemType === 'luck') {
+                    // Activate luck boost
+                    gameData.luckBoosts.active = true;
+                    gameData.luckBoosts.remainingUses = 10;
+                    gameData.luckBoosts.boostAmount = 1; // 1% increase
+                    updateInventoryDisplay();
+                    addToBattleLog(`You activated a Luck Boost! Your next 10 gacha openings have increased luck!`, 'player');
                 } else if (itemType === 'photocard') {
                     // Add photocard to collection
                     gameData.cards.push({
@@ -3631,90 +3232,113 @@
                     loadStoreItems('shields');
                 } else if (itemType === 'boost') {
                     loadStoreItems('boosts');
+                } else if (itemType === 'luck') {
+                    loadStoreItems('luck');
                 } else if (itemType === 'photocard') {
                     loadStoreItems('photocards');
-                }
+                }               
             } else {
                 addToBattleLog("Not enough coins!", 'player');
             }
         }
 
-// Open gacha crate
-function openGachaCrate(rarity) {
-    // Play gacha sound
-    if (gameData.settings.sfxEnabled) {
-        sounds.gacha.play().catch(e => console.log("Audio play failed"));
-    }
-    
-    // Filter gacha pool by crate type with different probabilities
-    let availableCards = [];
-    
-    if (rarity === 'common') {
-        // Basic Crate: 100% common
-        availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-    } else if (rarity === 'rare') {
-        // Premium Crate: 45% common, 55% rare
-        const commonCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-        const rareCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
-        
-        if (Math.random() < 0.45) {
-            // 45% chance for common
-            availableCards = commonCards;
-        } else {
-            // 55% chance for rare
-            availableCards = rareCards;
-        }
-    } else if (rarity === 'epic') {
-        // Elite Crate: 20% common, 35% rare, 45% epic
-        const randomValue = Math.random();
-        if (randomValue < 0.20) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-        } else if (randomValue < 0.55) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
-        } else {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
-        }
-    } else if (rarity === 'secret') {
-        // Secret Crate: 18% common, 30% rare, 51.5% epic, 0.5% secret/legendary
-        const randomValue = Math.random();
-        if (randomValue < 0.18) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-        } else if (randomValue < 0.48) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
-        } else if (randomValue < 0.995) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
-        } else {
-            // 0.5% chance for legendary or secret (below 1%)
-            const legendaryAndSecret = gameData.gachaPool.filter(card => 
-                card.rarity === 'legendary' || card.rarity === 'secret' || card.rarity === 'stars'
-            );
-            availableCards = legendaryAndSecret;
-        }
-    }
-    
-    // Randomly select a card from available pool
-    const randomIndex = Math.floor(Math.random() * availableCards.length);
-    const wonCard = availableCards[randomIndex];
-    
-    // Add to collection
-    gameData.cards.push({...wonCard});
-    
-    // Auto-equip if this is the first card
-    if (gameData.cards.length === 1) {
-        setCurrentCard(wonCard);
-    }
-    
-    // Update quest progress
-    updateQuestProgress('Gacha Enthusiast', 1);
-    updateQuestProgress('Idol Collector', 1);
-    
-    // Show gacha result
-    showGachaResult(wonCard);
-    
-    // Refresh collection
-    loadCollection();
-    updateHomeStats();
-
+        // Open gacha crate
+        function openGachaCrate(rarity) {
+            // Play gacha sound
+            if (gameData.settings.sfxEnabled) {
+                sounds.gacha.play().catch(e => console.log("Audio play failed"));
+            }
+            
+            // Update quest progress for first gacha
+            if (!firstGachaDone) {
+                updateQuestProgress('First Gacha', 1, 'main');
+firstGachaDone = true;   
+                
+            }
+            
+            // Use luck boost if active
+            if (gameData.luckBoosts.active) {
+                gameData.luckBoosts.remainingUses--;
+                if (gameData.luckBoosts.remainingUses <= 0) {
+                    gameData.luckBoosts.active = false;
+                }
+                updateInventoryDisplay();
+            }
+            
+            // Filter gacha pool by crate type with different probabilities
+            let availableCards = [];
+            
+            if (rarity === 'common') {
+                // Basic Crate: 100% common
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+            } else if (rarity === 'rare') {
+                // Premium Crate: 45% common, 55% rare
+                const commonCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+                const rareCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+                
+                if (Math.random() < 0.45) {
+                    // 45% chance for common
+                    availableCards = commonCards;
+                } else {
+                    // 55% chance for rare
+                    availableCards = rareCards;
+                }
+            } else if (rarity === 'epic') {
+                // Elite Crate: 20% common, 35% rare, 45% epic
+                const randomValue = Math.random();
+                if (randomValue < 0.20) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+                } else if (randomValue < 0.55) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+                } else {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+                }
+            } else if (rarity === 'secret') {
+                // Secret Crate: 18% common, 30% rare, 51.5% epic, 0.5% secret/legendary
+                // Apply luck boost if active
+                let legendarySecretChance = 0.005; // 0.5% base chance
+                if (gameData.luckBoosts.active) {
+                    legendarySecretChance += (gameData.luckBoosts.boostAmount / 100); // Add 1% from boost
+                }
+                
+                const randomValue = Math.random();
+                if (randomValue < 0.18) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+                } else if (randomValue < 0.48) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+                } else if (randomValue < (1 - legendarySecretChance)) {
+                    availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+                } else {
+                    // Chance for legendary or secret
+                    const legendaryAndSecret = gameData.gachaPool.filter(card => 
+                        card.rarity === 'legendary' || card.rarity === 'secret' || card.rarity === 'stars'
+                    );
+                    availableCards = legendaryAndSecret;
+                }
+            }
+            
+            // Randomly select a card from available pool
+            const randomIndex = Math.floor(Math.random() * availableCards.length);
+            const wonCard = availableCards[randomIndex];
+            
+            // Add to collection
+            gameData.cards.push({...wonCard});
+            
+            // Auto-equip if this is the first card
+            if (gameData.cards.length === 1) {
+                setCurrentCard(wonCard);
+            }
+            
+            // Update quest progress
+            updateQuestProgress('Gacha Enthusiast', 1);
+            updateQuestProgress('Idol Collector', 1);
+            
+            // Show gacha result with special effects for rare cards
+            showGachaResult(wonCard);
+            
+            // Refresh collection
+            loadCollection();
+            updateHomeStats();
         }
 
         // Show gacha result modal
@@ -3745,10 +3369,58 @@ function openGachaCrate(rarity) {
             gachaModal.classList.add('active');
             gachaCard.classList.remove('flipped');
             
+            // Special effects for legendary and secret cards
+            if (card.rarity === 'legendary') {
+                // Play legendary sound
+                if (gameData.settings.sfxEnabled) {
+                    sounds.legendary.play().catch(e => console.log("Audio play failed"));
+                }
+                
+                // Add legendary glow effect
+                gachaCard.classList.add('legendary-glow');
+                
+                // Create confetti effect
+                createConfetti();
+            } else if (card.rarity === 'secret' || card.rarity === 'stars') {
+                // Play secret sound
+                if (gameData.settings.sfxEnabled) {
+                    sounds.secret.play().catch(e => console.log("Audio play failed"));
+                }
+                
+                // Add secret glow effect
+                gachaCard.classList.add('secret-glow');
+                
+                // Create confetti effect
+                createConfetti();
+            }
+            
             // Auto-flip after a delay
             setTimeout(() => {
                 gachaCard.classList.add('flipped');
             }, 1000);
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        // Get random color for confetti
+        function getRandomColor() {
+            const colors = ['#ff6b9d', '#6a5af9', '#ffd166', '#06d6a0', '#ef476f'];
+            return colors[Math.floor(Math.random() * colors.length)];
         }
 
         // Start battle
@@ -3776,18 +3448,10 @@ function openGachaCrate(rarity) {
             const randomIndex = Math.floor(Math.random() * gameData.enemyCards.length);
             enemyCard = {...gameData.enemyCards[randomIndex]};
             
-            // For tutorial battles, ensure the player wins
-            if (tutorialActive && tutorialStep === 5) {
-                // Make enemy weaker for tutorial
-                enemyCard.health = 50;
-                enemyCard.maxHealth = 50;
-                enemyCard.attack = 5;
-            } else {
-                // Adjust enemy stats based on player level
-                enemyCard.health += (gameData.level - 1) * 10;
-                enemyCard.maxHealth = enemyCard.health;
-                enemyCard.attack += (gameData.level - 1) * 2;
-            }
+            // Adjust enemy stats based on player level
+            enemyCard.health += (gameData.level - 1) * 10;
+            enemyCard.maxHealth = enemyCard.health;
+            enemyCard.attack += (gameData.level - 1) * 2;
             
             // Update enemy display
             const enemyCardImg = document.querySelector('.enemy-card .card-img');
@@ -4079,7 +3743,6 @@ function openGachaCrate(rarity) {
             }
             
             // Update quest progress
-            updateQuestProgress('First Victory', playerWon ? 1 : 0);
             updateQuestProgress('Battle Master', playerWon ? 1 : 0);
             updateQuestProgress('Daily Battle', playerWon ? 1 : 0);
             updateQuestProgress('Battle Legend', playerWon ? 1 : 0);
@@ -4224,3 +3887,6 @@ function openGachaCrate(rarity) {
     </script>
 </body>
 </html>
+
+
+
