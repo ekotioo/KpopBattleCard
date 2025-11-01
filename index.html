@@ -80,6 +80,7 @@
             background: rgba(255, 255, 255, 0.2);
             padding: 5px 10px;
             border-radius: 20px;
+            cursor: pointer;
         }
 
         .coin-icon {
@@ -1327,7 +1328,7 @@
             animation: glow 1s ease-in-out infinite;
         }
 
-        .rarity-secret {
+        .rarity-risingstar {
             border: 3px solid transparent;
             background: linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
             -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
@@ -1579,7 +1580,7 @@
             }
         }
 
-        @keyframes secretGlow {
+        @keyframes risingstarGlow {
             0%, 100% { 
                 box-shadow: 0 0 20px rgba(255, 0, 128, 0.7), 
                             0 0 40px rgba(255, 107, 0, 0.5),
@@ -1606,8 +1607,8 @@
             animation: legendaryGlow 1.5s ease-in-out infinite;
         }
 
-        .secret-glow {
-            animation: secretGlow 2s ease-in-out infinite;
+        .risingstar-glow {
+            animation: risingstarGlow 2s ease-in-out infinite;
         }
 
         @keyframes confetti {
@@ -1673,6 +1674,41 @@
             color: var(--primary);
             margin-bottom: 5px;
         }
+
+        /* Topup Modal */
+        .topup-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .topup-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .topup-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .topup-amount {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        .topup-price {
+            font-weight: 600;
+            color: var(--text-light);
+        }
     </style>
 </head>
 <body>
@@ -1681,7 +1717,7 @@
             <h1>Battle Of Idol</h1>
             <div class="player-info">
                 <div class="level">Level: <span id="player-level">1</span></div>
-                <div class="coins">
+                <div class="coins" id="topup-btn">
                     <i class="fas fa-coins coin-icon"></i> <span id="coin-count">0</span>
                     <button class="settings-btn" id="settings-btn">
                         <i class="fas fa-cog"></i>
@@ -1719,7 +1755,7 @@
                     <p class="home-subtitle">Collect your favorite K-Pop idols and battle against others!</p>
                 </div>
                 
-                <h2 class="home-subtitle">Secret Photocard</h2>
+                <h2 class="home-subtitle">RisingStar Photocard</h2>
 
                 <div class="featured-cards">
                     <div class="featured-card">
@@ -2070,6 +2106,35 @@
         </div>
     </div>
 
+    <!-- Topup Modal -->
+    <div id="topup-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Top Up Coins</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="topup-options">
+                <div class="topup-option" data-amount="2300" data-price="12000">
+                    <div class="topup-amount">2,300 Coins</div>
+                    <div class="topup-price">Rp 12,000</div>
+                </div>
+                <div class="topup-option" data-amount="5000" data-price="22000">
+                    <div class="topup-amount">5,000 Coins</div>
+                    <div class="topup-price">Rp 22,000</div>
+                </div>
+                <div class="topup-option" data-amount="8500" data-price="40000">
+                    <div class="topup-amount">8,500 Coins</div>
+                    <div class="topup-price">Rp 40,000</div>
+                </div>
+                <div class="topup-option" data-amount="10000" data-price="75000">
+                    <div class="topup-amount">10,000 Coins</div>
+                    <div class="topup-price">Rp 75,000</div>
+                </div>
+            </div>
+            <button class="action-btn play-btn" id="topup-close-btn" style="margin-top: 15px;">Close</button>
+        </div>
+    </div>
+
     <!-- Luck Boost Indicator -->
     <div id="luck-boost-indicator" class="luck-boost-indicator hidden">
         <i class="fas fa-clover"></i>
@@ -2092,14 +2157,14 @@
             luckBoosts: {
                 active: false,
                 remainingUses: 0,
-                boostAmount: 1
+                boostAmount: 0
             },
             storeItems: {
                 crates: [
                     { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common idols only" },
                     { id: 2, name: "Premium Crate", price: 100, type: "crate", rarity: "rare", image: "premium.jpg", description: "Contains common and rare idols" },
                     { id: 3, name: "Elite Crate", price: 200, type: "crate", rarity: "epic", image: "elite.jpg", description: "Contains common, rare and epic idols" },
-                    { id: 4, name: "Secret Crate", price: 500, type: "crate", rarity: "secret", image: "secret.jpg", description: "Contains common, rare, epic and secret idols" }
+                    { id: 4, name: "RisingStar Crate", price: 500, type: "crate", rarity: "risingstar", image: "secret.jpg", description: "Contains common, rare, epic and risingstar idols" }
                 ],
                 upgrades: [
                     { id: 1, name: "Attack Upgrade", price: 100, type: "upgrade", image: "attack.jpg", description: "Increase attack by 1 for any card" }
@@ -2126,14 +2191,14 @@
                 ]
             },
             gachaPool: [
-                // Common Cards (100% in Basic Crate, 45% in Premium, 20% in Elite, 15% in Secret)
+                // Common Cards (100% in Basic Crate, 45% in Premium, 20% in Elite, 15% in RisingStar)
                 { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 3, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 15, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 22, name: "Leeseo", group: "IVE", image: "leseo.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 61, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
-                // Rare Cards (55% in Premium, 35% in Elite, 25% in Secret)
+                // Rare Cards (55% in Premium, 35% in Elite, 25% in RisingStar)
                 { id: 4, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 5, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 6, name: "Winter", group: "aespa", image: "winter.jpg", health: 130, maxHealth: 130, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -2154,7 +2219,7 @@
                 { id: 56, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 62, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
-                // Epic Cards (45% in Elite, 58% in Secret)
+                // Epic Cards (45% in Elite, 58% in RisingStar)
                 { id: 7, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 8, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -2163,7 +2228,7 @@
                 { id: 27, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 63, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
-                // Legendary Cards (2% in Secret)
+                // Legendary Cards (2% in RisingStar)
                 { id: 10, name: "Haerin", group: "NewJeans", image: "haerinL.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 29, name: "Yoona", group: "SNSD", image: "yoonaL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 30, name: "IU", group: "Soloist", image: "iuL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -2171,25 +2236,26 @@
                 { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "carmenL.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 64, name: "Asa", group: "BABYMONSTER", image: "asaL.jpg", health: 155, maxHealth: 155, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
-                // Secret Cards (2% in Secret)
-                { id: 50, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 51, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 52, name: "Hanni", group: "NewJeans", image: "hanni2.jpg", health: 210, maxHealth: 210, attack: 26, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 53, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 54, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 55, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 59, name: "Mira", group: "HUNTR/X", image: "mira2.jpg", health: 185, maxHealth: 185, attack: 24, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 65, name: "Rora", group: "BABYMONSTER", image: "rora2.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 66, name: "Rose", group: "BLACKPINK", image: "rose2.jpg", health: 165, maxHealth: 165, attack: 21, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 }
+                // RisingStar Cards (2% in RisingStar)
+                { id: 50, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 51, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 52, name: "Hanni", group: "NewJeans", image: "hanni2.jpg", health: 210, maxHealth: 210, attack: 26, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 53, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 54, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 55, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 59, name: "Mira", group: "HUNTR/X", image: "mira2.jpg", health: 185, maxHealth: 185, attack: 24, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 65, name: "Rora", group: "BABYMONSTER", image: "rora2.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 66, name: "Rose", group: "BLACKPINK", image: "rose2.jpg", health: 165, maxHealth: 165, attack: 21, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 }
             ],
             quests: {
                 main: [
-                { id: 1, name: "New player Coins", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 100000 }, completed: false, claimed: false },
+                { id: 0, name: "Demo Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 1300 }, completed: false, claimed: false },
+                { id: 1, name: "New player Coins", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
                     
                     { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
                     { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
                     { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
-                    { id: 7, name: "Secret Hunter", description: "Collect a Secret Card", progress: 0, target: 1, reward: { type: "card", value: 54 }, completed: false, claimed: false },
+                    { id: 7, name: "RisingStar Hunter", description: "Collect a RisingStar Card", progress: 0, target: 1, reward: { type: "card", value: 54 }, completed: false, claimed: false },
                     { id: 8, name: "Ultimate Collector", description: "Collect 15 different idols", progress: 0, target: 15, reward: { type: "card", value: 55 }, completed: false, claimed: false },
                     { id: 9, name: "Battle Legend", description: "Win 50 battles", progress: 0, target: 50, reward: { type: "card", value: 53 }, completed: false, claimed: false }
                 ],
@@ -2214,10 +2280,10 @@
                     { level: 8, reward: { type: "card", value: 15 }, unlocked: false, claimed: false },
                     { level: 9, reward: { type: "attackBoost", value: 2 }, unlocked: false, claimed: false },
                     { level: 10, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
-                    { level: 11, reward: { type: "coins", value: 200 }, unlocked: false, claimed: false },
+                    { level: 11, reward: { type: "coins", value: 300 }, unlocked: false, claimed: false },
                     { level: 12, reward: { type: "card", value: 29 }, unlocked: false, claimed: false },
                     { level: 13, reward: { type: "gachaCoupon", value: 3 }, unlocked: false, claimed: false },
-                    { level: 14, reward: { type: "coins", value: 300 }, unlocked: false, claimed: false },
+                    { level: 14, reward: { type: "coins", value: 500 }, unlocked: false, claimed: false },
                     { level: 15, reward: { type: "card", value: 56, rarity: "stars" }, unlocked: false, claimed: false }
                 ]
             },
@@ -2227,14 +2293,14 @@
                 { id: 103, name: "Karina", group: "aespa", image: "karina.jpg", health: 90, maxHealth: 90, attack: 10, rarity: "common" },
                 { id: 104, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "rare" },
                 { id: 105, name: "Lisa", group: "BLACKPINK", image: "lisa0.jpg", health: 95, maxHealth: 95, attack: 12, rarity: "rare" },
-                { id: 106, name: "Secret Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "secret" },
-                { id: 107, name: "Secret Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "secret" },
+                { id: 106, name: "RisingStar Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar" },
+                { id: 107, name: "RisingStar Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar" },
                 { id: 108, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 180, maxHealth: 180, attack: 35, rarity: "stars" },
                 { id: 109, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "common" },
                 { id: 110, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "rare" },
                 { id: 111, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "epic" },
                 { id: 112, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 140, maxHealth: 140, attack: 19, rarity: "legendary" },
-                { id: 113, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 25, rarity: "secret" },
+                { id: 113, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 25, rarity: "risingstar" },
                 { id: 114, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 23, rarity: "stars" }
             ],
             settings: {
@@ -2268,6 +2334,7 @@
         const sellCardModal = document.getElementById('sell-card-modal');
         const sellAllModal = document.getElementById('sell-all-modal');
         const settingsModal = document.getElementById('settings-modal');
+        const topupModal = document.getElementById('topup-modal');
         const closeModalButtons = document.querySelectorAll('.close-modal');
         const gachaCard = document.querySelector('.gacha-card');
         const gachaCardImg = document.querySelector('.gacha-card-img');
@@ -2290,6 +2357,9 @@
         const sellAllButton = document.getElementById('sell-all-btn');
         const settingsButton = document.getElementById('settings-btn');
         const settingsSaveButton = document.getElementById('settings-save-btn');
+        const topupButton = document.getElementById('topup-btn');
+        const topupCloseButton = document.getElementById('topup-close-btn');
+        const topupOptions = document.querySelectorAll('.topup-option');
         const luckBoostIndicator = document.getElementById('luck-boost-indicator');
         const luckBoostRemaining = document.getElementById('luck-boost-remaining');
         
@@ -2327,7 +2397,7 @@
             gacha: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-arcade-mechanical-bling-210.mp3'),
             levelUp: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3'),
             legendary: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3'),
-            secret: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkle-sound-3091.mp3')
+            risingstar: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkle-sound-3091.mp3')
         };
 
         // Background Music
@@ -2341,13 +2411,15 @@
             gameData.shields.push(gameData.storeItems.shields[0]);
             gameData.attackBoosts.push(gameData.storeItems.boosts[0]);
             
+            // Give initial coins for testing
+            gameData.coins = 0;
+            
             updateCoinDisplay();
             updateLevelDisplay();
             updateHomeStats();
             updateInventoryDisplay();
             loadCollection();
             loadStoreItems('crates');
-            loadStoreItems('luck');
             loadQuests('main');
             
             // Set up event listeners
@@ -2445,6 +2517,7 @@
                     sellCardModal.classList.remove('active');
                     sellAllModal.classList.remove('active');
                     settingsModal.classList.remove('active');
+                    topupModal.classList.remove('active');
                 });
             });
 
@@ -2486,6 +2559,33 @@
                 
                 applySettings();
                 settingsModal.classList.remove('active');
+            });
+
+            // Topup modal
+            topupButton.addEventListener('click', () => {
+                topupModal.classList.add('active');
+            });
+
+            topupCloseButton.addEventListener('click', () => {
+                topupModal.classList.remove('active');
+            });
+
+            topupOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const amount = parseInt(option.getAttribute('data-amount'));
+                    const price = option.getAttribute('data-price');
+                    
+                    // Add coins to player
+                    gameData.coins += amount;
+                    updateCoinDisplay();
+                    updateHomeStats();
+                    
+                    // Show success message
+                    addToBattleLog(`Successfully purchased ${amount} coins!`, 'player');
+                    
+                    // Close modal
+                    topupModal.classList.remove('active');
+                });
             });
 
             // Gacha card flip
@@ -2734,7 +2834,7 @@
             else if (card.rarity === 'rare') sellPrice = 50 + card.attack * 3;
             else if (card.rarity === 'epic') sellPrice = 100 + card.attack * 4;
             else if (card.rarity === 'legendary') sellPrice = 200 + card.attack * 5;
-            else if (card.rarity === 'secret') sellPrice = 500 + card.attack * 10;
+            else if (card.rarity === 'risingstar') sellPrice = 500 + card.attack * 10;
             else if (card.rarity === 'stars') sellPrice = 1000 + card.attack * 15;
             return sellPrice;
         }
@@ -2823,6 +2923,8 @@
             
             const items = gameData.storeItems[category];
             
+            if (!items) return;
+            
             items.forEach(item => {
                 // Check if this is a photocard that's already owned
                 const isPhotocardOwned = category === 'photocards' && 
@@ -2833,7 +2935,7 @@
                 
                 const itemElement = document.createElement('div');
                 itemElement.className = 'store-item';
-                if (item.rarity === 'secret' || item.rarity === 'stars') {
+                if (item.rarity === 'risingstar' || item.rarity === 'stars') {
                     itemElement.classList.add('gacha-special');
                 }
                 
@@ -2845,7 +2947,7 @@
                         <div class="store-item-price">
                             <i class="fas fa-coins"></i> ${isFirstGacha ? 'FREE' : item.price}
                         </div>
-                        <button class="buy-btn" data-id="${item.id}" data-type="${category.slice(0, -1)}" ${isPhotocardOwned || (!isFirstGacha && gameData.coins < item.price) ? 'disabled' : ''}>
+                        <button class="buy-btn" data-id="${item.id}" data-type="${item.type || category.slice(0, -1)}" ${isPhotocardOwned || (!isFirstGacha && gameData.coins < item.price) ? 'disabled' : ''}>
                             ${isPhotocardOwned ? 'OWNED' : (isFirstGacha ? 'GET FREE' : 'BUY')}
                         </button>
                     </div>
@@ -3130,9 +3232,9 @@
                     updateHomeStats();
                     addToBattleLog(`Claimed ${card.name} from ${quest.name}!`, 'player');
                     
-                    // Update quest progress for secret hunter
-                    if (card.rarity === 'secret') {
-                        updateQuestProgress('Secret Hunter', 1);
+                    // Update quest progress for risingstar hunter
+                    if (card.rarity === 'risingstar') {
+                        updateQuestProgress('RisingStar Hunter', 1);
                     }
                 }
             }
@@ -3218,8 +3320,8 @@
                     
                     // Update quest progress
                     updateQuestProgress('Idol Collector', 1);
-                    if (item.rarity === 'secret') {
-                        updateQuestProgress('Secret Hunter', 1);
+                    if (item.rarity === 'risingstar') {
+                        updateQuestProgress('RisingStar Hunter', 1);
                     }
                 }
                 
@@ -3252,8 +3354,7 @@
             // Update quest progress for first gacha
             if (!firstGachaDone) {
                 updateQuestProgress('First Gacha', 1, 'main');
-firstGachaDone = true;   
-                
+                firstGachaDone = true;   
             }
             
             // Use luck boost if active
@@ -3293,12 +3394,12 @@ firstGachaDone = true;
                 } else {
                     availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
                 }
-            } else if (rarity === 'secret') {
-                // Secret Crate: 18% common, 30% rare, 51.5% epic, 0.5% secret/legendary
+            } else if (rarity === 'risingstar') {
+                // RisingStar Crate: 18% common, 30% rare, 51.5% epic, 0.5% risingstar/legendary
                 // Apply luck boost if active
-                let legendarySecretChance = 0.005; // 0.5% base chance
+                let legendaryRisingStarChance = 0.005; // 0.5% base chance
                 if (gameData.luckBoosts.active) {
-                    legendarySecretChance += (gameData.luckBoosts.boostAmount / 100); // Add 1% from boost
+                    legendaryRisingStarChance += (gameData.luckBoosts.boostAmount / 100); // Add 1% from boost
                 }
                 
                 const randomValue = Math.random();
@@ -3306,14 +3407,14 @@ firstGachaDone = true;
                     availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
                 } else if (randomValue < 0.48) {
                     availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
-                } else if (randomValue < (1 - legendarySecretChance)) {
+                } else if (randomValue < (1 - legendaryRisingStarChance)) {
                     availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
                 } else {
-                    // Chance for legendary or secret
-                    const legendaryAndSecret = gameData.gachaPool.filter(card => 
-                        card.rarity === 'legendary' || card.rarity === 'secret' || card.rarity === 'stars'
+                    // Chance for legendary or risingstar
+                    const legendaryAndRisingStar = gameData.gachaPool.filter(card => 
+                        card.rarity === 'legendary' || card.rarity === 'risingstar' || card.rarity === 'stars'
                     );
-                    availableCards = legendaryAndSecret;
+                    availableCards = legendaryAndRisingStar;
                 }
             }
             
@@ -3353,46 +3454,40 @@ firstGachaDone = true;
             if (card.rarity === 'rare') rarityColor = '#6a5af9';
             else if (card.rarity === 'epic') rarityColor = '#ff6b9d';
             else if (card.rarity === 'legendary') rarityColor = '#ffd166';
-            else if (card.rarity === 'secret') rarityColor = '#ffd700';
+            else if (card.rarity === 'risingstar') rarityColor = '#ffd700';
             else if (card.rarity === 'stars') rarityColor = '#ff00cc';
             
             gachaResultRarity.textContent = card.rarity.toUpperCase();
             gachaResultRarity.style.color = rarityColor;
             
-            // Add special class for secret and stars cards
-            if (card.rarity === 'secret' || card.rarity === 'stars') {
-                gachaCard.classList.add('gacha-special');
-            } else {
-                gachaCard.classList.remove('gacha-special');
-            }
+            // Reset special effects
+            gachaCard.classList.remove('gacha-special', 'legendary-glow', 'risingstar-glow');
             
-            gachaModal.classList.add('active');
-            gachaCard.classList.remove('flipped');
-            
-            // Special effects for legendary and secret cards
+            // Add special class and effects for legendary and risingstar cards
             if (card.rarity === 'legendary') {
+                gachaCard.classList.add('gacha-special', 'legendary-glow');
+                
                 // Play legendary sound
                 if (gameData.settings.sfxEnabled) {
                     sounds.legendary.play().catch(e => console.log("Audio play failed"));
                 }
                 
-                // Add legendary glow effect
-                gachaCard.classList.add('legendary-glow');
-                
                 // Create confetti effect
                 createConfetti();
-            } else if (card.rarity === 'secret' || card.rarity === 'stars') {
-                // Play secret sound
-                if (gameData.settings.sfxEnabled) {
-                    sounds.secret.play().catch(e => console.log("Audio play failed"));
-                }
+            } else if (card.rarity === 'risingstar' || card.rarity === 'stars') {
+                gachaCard.classList.add('gacha-special', 'risingstar-glow');
                 
-                // Add secret glow effect
-                gachaCard.classList.add('secret-glow');
+                // Play risingstar sound
+                if (gameData.settings.sfxEnabled) {
+                    sounds.risingstar.play().catch(e => console.log("Audio play failed"));
+                }
                 
                 // Create confetti effect
                 createConfetti();
             }
+            
+            gachaModal.classList.add('active');
+            gachaCard.classList.remove('flipped');
             
             // Auto-flip after a delay
             setTimeout(() => {
@@ -3887,6 +3982,3 @@ firstGachaDone = true;
     </script>
 </body>
 </html>
-
-
-
