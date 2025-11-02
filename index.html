@@ -45,6 +45,125 @@
             flex-direction: column;
         }
 
+        /* Login Screen Styles */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        }
+
+        .login-container {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+        }
+
+        .login-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .form-input {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 107, 157, 0.2);
+        }
+
+        .login-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-switch {
+            margin-top: 20px;
+            color: #aaa;
+        }
+
+        .login-switch-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .login-error {
+            color: var(--danger);
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
         /* Header Styles */
         header {
             text-align: center;
@@ -71,6 +190,11 @@
             align-items: center;
             padding: 0 15px;
             font-size: 0.9rem;
+        }
+
+        .player-nickname {
+            font-weight: 600;
+            color: var(--accent);
         }
 
         .coins {
@@ -1712,11 +1836,65 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Screen -->
+    <div id="login-screen" class="active">
+        <div class="login-container">
+            <div class="login-logo">
+                <i class="fas fa-star float"></i>
+            </div>
+            <h1 class="login-title">Battle Of Idol</h1>
+            <p class="login-subtitle">Collect your favorite K-Pop idols and battle against others!</p>
+            
+            <div id="login-form-container">
+                <form class="login-form" id="login-form">
+                    <div class="form-group">
+                        <label class="form-label" for="login-nickname">Nickname</label>
+                        <input type="text" id="login-nickname" class="form-input" placeholder="Enter your nickname" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="login-password">Password</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                    <div class="login-error" id="login-error"></div>
+                </form>
+                
+                <div class="login-switch">
+                    Don't have an account? <button class="login-switch-btn" id="switch-to-register">Register</button>
+                </div>
+            </div>
+            
+            <div id="register-form-container" class="hidden">
+                <form class="login-form" id="register-form">
+                    <div class="form-group">
+                        <label class="form-label" for="register-nickname">Nickname</label>
+                        <input type="text" id="register-nickname" class="form-input" placeholder="Choose a nickname" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="register-password">Password</label>
+                        <input type="password" id="register-password" class="form-input" placeholder="Choose a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="register-confirm-password">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" class="form-input" placeholder="Confirm your password" required>
+                    </div>
+                    <button type="submit" class="login-btn">Register</button>
+                    <div class="login-error" id="register-error"></div>
+                </form>
+                
+                <div class="login-switch">
+                    Already have an account? <button class="login-switch-btn" id="switch-to-login">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Container -->
+    <div class="container" id="game-container">
         <header>
             <h1>Battle Of Idol</h1>
             <div class="player-info">
-                <div class="level">Level: <span id="player-level">1</span></div>
+                <div class="player-nickname" id="player-nickname">Player</div>
                 <div class="coins" id="topup-btn">
                     <i class="fas fa-coins coin-icon"></i> <span id="coin-count">0</span>
                 </div>
@@ -1759,15 +1937,15 @@
 
                 <div class="featured-cards">
                     <div class="featured-card">
-                        <img src="hanni2.jpg" alt="Hanni" class="featured-card-img">
+                        <img src="https://via.placeholder.com/160x220/ff6b9d/ffffff?text=Hanni" alt="Hanni" class="featured-card-img">
                         <div class="featured-card-name">Hanni</div>
                     </div>
                     <div class="featured-card">
-                        <img src="iu2.jpg" alt="IU" class="featured-card-img">
+                        <img src="https://via.placeholder.com/160x220/6a5af9/ffffff?text=IU" alt="IU" class="featured-card-img">
                         <div class="featured-card-name">IU</div>
                     </div>
                     <div class="featured-card">
-                        <img src="yoona2.jpg" alt="Yoona" class="featured-card-img">
+                        <img src="https://via.placeholder.com/160x220/ffd166/ffffff?text=Yoona" alt="Yoona" class="featured-card-img">
                         <div class="featured-card-name">Yoona</div>
                     </div>
                 </div>
@@ -1818,7 +1996,7 @@
             <div class="battle-field">
                 <div class="enemy-card">
                     <div class="card rarity-common">
-                        <img src="random1.jpg" alt="Enemy Idol" class="card-img">
+                        <img src="https://via.placeholder.com/180x250/555555/ffffff?text=Enemy" alt="Enemy Idol" class="card-img">
                         <div id="enemy-shield-effect" class="shield-effect hidden"></div>
                         <div id="enemy-boost-effect" class="boost-effect hidden"></div>
                         <div id="enemy-shield-status" class="bot-status shield hidden">SHIELD</div>
@@ -1836,7 +2014,7 @@
 
                 <div class="player-card">
                     <div class="card rarity-common">
-                        <img src="placeholder.jpg" alt="Your Idol" class="card-img">
+                        <img src="https://via.placeholder.com/180x250/333333/ffffff?text=No+Card" alt="Your Idol" class="card-img">
                         <div id="player-shield-effect" class="shield-effect hidden"></div>
                         <div id="player-boost-effect" class="boost-effect hidden"></div>
                     </div>
@@ -2102,6 +2280,7 @@
                 </div>
                 
                 <button class="action-btn play-btn" id="settings-save-btn" style="margin-top: 15px;">Save Settings</button>
+                <button class="action-btn play-btn" id="logout-btn" style="margin-top: 10px; background: var(--danger);">Logout</button>
             </div>
         </div>
     </div>
@@ -2161,97 +2340,96 @@
             },
             storeItems: {
                 crates: [
-                    { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common idols only" },
-                    { id: 2, name: "Premium Crate", price: 100, type: "crate", rarity: "rare", image: "premium.jpg", description: "Contains common and rare idols" },
-                    { id: 3, name: "Elite Crate", price: 200, type: "crate", rarity: "epic", image: "elite.jpg", description: "Contains common, rare and epic idols" },
-                    { id: 4, name: "RisingStar Crate", price: 500, type: "crate", rarity: "risingstar", image: "secret.jpg", description: "Contains common, rare, epic and risingstar idols" }
+                    { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "https://via.placeholder.com/140x140/555555/ffffff?text=Basic", description: "Contains common idols only" },
+                    { id: 2, name: "Premium Crate", price: 100, type: "crate", rarity: "rare", image: "https://via.placeholder.com/140x140/6a5af9/ffffff?text=Premium", description: "Contains common and rare idols" },
+                    { id: 3, name: "Elite Crate", price: 200, type: "crate", rarity: "epic", image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=Elite", description: "Contains common, rare and epic idols" },
+                    { id: 4, name: "RisingStar Crate", price: 500, type: "crate", rarity: "risingstar", image: "https://via.placeholder.com/140x140/ffd700/ffffff?text=RisingStar", description: "Contains common, rare, epic and risingstar idols" }
                 ],
                 upgrades: [
-                    { id: 1, name: "Attack Upgrade", price: 100, type: "upgrade", image: "attack.jpg", description: "Increase attack by 1 for any card" }
+                    { id: 1, name: "Attack Upgrade", price: 100, type: "upgrade", image: "https://via.placeholder.com/140x140/ffd166/333333?text=Upgrade", description: "Increase attack by 1 for any card" }
                 ],
                 shields: [
-                    { id: 1, name: "Basic Shield", price: 30, defense: 10, duration: 30, image: "Shield.jpg", description: "Reduces damage by 10 for 30 seconds" },
-                    { id: 2, name: "Strong Shield", price: 60, defense: 20, duration: 25, image: "Shield.jpg", description: "Reduces damage by 20 for 25 seconds" },
-                    { id: 3, name: "Epic Shield", price: 120, defense: 35, duration: 20, image: "Shield.jpg", description: "Reduces damage by 35 for 20 seconds" }
+                    { id: 1, name: "Basic Shield", price: 30, defense: 10, duration: 30, image: "https://via.placeholder.com/140x140/6a5af9/ffffff?text=Shield", description: "Reduces damage by 10 for 30 seconds" },
+                    { id: 2, name: "Strong Shield", price: 60, defense: 20, duration: 25, image: "https://via.placeholder.com/140x140/6a5af9/ffffff?text=Shield", description: "Reduces damage by 20 for 25 seconds" },
+                    { id: 3, name: "Epic Shield", price: 120, defense: 35, duration: 20, image: "https://via.placeholder.com/140x140/6a5af9/ffffff?text=Shield", description: "Reduces damage by 35 for 20 seconds" }
                 ],
                 boosts: [
-                    { id: 1, name: "Basic Boost", price: 40, multiplier: 1.5, duration: 15, image: "boost.jpg", description: "Increase attack by 50% for 15 seconds" },
-                    { id: 2, name: "Strong Boost", price: 80, multiplier: 2, duration: 12, image: "boost.jpg", description: "Double attack for 12 seconds" },
-                    { id: 3, name: "Epic Boost", price: 150, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" }
+                    { id: 1, name: "Basic Boost", price: 40, multiplier: 1.5, duration: 15, image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=Boost", description: "Increase attack by 50% for 15 seconds" },
+                    { id: 2, name: "Strong Boost", price: 80, multiplier: 2, duration: 12, image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=Boost", description: "Double attack for 12 seconds" },
+                    { id: 3, name: "Epic Boost", price: 150, multiplier: 3, duration: 10, image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=Boost", description: "Triple attack for 10 seconds" }
                 ],
                 luck: [
-                    { id: 1, name: "Luck Boost", price: 200, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1% for 10 openings" }
+                    { id: 1, name: "Luck Boost", price: 200, type: "luck", image: "https://via.placeholder.com/140x140/06d6a0/ffffff?text=Luck", description: "Increase gacha luck by 1% for 10 openings" }
                 ],
                 photocards: [
-                    { id: 100, name: "Special Hanni", group: "NewJeans", image: "hanni_special.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", price: 5800, description: "Exclusive photocard not available in gacha" },
-                    { id: 101, name: "Special Jennie", group: "BLACKPINK", image: "jennie_special.jpg", health: 155, maxHealth: 155, attack: 20, rarity: "epic", price: 6500, description: "Exclusive photocard not available in gacha" },
-                    { id: 102, name: "Special Karina", group: "aespa", image: "karina_special.jpg", health: 165, maxHealth: 165, attack: 20, rarity: "legendary", price: 6500, description: "Exclusive photocard not available in gacha" },
-                    { id: 103, name: "Special IU", group: "Soloist", image: "iu_special.jpg", health: 167, maxHealth: 167, attack: 19, rarity: "legendary", price: 6200, description: "Exclusive photocard not available in gacha" },
-                    { id: 59, name: "Special Mira", group: "HUNTR/X", image: "mira.jpg", health: 145, maxHealth: 145, attack: 17, rarity: "rare", price: 6100, description: "Exclusive photocard not available in gacha" }
+                    { id: 100, name: "Special Hanni", group: "NewJeans", image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=Hanni+Special", health: 150, maxHealth: 150, attack: 18, rarity: "rare", price: 5800, description: "Exclusive photocard not available in gacha" },
+                    { id: 101, name: "Special Jennie", group: "BLACKPINK", image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=Jennie+Special", health: 155, maxHealth: 155, attack: 20, rarity: "epic", price: 6500, description: "Exclusive photocard not available in gacha" },
+                    { id: 102, name: "Special Karina", group: "aespa", image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=Karina+Special", health: 165, maxHealth: 165, attack: 20, rarity: "legendary", price: 6500, description: "Exclusive photocard not available in gacha" },
+                    { id: 103, name: "Special IU", group: "Soloist", image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=IU+Special", health: 167, maxHealth: 167, attack: 19, rarity: "legendary", price: 6200, description: "Exclusive photocard not available in gacha" },
+                    { id: 59, name: "Special Mira", group: "HUNTR/X", image: "https://via.placeholder.com/140x140/ff6b9d/ffffff?text=Mira+Special", health: 145, maxHealth: 145, attack: 17, rarity: "rare", price: 6100, description: "Exclusive photocard not available in gacha" }
                 ]
             },
             gachaPool: [
                 // Common Cards (100% in Basic Crate, 45% in Premium, 20% in Elite, 15% in RisingStar)
-                { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 3, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 15, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 22, name: "Leeseo", group: "IVE", image: "leseo.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 61, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 1, name: "Hanni", group: "NewJeans", image: "https://via.placeholder.com/140x180/555555/ffffff?text=Hanni", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 3, name: "Karina", group: "aespa", image: "https://via.placeholder.com/140x180/555555/ffffff?text=Karina", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 15, name: "Minji", group: "NewJeans", image: "https://via.placeholder.com/140x180/555555/ffffff?text=Minji", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 22, name: "Leeseo", group: "IVE", image: "https://via.placeholder.com/140x180/555555/ffffff?text=Leeseo", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 61, name: "Ahyeon", group: "BABYMONSTER", image: "https://via.placeholder.com/140x180/555555/ffffff?text=Ahyeon", health: 120, maxHealth: 120, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // Rare Cards (55% in Premium, 35% in Elite, 25% in RisingStar)
-                { id: 4, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 5, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 6, name: "Winter", group: "aespa", image: "winter.jpg", health: 130, maxHealth: 130, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 11, name: "Sakura", group: "LE SSERAFIM", image: "sakura.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 12, name: "Kazuha", group: "LE SSERAFIM", image: "kazuha.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 13, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 14, name: "Giselle", group: "aespa", image: "gisel.jpg", health: 125, maxHealth: 125, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 16, name: "Haerin", group: "NewJeans", image: "haerin.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 17, name: "Hyein", group: "NewJeans", image: "hyein.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 18, name: "Jisoo", group: "BLACKPINK", image: "jisso.jpg", health: 130, maxHealth: 130, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 19, name: "Rose", group: "BLACKPINK", image: "rose.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 20, name: "Rei", group: "IVE", image: "rei.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 21, name: "Liz", group: "IVE", image: "liz.jpg", health: 115, maxHealth: 115, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 25, name: "Wonhee", group: "ILLIT", image: "wonhee.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 26, name: "Iroha", group: "ILLIT", image: "iroha.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 28, name: "Minju", group: "ILLIT", image: "minju.jpg", health: 115, maxHealth: 115, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 32, name: "Jiwoo", group: "HEARTS2HEARTS", image: "jiwoo.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 56, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 62, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 4, name: "Danielle", group: "NewJeans", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Danielle", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 5, name: "Lisa", group: "BLACKPINK", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Lisa", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 6, name: "Winter", group: "aespa", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Winter", health: 130, maxHealth: 130, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 11, name: "Sakura", group: "LE SSERAFIM", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Sakura", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 12, name: "Kazuha", group: "LE SSERAFIM", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Kazuha", health: 130, maxHealth: 130, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 13, name: "Ningning", group: "aespa", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Ningning", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 14, name: "Giselle", group: "aespa", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Giselle", health: 125, maxHealth: 125, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 16, name: "Haerin", group: "NewJeans", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Haerin", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 17, name: "Hyein", group: "NewJeans", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Hyein", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 18, name: "Jisoo", group: "BLACKPINK", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Jisoo", health: 130, maxHealth: 130, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 19, name: "Rose", group: "BLACKPINK", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Rose", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 20, name: "Rei", group: "IVE", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Rei", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 21, name: "Liz", group: "IVE", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Liz", health: 115, maxHealth: 115, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 25, name: "Wonhee", group: "ILLIT", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Wonhee", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 26, name: "Iroha", group: "ILLIT", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Iroha", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 28, name: "Minju", group: "ILLIT", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Minju", health: 115, maxHealth: 115, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 32, name: "Jiwoo", group: "HEARTS2HEARTS", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Jiwoo", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 56, name: "Rumi", group: "HUNTR/X", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Rumi", health: 150, maxHealth: 150, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 62, name: "Ruka", group: "BABYMONSTER", image: "https://via.placeholder.com/140x180/6a5af9/ffffff?text=Ruka", health: 135, maxHealth: 135, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // Epic Cards (45% in Elite, 58% in RisingStar)
-                { id: 7, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 8, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 23, name: "Yunjin", group: "LE SSERAFIM", image: "yunjin.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 24, name: "Eunchae", group: "LE SSERAFIM", image: "eunchae.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 27, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 63, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 7, name: "Wonyoung", group: "IVE", image: "https://via.placeholder.com/140x180/ff6b9d/ffffff?text=Wonyoung", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 8, name: "Yujin", group: "IVE", image: "https://via.placeholder.com/140x180/ff6b9d/ffffff?text=Yujin", health: 135, maxHealth: 135, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "https://via.placeholder.com/140x180/ff6b9d/ffffff?text=Chaewon", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 23, name: "Yunjin", group: "LE SSERAFIM", image: "https://via.placeholder.com/140x180/ff6b9d/ffffff?text=Yunjin", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 24, name: "Eunchae", group: "LE SSERAFIM", image: "https://via.placeholder.com/140x180/ff6b9d/ffffff?text=Eunchae", health: 125, maxHealth: 125, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 27, name: "Youngseo", group: "ILLIT", image: "https://via.placeholder.com/140x180/ff6b9d/ffffff?text=Youngseo", health: 130, maxHealth: 130, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 63, name: "Pharita", group: "BABYMONSTER", image: "https://via.placeholder.com/140x180/ff6b9d/ffffff?text=Pharita", health: 140, maxHealth: 140, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // Legendary Cards (2% in RisingStar)
-                { id: 10, name: "Haerin", group: "NewJeans", image: "haerinL.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 29, name: "Yoona", group: "SNSD", image: "yoonaL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 30, name: "IU", group: "Soloist", image: "iuL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 31, name: "Taeyeon", group: "SNSD", image: "taeyonL.jpg", health: 135, maxHealth: 135, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "carmenL.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 64, name: "Asa", group: "BABYMONSTER", image: "asaL.jpg", health: 155, maxHealth: 155, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 10, name: "Haerin", group: "NewJeans", image: "https://via.placeholder.com/140x180/ffd166/333333?text=Haerin", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 29, name: "Yoona", group: "SNSD", image: "https://via.placeholder.com/140x180/ffd166/333333?text=Yoona", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 30, name: "IU", group: "Soloist", image: "https://via.placeholder.com/140x180/ffd166/333333?text=IU", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 31, name: "Taeyeon", group: "SNSD", image: "https://via.placeholder.com/140x180/ffd166/333333?text=Taeyeon", health: 135, maxHealth: 135, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "https://via.placeholder.com/140x180/ffd166/333333?text=Carmen", health: 130, maxHealth: 130, attack: 16, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 64, name: "Asa", group: "BABYMONSTER", image: "https://via.placeholder.com/140x180/ffd166/333333?text=Asa", health: 155, maxHealth: 155, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // RisingStar Cards (2% in RisingStar)
-                { id: 50, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 51, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 52, name: "Hanni", group: "NewJeans", image: "hanni2.jpg", health: 210, maxHealth: 210, attack: 26, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 53, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 54, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 55, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 59, name: "Mira", group: "HUNTR/X", image: "mira2.jpg", health: 185, maxHealth: 185, attack: 24, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 65, name: "Rora", group: "BABYMONSTER", image: "rora2.jpg", health: 160, maxHealth: 160, attack: 20, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 66, name: "Rose", group: "BLACKPINK", image: "rose2.jpg", health: 165, maxHealth: 165, attack: 21, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 }
+                { id: 50, name: "Jennie", group: "BLACKPINK", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=Jennie+RS", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 51, name: "Karina", group: "aespa", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=Karina+RS", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 52, name: "Hanni", group: "NewJeans", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=Hanni+RS", health: 210, maxHealth: 210, attack: 26, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 53, name: "Carmen", group: "HEARTS2HEARTS", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=Carmen+RS", health: 230, maxHealth: 230, attack: 30, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 54, name: "IU", group: "Soloist", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=IU+RS", health: 240, maxHealth: 240, attack: 32, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 55, name: "Yoona", group: "SNSD", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=Yoona+RS", health: 235, maxHealth: 235, attack: 29, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 59, name: "Mira", group: "HUNTR/X", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=Mira+RS", health: 185, maxHealth: 185, attack: 24, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 65, name: "Rora", group: "BABYMONSTER", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=Rora+RS", health: 160, maxHealth: 160, attack: 20, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 66, name: "Rose", group: "BLACKPINK", image: "https://via.placeholder.com/140x180/ffd700/ffffff?text=Rose+RS", health: 165, maxHealth: 165, attack: 21, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 }
             ],
             quests: {
                 main: [
-                { id: 0, name: "Demo Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 1500 }, completed: false, claimed: false },
-                { id: 1, name: "New Player", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
-                    
+                    { id: 0, name: "Demo Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 1500 }, completed: false, claimed: false },
+                    { id: 1, name: "New Player", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
                     { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
                     { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
                     { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
@@ -2288,20 +2466,20 @@
                 ]
             },
             enemyCards: [
-                { id: 101, name: "Hanni", group: "NewJeans", image: "hanni0.jpg", health: 80, maxHealth: 80, attack: 8, rarity: "common" },
-                { id: 102, name: "Jennie", group: "BLACKPINK", image: "jennie.jpg", health: 85, maxHealth: 85, attack: 9, rarity: "common" },
-                { id: 103, name: "Karina", group: "aespa", image: "karina.jpg", health: 90, maxHealth: 90, attack: 10, rarity: "common" },
-                { id: 104, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "rare" },
-                { id: 105, name: "Lisa", group: "BLACKPINK", image: "lisa0.jpg", health: 95, maxHealth: 95, attack: 12, rarity: "rare" },
-                { id: 106, name: "RisingStar Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar" },
-                { id: 107, name: "RisingStar Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar" },
-                { id: 108, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 180, maxHealth: 180, attack: 35, rarity: "stars" },
-                { id: 109, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "common" },
-                { id: 110, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "rare" },
-                { id: 111, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "epic" },
-                { id: 112, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 140, maxHealth: 140, attack: 19, rarity: "legendary" },
-                { id: 113, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 25, rarity: "risingstar" },
-                { id: 114, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 23, rarity: "stars" }
+                { id: 101, name: "Hanni", group: "NewJeans", image: "https://via.placeholder.com/180x250/555555/ffffff?text=Hanni", health: 80, maxHealth: 80, attack: 8, rarity: "common" },
+                { id: 102, name: "Jennie", group: "BLACKPINK", image: "https://via.placeholder.com/180x250/555555/ffffff?text=Jennie", health: 85, maxHealth: 85, attack: 9, rarity: "common" },
+                { id: 103, name: "Karina", group: "aespa", image: "https://via.placeholder.com/180x250/555555/ffffff?text=Karina", health: 90, maxHealth: 90, attack: 10, rarity: "common" },
+                { id: 104, name: "Danielle", group: "NewJeans", image: "https://via.placeholder.com/180x250/6a5af9/ffffff?text=Danielle", health: 100, maxHealth: 100, attack: 11, rarity: "rare" },
+                { id: 105, name: "Lisa", group: "BLACKPINK", image: "https://via.placeholder.com/180x250/6a5af9/ffffff?text=Lisa", health: 95, maxHealth: 95, attack: 12, rarity: "rare" },
+                { id: 106, name: "RisingStar Jennie", group: "BLACKPINK", image: "https://via.placeholder.com/180x250/ffd700/ffffff?text=Jennie+RS", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar" },
+                { id: 107, name: "RisingStar Karina", group: "aespa", image: "https://via.placeholder.com/180x250/ffd700/ffffff?text=Karina+RS", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar" },
+                { id: 108, name: "Rumi", group: "HUNTR/X", image: "https://via.placeholder.com/180x250/ff00cc/ffffff?text=Rumi+Stars", health: 180, maxHealth: 180, attack: 35, rarity: "stars" },
+                { id: 109, name: "Ahyeon", group: "BABYMONSTER", image: "https://via.placeholder.com/180x250/555555/ffffff?text=Ahyeon", health: 120, maxHealth: 120, attack: 14, rarity: "common" },
+                { id: 110, name: "Ruka", group: "BABYMONSTER", image: "https://via.placeholder.com/180x250/6a5af9/ffffff?text=Ruka", health: 135, maxHealth: 135, attack: 15, rarity: "rare" },
+                { id: 111, name: "Pharita", group: "BABYMONSTER", image: "https://via.placeholder.com/180x250/ff6b9d/ffffff?text=Pharita", health: 140, maxHealth: 140, attack: 17, rarity: "epic" },
+                { id: 112, name: "Asa", group: "BABYMONSTER", image: "https://via.placeholder.com/180x250/ffd166/333333?text=Asa", health: 140, maxHealth: 140, attack: 19, rarity: "legendary" },
+                { id: 113, name: "Rora", group: "BABYMONSTER", image: "https://via.placeholder.com/180x250/ffd700/ffffff?text=Rora+RS", health: 160, maxHealth: 160, attack: 25, rarity: "risingstar" },
+                { id: 114, name: "Chiquita", group: "BABYMONSTER", image: "https://via.placeholder.com/180x250/ff00cc/ffffff?text=Chiquita+Stars", health: 165, maxHealth: 165, attack: 23, rarity: "stars" }
             ],
             settings: {
                 bgmEnabled: true,
@@ -2310,10 +2488,23 @@
                 sfxVolume: 70,
                 vibration: false,
                 notifications: true
-            }
+            },
+            nickname: "Player"
         };
 
         // DOM Elements
+        const loginScreen = document.getElementById('login-screen');
+        const gameContainer = document.getElementById('game-container');
+        const loginFormContainer = document.getElementById('login-form-container');
+        const registerFormContainer = document.getElementById('register-form-container');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const switchToRegisterBtn = document.getElementById('switch-to-register');
+        const switchToLoginBtn = document.getElementById('switch-to-login');
+        const loginError = document.getElementById('login-error');
+        const registerError = document.getElementById('register-error');
+        const playerNicknameElement = document.getElementById('player-nickname');
+        
         const navButtons = document.querySelectorAll('.nav-btn');
         const screens = document.querySelectorAll('.screen');
         const coinCountElement = document.getElementById('coin-count');
@@ -2357,6 +2548,7 @@
         const sellAllButton = document.getElementById('sell-all-btn');
         const settingsButton = document.getElementById('settings-btn');
         const settingsSaveButton = document.getElementById('settings-save-btn');
+        const logoutButton = document.getElementById('logout-btn');
         const topupButton = document.getElementById('topup-btn');
         const topupCloseButton = document.getElementById('topup-close-btn');
         const topupOptions = document.querySelectorAll('.topup-option');
@@ -2462,6 +2654,20 @@
         
         // Set up event listeners
         function setupEventListeners() {
+            // Login/Register
+            switchToRegisterBtn.addEventListener('click', () => {
+                loginFormContainer.classList.add('hidden');
+                registerFormContainer.classList.remove('hidden');
+            });
+            
+            switchToLoginBtn.addEventListener('click', () => {
+                registerFormContainer.classList.add('hidden');
+                loginFormContainer.classList.remove('hidden');
+            });
+            
+            loginForm.addEventListener('submit', handleLogin);
+            registerForm.addEventListener('submit', handleRegister);
+            
             // Navigation
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -2558,7 +2764,15 @@
                 gameData.settings.notifications = document.getElementById('notifications-toggle').checked;
                 
                 applySettings();
+                saveGameData();
                 settingsModal.classList.remove('active');
+            });
+
+            // Logout button
+            logoutButton.addEventListener('click', () => {
+                if (confirm("Are you sure you want to logout?")) {
+                    logout();
+                }
             });
 
             // Topup modal
@@ -2579,6 +2793,7 @@
                     gameData.coins += amount;
                     updateCoinDisplay();
                     updateHomeStats();
+                    saveGameData();
                     
                     // Show success message
                     addToBattleLog(`Successfully purchased ${amount} coins!`, 'player');
@@ -2600,6 +2815,355 @@
                     backgroundMusic.play().catch(e => console.log("Audio play failed"));
                 }
             });
+
+            // Save game on page unload
+            window.addEventListener('beforeunload', () => {
+                saveGameData();
+            });
+        }
+
+        // Handle login
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const nickname = document.getElementById('login-nickname').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Check if user exists
+            const userData = localStorage.getItem(`battle_of_idol_${nickname}`);
+            
+            if (!userData) {
+                loginError.textContent = "User not found. Please register first.";
+                loginError.style.display = 'block';
+                return;
+            }
+            
+            const user = JSON.parse(userData);
+            
+            if (user.password !== password) {
+                loginError.textContent = "Incorrect password.";
+                loginError.style.display = 'block';
+                return;
+            }
+            
+            // Login successful
+            gameData.nickname = nickname;
+            loadGameData();
+            
+            // Hide login screen and show game
+            loginScreen.classList.remove('active');
+            gameContainer.style.display = 'flex';
+            
+            // Update player nickname
+            playerNicknameElement.textContent = gameData.nickname;
+            
+            // Initialize game
+            initGame();
+        }
+
+        // Handle register
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const nickname = document.getElementById('register-nickname').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            // Validate inputs
+            if (password !== confirmPassword) {
+                registerError.textContent = "Passwords do not match.";
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            if (nickname.length < 3) {
+                registerError.textContent = "Nickname must be at least 3 characters long.";
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            if (password.length < 4) {
+                registerError.textContent = "Password must be at least 4 characters long.";
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            // Check if user already exists
+            if (localStorage.getItem(`battle_of_idol_${nickname}`)) {
+                registerError.textContent = "User already exists. Please choose a different nickname.";
+                registerError.style.display = 'block';
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                nickname: nickname,
+                password: password,
+                gameData: {
+                    coins: 0,
+                    level: 1,
+                    xp: 0,
+                    xpToNextLevel: 100,
+                    currentCard: null,
+                    attackUpgrades: 0,
+                    attackBoosts: [1],
+                    cards: [],
+                    shields: [1],
+                    luckBoosts: {
+                        active: false,
+                        remainingUses: 0,
+                        boostAmount: 0
+                    },
+                    quests: {
+                        main: [
+                            { id: 0, name: "Demo Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 1500 }, completed: false, claimed: false },
+                            { id: 1, name: "New Player", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+                            { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+                            { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
+                            { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
+                            { id: 7, name: "RisingStar Hunter", description: "Collect a RisingStar Card", progress: 0, target: 1, reward: { type: "card", value: 54 }, completed: false, claimed: false },
+                            { id: 8, name: "Ultimate Collector", description: "Collect 15 different idols", progress: 0, target: 15, reward: { type: "card", value: 55 }, completed: false, claimed: false },
+                            { id: 9, name: "Battle Legend", description: "Win 50 battles", progress: 0, target: 50, reward: { type: "card", value: 53 }, completed: false, claimed: false }
+                        ],
+                        daily: [
+                            { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 50 }, completed: false, claimed: false },
+                            { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 30 }, completed: false, claimed: false }
+                        ]
+                    },
+                    battlePass: {
+                        unlocked: false,
+                        currentLevel: 1,
+                        xp: 0,
+                        xpToNextLevel: 100,
+                        levels: [
+                            { level: 1, reward: { type: "coins", value: 50 }, unlocked: true, claimed: false },
+                            { level: 2, reward: { type: "attackUpgrade", value: 1 }, unlocked: false, claimed: false },
+                            { level: 3, reward: { type: "card", value: 5 }, unlocked: false, claimed: false },
+                            { level: 4, reward: { type: "coins", value: 100 }, unlocked: false, claimed: false },
+                            { level: 5, reward: { type: "shield", value: 2 }, unlocked: false, claimed: false },
+                            { level: 6, reward: { type: "gachaCoupon", value: 1 }, unlocked: false, claimed: false },
+                            { level: 7, reward: { type: "coins", value: 150 }, unlocked: false, claimed: false },
+                            { level: 8, reward: { type: "card", value: 15 }, unlocked: false, claimed: false },
+                            { level: 9, reward: { type: "attackBoost", value: 2 }, unlocked: false, claimed: false },
+                            { level: 10, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
+                            { level: 11, reward: { type: "coins", value: 300 }, unlocked: false, claimed: false },
+                            { level: 12, reward: { type: "card", value: 29 }, unlocked: false, claimed: false },
+                            { level: 13, reward: { type: "gachaCoupon", value: 3 }, unlocked: false, claimed: false },
+                            { level: 14, reward: { type: "coins", value: 500 }, unlocked: false, claimed: false },
+                            { level: 15, reward: { type: "card", value: 56, rarity: "stars" }, unlocked: false, claimed: false }
+                        ]
+                    },
+                    settings: {
+                        bgmEnabled: true,
+                        bgmVolume: 50,
+                        sfxEnabled: true,
+                        sfxVolume: 70,
+                        vibration: false,
+                        notifications: true
+                    }
+                }
+            };
+            
+            // Save user data
+            localStorage.setItem(`battle_of_idol_${nickname}`, JSON.stringify(newUser));
+            
+            // Login the new user
+            gameData.nickname = nickname;
+            loadGameData();
+            
+            // Hide login screen and show game
+            loginScreen.classList.remove('active');
+            gameContainer.style.display = 'flex';
+            
+            // Update player nickname
+            playerNicknameElement.textContent = gameData.nickname;
+            
+            // Initialize game
+            initGame();
+        }
+
+        // Load game data from localStorage
+        function loadGameData() {
+            const userData = localStorage.getItem(`battle_of_idol_${gameData.nickname}`);
+            
+            if (userData) {
+                const user = JSON.parse(userData);
+                const savedGameData = user.gameData;
+                
+                // Load all game data
+                gameData.coins = savedGameData.coins || 0;
+                gameData.level = savedGameData.level || 1;
+                gameData.xp = savedGameData.xp || 0;
+                gameData.xpToNextLevel = savedGameData.xpToNextLevel || 100;
+                gameData.currentCard = savedGameData.currentCard || null;
+                gameData.attackUpgrades = savedGameData.attackUpgrades || 0;
+                gameData.attackBoosts = savedGameData.attackBoosts || [1];
+                gameData.cards = savedGameData.cards || [];
+                gameData.shields = savedGameData.shields || [1];
+                gameData.luckBoosts = savedGameData.luckBoosts || {
+                    active: false,
+                    remainingUses: 0,
+                    boostAmount: 0
+                };
+                gameData.quests = savedGameData.quests || {
+                    main: [
+                        { id: 0, name: "Demo Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 1500 }, completed: false, claimed: false },
+                        { id: 1, name: "New Player", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+                        { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+                        { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
+                        { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
+                        { id: 7, name: "RisingStar Hunter", description: "Collect a RisingStar Card", progress: 0, target: 1, reward: { type: "card", value: 54 }, completed: false, claimed: false },
+                        { id: 8, name: "Ultimate Collector", description: "Collect 15 different idols", progress: 0, target: 15, reward: { type: "card", value: 55 }, completed: false, claimed: false },
+                        { id: 9, name: "Battle Legend", description: "Win 50 battles", progress: 0, target: 50, reward: { type: "card", value: 53 }, completed: false, claimed: false }
+                    ],
+                    daily: [
+                        { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 50 }, completed: false, claimed: false },
+                        { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 30 }, completed: false, claimed: false }
+                    ]
+                };
+                gameData.battlePass = savedGameData.battlePass || {
+                    unlocked: false,
+                    currentLevel: 1,
+                    xp: 0,
+                    xpToNextLevel: 100,
+                    levels: [
+                        { level: 1, reward: { type: "coins", value: 50 }, unlocked: true, claimed: false },
+                        { level: 2, reward: { type: "attackUpgrade", value: 1 }, unlocked: false, claimed: false },
+                        { level: 3, reward: { type: "card", value: 5 }, unlocked: false, claimed: false },
+                        { level: 4, reward: { type: "coins", value: 100 }, unlocked: false, claimed: false },
+                        { level: 5, reward: { type: "shield", value: 2 }, unlocked: false, claimed: false },
+                        { level: 6, reward: { type: "gachaCoupon", value: 1 }, unlocked: false, claimed: false },
+                        { level: 7, reward: { type: "coins", value: 150 }, unlocked: false, claimed: false },
+                        { level: 8, reward: { type: "card", value: 15 }, unlocked: false, claimed: false },
+                        { level: 9, reward: { type: "attackBoost", value: 2 }, unlocked: false, claimed: false },
+                        { level: 10, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
+                        { level: 11, reward: { type: "coins", value: 300 }, unlocked: false, claimed: false },
+                        { level: 12, reward: { type: "card", value: 29 }, unlocked: false, claimed: false },
+                        { level: 13, reward: { type: "gachaCoupon", value: 3 }, unlocked: false, claimed: false },
+                        { level: 14, reward: { type: "coins", value: 500 }, unlocked: false, claimed: false },
+                        { level: 15, reward: { type: "card", value: 56, rarity: "stars" }, unlocked: false, claimed: false }
+                    ]
+                };
+                gameData.settings = savedGameData.settings || {
+                    bgmEnabled: true,
+                    bgmVolume: 50,
+                    sfxEnabled: true,
+                    sfxVolume: 70,
+                    vibration: false,
+                    notifications: true
+                };
+                
+                // Update firstGachaDone based on cards
+                firstGachaDone = gameData.cards.length > 0;
+                
+                // If current card exists, set it
+                if (gameData.currentCard) {
+                    setCurrentCard(gameData.currentCard);
+                }
+            }
+        }
+
+        // Save game data to localStorage
+        function saveGameData() {
+            const userData = localStorage.getItem(`battle_of_idol_${gameData.nickname}`);
+            
+            if (userData) {
+                const user = JSON.parse(userData);
+                user.gameData = {
+                    coins: gameData.coins,
+                    level: gameData.level,
+                    xp: gameData.xp,
+                    xpToNextLevel: gameData.xpToNextLevel,
+                    currentCard: gameData.currentCard,
+                    attackUpgrades: gameData.attackUpgrades,
+                    attackBoosts: gameData.attackBoosts,
+                    cards: gameData.cards,
+                    shields: gameData.shields,
+                    luckBoosts: gameData.luckBoosts,
+                    quests: gameData.quests,
+                    battlePass: gameData.battlePass,
+                    settings: gameData.settings
+                };
+                
+                localStorage.setItem(`battle_of_idol_${gameData.nickname}`, JSON.stringify(user));
+            }
+        }
+
+        // Logout
+        function logout() {
+            // Save game data
+            saveGameData();
+            
+            // Reset game data
+            gameData.coins = 0;
+            gameData.level = 1;
+            gameData.xp = 0;
+            gameData.xpToNextLevel = 100;
+            gameData.currentCard = null;
+            gameData.attackUpgrades = 0;
+            gameData.attackBoosts = [1];
+            gameData.cards = [];
+            gameData.shields = [1];
+            gameData.luckBoosts = {
+                active: false,
+                remainingUses: 0,
+                boostAmount: 0
+            };
+            gameData.quests = {
+                main: [
+                    { id: 0, name: "Demo Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 1500 }, completed: false, claimed: false },
+                    { id: 1, name: "New Player", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+                    { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+                    { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 10 }, completed: false, claimed: false },
+                    { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 150 }, completed: false, claimed: false },
+                    { id: 7, name: "RisingStar Hunter", description: "Collect a RisingStar Card", progress: 0, target: 1, reward: { type: "card", value: 54 }, completed: false, claimed: false },
+                    { id: 8, name: "Ultimate Collector", description: "Collect 15 different idols", progress: 0, target: 15, reward: { type: "card", value: 55 }, completed: false, claimed: false },
+                    { id: 9, name: "Battle Legend", description: "Win 50 battles", progress: 0, target: 50, reward: { type: "card", value: 53 }, completed: false, claimed: false }
+                ],
+                daily: [
+                    { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 50 }, completed: false, claimed: false },
+                    { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 30 }, completed: false, claimed: false }
+                ]
+            };
+            gameData.battlePass = {
+                unlocked: false,
+                currentLevel: 1,
+                xp: 0,
+                xpToNextLevel: 100,
+                levels: [
+                    { level: 1, reward: { type: "coins", value: 50 }, unlocked: true, claimed: false },
+                    { level: 2, reward: { type: "attackUpgrade", value: 1 }, unlocked: false, claimed: false },
+                    { level: 3, reward: { type: "card", value: 5 }, unlocked: false, claimed: false },
+                    { level: 4, reward: { type: "coins", value: 100 }, unlocked: false, claimed: false },
+                    { level: 5, reward: { type: "shield", value: 2 }, unlocked: false, claimed: false },
+                    { level: 6, reward: { type: "gachaCoupon", value: 1 }, unlocked: false, claimed: false },
+                    { level: 7, reward: { type: "coins", value: 150 }, unlocked: false, claimed: false },
+                    { level: 8, reward: { type: "card", value: 15 }, unlocked: false, claimed: false },
+                    { level: 9, reward: { type: "attackBoost", value: 2 }, unlocked: false, claimed: false },
+                    { level: 10, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
+                    { level: 11, reward: { type: "coins", value: 300 }, unlocked: false, claimed: false },
+                    { level: 12, reward: { type: "card", value: 29 }, unlocked: false, claimed: false },
+                    { level: 13, reward: { type: "gachaCoupon", value: 3 }, unlocked: false, claimed: false },
+                    { level: 14, reward: { type: "coins", value: 500 }, unlocked: false, claimed: false },
+                    { level: 15, reward: { type: "card", value: 56, rarity: "stars" }, unlocked: false, claimed: false }
+                ]
+            };
+            gameData.settings = {
+                bgmEnabled: true,
+                bgmVolume: 50,
+                sfxEnabled: true,
+                sfxVolume: 70,
+                vibration: false,
+                notifications: true
+            };
+            
+            // Hide game and show login screen
+            gameContainer.style.display = 'none';
+            loginScreen.classList.add('active');
+            
+            // Reset login form
+            loginForm.reset();
+            loginError.style.display = 'none';
         }
 
         // Switch between screens
@@ -2678,6 +3242,9 @@
             
             // Update health bar
             playerHealthBar.style.width = '100%';
+            
+            // Save game data
+            saveGameData();
         }
 
         // Load collection
@@ -2772,6 +3339,7 @@
                 card.favorite = !card.favorite;
                 loadCollection();
                 addToBattleLog(`${card.name} ${card.favorite ? 'added to' : 'removed from'} favorites!`, 'player');
+                saveGameData();
             }
         }
 
@@ -2825,6 +3393,7 @@
             // Close modal and refresh collection
             sellAllModal.classList.remove('active');
             loadCollection();
+            saveGameData();
         }
 
         // Calculate sell price for a card
@@ -2885,6 +3454,7 @@
             sellCardModal.classList.remove('active');
             loadCollection();
             cardToSell = null;
+            saveGameData();
         }
 
         // Upgrade card attack
@@ -2915,6 +3485,7 @@
             }
             
             addToBattleLog(`Upgraded ${card.name}'s attack to ${card.attack}!`, 'player');
+            saveGameData();
         }
 
         // Load store items
@@ -3122,6 +3693,7 @@
                 updateHomeStats();
                 loadQuests('battlepass');
                 addToBattleLog("Battle Pass unlocked! You can now claim rewards!", 'player');
+                saveGameData();
             }
         }
 
@@ -3177,6 +3749,7 @@
             loadQuests('battlepass');
             
             addToBattleLog(`Claimed Battle Pass Level ${level} reward!`, 'player');
+            saveGameData();
         }
 
         // Add XP to battle pass
@@ -3200,6 +3773,8 @@
                 
                 addToBattleLog(`Battle Pass Level Up! Reached Level ${gameData.battlePass.currentLevel}!`, 'player');
             }
+            
+            saveGameData();
         }
 
         // Claim quest reward
@@ -3241,6 +3816,7 @@
             
             // Refresh quests
             loadQuests(questType);
+            saveGameData();
         }
 
         // Buy item from store
@@ -3338,7 +3914,9 @@
                     loadStoreItems('luck');
                 } else if (itemType === 'photocard') {
                     loadStoreItems('photocards');
-                }               
+                }
+                
+                saveGameData();
             } else {
                 addToBattleLog("Not enough coins!", 'player');
             }
@@ -3440,6 +4018,7 @@
             // Refresh collection
             loadCollection();
             updateHomeStats();
+            saveGameData();
         }
 
         // Show gacha result modal
@@ -3895,6 +4474,7 @@
             
             // Update collection to reflect new stats
             loadCollection();
+            saveGameData();
         }
 
         // Show battle result modal
@@ -3978,7 +4558,10 @@
         }
 
         // Initialize the game when the page loads
-        window.addEventListener('DOMContentLoaded', initGame);
+        window.addEventListener('DOMContentLoaded', () => {
+            // Hide game container initially
+            gameContainer.style.display = 'none';
+        });
     </script>
 </body>
 </html>
