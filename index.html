@@ -45,6 +45,118 @@
             flex-direction: column;
         }
 
+        /* Login Screen */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .login-container {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-logo {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.5);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .login-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            margin-bottom: 30px;
+            color: #aaa;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .form-input {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: 2px solid var(--primary);
+        }
+
+        .login-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: var(--text-light);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         /* Header Styles */
         header {
             text-align: center;
@@ -71,6 +183,11 @@
             align-items: center;
             padding: 0 15px;
             font-size: 0.9rem;
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: var(--accent);
         }
 
         .coins {
@@ -1712,10 +1829,33 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Screen -->
+    <div id="login-screen">
+        <div class="login-container">
+            <div class="login-logo">
+                <i class="fas fa-star"></i>
+            </div>
+            <h1 class="login-title">Battle Of Idol</h1>
+            <p class="login-subtitle">Masukkan username untuk memulai petualangan!</p>
+            
+            <form class="login-form" id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Masukkan username" required>
+                </div>
+                <button type="submit" class="login-btn">Mulai Bermain</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Game Container (Initially Hidden) -->
+    <div class="container" id="game-container" style="display: none;">
+        <button class="logout-btn" id="logout-btn">Logout</button>
+        
         <header>
             <h1>Battle Of Idol</h1>
             <div class="player-info">
+                <div class="player-name" id="player-name-display">Player</div>
                 <div class="level">Level: <span id="player-level">1</span></div>
                 <div class="coins" id="topup-btn">
                     <i class="fas fa-coins coin-icon"></i> <span id="coin-count">0</span>
@@ -1752,7 +1892,7 @@
                 </div>
                 <div>
                     <h1 class="home-title">Battle Of Idol</h1>
-                    <p class="home-subtitle">Collect your favorite K-Pop idols and battle against others!</p>
+                    <p class="home-subtitle">Selamat datang, <span id="player-name-home">Player</span>!</p>
                 </div>
                 
                 <h2 class="home-subtitle">RisingStar Photocard</h2>
@@ -2144,6 +2284,7 @@
     <script>
         // Game Data
         const gameData = {
+            username: "",
             coins: 0,
             level: 1,
             xp: 0,
@@ -2314,6 +2455,14 @@
         };
 
         // DOM Elements
+        const loginScreen = document.getElementById('login-screen');
+        const gameContainer = document.getElementById('game-container');
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const logoutButton = document.getElementById('logout-btn');
+        const playerNameDisplay = document.getElementById('player-name-display');
+        const playerNameHome = document.getElementById('player-name-home');
+        
         const navButtons = document.querySelectorAll('.nav-btn');
         const screens = document.querySelectorAll('.screen');
         const coinCountElement = document.getElementById('coin-count');
@@ -2407,20 +2556,15 @@
 
         // Initialize Game
         function initGame() {
-            // Give player initial items
-            gameData.shields.push(gameData.storeItems.shields[0]);
-            gameData.attackBoosts.push(gameData.storeItems.boosts[0]);
-            
-            // Give initial coins for testing
-            gameData.coins = 0;
-            
-            updateCoinDisplay();
-            updateLevelDisplay();
-            updateHomeStats();
-            updateInventoryDisplay();
-            loadCollection();
-            loadStoreItems('crates');
-            loadQuests('main');
+            // Check if user is already logged in
+            const savedUsername = localStorage.getItem('battleOfIdol_username');
+            if (savedUsername) {
+                gameData.username = savedUsername;
+                loadGameData();
+                showGameScreen();
+            } else {
+                showLoginScreen();
+            }
             
             // Set up event listeners
             setupEventListeners();
@@ -2433,6 +2577,84 @@
                 backgroundMusic.play().catch(e => {
                     console.log("Autoplay prevented. User interaction required to play audio.");
                 });
+            }
+        }
+
+        // Show login screen
+        function showLoginScreen() {
+            loginScreen.style.display = 'flex';
+            gameContainer.style.display = 'none';
+        }
+
+        // Show game screen
+        function showGameScreen() {
+            loginScreen.style.display = 'none';
+            gameContainer.style.display = 'flex';
+            
+            // Update player name display
+            playerNameDisplay.textContent = gameData.username;
+            playerNameHome.textContent = gameData.username;
+            
+            // Initialize game data
+            updateCoinDisplay();
+            updateLevelDisplay();
+            updateHomeStats();
+            updateInventoryDisplay();
+            loadCollection();
+            loadStoreItems('crates');
+            loadQuests('main');
+        }
+
+        // Save game data to localStorage
+        function saveGameData() {
+            const gameDataToSave = {
+                username: gameData.username,
+                coins: gameData.coins,
+                level: gameData.level,
+                xp: gameData.xp,
+                xpToNextLevel: gameData.xpToNextLevel,
+                currentCard: gameData.currentCard,
+                attackUpgrades: gameData.attackUpgrades,
+                attackBoosts: gameData.attackBoosts,
+                cards: gameData.cards,
+                shields: gameData.shields,
+                luckBoosts: gameData.luckBoosts,
+                quests: gameData.quests,
+                battlePass: gameData.battlePass,
+                settings: gameData.settings,
+                firstGachaDone: firstGachaDone
+            };
+            
+            localStorage.setItem('battleOfIdol_gameData', JSON.stringify(gameDataToSave));
+        }
+
+        // Load game data from localStorage
+        function loadGameData() {
+            const savedData = localStorage.getItem('battleOfIdol_gameData');
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                
+                // Restore game data
+                gameData.username = parsedData.username;
+                gameData.coins = parsedData.coins;
+                gameData.level = parsedData.level;
+                gameData.xp = parsedData.xp;
+                gameData.xpToNextLevel = parsedData.xpToNextLevel;
+                gameData.currentCard = parsedData.currentCard;
+                gameData.attackUpgrades = parsedData.attackUpgrades;
+                gameData.attackBoosts = parsedData.attackBoosts;
+                gameData.cards = parsedData.cards;
+                gameData.shields = parsedData.shields;
+                gameData.luckBoosts = parsedData.luckBoosts;
+                gameData.quests = parsedData.quests;
+                gameData.battlePass = parsedData.battlePass;
+                gameData.settings = parsedData.settings;
+                firstGachaDone = parsedData.firstGachaDone;
+                
+                // If current card exists, set it
+                if (gameData.currentCard) {
+                    setCurrentCard(gameData.currentCard);
+                }
             }
         }
 
@@ -2462,6 +2684,27 @@
         
         // Set up event listeners
         function setupEventListeners() {
+            // Login form
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = usernameInput.value.trim();
+                if (username) {
+                    gameData.username = username;
+                    localStorage.setItem('battleOfIdol_username', username);
+                    showGameScreen();
+                    saveGameData();
+                }
+            });
+
+            // Logout button
+            logoutButton.addEventListener('click', () => {
+                if (confirm('Are you sure you want to logout? Your progress will be saved.')) {
+                    localStorage.removeItem('battleOfIdol_username');
+                    localStorage.removeItem('battleOfIdol_gameData');
+                    location.reload();
+                }
+            });
+
             // Navigation
             navButtons.forEach(button => {
                 button.addEventListener('click', () => {
@@ -2558,6 +2801,7 @@
                 gameData.settings.notifications = document.getElementById('notifications-toggle').checked;
                 
                 applySettings();
+                saveGameData();
                 settingsModal.classList.remove('active');
             });
 
@@ -2579,6 +2823,7 @@
                     gameData.coins += amount;
                     updateCoinDisplay();
                     updateHomeStats();
+                    saveGameData();
                     
                     // Show success message
                     addToBattleLog(`Successfully purchased ${amount} coins!`, 'player');
@@ -2678,6 +2923,9 @@
             
             // Update health bar
             playerHealthBar.style.width = '100%';
+            
+            // Save game data
+            saveGameData();
         }
 
         // Load collection
@@ -2772,6 +3020,7 @@
                 card.favorite = !card.favorite;
                 loadCollection();
                 addToBattleLog(`${card.name} ${card.favorite ? 'added to' : 'removed from'} favorites!`, 'player');
+                saveGameData();
             }
         }
 
@@ -2825,6 +3074,7 @@
             // Close modal and refresh collection
             sellAllModal.classList.remove('active');
             loadCollection();
+            saveGameData();
         }
 
         // Calculate sell price for a card
@@ -2885,6 +3135,7 @@
             sellCardModal.classList.remove('active');
             loadCollection();
             cardToSell = null;
+            saveGameData();
         }
 
         // Upgrade card attack
@@ -2915,6 +3166,7 @@
             }
             
             addToBattleLog(`Upgraded ${card.name}'s attack to ${card.attack}!`, 'player');
+            saveGameData();
         }
 
         // Load store items
@@ -3122,6 +3374,7 @@
                 updateHomeStats();
                 loadQuests('battlepass');
                 addToBattleLog("Battle Pass unlocked! You can now claim rewards!", 'player');
+                saveGameData();
             }
         }
 
@@ -3177,6 +3430,7 @@
             loadQuests('battlepass');
             
             addToBattleLog(`Claimed Battle Pass Level ${level} reward!`, 'player');
+            saveGameData();
         }
 
         // Add XP to battle pass
@@ -3200,6 +3454,8 @@
                 
                 addToBattleLog(`Battle Pass Level Up! Reached Level ${gameData.battlePass.currentLevel}!`, 'player');
             }
+            
+            saveGameData();
         }
 
         // Claim quest reward
@@ -3241,6 +3497,7 @@
             
             // Refresh quests
             loadQuests(questType);
+            saveGameData();
         }
 
         // Buy item from store
@@ -3338,7 +3595,9 @@
                     loadStoreItems('luck');
                 } else if (itemType === 'photocard') {
                     loadStoreItems('photocards');
-                }               
+                }
+                
+                saveGameData();
             } else {
                 addToBattleLog("Not enough coins!", 'player');
             }
@@ -3440,6 +3699,7 @@
             // Refresh collection
             loadCollection();
             updateHomeStats();
+            saveGameData();
         }
 
         // Show gacha result modal
@@ -3895,6 +4155,7 @@
             
             // Update collection to reflect new stats
             loadCollection();
+            saveGameData();
         }
 
         // Show battle result modal
@@ -3982,10 +4243,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
