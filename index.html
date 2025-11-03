@@ -2452,7 +2452,7 @@
                         </div>
                         <div class="tutorial-step">
                             <h4>Luck Boosts</h4>
-                            <p>Buy Luck Boosts in the Store to increase your chances of getting rare cards from gacha crates. Each boost lasts for 10 gacha openings.</p>
+                            <p>Buy Luck Boosts in the Store to increase your chances of getting rare cards from gacha crates. Each boost lasts for 20 gacha openings.</p>
                         </div>
                     </div>
                 </div>
@@ -2552,7 +2552,7 @@
                     { id: 3, name: "Epic Boost", price: 80, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" }
                 ],
                 luck: [
-                    { id: 1, name: "Luck Boost", price: 200, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1% for 10 openings" }
+                    { id: 1, name: "Luck Boost", price: 500, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1% for 10 openings" }
                 ],
                 skills: [
                     { id: 1, name: "War Blitz", price: 800, type: "skill", image: "warblitz.jpg", description: "-4 HP, +7 Attack (+3 Attack when enemy uses Shield)" },
@@ -2673,8 +2673,8 @@
                 { id: 103, name: "Karina", group: "aespa", image: "karina.jpg", health: 90, maxHealth: 90, attack: 10, rarity: "common" },
                 { id: 104, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "rare" },
                 { id: 105, name: "Lisa", group: "BLACKPINK", image: "lisa0.jpg", health: 95, maxHealth: 95, attack: 12, rarity: "rare" },
-                { id: 106, name: "RisingStar Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar" },
-                { id: 107, name: "RisingStar Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar" },
+                { id: 106, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar" },
+                { id: 107, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar" },
                 { id: 108, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 180, maxHealth: 180, attack: 35, rarity: "stars" },
                 { id: 109, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "common" },
                 { id: 110, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "rare" },
@@ -3935,10 +3935,10 @@
                 } else if (itemType === 'luck') {
                     // Activate luck boost
                     gameData.luckBoosts.active = true;
-                    gameData.luckBoosts.remainingUses = 10;
+                    gameData.luckBoosts.remainingUses = 20;
                     gameData.luckBoosts.boostAmount = 1; // 1% increase
                     updateInventoryDisplay();
-                    addToBattleLog(`You activated a Luck Boost! Your next 10 gacha openings have increased luck!`, 'player');
+                    addToBattleLog(`You activated a Luck Boost! Your next 20 gacha openings have increased luck!`, 'player');
                 } else if (itemType === 'skill') {
                     // Add skill to owned skills
                     gameData.skills.owned.push(item);
