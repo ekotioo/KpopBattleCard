@@ -2165,6 +2165,7 @@
                         <img src="random1.jpg" alt="Enemy Idol" class="card-img">
                         <div id="enemy-shield-effect" class="shield-effect hidden"></div>
                         <div id="enemy-boost-effect" class="boost-effect hidden"></div>
+                        <div id="enemy-skill-effect" class="skill-effect hidden"></div>
                         <div id="enemy-shield-status" class="bot-status shield hidden">SHIELD</div>
                         <div id="enemy-boost-status" class="bot-status boost hidden">BOOST</div>
                     </div>
@@ -2772,6 +2773,7 @@
         let enemyBoost = null;
         let enemyShieldTimeLeft = 0;
         let enemyBoostTimeLeft = 0;
+        let enemySkill = null;
         let battleInterval = null;
         let cardToSell = null;
         let firstGachaDone = false;
@@ -3163,6 +3165,7 @@
             const playerMaxHealth = document.getElementById('player-max-health');
             const playerAttack = document.getElementById('player-attack');
             
+            // Fix: Ensure the image path is correctly set
             playerCardImg.src = card.image;
             playerCardName.textContent = card.name;
             playerMaxHealth.textContent = card.maxHealth;
@@ -4197,6 +4200,14 @@
             enemyCard.maxHealth = enemyCard.health;
             enemyCard.attack += (gameData.level - 1) * 2;
             
+            // Enemy can also have a random skill (20% chance)
+            if (Math.random() < 0.2) {
+                const randomSkillIndex = Math.floor(Math.random() * gameData.storeItems.skills.length);
+                enemySkill = {...gameData.storeItems.skills[randomSkillIndex]};
+            } else {
+                enemySkill = null;
+            }
+            
             // Update enemy display
             const enemyCardImg = document.querySelector('.enemy-card .card-img');
             const enemyCardName = document.querySelector('.enemy-card .card-name');
@@ -4273,6 +4284,52 @@
             
             // Update player attack display
             document.getElementById('player-attack').textContent = gameData.currentCard.attack;
+            
+            // Apply enemy skill effects if any
+            if (enemySkill) {
+                // Play skill sound
+                if (gameData.settings.sfxEnabled) {
+                    sounds.skill.play().catch(e => console.log("Audio play failed"));
+                }
+                
+                // Apply enemy skill effects
+                switch(enemySkill.name) {
+                    case 'War Blitz':
+                        // -4 HP, +7 Attack
+                        enemyHealth -= 4;
+                        enemyCard.attack += 7;
+                        addToBattleLog(`${enemyCard.name} activated War Blitz! -4 HP, +7 Attack!`, 'enemy');
+                        break;
+                    case 'Iron Strike':
+                        // +10 HP, -6 Attack
+                        enemyHealth = Math.min(enemyHealth + 10, enemyCard.maxHealth);
+                        enemyCard.attack -= 6;
+                        addToBattleLog(`${enemyCard.name} activated Iron Strike! +10 HP, -6 Attack!`, 'enemy');
+                        break;
+                    case 'Valorant Surge':
+                        // +20 damage at battle start, -5 HP when used
+                        playerHealth -= 20;
+                        enemyHealth -= 5;
+                        addToBattleLog(`${enemyCard.name} activated Valorant Surge! Dealt 20 damage, -5 HP!`, 'enemy');
+                        break;
+                    case 'Ice Guard':
+                        // No immediate effect, will be applied during battle
+                        addToBattleLog(`${enemyCard.name} activated Ice Guard!`, 'enemy');
+                        break;
+                }
+                
+                // Update health bars
+                playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+                enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+                
+                // Update enemy attack display
+                document.getElementById('enemy-attack').textContent = enemyCard.attack;
+                
+                // Show enemy skill effect
+                const enemySkillEffect = document.getElementById('enemy-skill-effect');
+                enemySkillEffect.className = 'skill-effect';
+                enemySkillEffect.classList.add(`${enemySkill.name.toLowerCase().replace(' ', '-')}-effect`);
+            }
         }
 
         // Auto battle system
@@ -4418,6 +4475,39 @@
                         document.getElementById('enemy-boost-effect').classList.add('hidden');
                         document.getElementById('enemy-boost-status').classList.add('hidden');
                         addToBattleLog("Enemy's attack boost expired!", 'enemy');
+                    }
+                }
+                
+                // Apply enemy skill effects during battle
+                if (enemySkill) {
+                    switch(enemySkill.name) {
+                        case 'War Blitz':
+                            // +3 Attack when player uses Shield
+                            if (activeShield && shieldTimeLeft > 0) {
+                                enemyAttackPower += 3;
+                                addToBattleLog("Enemy War Blitz bonus: +3 Attack (you have Shield)!", 'enemy');
+                            }
+                            break;
+                        case 'Iron Strike':
+                            // +5 HP when player uses Attack Boost
+                            if (activeBoost && boostTimeLeft > 0) {
+                                enemyHealth = Math.min(enemyHealth + 5, enemyCard.maxHealth);
+                                enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+                                addToBattleLog("Enemy Iron Strike bonus: +5 HP (you have Attack Boost)!", 'enemy');
+                            }
+                            break;
+                        case 'Ice Guard':
+                            // -10 damage when player uses Attack Boost
+                            // Reduced player Shield duration
+                            if (activeBoost && boostTimeLeft > 0) {
+                                // Effect will be applied when player attacks
+                            }
+                            if (activeShield && shieldTimeLeft > 0) {
+                                // Reduce player shield duration faster
+                                shieldTimeLeft -= 2;
+                                addToBattleLog("Enemy Ice Guard: Your Shield duration reduced!", 'enemy');
+                            }
+                            break;
                     }
                 }
                 
@@ -4701,12 +4791,14 @@
             enemyBoost = null;
             enemyShieldTimeLeft = 0;
             enemyBoostTimeLeft = 0;
+            enemySkill = null;
             
             // Hide effects
             document.getElementById('player-shield-effect').classList.add('hidden');
             document.getElementById('player-boost-effect').classList.add('hidden');
             document.getElementById('enemy-shield-effect').classList.add('hidden');
             document.getElementById('enemy-boost-effect').classList.add('hidden');
+            document.getElementById('enemy-skill-effect').classList.add('hidden');
             document.getElementById('enemy-shield-status').classList.add('hidden');
             document.getElementById('enemy-boost-status').classList.add('hidden');
             
@@ -4742,5 +4834,3 @@
     </script>
 </body>
 </html>
-
-
