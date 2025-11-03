@@ -79,6 +79,9 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            font-family: 'Arial Black', 'Segoe UI', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .login-subtitle {
@@ -139,25 +142,6 @@
             transform: translateY(0);
         }
 
-        .logout-btn {
-            position: absolute;
-            top: 16px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 8px;
-            padding: 8px 12px;
-            color: var(--text-light);
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
         /* Header Styles */
         header {
             text-align: center;
@@ -170,12 +154,18 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             color: white;
             position: relative;
+            overflow: hidden;
         }
 
         header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 800;
+            font-family: 'Arial Black', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .player-info {
@@ -184,21 +174,55 @@
             align-items: center;
             padding: 0 15px;
             font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .player-name {
-            font-weight: 600;
-            color: var(--accent);
+            align-items: center;
+            gap: 5px;
+            background: none;
+            padding: 5px 10px;
+            border-radius: 10px;
+            color: var(--text-light);
         }
 
-        .coins {
+        .player-level {
             display: flex;
-            align-items: center;            
+            align-items: center;
+            gap: 5px;
+            background: none;
+            padding: 5px 10px;
+            border-radius: 10px;
+            color: var(--text-light);
+        }
+
+        .level-icon {
+            color: var(--primary);
+        }
+
+        .player-resources {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .coins, .luck-boost-indicator {
+            display: flex;
+            align-items: center;
             gap: 5px;
             background: rgba(255, 255, 255, 0.2);
             padding: 5px 10px;
             border-radius: 20px;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .coins:hover, .luck-boost-indicator:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
         .coin-icon {
@@ -206,13 +230,25 @@
             font-size: 1.1rem;
         }
 
+        .luck-icon {
+            color: #06d6a0;
+            font-size: 1.1rem;
+        }
+
         .settings-btn {
-            background: none;
+            background: rgba(255, 255, 255, 0.1);
             border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
             color: var(--text-light);
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
-            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         /* Navigation Styles */
@@ -303,6 +339,9 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
+            font-weight: 800;
+            font-family: 'Arial Black', 'Segoe UI', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .home-subtitle {
@@ -618,7 +657,7 @@
             flex-wrap: wrap;
         }
 
-        .equip-btn, .upgrade-btn, .sell-btn, .favorite-btn, .sell-all-btn {
+        .equip-btn, .upgrade-btn, .sell-btn, .favorite-btn, .sell-all-btn, .skill-btn {
             flex: 1;
             padding: 6px;
             border: none;
@@ -674,6 +713,15 @@
         .favorite-btn.favorited {
             background: #ff9900;
             color: white;
+        }
+
+        .skill-btn {
+            background: #9d4edd;
+            color: white;
+        }
+
+        .skill-btn:hover {
+            background: #8a3ec7;
         }
 
         .sell-all-btn {
@@ -1310,6 +1358,24 @@
             width: 100px;
         }
 
+        /* Logout Button in Settings */
+        .logout-btn {
+            padding: 12px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background: #e8355f;
+            transform: translateY(-2px);
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 400px) {
             .container {
@@ -1346,6 +1412,17 @@
             
             .battle-pass-levels {
                 grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .player-info {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .player-name, .player-level, .player-resources {
+                width: 100%;
+                justify-content: center;
             }
         }
 
@@ -1745,9 +1822,7 @@
 
         /* Luck Boost Indicator */
         .luck-boost-indicator {
-            position: absolute;
-            top: 15px;
-            right: 300px;
+            position: relative;
             background: rgba(0, 0, 0, 0.7);
             color: var(--accent);
             padding: 5px 10px;
@@ -1827,6 +1902,125 @@
             font-weight: 600;
             color: var(--text-light);
         }
+
+        /* Skill Modal */
+        .skill-modal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-item.active {
+            background: rgba(106, 90, 249, 0.2);
+            border: 1px solid var(--secondary);
+        }
+
+        .skill-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .skill-info {
+            flex: 1;
+        }
+
+        .skill-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .skill-desc {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .skill-equipped {
+            font-size: 0.7rem;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .skill-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .skill-equip-btn, .skill-unequip-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .skill-equip-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .skill-equip-btn:hover {
+            background: #05c28e;
+        }
+
+        .skill-unequip-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .skill-unequip-btn:hover {
+            background: #e8355f;
+        }
+
+        .skill-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            z-index: 1;
+        }
+
+        .war-blitz-effect {
+            background: rgba(255, 0, 0, 0.3);
+        }
+
+        .iron-strike-effect {
+            background: rgba(0, 255, 0, 0.3);
+        }
+
+        .valorant-surge-effect {
+            background: rgba(255, 165, 0, 0.3);
+        }
+
+        .ice-guard-effect {
+            background: rgba(0, 191, 255, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -1851,19 +2045,24 @@
 
     <!-- Game Container (Initially Hidden) -->
     <div class="container" id="game-container" style="display: none;">
-        <button class="logout-btn" id="logout-btn">Logout</button>
-        
         <header>
             <h1>Battle Of Idol</h1>
             <div class="player-info">
                 <div class="player-name" id="player-name-display">Player</div>
-                <div class="level">Level: <span id="player-level">1</span></div>
-                <div class="coins" id="topup-btn">
-                    <i class="fas fa-coins coin-icon"></i> <span id="coin-count">0</span>
+                <div class="player-level">
+                    <i class="fas fa-level-up-alt level-icon"></i> Level: <span id="player-level">1</span>
                 </div>
-                <button class="settings-btn" id="settings-btn">
-                    <i class="fas fa-cog"></i>
-                </button>
+                <div class="player-resources">
+                    <div class="coins" id="topup-btn">
+                        <i class="fas fa-coins coin-icon"></i> <span id="coin-count">0</span>
+                    </div>
+                    <div class="luck-boost-indicator hidden" id="luck-boost-indicator">
+                        <i class="fas fa-clover luck-icon"></i> <span id="luck-boost-remaining">0</span>
+                    </div>
+                    <button class="settings-btn" id="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -1949,6 +2148,10 @@
                         <i class="fas fa-tasks feature-icon"></i>
                         <div class="feature-text">Selesaikan misi untuk mendapatkan hadiah</div>
                     </div>
+                    <div class="feature-item">
+                        <i class="fas fa-magic feature-icon"></i>
+                        <div class="feature-text">Skill aktif yang dapat dipasang ke kartu mana saja</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1980,6 +2183,7 @@
                         <img src="placeholder.jpg" alt="Your Idol" class="card-img">
                         <div id="player-shield-effect" class="shield-effect hidden"></div>
                         <div id="player-boost-effect" class="boost-effect hidden"></div>
+                        <div id="player-skill-effect" class="skill-effect hidden"></div>
                     </div>
                     <div class="card-name">No Card Equipped</div>
                     <div class="card-stats">
@@ -2037,6 +2241,11 @@
                         <div class="inventory-item-count" id="luck-boost-count">0</div>
                         <div class="inventory-item-name">Luck Boosts</div>
                     </div>
+                    <div class="inventory-item">
+                        <i class="fas fa-magic inventory-item-icon"></i>
+                        <div class="inventory-item-count" id="skill-count">0</div>
+                        <div class="inventory-item-name">Skills</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -2051,6 +2260,7 @@
                 <button class="category-btn" data-category="shields">Shields</button>
                 <button class="category-btn" data-category="boosts">Attack Boosts</button>
                 <button class="category-btn" data-category="luck">Luck Boosts</button>
+                <button class="category-btn" data-category="skills">Skills</button>
             </div>
             <div class="store-items">
                 <!-- Store items will be populated by JavaScript -->
@@ -2228,6 +2438,10 @@
                             <p>In the Battle screen, press START BATTLE to begin. The battle is automatic, but you can use shields and attack boosts during the fight.</p>
                         </div>
                         <div class="tutorial-step">
+                            <h4>Skills</h4>
+                            <p>Buy skills in the Store and equip them to your cards in the Collection screen. Each skill provides unique advantages in battle.</p>
+                        </div>
+                        <div class="tutorial-step">
                             <h4>Quests & Rewards</h4>
                             <p>Complete quests in the Quests screen to earn coins, cards, and other rewards.</p>
                         </div>
@@ -2242,6 +2456,7 @@
                     </div>
                 </div>
                 
+                <button class="logout-btn" id="logout-btn">Logout</button>
                 <button class="action-btn play-btn" id="settings-save-btn" style="margin-top: 15px;">Save Settings</button>
             </div>
         </div>
@@ -2276,10 +2491,20 @@
         </div>
     </div>
 
-    <!-- Luck Boost Indicator -->
-    <div id="luck-boost-indicator" class="luck-boost-indicator hidden">
-        <i class="fas fa-clover"></i>
-        <span id="luck-boost-remaining">0</span>
+    <!-- Skill Modal -->
+    <div id="skill-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Manage Skills</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="skill-modal-content">
+                <div class="skill-list">
+                    <!-- Skills will be populated by JavaScript -->
+                </div>
+                <button class="action-btn play-btn" id="skill-close-btn" style="margin-top: 15px;">Close</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -2296,6 +2521,10 @@
             attackBoosts: [1],
             cards: [],
             shields: [1],
+            skills: {
+                owned: [],
+                equipped: {}
+            },
             luckBoosts: {
                 active: false,
                 remainingUses: 0,
@@ -2309,27 +2538,34 @@
                     { id: 4, name: "RisingStar Crate", price: 500, type: "crate", rarity: "risingstar", image: "secret.jpg", description: "Contains common, rare, epic and risingstar idols" }
                 ],
                 upgrades: [
-                    { id: 1, name: "Attack Upgrade", price: 100, type: "upgrade", image: "attack.jpg", description: "Increase attack by 1 for any card" }
+                    { id: 1, name: "Attack Upgrade", price: 200, type: "upgrade", image: "attack.jpg", description: "Increase attack by 1 for any card" }
                 ],
                 shields: [
-                    { id: 1, name: "Basic Shield", price: 30, defense: 10, duration: 30, image: "Shield.jpg", description: "Reduces damage by 10 for 30 seconds" },
-                    { id: 2, name: "Strong Shield", price: 60, defense: 20, duration: 25, image: "Shield.jpg", description: "Reduces damage by 20 for 25 seconds" },
-                    { id: 3, name: "Epic Shield", price: 120, defense: 35, duration: 20, image: "Shield.jpg", description: "Reduces damage by 35 for 20 seconds" }
+                    { id: 1, name: "Basic Shield", price: 20, defense: 10, duration: 30, image: "Shield.jpg", description: "Reduces damage by 10 for 30 seconds" },
+                    { id: 2, name: "Strong Shield", price: 40, defense: 20, duration: 25, image: "Shield.jpg", description: "Reduces damage by 20 for 25 seconds" },
+                    { id: 3, name: "Epic Shield", price: 80, defense: 35, duration: 20, image: "Shield.jpg", description: "Reduces damage by 35 for 20 seconds" }
                 ],
                 boosts: [
-                    { id: 1, name: "Basic Boost", price: 40, multiplier: 1.5, duration: 15, image: "boost.jpg", description: "Increase attack by 50% for 15 seconds" },
-                    { id: 2, name: "Strong Boost", price: 80, multiplier: 2, duration: 12, image: "boost.jpg", description: "Double attack for 12 seconds" },
-                    { id: 3, name: "Epic Boost", price: 150, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" }
+                    { id: 1, name: "Basic Boost", price: 25, multiplier: 1.5, duration: 15, image: "boost.jpg", description: "Increase attack by 50% for 15 seconds" },
+                    { id: 2, name: "Strong Boost", price: 40, multiplier: 2, duration: 12, image: "boost.jpg", description: "Double attack for 12 seconds" },
+                    { id: 3, name: "Epic Boost", price: 80, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" }
                 ],
                 luck: [
                     { id: 1, name: "Luck Boost", price: 200, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1% for 10 openings" }
+                ],
+                skills: [
+                    { id: 1, name: "War Blitz", price: 800, type: "skill", image: "warblitz.jpg", description: "-4 HP, +7 Attack (+3 Attack when enemy uses Shield)" },
+                    { id: 2, name: "Iron Strike", price: 850, type: "skill", image: "ironstrike.jpg", description: "+10 HP, -6 Attack (+5 HP when enemy uses Attack Boost)" },
+                    { id: 3, name: "Valor Surge", price: 800, type: "skill", image: "valorsurge.jpg", description: "+20 damage at battle start, -5 HP when used" },
+                    { id: 4, name: "Ice Guard", price: 850, type: "skill", image: "iceguard.jpg", description: "-10 damage when enemy uses Attack Boost, reduces enemy Shield duration" }
                 ],
                 photocards: [
                     { id: 100, name: "Special Hanni", group: "NewJeans", image: "hanni_special.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "rare", price: 5800, description: "Exclusive photocard not available in gacha" },
                     { id: 101, name: "Special Jennie", group: "BLACKPINK", image: "jennie_special.jpg", health: 155, maxHealth: 155, attack: 20, rarity: "epic", price: 6500, description: "Exclusive photocard not available in gacha" },
                     { id: 102, name: "Special Karina", group: "aespa", image: "karina_special.jpg", health: 165, maxHealth: 165, attack: 20, rarity: "legendary", price: 6500, description: "Exclusive photocard not available in gacha" },
                     { id: 103, name: "Special IU", group: "Soloist", image: "iu_special.jpg", health: 167, maxHealth: 167, attack: 19, rarity: "legendary", price: 6200, description: "Exclusive photocard not available in gacha" },
-                    { id: 104, name: "Special Mira", group: "HUNTR/X", image: "mira.jpg", health: 145, maxHealth: 145, attack: 17, rarity: "rare", price: 6100, description: "Exclusive photocard not available in gacha" }
+                    { id: 104, name: "Special Mira", group: "HUNTR/X", image: "mira.jpg", health: 145, maxHealth: 145, attack: 17, rarity: "rare", price: 6100, description: "Exclusive photocard not available in gacha" },
+                    { id: 105, name: "Special Sana", group: "TWICE", image: "sanaS.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "epic", price: 6000, description: "Exclusive photocard not available in gacha" }
                 ]
             },
             gachaPool: [
@@ -2374,9 +2610,10 @@
                 { id: 10, name: "Haerin", group: "NewJeans", image: "haerinL.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 29, name: "Yoona", group: "SNSD", image: "yoonaL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 30, name: "IU", group: "Soloist", image: "iuL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 31, name: "Taeyeon", group: "SNSD", image: "taeyonL.jpg", health: 135, maxHealth: 135, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "carmenL.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 31, name: "Taeyeon", group: "SNSD", image: "taeyonL.jpg", health: 138, maxHealth: 138, attack: 19, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 33, name: "Carmen", group: "HEARTS2HEARTS", image: "carmenL.jpg", health: 145, maxHealth: 145, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 64, name: "Asa", group: "BABYMONSTER", image: "asaL.jpg", health: 155, maxHealth: 155, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+                { id: 65, name: "Dahyun", group: "TWICE", image: "dahyunL.jpg", health: 160, maxHealth: 160, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 
                 // RisingStar Cards (2% in RisingStar)
                 { id: 50, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -2485,6 +2722,7 @@
         const sellAllModal = document.getElementById('sell-all-modal');
         const settingsModal = document.getElementById('settings-modal');
         const topupModal = document.getElementById('topup-modal');
+        const skillModal = document.getElementById('skill-modal');
         const closeModalButtons = document.querySelectorAll('.close-modal');
         const gachaCard = document.querySelector('.gacha-card');
         const gachaCardImg = document.querySelector('.gacha-card-img');
@@ -2497,6 +2735,7 @@
         const shieldCountElement = document.getElementById('shield-count');
         const boostCountElement = document.getElementById('boost-count');
         const luckBoostCountElement = document.getElementById('luck-boost-count');
+        const skillCountElement = document.getElementById('skill-count');
         const sellPriceValue = document.getElementById('sell-price-value');
         const sellAllPriceValue = document.getElementById('sell-all-price-value');
         const confirmSellButton = document.getElementById('confirm-sell-btn');
@@ -2512,6 +2751,7 @@
         const topupOptions = document.querySelectorAll('.topup-option');
         const luckBoostIndicator = document.getElementById('luck-boost-indicator');
         const luckBoostRemaining = document.getElementById('luck-boost-remaining');
+        const skillCloseButton = document.getElementById('skill-close-btn');
         
         // Home screen elements
         const totalCardsElement = document.getElementById('total-cards');
@@ -2535,6 +2775,7 @@
         let battleInterval = null;
         let cardToSell = null;
         let firstGachaDone = false;
+        let cardToManageSkills = null;
 
         // Sound Effects
         const sounds = {
@@ -2547,7 +2788,8 @@
             gacha: new Audio('gacha.mp4'),
             levelUp: new Audio('sound1.wav'),
             legendary: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3'),
-            risingstar: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkle-sound-3091.mp3')
+            risingstar: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkle-sound-3091.mp3'),
+            skill: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-magic-spell-whoosh-1476.mp3')
         };
 
         // Background Music
@@ -2619,6 +2861,7 @@
                 attackBoosts: gameData.attackBoosts,
                 cards: gameData.cards,
                 shields: gameData.shields,
+                skills: gameData.skills,
                 luckBoosts: gameData.luckBoosts,
                 quests: gameData.quests,
                 battlePass: gameData.battlePass,
@@ -2646,6 +2889,7 @@
                 gameData.attackBoosts = parsedData.attackBoosts;
                 gameData.cards = parsedData.cards;
                 gameData.shields = parsedData.shields;
+                gameData.skills = parsedData.skills || { owned: [], equipped: {} };
                 gameData.luckBoosts = parsedData.luckBoosts;
                 gameData.quests = parsedData.quests;
                 gameData.battlePass = parsedData.battlePass;
@@ -2762,6 +3006,7 @@
                     sellAllModal.classList.remove('active');
                     settingsModal.classList.remove('active');
                     topupModal.classList.remove('active');
+                    skillModal.classList.remove('active');
                 });
             });
 
@@ -2834,6 +3079,11 @@
                 });
             });
 
+            // Skill modal
+            skillCloseButton.addEventListener('click', () => {
+                skillModal.classList.remove('active');
+            });
+
             // Gacha card flip
             gachaCard.addEventListener('click', () => {
                 gachaCard.classList.toggle('flipped');
@@ -2894,6 +3144,7 @@
             shieldCountElement.textContent = gameData.shields.length;
             boostCountElement.textContent = gameData.attackBoosts.length;
             luckBoostCountElement.textContent = gameData.luckBoosts.active ? gameData.luckBoosts.remainingUses : 0;
+            skillCountElement.textContent = gameData.skills.owned.length;
             
             // Update luck boost indicator
             if (gameData.luckBoosts.active) {
@@ -2922,6 +3173,15 @@
             playerCard.className = 'card';
             playerCard.classList.add(`rarity-${card.rarity}`);
             
+            // Update skill effect
+            const skillEffect = document.getElementById('player-skill-effect');
+            skillEffect.className = 'skill-effect hidden';
+            if (gameData.skills.equipped[card.id]) {
+                const skill = gameData.skills.equipped[card.id];
+                skillEffect.classList.remove('hidden');
+                skillEffect.classList.add(`${skill.name.toLowerCase().replace(' ', '-')}-effect`);
+            }
+            
             // Update health bar
             playerHealthBar.style.width = '100%';
             
@@ -2944,6 +3204,7 @@
                 
                 const winRate = card.battles > 0 ? Math.round((card.wins / card.battles) * 100) : 0;
                 const canUpgrade = card.upgrades < 8 && gameData.attackUpgrades > 0;
+                const equippedSkill = gameData.skills.equipped[card.id];
                 
                 const cardElement = document.createElement('div');
                 cardElement.className = 'collection-card';
@@ -2961,9 +3222,11 @@
                             <i class="fas fa-trophy"></i>
                             <span>Win Rate: ${winRate}% (${card.wins}/${card.battles})</span>
                         </div>
+                        ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
                         <div class="card-actions">
                             <button class="equip-btn" data-id="${card.id}">${gameData.currentCard && gameData.currentCard.id === card.id ? 'EQUIPPED' : 'EQUIP'}</button>
                             <button class="upgrade-btn" data-id="${card.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${card.upgrades}/8)</button>
+                            <button class="skill-btn" data-id="${card.id}">SKILL</button>
                             <button class="favorite-btn ${card.favorite ? 'favorited' : ''}" data-id="${card.id}">${card.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
                             ${isGachaCard ? `<button class="sell-btn" data-id="${card.id}">SELL</button>` : ''}
                         </div>
@@ -3000,6 +3263,17 @@
                 });
             });
 
+            // Add event listeners to skill buttons
+            document.querySelectorAll('.skill-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    if (card) {
+                        showSkillModal(card);
+                    }
+                });
+            });
+
             // Add event listeners to sell buttons
             document.querySelectorAll('.sell-btn').forEach(button => {
                 button.addEventListener('click', (e) => {
@@ -3012,6 +3286,102 @@
                     }
                 });
             });
+        }
+
+        // Show skill modal
+        function showSkillModal(card) {
+            cardToManageSkills = card;
+            const skillList = document.querySelector('.skill-list');
+            skillList.innerHTML = '';
+            
+            if (gameData.skills.owned.length === 0) {
+                skillList.innerHTML = '<div class="text-center" style="padding: 20px;">You don\'t have any skills yet. Buy them from the Store!</div>';
+            } else {
+                gameData.skills.owned.forEach(skill => {
+                    const isEquipped = gameData.skills.equipped[card.id] && gameData.skills.equipped[card.id].id === skill.id;
+                    const skillElement = document.createElement('div');
+                    skillElement.className = `skill-item ${isEquipped ? 'active' : ''}`;
+                    skillElement.innerHTML = `
+                        <div class="skill-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="skill-info">
+                            <div class="skill-name">${skill.name}</div>
+                            <div class="skill-desc">${skill.description}</div>
+                        </div>
+                        <div class="skill-actions">
+                            ${isEquipped ? 
+                                `<button class="skill-unequip-btn" data-id="${skill.id}">Unequip</button>` : 
+                                `<button class="skill-equip-btn" data-id="${skill.id}">Equip</button>`
+                            }
+                        </div>
+                    `;
+                    skillList.appendChild(skillElement);
+                });
+                
+                // Add event listeners to equip/unequip buttons
+                document.querySelectorAll('.skill-equip-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const skillId = parseInt(e.target.getAttribute('data-id'));
+                        const skill = gameData.skills.owned.find(s => s.id === skillId);
+                        if (skill) {
+                            equipSkillToCard(skill, cardToManageSkills);
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.skill-unequip-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const skillId = parseInt(e.target.getAttribute('data-id'));
+                        unequipSkillFromCard(cardToManageSkills);
+                    });
+                });
+            }
+            
+            skillModal.classList.add('active');
+        }
+
+        // Equip skill to card
+        function equipSkillToCard(skill, card) {
+            // Remove any existing skill from this card
+            if (gameData.skills.equipped[card.id]) {
+                unequipSkillFromCard(card);
+            }
+            
+            // Equip the new skill
+            gameData.skills.equipped[card.id] = skill;
+            
+            // If this card is currently equipped, update the battle display
+            if (gameData.currentCard && gameData.currentCard.id === card.id) {
+                setCurrentCard(card);
+            }
+            
+            // Refresh collection and close modal
+            loadCollection();
+            skillModal.classList.remove('active');
+            
+            addToBattleLog(`Equipped ${skill.name} to ${card.name}!`, 'player');
+            saveGameData();
+        }
+
+        // Unequip skill from card
+        function unequipSkillFromCard(card) {
+            const skill = gameData.skills.equipped[card.id];
+            if (skill) {
+                delete gameData.skills.equipped[card.id];
+                
+                // If this card is currently equipped, update the battle display
+                if (gameData.currentCard && gameData.currentCard.id === card.id) {
+                    setCurrentCard(card);
+                }
+                
+                // Refresh collection and close modal
+                loadCollection();
+                skillModal.classList.remove('active');
+                
+                addToBattleLog(`Unequipped ${skill.name} from ${card.name}!`, 'player');
+                saveGameData();
+            }
         }
 
         // Toggle favorite status of a card
@@ -3115,6 +3485,11 @@
             if (cardIndex !== -1) {
                 gameData.cards.splice(cardIndex, 1);
                 
+                // Remove any skill equipped to this card
+                if (gameData.skills.equipped[cardToSell.id]) {
+                    delete gameData.skills.equipped[cardToSell.id];
+                }
+                
                 // Add coins
                 gameData.coins += sellPrice;
                 updateCoinDisplay();
@@ -3183,6 +3558,10 @@
                 const isPhotocardOwned = category === 'photocards' && 
                     gameData.cards.some(card => card.id === item.id);
                 
+                // Check if this is a skill that's already owned
+                const isSkillOwned = category === 'skills' && 
+                    gameData.skills.owned.some(skill => skill.id === item.id);
+                
                 // Check if this is the first gacha and it's a basic crate
                 const isFirstGacha = !firstGachaDone && category === 'crates' && item.id === 1;
                 
@@ -3200,8 +3579,8 @@
                         <div class="store-item-price">
                             <i class="fas fa-coins"></i> ${isFirstGacha ? 'FREE' : item.price}
                         </div>
-                        <button class="buy-btn" data-id="${item.id}" data-type="${item.type || category.slice(0, -1)}" ${isPhotocardOwned || (!isFirstGacha && gameData.coins < item.price) ? 'disabled' : ''}>
-                            ${isPhotocardOwned ? 'OWNED' : (isFirstGacha ? 'GET FREE' : 'BUY')}
+                        <button class="buy-btn" data-id="${item.id}" data-type="${item.type || category.slice(0, -1)}" ${isPhotocardOwned || isSkillOwned || (!isFirstGacha && gameData.coins < item.price) ? 'disabled' : ''}>
+                            ${isPhotocardOwned || isSkillOwned ? 'OWNED' : (isFirstGacha ? 'GET FREE' : 'BUY')}
                         </button>
                     </div>
                 `;
@@ -3515,6 +3894,8 @@
                 item = gameData.storeItems.boosts.find(b => b.id === itemId);
             } else if (itemType === 'luck') {
                 item = gameData.storeItems.luck.find(l => l.id === itemId);
+            } else if (itemType === 'skill') {
+                item = gameData.storeItems.skills.find(s => s.id === itemId);
             } else if (itemType === 'photocard') {
                 item = gameData.storeItems.photocards.find(p => p.id === itemId);
             }
@@ -3555,6 +3936,11 @@
                     gameData.luckBoosts.boostAmount = 1; // 1% increase
                     updateInventoryDisplay();
                     addToBattleLog(`You activated a Luck Boost! Your next 10 gacha openings have increased luck!`, 'player');
+                } else if (itemType === 'skill') {
+                    // Add skill to owned skills
+                    gameData.skills.owned.push(item);
+                    updateInventoryDisplay();
+                    addToBattleLog(`You bought ${item.name}! You can now equip it to any card.`, 'player');
                 } else if (itemType === 'photocard') {
                     // Add photocard to collection
                     gameData.cards.push({
@@ -3594,6 +3980,8 @@
                     loadStoreItems('boosts');
                 } else if (itemType === 'luck') {
                     loadStoreItems('luck');
+                } else if (itemType === 'skill') {
+                    loadStoreItems('skills');
                 } else if (itemType === 'photocard') {
                     loadStoreItems('photocards');
                 }
@@ -3826,6 +4214,9 @@
             enemyCardElement.className = 'card';
             enemyCardElement.classList.add(`rarity-${enemyCard.rarity}`);
             
+            // Apply skill effects at battle start
+            applySkillEffects();
+            
             // Update health bars
             playerHealthBar.style.width = '100%';
             enemyHealthBar.style.width = '100%';
@@ -3836,6 +4227,52 @@
             
             // Start auto battle interval
             battleInterval = setInterval(autoBattle, 1500);
+        }
+
+        // Apply skill effects at battle start
+        function applySkillEffects() {
+            if (!gameData.currentCard) return;
+            
+            const equippedSkill = gameData.skills.equipped[gameData.currentCard.id];
+            if (!equippedSkill) return;
+            
+            // Play skill sound
+            if (gameData.settings.sfxEnabled) {
+                sounds.skill.play().catch(e => console.log("Audio play failed"));
+            }
+            
+            // Apply skill effects
+            switch(equippedSkill.name) {
+                case 'War Blitz':
+                    // -4 HP, +7 Attack
+                    playerHealth -= 4;
+                    gameData.currentCard.attack += 7;
+                    addToBattleLog(`${gameData.currentCard.name} activated War Blitz! -4 HP, +7 Attack!`, 'player');
+                    break;
+                case 'Iron Strike':
+                    // +10 HP, -6 Attack
+                    playerHealth = Math.min(playerHealth + 10, gameData.currentCard.maxHealth);
+                    gameData.currentCard.attack -= 6;
+                    addToBattleLog(`${gameData.currentCard.name} activated Iron Strike! +10 HP, -6 Attack!`, 'player');
+                    break;
+                case 'Valorant Surge':
+                    // +20 damage at battle start, -5 HP when used
+                    enemyHealth -= 20;
+                    playerHealth -= 5;
+                    addToBattleLog(`${gameData.currentCard.name} activated Valorant Surge! Dealt 20 damage, -5 HP!`, 'player');
+                    break;
+                case 'Ice Guard':
+                    // No immediate effect, will be applied during battle
+                    addToBattleLog(`${gameData.currentCard.name} activated Ice Guard!`, 'player');
+                    break;
+            }
+            
+            // Update health bars
+            playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+            enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+            
+            // Update player attack display
+            document.getElementById('player-attack').textContent = gameData.currentCard.attack;
         }
 
         // Auto battle system
@@ -3854,6 +4291,40 @@
                     activeBoost = null;
                     document.getElementById('player-boost-effect').classList.add('hidden');
                     addToBattleLog("Your attack boost expired!", 'player');
+                }
+            }
+            
+            // Apply skill effects during battle
+            const equippedSkill = gameData.skills.equipped[gameData.currentCard.id];
+            if (equippedSkill) {
+                switch(equippedSkill.name) {
+                    case 'War Blitz':
+                        // +3 Attack when enemy uses Shield
+                        if (enemyShield && enemyShieldTimeLeft > 0) {
+                            playerAttackPower += 3;
+                            addToBattleLog("War Blitz bonus: +3 Attack (enemy has Shield)!", 'player');
+                        }
+                        break;
+                    case 'Iron Strike':
+                        // +5 HP when enemy uses Attack Boost
+                        if (enemyBoost && enemyBoostTimeLeft > 0) {
+                            playerHealth = Math.min(playerHealth + 5, gameData.currentCard.maxHealth);
+                            playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+                            addToBattleLog("Iron Strike bonus: +5 HP (enemy has Attack Boost)!", 'player');
+                        }
+                        break;
+                    case 'Ice Guard':
+                        // -10 damage when enemy uses Attack Boost
+                        // Reduced enemy Shield duration
+                        if (enemyBoost && enemyBoostTimeLeft > 0) {
+                            // Effect will be applied when enemy attacks
+                        }
+                        if (enemyShield && enemyShieldTimeLeft > 0) {
+                            // Reduce enemy shield duration faster
+                            enemyShieldTimeLeft -= 2;
+                            addToBattleLog("Ice Guard: Enemy Shield duration reduced!", 'player');
+                        }
+                        break;
                 }
             }
             
@@ -3962,6 +4433,13 @@
                         document.getElementById('player-shield-effect').classList.add('hidden');
                         addToBattleLog("Your shield broke!", 'player');
                     }
+                }
+                
+                // Apply skill effects for defense
+                if (equippedSkill && equippedSkill.name === 'Ice Guard' && enemyBoost && enemyBoostTimeLeft > 0) {
+                    // -10 damage when enemy uses Attack Boost
+                    damage = Math.max(1, damage - 10);
+                    addToBattleLog("Ice Guard: Reduced 10 damage from enemy attack!", 'player');
                 }
                 
                 playerHealth -= damage;
@@ -4096,6 +4574,26 @@
             gameData.currentCard.battles++;
             if (playerWon) {
                 gameData.currentCard.wins++;
+            }
+            
+            // Reset skill-modified stats
+            if (gameData.skills.equipped[gameData.currentCard.id]) {
+                const equippedSkill = gameData.skills.equipped[gameData.currentCard.id];
+                
+                // Reset stats modified by skills
+                switch(equippedSkill.name) {
+                    case 'War Blitz':
+                        // Reset attack bonus
+                        gameData.currentCard.attack -= 7;
+                        break;
+                    case 'Iron Strike':
+                        // Reset attack penalty
+                        gameData.currentCard.attack += 6;
+                        break;
+                }
+                
+                // Update player attack display
+                document.getElementById('player-attack').textContent = gameData.currentCard.attack;
             }
             
             // Update quest progress
@@ -4244,3 +4742,5 @@
     </script>
 </body>
 </html>
+
+
