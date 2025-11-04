@@ -349,14 +349,14 @@
             text-align: center;
             color: var(--text-light);
             opacity: 0.8;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .featured-cards {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 5px;
             width: 100%;
         }
 
@@ -386,7 +386,7 @@
             left: 0;
             right: 0;
             background: rgba(0, 0, 0, 0.7);
-            padding: 5px;
+            padding: 0px;
             font-size: 0.8rem;
             text-align: center;
         }
@@ -1551,32 +1551,51 @@
             animation: glow 1s ease-in-out infinite;
         }
 
-        .rarity-risingstar {
-            border: 3px solid transparent;
-            background: linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: secretGlow 2s ease-in-out infinite;
-        }
+.rarity-risingstar {
+    border: 2px solid transparent;
+    border-radius: 15px;
+    background: 
+        linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
+    box-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.5),
+        0 0 20px rgba(255, 107, 0, 0.3),
+        0 0 30px rgba(255, 0, 128, 0.2),
+        inset 0 0 15px rgba(157, 78, 221, 0.3);
+    animation: secretGlow 2s ease-in-out infinite;
+}
 
-        .rarity-stars {
-            border: 3px solid transparent;
-            background: linear-gradient(135deg, #ff00cc, #3333ff, #00ccff, #ffcc00) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: starsGlow 2s ease-in-out infinite;
-        }
 
-        .rarity-superstar {
-            border: 3px solid transparent;
-            background: linear-gradient(135deg, #ff00cc, #ff9900, #ffcc00, #ff00ff) border-box;
-            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            animation: superstarGlow 2s ease-in-out infinite;
-        }
+.rarity-stars {
+    border: 2px solid transparent;
+    border-radius: 15px;
+    background: 
+        linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
+    box-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.5),
+        0 0 20px rgba(255, 107, 0, 0.3),
+        0 0 30px rgba(255, 0, 128, 0.2),
+        inset 0 0 15px rgba(157, 78, 221, 0.3);
+    animation: secretGlow 2s ease-in-out infinite;
+}
+
+
+.rarity-superstar {
+    border: 2px solid transparent;
+    border-radius: 15px;
+    background: 
+        linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
+    box-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.5),
+        0 0 20px rgba(255, 107, 0, 0.3),
+        0 0 30px rgba(255, 0, 128, 0.2),
+        inset 0 0 15px rgba(157, 78, 221, 0.3);
+    animation: secretGlow 2s ease-in-out infinite;
+}
+
+
 
         /* Battle Effects */
         .shield-effect {
@@ -2132,20 +2151,20 @@
                     <p class="home-subtitle">Selamat datang, <span id="player-name-home">Player</span>!</p>
                 </div>
                 
-                <h2 class="home-subtitle">RisingStar Photocard</h2>
+                <h2 class="home-subtitle">Get Special  Photocard</h2>
 
                 <div class="featured-cards">
                     <div class="featured-card">
-                        <img src="hanni2.jpg" alt="Hanni" class="featured-card-img">
-                        <div class="featured-card-name">Hanni</div>
+                        <img src="go_younjung.jpg" alt="Goyounjung" class="featured-card-img">
+                        <div class="featured-card-name"> </div>
                     </div>
                     <div class="featured-card">
                         <img src="iu2.jpg" alt="IU" class="featured-card-img">
-                        <div class="featured-card-name">IU</div>
+                        <div class="featured-card-name"> </div>
                     </div>
                     <div class="featured-card">
-                        <img src="yoona2.jpg" alt="Yoona" class="featured-card-img">
-                        <div class="featured-card-name">Yoona</div>
+                        <img src="karina_special.jpg" alt="Karina" class="featured-card-img">
+                        <div class="featured-card-name"> </div>
                     </div>
                 </div>
 
@@ -2726,12 +2745,24 @@
                 { id: 106, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar" },
                 { id: 107, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar" },
                 { id: 108, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 180, maxHealth: 180, attack: 35, rarity: "stars" },
-                { id: 109, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "common" },
+                { id: 109, name: "Dahyun", group: "TWICE", image: "dahyunL.jpg", health: 160, maxHealth: 160, attack: 17, rarity: "legendary" },
                 { id: 110, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "rare" },
                 { id: 111, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "epic" },
                 { id: 112, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 140, maxHealth: 140, attack: 19, rarity: "legendary" },
                 { id: 113, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 25, rarity: "risingstar" },
-                { id: 114, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 23, rarity: "stars" }
+                { id: 114, name: "Bae Suzy", group: "Actress", image: "bae_suzy.jpg", health: 225, maxHealth: 225, attack: 30, rarity: "superstar" },
+                { id: 115, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 23, rarity: "stars" },
+                { id: 116, name: "Yoona", group: "SNSD", image: "yoonaL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary" },
+                { id: 117, name: "Sakura", group: "LE SSERAFIM", image: "sakura.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare" },
+                 { id: 118, name: "Sana", group: "TWICE", image: "sanatw.jpg", health: 112, maxHealth: 112, attack: 13, rarity: "common" },
+                 { id: 119, name: "Han Sohee", group: "Actress", image: "han_sohee.jpg", health: 215, maxHealth: 215, attack: 29, rarity: "superstar" },
+                 { id: 9, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic" },
+                 { id: 120, name: "Rose", group: "BLACKPINK", image: "rose2.jpg", health: 165, maxHealth: 165, attack: 21, rarity: "risingstar" },
+                 { id: 121, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare" },
+                 
+                 
+                 
+                
             ],
             settings: {
                 bgmEnabled: true,
