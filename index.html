@@ -2143,78 +2143,79 @@
         }
 
         /* Styles untuk redeem code */
-        .redeem-section {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-        }
-        
-        .redeem-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--accent);
-        }
-        
-        .redeem-form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .redeem-input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-        }
-        
-        .redeem-btn {
-            padding: 10px 15px;
-            background: var(--secondary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .redeem-btn:hover {
-            background: #5a4ff0;
-        }
-        
-        .redeem-btn:disabled {
-            background: #555;
-            cursor: not-allowed;
-        }
-        
-        .redeem-history {
-            margin-top: 15px;
-        }
-        
-        .redeem-history-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--accent);
-        }
-        
-        .redeem-history-list {
-            max-height: 150px;
-            overflow-y: auto;
-            font-size: 0.8rem;
-        }
-        
-        .redeem-history-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        /* Redeem Code Section */
+.redeem-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.redeem-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--accent);
+}
+
+.redeem-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.redeem-input {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+}
+
+.redeem-btn {
+    padding: 10px 15px;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.redeem-btn:hover {
+    background: #5a4ff0;
+}
+
+.redeem-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+.redeem-history {
+    margin-top: 15px;
+}
+
+.redeem-history-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--accent);
+}
+
+.redeem-history-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.redeem-history-item {
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+}
         
         .redeem-code {
             font-weight: 600;
@@ -5682,4 +5683,5 @@ window.addEventListener('DOMContentLoaded', initGame);
         // Sisanya kode JavaScript yang sudah ada...
     </script>
 </body>
+</html>
 </html>
