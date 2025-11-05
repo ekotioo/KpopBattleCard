@@ -1582,6 +1582,310 @@
         .superstar-glow {
             animation: superstarGlow 2s ease-in-out infinite;
         }
+        
+        
+        
+
+/* Efek Khusus untuk Gacha Result */
+
+/* Legendary Effect */
+.legendary-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.legendary-effect .particle-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,209,102,0.3) 0%, transparent 70%);
+    animation: legendaryGlow 2s ease-in-out infinite;
+}
+
+.legendary-shake {
+    animation: legendaryShake 0.5s ease-in-out;
+}
+
+@keyframes legendaryShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px) rotate(-1deg); }
+    20%, 40%, 60%, 80% { transform: translateX(5px) rotate(1deg); }
+}
+
+/* RisingStar Effect */
+.risingstar-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.risingstar-effect .rainbow-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(255,0,128,0.2) 0%, 
+        rgba(157,78,221,0.2) 25%, 
+        rgba(255,107,0,0.2) 50%, 
+        rgba(255,215,0,0.2) 75%, 
+        rgba(255,0,128,0.2) 100%);
+    animation: rainbowShift 3s linear infinite;
+}
+
+.risingstar-effect .star-particles::before,
+.risingstar-effect .star-particles::after {
+    content: '★';
+    position: absolute;
+    color: #ffd700;
+    font-size: 20px;
+    animation: starFloat 3s ease-in-out infinite;
+}
+
+.risingstar-effect .star-particles::before {
+    top: 10%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.risingstar-effect .star-particles::after {
+    bottom: 10%;
+    right: 20%;
+    animation-delay: 1.5s;
+}
+
+.risingstar-pulse {
+    animation: risingstarPulse 2s ease-in-out;
+}
+
+@keyframes rainbowShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+@keyframes starFloat {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+    50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+}
+
+@keyframes risingstarPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Superstar Effect */
+.superstar-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.superstar-effect .neon-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 30% 30%, rgba(255,0,204,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(255,153,0,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(0,204,255,0.2) 0%, transparent 50%);
+    animation: neonPulse 1.5s ease-in-out infinite;
+}
+
+.superstar-effect .spotlight-effect {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    animation: spotlightRotate 4s linear infinite;
+}
+
+.superstar-glow {
+    animation: superstarModalGlow 2s ease-in-out;
+}
+
+@keyframes neonPulse {
+    0%, 100% { 
+        filter: hue-rotate(0deg) brightness(1);
+    }
+    50% { 
+        filter: hue-rotate(180deg) brightness(1.2);
+    }
+}
+
+@keyframes spotlightRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes superstarModalGlow {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(255,0,204,0.5);
+    }
+    50% { 
+        box-shadow: 0 0 40px rgba(255,0,204,0.8),
+                   0 0 60px rgba(255,153,0,0.6),
+                   0 0 80px rgba(0,204,255,0.4);
+    }
+}
+
+/* Secret Effect */
+.secret-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.secret-effect .cosmic-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(255,107,0,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255,0,128,0.4) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(157,78,221,0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0,204,255,0.3) 0%, transparent 40%);
+    animation: cosmicShift 2s ease-in-out infinite;
+}
+
+.secret-effect .mystic-aura {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    background: 
+        linear-gradient(transparent, transparent) padding-box,
+        repeating-conic-gradient(from 0deg, #ff6b00, #ff0080, #9d4edd, #00ccff, #ff6b00) border-box;
+    animation: auraRotate 3s linear infinite;
+    filter: blur(1px);
+}
+
+.secret-effect .dimensional-rift {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    animation: riftOpen 2s ease-in-out;
+}
+
+.secret-reveal {
+    animation: secretReveal 2s ease-out;
+}
+
+.secret-background {
+    animation: secretBackground 3s ease-in-out;
+}
+
+@keyframes cosmicShift {
+    0%, 100% { 
+        background-position: 0% 0%, 100% 100%, 50% 50%, 100% 0%;
+    }
+    50% { 
+        background-position: 100% 100%, 0% 0%, 50% 50%, 0% 100%;
+    }
+}
+
+@keyframes auraRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes riftOpen {
+    0% { 
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    50% { 
+        transform: scale(1.2) rotate(180deg);
+        opacity: 0.8;
+    }
+    100% { 
+        transform: scale(1) rotate(360deg);
+        opacity: 0.3;
+    }
+}
+
+@keyframes secretReveal {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes secretBackground {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Improved confetti animation */
+.confetti {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    animation: confettiFall 3s linear forwards;
+    z-index: 1001;
+}
+
+@keyframes confettiFall {
+    0% { 
+        transform: translateY(-100vh) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    100% { 
+        transform: translateY(100vh) rotate(720deg) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Special Effects for Secret Cards */
+.secret-card-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,107,0,0.2), rgba(255,0,128,0.2), rgba(157,78,221,0.2));
+    border-radius: 15px;
+    z-index: 1;
+}
+        
+        
+        
+        
+        
 
         /* Utility Classes */
         .text-center {
@@ -2481,7 +2785,7 @@
       /* Gacha Card Display - Photocard Style */
 .gacha-card-display {
     width: 100%;
-    height: 300px;
+    height: 400px;
     border-radius: 15px;
     overflow: hidden;
     margin: 0 auto 20px;
