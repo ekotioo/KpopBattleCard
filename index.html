@@ -1743,6 +1743,8 @@
 }
 
 /* Secret Effect */
+/* Secret Effect - Premium Version */
+./* Secret Effect - With Shadow Enhancement */
 .secret-effect {
     position: absolute;
     top: 0;
@@ -1751,93 +1753,364 @@
     height: 100%;
     pointer-events: none;
     z-index: 2;
+    overflow: hidden;
+    border-radius: 15px;
 }
 
-.secret-effect .cosmic-overlay {
+/* Efek Shadow di Belakang Gambar */
+.secret-effect .card-shadow {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
     background: 
-        radial-gradient(circle at 20% 20%, rgba(255,107,0,0.4) 0%, transparent 40%),
-        radial-gradient(circle at 30% 30%, rgba(255,0,128,0.4) 0%, transparent 40%),
-        radial-gradient(circle at 20% 20%, rgba(157,78,221,0.3) 0%, transparent 20%),
-        radial-gradient(circle at 80% 20%, rgba(0,204,255,0.3) 0%, transparent 40%);
-    animation: cosmicShift 2s ease-in-out infinite;
+        radial-gradient(ellipse at center, 
+            rgba(255,107,0,0.4) 0%, 
+            rgba(255,0,128,0.3) 25%, 
+            rgba(157,78,221,0.2) 50%, 
+            rgba(0,204,255,0.1) 75%, 
+            transparent 100%);
+    filter: blur(15px);
+    animation: shadowPulse 4s ease-in-out infinite;
+    z-index: -1;
+    border-radius: 10px;
 }
 
-.secret-effect .mystic-aura {
+/* Efek Shadow Glow di Sekeliling Kartu */
+.secret-effect .halo-effect {
     position: absolute;
-    top: -10%;
-    left: -10%;
-    width: 120%;
-    height: 120%;
-    border: 2px solid transparent;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: 
+        radial-gradient(circle at 30% 30%, rgba(255,107,0,0.2) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(255,0,128,0.2) 0%, transparent 50%),
+        radial-gradient(circle at 50% 20%, rgba(157,78,221,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 20% 70%, rgba(0,204,255,0.15) 0%, transparent 50%);
+    filter: blur(20px);
+    animation: haloRotate 8s linear infinite;
     border-radius: 20px;
-    background: 
-        linear-gradient(transparent, transparent) padding-box,
-        repeating-conic-gradient(from 0deg, #ff6b00, #ff0080, #9d4edd, #00ccff, #ff6b00) border-box;
-    animation: auraRotate 3s linear infinite;
-    filter: blur(1px);
+    z-index: -2;
+    opacity: 0.7;
 }
 
-.secret-effect .dimensional-rift {
+/* Efek Premium Border */
+.secret-effect .premium-border {
     position: absolute;
-    top: 25%;
-    left: 25%;
-    width: 50%;
-    height: 50%;
-    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-    animation: riftOpen 2s ease-in-out;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid transparent;
+    border-radius: 17px;
+    background: linear-gradient(45deg, 
+        #ff6b00, #ff0080, #9d4edd, #00ccff, #ffd700, #ff6b00);
+    background-size: 400% 400%;
+    animation: premiumBorderFlow 3s ease infinite;
+    filter: blur(1px);
+    opacity: 0.8;
+    z-index: 1;
+}
+
+/* Efek Corner Accents */
+.secret-effect .corner-accent {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(45deg, #ff6b00, #ff0080);
+    border-radius: 50%;
+    filter: blur(8px);
+    opacity: 0.7;
+    animation: cornerPulse 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+.secret-effect .corner-accent.tl {
+    top: 10px;
+    left: 10px;
+    animation-delay: 0s;
+}
+
+.secret-effect .corner-accent.tr {
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, #9d4edd, #00ccff);
+    animation-delay: 0.5s;
+}
+
+.secret-effect .corner-accent.bl {
+    bottom: 10px;
+    left: 10px;
+    background: linear-gradient(45deg, #00ccff, #ffd700);
+    animation-delay: 1s;
+}
+
+.secret-effect .corner-accent.br {
+    bottom: 10px;
+    right: 10px;
+    background: linear-gradient(45deg, #ffd700, #ff6b00);
+    animation-delay: 1.5s;
+}
+
+/* Efek Floating Particles */
+.secret-effect .floating-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffd700;
+    border-radius: 50%;
+    filter: blur(0.5px);
+    animation: floatParticle 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+.secret-effect .floating-particle:nth-child(1) {
+    top: 20%;
+    left: 15%;
+    animation-delay: 0s;
+}
+
+.secret-effect .floating-particle:nth-child(2) {
+    top: 70%;
+    left: 20%;
+    background: #ff0080;
+    animation-delay: 1s;
+}
+
+.secret-effect .floating-particle:nth-child(3) {
+    top: 40%;
+    right: 15%;
+    background: #00ccff;
+    animation-delay: 2s;
+}
+
+.secret-effect .floating-particle:nth-child(4) {
+    top: 80%;
+    right: 25%;
+    background: #9d4edd;
+    animation-delay: 3s;
+}
+
+/* Efek Spotlight Center */
+.secret-effect .spotlight-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, 
+        rgba(255,215,0,0.15) 0%, 
+        rgba(255,107,0,0.08) 30%, 
+        transparent 70%);
+    animation: spotlightBreath 3s ease-in-out infinite;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+/* Efek Sparkle Burst */
+.secret-effect .sparkle-burst {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0;
+    animation: sparkleBurst 2s ease-out;
+    z-index: 2;
+}
+
+.secret-effect .sparkle-burst::before {
+    content: '✨✨✨';
+    font-size: 24px;
+    animation: sparkleTwinkle 1.5s ease-in-out infinite;
+}
+
+/* Enhanced Gacha Card Display untuk Secret */
+.gacha-card-display.rarity-secret {
+    position: relative;
+    border: 3px solid transparent;
+    border-radius: 18px;
+    background: 
+        linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+        linear-gradient(135deg, #ff6b00, #ff0080, #9d4edd, #00ccff, #ffd700) border-box;
+    box-shadow: 
+        0 0 30px rgba(255,107,0,0.4),
+        0 0 60px rgba(255,0,128,0.3),
+        0 0 90px rgba(157,78,221,0.2),
+        inset 0 0 30px rgba(0,204,255,0.1);
+    animation: secretCardGlow 2s ease-in-out infinite;
+}
+
+/* Animations Baru untuk Shadow */
+@keyframes shadowPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.6;
+        filter: blur(15px);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.8;
+        filter: blur(20px);
+    }
+}
+
+@keyframes haloRotate {
+    0% {
+        transform: rotate(0deg);
+        background-position: 0% 0%, 100% 100%, 50% 20%, 20% 70%;
+    }
+    25% {
+        background-position: 100% 0%, 0% 100%, 20% 50%, 70% 20%;
+    }
+    50% {
+        transform: rotate(180deg);
+        background-position: 100% 100%, 0% 0%, 70% 80%, 30% 30%;
+    }
+    75% {
+        background-position: 0% 100%, 100% 0%, 80% 50%, 50% 70%;
+    }
+    100% {
+        transform: rotate(360deg);
+        background-position: 0% 0%, 100% 100%, 50% 20%, 20% 70%;
+    }
+}
+
+@keyframes secretCardGlow {
+    0%, 100% {
+        box-shadow: 
+            0 0 30px rgba(255,107,0,0.4),
+            0 0 60px rgba(255,0,128,0.3),
+            0 0 90px rgba(157,78,221,0.2),
+            inset 0 0 30px rgba(0,204,255,0.1);
+    }
+    50% {
+        box-shadow: 
+            0 0 40px rgba(255,107,0,0.6),
+            0 0 80px rgba(255,0,128,0.4),
+            0 0 120px rgba(157,78,221,0.3),
+            inset 0 0 40px rgba(0,204,255,0.2);
+    }
+}
+
+/* Animations yang sudah ada (tetap pertahankan) */
+@keyframes premiumBorderFlow {
+    0%, 100% {
+        background-position: 0% 50%;
+        opacity: 0.7;
+    }
+    25% {
+        background-position: 50% 100%;
+        opacity: 0.9;
+    }
+    50% {
+        background-position: 100% 50%;
+        opacity: 0.7;
+    }
+    75% {
+        background-position: 50% 0%;
+        opacity: 0.9;
+    }
+}
+
+@keyframes cornerPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.8;
+    }
+}
+
+@keyframes floatParticle {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.3;
+    }
+    25% {
+        transform: translateY(-15px) translateX(5px);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(-10px) translateX(-5px);
+        opacity: 0.5;
+    }
+    75% {
+        transform: translateY(-20px) translateX(3px);
+        opacity: 0.8;
+    }
+}
+
+@keyframes spotlightBreath {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.6;
+    }
+}
+
+@keyframes sparkleBurst {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes sparkleTwinkle {
+    0%, 100% {
+        opacity: 0.6;
+        transform: rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: rotate(10deg);
+    }
 }
 
 .secret-reveal {
-    animation: secretReveal 2s ease-out;
-}
-
-.secret-background {
-    animation: secretBackground 3s ease-in-out;
-}
-
-@keyframes cosmicShift {
-    0%, 100% { 
-        background-position: 0% 0%, 100% 100%, 50% 50%, 100% 0%;
-    }
-    50% { 
-        background-position: 100% 100%, 0% 0%, 50% 50%, 0% 100%;
-    }
-}
-
-@keyframes auraRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes riftOpen {
-    0% { 
-        transform: scale(0) rotate(0deg);
-        opacity: 0;
-    }
-    50% { 
-        transform: scale(1.2) rotate(180deg);
-        opacity: 0.8;
-    }
-    100% { 
-        transform: scale(1) rotate(360deg);
-        opacity: 0.3;
-    }
+    animation: secretReveal 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes secretReveal {
     0% {
-        transform: scale(0.8);
+        transform: scale(0.8) rotate(-5deg);
         opacity: 0;
     }
-    50% {
-        transform: scale(1.1);
+    70% {
+        transform: scale(1.05) rotate(2deg);
     }
     100% {
-        transform: scale(1);
+        transform: scale(1) rotate(0deg);
         opacity: 1;
+    }
+}
+
+.secret-background {
+    animation: secretBackground 2s ease-in-out;
+}
+
+@keyframes secretBackground {
+    0%, 100% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(0, 0, 0, 0.03);
     }
 }
 
@@ -1846,7 +2119,7 @@
         background-color: transparent;
     }
     50% {
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.03);
     }
 }
 
@@ -5536,62 +5809,113 @@ function showGachaResult(card) {
 }
 
 // Efek khusus untuk kartu Legendary
-function playLegendaryEffect(card) {
-    // Play legendary sound
+// Efek khusus untuk kartu Secret - With Shadow Enhancement
+function playSecretEffect(card) {
+    // Play secret sound sequence
     if (gameData.settings.sfxEnabled) {
         sounds.legendary.play().catch(e => console.log("Audio play failed"));
+        setTimeout(() => {
+            if (gameData.settings.sfxEnabled) {
+                sounds.risingstar.play().catch(e => console.log("Audio play failed"));
+            }
+        }, 400);
+        setTimeout(() => {
+            if (gameData.settings.sfxEnabled) {
+                sounds.victory.play().catch(e => console.log("Audio play failed"));
+            }
+        }, 800);
     }
     
-    // Create golden confetti effect
-    createConfetti('#ffd166', '#ffb347', '#ff9500');
+    // Create premium confetti
+    createConfetti('#ff6b00', '#ff0080', '#9d4edd', '#00ccff', '#ffd700', '#ff00cc');
     
-    // Add golden particle effect
+    // Add secret particle effect dengan shadow
     const gachaCardDisplay = document.querySelector('.gacha-card-display');
-    const legendaryEffect = document.createElement('div');
-    legendaryEffect.className = 'special-effect legendary-effect';
-    legendaryEffect.innerHTML = `
-        <div class="particle-overlay"></div>
+    const secretEffect = document.createElement('div');
+    secretEffect.className = 'special-effect secret-effect';
+    secretEffect.innerHTML = `
+        <div class="halo-effect"></div>
+        <div class="card-shadow"></div>
+        <div class="premium-border"></div>
+        <div class="corner-accent tl"></div>
+        <div class="corner-accent tr"></div>
+        <div class="corner-accent bl"></div>
+        <div class="corner-accent br"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="spotlight-center"></div>
+        <div class="sparkle-burst"></div>
     `;
-    gachaCardDisplay.appendChild(legendaryEffect);
+    gachaCardDisplay.appendChild(secretEffect);
     
-    // Add announcement
-    addToBattleLog(`✨ LEGENDARY PULL! You got ${card.name}! ✨`, 'player');
+    // Add special announcement
+    addToBattleLog(`🎊 LEGENDARY SECRET PULL! UNBELIEVABLE RARITY! ${card.name}! 🎊`, 'player');
     
-    // Add screen shake effect
-    document.querySelector('.gacha-animation').classList.add('legendary-shake');
+    // Add screen effects
+    document.querySelector('.modal-content').classList.add('secret-reveal');
+    document.body.classList.add('secret-background');
+    
+    // Auto remove effects after animation
     setTimeout(() => {
-        document.querySelector('.gacha-animation').classList.remove('legendary-shake');
-    }, 2000);
+        document.querySelector('.modal-content').classList.remove('secret-reveal');
+        document.body.classList.remove('secret-background');
+    }, 2500);
 }
 
 // Efek khusus untuk kartu RisingStar
-function playRisingStarEffect(card) {
-    // Play risingstar sound
+// Efek khusus untuk kartu Secret - Premium Version
+function playSecretEffect(card) {
+    // Play secret sound sequence
     if (gameData.settings.sfxEnabled) {
-        sounds.risingstar.play().catch(e => console.log("Audio play failed"));
+        sounds.legendary.play().catch(e => console.log("Audio play failed"));
+        setTimeout(() => {
+            if (gameData.settings.sfxEnabled) {
+                sounds.risingstar.play().catch(e => console.log("Audio play failed"));
+            }
+        }, 400);
+        setTimeout(() => {
+            if (gameData.settings.sfxEnabled) {
+                sounds.victory.play().catch(e => console.log("Audio play failed"));
+            }
+        }, 800);
     }
     
-    // Create rainbow confetti effect
-    createConfetti('#ff0080', '#9d4edd', '#ff6b00', '#ffd700');
+    // Create premium confetti
+    createConfetti('#ff6b00', '#ff0080', '#9d4edd', '#00ccff', '#ffd700', '#ff00cc');
     
-    // Add rainbow particle effect
+    // Add secret particle effect
     const gachaCardDisplay = document.querySelector('.gacha-card-display');
-    const risingstarEffect = document.createElement('div');
-    risingstarEffect.className = 'special-effect risingstar-effect';
-    risingstarEffect.innerHTML = `
-        <div class="rainbow-overlay"></div>
-        <div class="star-particles"></div>
+    const secretEffect = document.createElement('div');
+    secretEffect.className = 'special-effect secret-effect';
+    secretEffect.innerHTML = `
+        <div class="premium-border"></div>
+        <div class="corner-accent tl"></div>
+        <div class="corner-accent tr"></div>
+        <div class="corner-accent bl"></div>
+        <div class="corner-accent br"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="floating-particle"></div>
+        <div class="spotlight-center"></div>
+        <div class="sparkle-burst"></div>
     `;
-    gachaCardDisplay.appendChild(risingstarEffect);
+    gachaCardDisplay.appendChild(secretEffect);
     
-    // Add announcement
-    addToBattleLog(`🌟 RISINGSTAR PULL! You got ${card.name}! 🌟`, 'player');
+    // Add special announcement
+    addToBattleLog(`🎊 LEGENDARY SECRET PULL! UNBELIEVABLE RARITY! ${card.name}! 🎊`, 'player');
     
-    // Add pulsing glow effect
-    gachaCardDisplay.classList.add('risingstar-pulse');
+    // Add screen effects
+    document.querySelector('.modal-content').classList.add('secret-reveal');
+    document.body.classList.add('secret-background');
+    
+    // Auto remove effects after animation
     setTimeout(() => {
-        gachaCardDisplay.classList.remove('risingstar-pulse');
-    }, 3000);
+        document.querySelector('.modal-content').classList.remove('secret-reveal');
+        document.body.classList.remove('secret-background');
+    }, 2500);
 }
 
 // Efek khusus untuk kartu Superstar
