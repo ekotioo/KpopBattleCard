@@ -3646,6 +3646,335 @@ input:checked + .toggle-slider:before {
 .requirement-not-met {
     color: var(--danger);
 }
+
+
+/* Shorts Screen */
+/* Improved Shorts Screen */
+#shorts {
+    padding: 0;
+    background: #000;
+    position: relative;
+}
+
+.shorts-container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Improved Shorts Performance */
+.shorts-video-container {
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    will-change: scroll-position;
+}
+
+.shorts-video-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    background: #000;
+}
+
+.shorts-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+}
+
+/* Preload videos for better performance */
+.shorts-video[data-preloaded="true"] {
+    display: block;
+}
+
+/* Hide non-active videos to improve performance */
+.shorts-video-item:not(.active) .shorts-video {
+    visibility: hidden;
+}
+
+.shorts-video-item.active .shorts-video {
+    visibility: visible;
+}
+
+/* Smooth transitions */
+.shorts-video-item {
+    transition: opacity 0.3s ease;
+}
+
+/* Optimize right controls */
+.shorts-right-controls {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Progress bar improvements */
+.shorts-progress-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 1000;
+}
+
+.shorts-progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Loading state improvements */
+.shorts-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.5);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Video Info Overlay */
+.shorts-video-info {
+    position: absolute;
+    bottom: 80px;
+    left: 15px;
+    right: 15px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 10;
+}
+
+.shorts-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.group-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.verified-badge {
+    color: #0095f6;
+    font-size: 0.9rem;
+}
+
+.shorts-description {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    max-width: 80%;
+}
+
+.shorts-music {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.music-icon {
+    font-size: 0.8rem;
+}
+
+/* Right Side Controls */
+.shorts-right-controls {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    z-index: 10;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.control-item:active {
+    transform: scale(0.9);
+}
+
+.control-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.control-icon.liked {
+    background: rgba(255, 59, 92, 0.2);
+    color: #ff3b5c;
+}
+
+.control-count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Bottom Progress Bar */
+.shorts-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 10;
+}
+
+.shorts-progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Loading Spinner */
+.shorts-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    z-index: 5;
+}
+
+/* Touch Improvements */
+.shorts-video-container {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.shorts-video-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Video Play/Pause Overlay */
+.video-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.video-play-overlay.visible {
+    opacity: 1;
+}
+
+.play-pause-icon {
+    font-size: 4rem;
+    color: white;
+    opacity: 0.8;
+}
+
+/* Additional Controls */
+.shorts-bottom-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    z-index: 10;
+}
+
+.bottom-control-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottom-control-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.bottom-control-btn:active {
+    transform: scale(0.95);
+}
+
+/* Stop button specific */
+.stop-btn {
+    background: rgba(255, 59, 92, 0.3);
+}
+
+.stop-btn:hover {
+    background: rgba(255, 59, 92, 0.5);
+}
+
+/* Refresh button */
+.refresh-btn {
+    background: rgba(0, 149, 246, 0.3);
+}
+
+.refresh-btn:hover {
+    background: rgba(0, 149, 246, 0.5);
+}
         
     </style>
 </head>
@@ -3703,22 +4032,42 @@ input:checked + .toggle-slider:before {
         </header>
 
         <nav>
-            <button class="nav-btn active" data-screen="home">
-                <i class="fas fa-home"></i> Home
-            </button>
-            <button class="nav-btn" data-screen="battle">
-                <i class="fas fa-fist-raised"></i> Battle
-            </button>
-            <button class="nav-btn" data-screen="collection">
-                <i class="fas fa-id-card"></i> Collection
-            </button>
-            <button class="nav-btn" data-screen="store">
-                <i class="fas fa-shopping-cart"></i> Store
-            </button>
-            <button class="nav-btn" data-screen="quests">
-                <i class="fas fa-tasks"></i> Quests
-            </button>
-        </nav>
+    <button class="nav-btn active" data-screen="home">
+        <i class="fas fa-home"></i> Home
+    </button>
+    <button class="nav-btn" data-screen="shorts">
+        <i class="fas fa-play-circle"></i> Idol Shorts
+    </button>
+    <button class="nav-btn" data-screen="battle">
+        <i class="fas fa-fist-raised"></i> Battle
+    </button>
+    
+    <button class="nav-btn" data-screen="collection">
+        <i class="fas fa-id-card"></i> Collection
+    </button>
+    <button class="nav-btn" data-screen="store">
+        <i class="fas fa-shopping-cart"></i> Store
+    </button>
+    <button class="nav-btn" data-screen="quests">
+        <i class="fas fa-tasks"></i> Quests
+    </button>
+</nav>
+
+
+<!-- Shorts Screen -->
+<section id="shorts" class="screen">
+    <div class="shorts-container">
+        <div class="shorts-video-container">
+            <!-- Videos will be loaded by JavaScript -->
+        </div>
+        <div class="shorts-progress-container">
+            <div class="shorts-progress-bar"></div>
+        </div>
+    </div>
+</section>
+
+
+
 
         <!-- Home Screen -->
         <section id="home" class="screen active">
@@ -3889,7 +4238,13 @@ input:checked + .toggle-slider:before {
                 </div>
             </div>
         </section>
-
+        
+        
+        
+                
+        
+        
+        
         <!-- Store Screen -->
         <section id="store" class="screen">
             <h2 class="screen-title">Store</h2>
@@ -4040,6 +4395,10 @@ input:checked + .toggle-slider:before {
             </div>
         </div>
     </div>
+    
+    
+    
+    
 
     <!-- Settings Modal -->
     <div id="settings-modal" class="modal">
@@ -4491,6 +4850,10 @@ const gameData = {
     }
 };
 
+
+
+
+
 // Game State
 let playerHealth = 100;
 let enemyHealth = 100;
@@ -4510,6 +4873,67 @@ let cardToSell = null;
 let firstGachaDone = false;
 let cardToManageSkills = null;
 let selectedCouponCrate = null;
+let currentShortsIndex = 0;
+let isShortsPlaying = false;
+let shortsProgressInterval;
+let autoPlayEnabled = false;
+
+
+const shortsData = [
+    {
+        id: 1,
+        video: "jiwooshorts.mp4",
+        group: "Hearts2Hearts",
+        description: "Jiwoo Mode On! #Hearts2hearts #Kpop #battleofidol",
+        music: "Original Sound - Hearts2Hearts",
+        likes: 81247,
+        isLiked: false,
+        duration: 15    },
+    {
+        id: 2,
+        video: "iushorts1.mp4",
+        group: "IU",
+        description: "행복한 하루 보내세요 ☺️  #iu #kpop #battleofidol",
+        music: "Original Sound - IU",
+        likes: 529923,
+        isLiked: false,
+        duration: 18
+    },
+    {
+        id: 3,
+        video: "chaewoncute.mp4",
+        group: "LE SSERAFIM",
+        description: "Chaewon outfit today  #LESSERAFIM #Chaewon #Battleofidol",
+        music: "Original Sound - LE SSERAFIM",
+        likes: 415632,
+        isLiked: false,
+        duration: 21
+    },
+    {
+        id: 4,
+        video: "giselle1.mp4",
+        group: "aespa",
+        description: "With Giselle  #aespa #giselle #Battleofidol",
+        music: "Original Sound - aespa",
+        likes: 115632,
+        isLiked: false,
+        duration: 21
+    },
+    {
+        id: 5,
+        video: "hannicute.mp4",
+        group: "NewJeans",
+        description: "Hello I'am Hanni 🦦'  #njz #freenewjans #hanni #Battleofidol",
+        music: "Original Sound - NewJeans",
+        likes: 56032,
+        isLiked: false,
+        duration: 21
+    }
+];
+    
+    
+
+
 
 // Sound Effects
 const sounds = {
@@ -5375,6 +5799,583 @@ function upgradeCardAttack(cardId) {
     addToBattleLog(`Upgraded ${card.name}'s attack to ${card.attack}!`, 'player');
     saveGameData();
 }
+
+
+
+
+
+
+
+
+
+
+
+// Format number to K/M
+function formatCount(count) {
+    if (count >= 1000000) {
+        return (count / 1000000).toFixed(1) + 'M';
+    } else if (count >= 1000) {
+        return (count / 1000).toFixed(1) + 'K';
+    }
+    return count.toString();
+}
+
+// Initialize Shorts dengan multiple videos
+function initShorts() {
+    console.log('🎬 Initializing Shorts with', shortsData.length, 'videos...');
+    
+    try {
+        // Reset state
+        currentShortsIndex = 0;
+        isShortsPlaying = false;
+        clearInterval(shortsProgressInterval);
+        shortsVideos = [];
+        
+        const container = document.querySelector('.shorts-video-container');
+        if (!container) {
+            console.error('❌ Shorts container not found');
+            return;
+        }
+        
+        // Clear container
+        container.innerHTML = '';
+        
+        // Create all video elements
+        shortsData.forEach((short, index) => {
+            const videoItem = createShortVideoElement(short, index);
+            if (videoItem) {
+                container.appendChild(videoItem);
+                
+                // Store video reference
+                const videoElement = videoItem.querySelector('.shorts-video');
+                if (videoElement) {
+                    shortsVideos.push({
+                        element: videoItem,
+                        video: videoElement,
+                        short: short,
+                        index: index
+                    });
+                }
+            }
+        });
+        
+        console.log('✅ Created', shortsVideos.length, 'video elements');
+        
+        // Setup scroll handler
+        setupScrollHandler(container);
+        
+        // Setup video events untuk video pertama
+        if (shortsVideos.length > 0) {
+            setupVideoEvents(0);
+        }
+        
+        // Add bottom controls
+        addBottomControls();
+        
+        console.log('✅ Shorts initialized successfully');
+        
+    } catch (error) {
+        console.error('❌ Error in initShorts:', error);
+    }
+}
+
+// Setup scroll handler untuk multiple videos
+function setupScrollHandler(container) {
+    let scrollTimeout;
+    
+    container.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            handleScrollEnd(container);
+        }, 150);
+    }, { passive: true });
+}
+
+// Handle scroll end
+function handleScrollEnd(container) {
+    const scrollTop = container.scrollTop;
+    const containerHeight = container.clientHeight;
+    const newIndex = Math.round(scrollTop / containerHeight);
+    
+    if (newIndex >= 0 && newIndex < shortsVideos.length && newIndex !== currentShortsIndex) {
+        switchToShort(newIndex);
+    }
+}
+
+// Switch to short
+function switchToShort(newIndex) {
+    console.log(`🔄 Switching from ${currentShortsIndex} to ${newIndex}`);
+    
+    // Pause current video
+    pauseCurrentShort();
+    
+    const oldIndex = currentShortsIndex;
+    currentShortsIndex = newIndex;
+    
+    // Update active states
+    updateActiveStates(oldIndex, newIndex);
+    
+    // Play new video
+    loadAndPlayShort(newIndex);
+}
+
+// Pause current short
+function pauseCurrentShort() {
+    if (shortsVideos[currentShortsIndex]) {
+        const video = shortsVideos[currentShortsIndex].video;
+        if (video) {
+            video.pause();
+        }
+    }
+    clearInterval(shortsProgressInterval);
+    isShortsPlaying = false;
+}
+
+// Update active states
+function updateActiveStates(oldIndex, newIndex) {
+    // Remove active from old video
+    if (shortsVideos[oldIndex]) {
+        shortsVideos[oldIndex].element.classList.remove('active');
+    }
+    
+    // Add active to new video
+    if (shortsVideos[newIndex]) {
+        shortsVideos[newIndex].element.classList.add('active');
+    }
+}
+
+// Setup video events untuk specific index
+function setupVideoEvents(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const overlay = videoData.element.querySelector('.video-play-overlay');
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    if (!video) return;
+    
+    // Click to play/pause
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            togglePlayPause();
+        });
+    }
+    
+    // Video event listeners
+    video.addEventListener('loadeddata', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+    
+    video.addEventListener('waiting', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'flex';
+        }
+    });
+    
+    video.addEventListener('canplay', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+    
+    video.addEventListener('ended', function() {
+        console.log(`Video ${index} ended`);
+        isShortsPlaying = false;
+        updatePlayPauseUI(false);
+        
+        // Reset progress bar
+        const progressBar = document.querySelector('.shorts-progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+        
+        clearInterval(shortsProgressInterval);
+        
+        // Jika ini video terakhir, refresh ke awal
+        if (index === shortsVideos.length - 1) {
+            setTimeout(() => {
+                refreshShorts();
+            }, 2000);
+        }
+    });
+    
+    video.addEventListener('error', function() {
+        console.error(`Video ${index} error`);
+        if (loadingElement) {
+            loadingElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i><br><span>Load failed</span>';
+        }
+    });
+}
+
+// Load and play short
+function loadAndPlayShort(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    console.log(`🎥 Loading short ${index}`);
+    
+    // Setup events jika belum
+    if (!video._eventsSetup) {
+        setupVideoEvents(index);
+        video._eventsSetup = true;
+    }
+    
+    // Show loading
+    if (loadingElement) {
+        loadingElement.style.display = 'flex';
+        loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    }
+    
+    // Try to play
+    video.play().then(() => {
+        console.log(`✅ Video ${index} playing`);
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+        isShortsPlaying = true;
+        updatePlayPauseUI(true);
+        startProgressBar(index, videoData.short.duration);
+    }).catch(error => {
+        console.log(`⚠️ Video ${index} play failed:`, error);
+        if (loadingElement) {
+            loadingElement.innerHTML = '<i class="fas fa-play"></i><br><span>Tap to play</span>';
+        }
+    });
+}
+
+// Create short video element untuk multiple videos
+function createShortVideoElement(short, index) {
+    const videoItem = document.createElement('div');
+    videoItem.className = `shorts-video-item ${index === 0 ? 'active' : ''}`;
+    videoItem.setAttribute('data-index', index);
+    
+    videoItem.innerHTML = `
+        <video class="shorts-video" preload="auto" playsinline webkit-playsinline muted>
+            <source src="${short.video}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <div class="video-play-overlay ${index === 0 ? '' : 'visible'}">
+            <div class="play-pause-icon">
+                <i class="fas ${index === 0 ? 'fa-pause' : 'fa-play'}"></i>
+            </div>
+        </div>
+        
+        <div class="shorts-video-info">
+            <div class="shorts-group">
+                <span class="group-name">${short.group}</span>
+                <span class="verified-badge"><i class="fas fa-check-circle"></i></span>
+            </div>
+            <div class="shorts-description">${short.description}</div>
+            <div class="shorts-music">
+                <i class="fas fa-music music-icon"></i>
+                <span>${short.music}</span>
+            </div>
+        </div>
+        
+        <div class="shorts-right-controls">
+            <div class="control-item" onclick="toggleLike(${index})">
+                <div class="control-icon ${short.isLiked ? 'liked' : ''}">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="control-count">${formatCount(short.likes)}</div>
+            </div>
+            <div class="control-item" onclick="commentShort(${index})">
+                <div class="control-icon">
+                    <i class="fas fa-comment"></i>
+                </div>
+                <div class="control-count">Comment</div>
+            </div>
+            <div class="control-item" onclick="shareShort(${index})">
+                <div class="control-icon">
+                    <i class="fas fa-share"></i>
+                </div>
+                <div class="control-count">Share</div>
+            </div>
+            <div class="control-item" onclick="toggleSound(${index})">
+                <div class="control-icon">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <div class="control-count">Sound</div>
+            </div>
+        </div>
+        
+        <div class="shorts-loading" style="display: ${index === 0 ? 'flex' : 'none'};">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+    `;
+    
+    return videoItem;
+}
+
+// Update play/pause UI
+function updatePlayPauseUI(playing) {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const overlay = videoData.element.querySelector('.video-play-overlay');
+    const icon = videoData.element.querySelector('.play-pause-icon i');
+    
+    if (!overlay || !icon) return;
+    
+    if (playing) {
+        overlay.classList.remove('visible');
+        icon.className = 'fas fa-pause';
+    } else {
+        overlay.classList.add('visible');
+        icon.className = 'fas fa-play';
+    }
+}
+
+// Start progress bar
+function startProgressBar(index, duration) {
+    clearInterval(shortsProgressInterval);
+    
+    const progressBar = document.querySelector('.shorts-progress-bar');
+    const videoData = shortsVideos[index];
+    
+    if (!progressBar || !videoData || !videoData.video) return;
+    
+    progressBar.style.width = '0%';
+    
+    shortsProgressInterval = setInterval(() => {
+        if (isShortsPlaying && videoData.video && !videoData.video.paused) {
+            const progress = (videoData.video.currentTime / duration) * 100;
+            progressBar.style.width = Math.min(progress, 100) + '%';
+            
+            if (progress >= 100) {
+                clearInterval(shortsProgressInterval);
+            }
+        }
+    }, 100);
+}
+
+// Toggle play/pause untuk video aktif
+function togglePlayPause() {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    if (!video) return;
+    
+    if (isShortsPlaying) {
+        // Pause
+        video.pause();
+        isShortsPlaying = false;
+        updatePlayPauseUI(false);
+        clearInterval(shortsProgressInterval);
+    } else {
+        // Play
+        if (loadingElement) {
+            loadingElement.style.display = 'flex';
+        }
+        
+        video.play().then(() => {
+            isShortsPlaying = true;
+            updatePlayPauseUI(true);
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+            startProgressBar(currentShortsIndex, videoData.short.duration);
+        }).catch(error => {
+            console.log('Play failed:', error);
+            if (loadingElement) {
+                loadingElement.innerHTML = '<i class="fas fa-play"></i><br><span>Tap to play</span>';
+            }
+        });
+    }
+}
+
+// Stop current video
+function stopCurrentVideo() {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    if (!video) return;
+    
+    video.pause();
+    video.currentTime = 0;
+    isShortsPlaying = false;
+    
+    updatePlayPauseUI(false);
+    
+    const progressBar = document.querySelector('.shorts-progress-bar');
+    if (progressBar) {
+        progressBar.style.width = '0%';
+    }
+    
+    clearInterval(shortsProgressInterval);
+    
+    console.log('⏹️ Video stopped');
+}
+
+// Refresh shorts
+function refreshShorts() {
+    console.log('🔄 Refreshing shorts...');
+    
+    stopCurrentShort();
+    
+    // Scroll to first video
+    const container = document.querySelector('.shorts-video-container');
+    if (container) {
+        container.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Reset to first video
+    currentShortsIndex = 0;
+    
+    // Update active states
+    shortsVideos.forEach((videoData, index) => {
+        if (videoData.element) {
+            if (index === 0) {
+                videoData.element.classList.add('active');
+            } else {
+                videoData.element.classList.remove('active');
+            }
+        }
+    });
+    
+    // Load first video
+    setTimeout(() => {
+        loadAndPlayShort(0);
+    }, 500);
+    
+    console.log('✅ Refreshed to first video');
+}
+
+// Add bottom controls
+function addBottomControls() {
+    const container = document.querySelector('.shorts-container');
+    if (!container) return;
+    
+    const existingControls = container.querySelector('.shorts-bottom-controls');
+    if (existingControls) {
+        existingControls.remove();
+    }
+    
+    const bottomControls = document.createElement('div');
+    bottomControls.className = 'shorts-bottom-controls';
+    bottomControls.innerHTML = `
+        <button class="bottom-control-btn stop-btn" onclick="stopCurrentVideo()" title="Stop Video">
+            <i class="fas fa-stop"></i>
+        </button>
+        <button class="bottom-control-btn refresh-btn" onclick="refreshShorts()" title="Refresh to First Video">
+            <i class="fas fa-redo"></i>
+        </button>
+        <button class="bottom-control-btn" onclick="toggleAutoPlay()" title="${autoPlayEnabled ? 'Disable Auto Play' : 'Enable Auto Play'}">
+            <i class="fas ${autoPlayEnabled ? 'fa-toggle-on' : 'fa-toggle-off'}"></i>
+        </button>
+    `;
+    
+    container.appendChild(bottomControls);
+}
+
+// Toggle auto play
+function toggleAutoPlay() {
+    autoPlayEnabled = !autoPlayEnabled;
+    
+    const autoPlayBtn = document.querySelector('.shorts-bottom-controls .bottom-control-btn:nth-child(3)');
+    if (autoPlayBtn) {
+        const icon = autoPlayBtn.querySelector('i');
+        if (icon) {
+            icon.className = autoPlayEnabled ? 'fas fa-toggle-on' : 'fas fa-toggle-off';
+        }
+        autoPlayBtn.title = autoPlayEnabled ? 'Disable Auto Play' : 'Enable Auto Play';
+    }
+    
+    console.log(`🔁 Auto play ${autoPlayEnabled ? 'enabled' : 'disabled'}`);
+}
+
+// Interaction functions
+function toggleLike(index) {
+    if (index < 0 || index >= shortsData.length) return;
+    
+    const short = shortsData[index];
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const controlIcon = videoData.element.querySelector('.control-icon');
+    const likesCount = videoData.element.querySelector('.control-count');
+    
+    if (!controlIcon || !likesCount) return;
+    
+    if (short.isLiked) {
+        short.likes--;
+        short.isLiked = false;
+        controlIcon.classList.remove('liked');
+    } else {
+        short.likes++;
+        short.isLiked = true;
+        controlIcon.classList.add('liked');
+    }
+    
+    likesCount.textContent = formatCount(short.likes);
+    
+    controlIcon.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        controlIcon.style.transform = 'scale(1)';
+    }, 200);
+}
+
+function toggleSound(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const soundIcon = videoData.element.querySelector('.control-item:nth-child(4) .control-icon i');
+    
+    if (!video || !soundIcon) return;
+    
+    if (video.muted) {
+        video.muted = false;
+        soundIcon.className = 'fas fa-volume-up';
+    } else {
+        video.muted = true;
+        soundIcon.className = 'fas fa-volume-mute';
+    }
+}
+
+function commentShort(index) {
+    addToBattleLog(`Comment feature for ${shortsData[index].group} short is coming soon!`, 'player');
+}
+
+function shareShort(index) {
+    addToBattleLog(`Share feature for ${shortsData[index].group} short is coming soon!`, 'player');
+}
+
+// Update switchScreen function
+function switchScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
+    document.getElementById(screenId).classList.add('active');
+    
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-screen="${screenId}"]`).classList.add('active');
+    
+    if (screenId !== 'shorts') {
+        // Pause current video when leaving
+        pauseCurrentShort();
+    } else {
+        // Initialize shorts when entering
+        setTimeout(() => {
+            initShorts();
+        }, 100);
+    }
+}
+
 
 // Load store items dengan diskon
 function loadStoreItems(category) {
@@ -7441,6 +8442,7 @@ window.addEventListener('DOMContentLoaded', initGame);
  </script>
 </body>
 </html>
+
 
 
 
