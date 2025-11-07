@@ -35,7 +35,9 @@ body {
     color: var(--text-light);
     overflow-x: hidden;
     min-height: 100vh;
-    background-image: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    background: 
+        url('body-bg.jpg') center/cover no-repeat fixed,
+        linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
 }
 
 .container {
@@ -217,25 +219,49 @@ header {
     text-align: center;
     margin-bottom: 20px;
     padding: 15px 0;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('header-bg.jpg');
-    background-size: cover;
-    background-position: center;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     color: white;
     position: relative;
     overflow: hidden;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
+.header-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5));
+    z-index: -1;
+}
 header h1 {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-weight: 800;
-    font-family: 'Arial Black', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-weight: 800;
+  font-family: 'Sora', cursive;
+  background: linear-gradient(135deg, #00f0ff, #ff00c8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px #00f0ff,
+               0 0 20px #00f0ff,
+               0 0 40px #ff00c8,
+               0 0 80px #ff00c8;
 }
 
 .player-info {
@@ -330,8 +356,8 @@ nav {
 }
 
 .nav-btn {
-    background: var(--card-bg);
-    border: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 10px 5px;
     font-size: 0.75rem;
@@ -344,33 +370,115 @@ nav {
     flex-direction: column;
     align-items: center;
     gap: 5px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(106, 90, 249, 0.3), rgba(255, 107, 157, 0.3));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
 }
 
 .nav-btn i {
     font-size: 1.1rem;
+    z-index: 2;
+    position: relative;
 }
 
+.nav-btn span {
+    z-index: 2;
+    position: relative;
+}
+
+/* Efek saat aktif/terpilih */
 .nav-btn.active {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.nav-btn.active::before {
+    opacity: 1;
+}
+
+/* Efek hover */
 .nav-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+.nav-btn:hover::before {
+    opacity: 0.5;
+}
+
+/* Efek saat ditekan (click) */
+.nav-btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.1s ease;
+}
+
+/* Efek ripple saat diklik */
+.nav-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.nav-btn:active::after {
+    width: 100px;
+    height: 100px;
+}
+
+/* Screen Styles */
 /* Screen Styles */
 .screen {
     display: none;
     flex: 1;
-    background: var(--card-bg);
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     overflow-y: auto;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(106, 90, 249, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 107, 157, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 209, 102, 0.05) 0%, transparent 50%);
+    border-radius: 15px;
+    z-index: -1;
 }
 
 .screen.active {
@@ -378,13 +486,30 @@ nav {
     flex-direction: column;
 }
 
+
 .screen-title {
     text-align: center;
     margin-bottom: 20px;
     color: var(--accent);
     font-size: 1.5rem;
     font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
+
+.screen-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+
+
 
 /* Home Screen */
 .home-container {
@@ -1180,7 +1305,7 @@ nav {
 }
 
 .modal-content {
-    background: var(--card-bg);
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
     border-radius: 15px;
     padding: 20px;
     width: 90%;
@@ -1189,7 +1314,15 @@ nav {
     overflow-y: auto;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     animation: modalAppear 0.3s ease;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+
+
+
+
 
 @keyframes modalAppear {
     from {
@@ -1207,25 +1340,75 @@ nav {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
 }
 
 .modal-title {
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--accent);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .close-modal {
-    background: none;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
+    border-radius: 8px;
     font-size: 1.5rem;
     cursor: pointer;
     color: #aaa;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+close-modal:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: rotate(90deg);
 }
 
 .gacha-animation {
     text-align: center;
     padding: 20px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.gacha-result {
+    text-align: center;
+    margin-top: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.gacha-result-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: var(--text-light);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.gacha-result-group {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.gacha-result-rarity {
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .gacha-card {
@@ -3446,7 +3629,11 @@ input:checked + .toggle-slider:before {
             <div class="login-logo">
                 <i class="fas fa-star"></i>
             </div>
+             
             <h1 class="login-title">Battle Of Idol</h1>
+            class="featured-card">
+                        
+            
             <p class="login-subtitle">Masukkan username untuk memulai petualangan!</p>
             
             <form class="login-form" id="login-form">
@@ -3462,6 +3649,12 @@ input:checked + .toggle-slider:before {
     <!-- Game Container (Initially Hidden) -->
     <div class="container" id="game-container" style="display: none;">
         <header>
+            
+                <video autoplay muted loop playsinline class="header-video">
+        <source src="header-bg.mp4" type="video/mp4">
+        <source src="header-bg.webm" type="video/webm">
+    </video>
+            
             <h1>Battle Of Idol</h1>
             <div class="player-info">
                 <div class="player-name" id="player-name-display">Player</div>
@@ -3991,8 +4184,7 @@ input:checked + .toggle-slider:before {
     </div>
 
     <script>
-        // Game Data dengan tambahan fitur baru
-        // Game Data dengan tambahan fitur baru
+    // Game Data dengan tambahan fitur baru
 const gameData = {
     username: "",
     coins: 0,
@@ -4012,7 +4204,9 @@ const gameData = {
     luckBoosts: {
         active: false,
         remainingUses: 0,
-        boostAmount: 0
+        boostAmount: 0,
+        unlimitedActive: false,
+        unlimitedEndTime: 0
     },
     gachaCoupons: 0,
     storeItems: {
@@ -4038,7 +4232,9 @@ const gameData = {
             { id: 3, name: "Epic Boost", price: 80, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" }
         ],
         luck: [
-            { id: 1, name: "Luck Boost", price: 500, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1% for 20 openings" }
+            { id: 1, name: "Luck Boost", price: 500, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1% for 20 openings" },
+            { id: 2, name: "Luck Boost Plus", price: 700, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 3% for 20 openings" },
+            { id: 3, name: "Unlimited Luck Boost", price: 1400, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1.5% for 30 minutes" }
         ],
         skills: [
             { id: 1, name: "War Blitz", price: 800, type: "skill", image: "warblitz.jpg", description: "-4 HP, +7 Attack (+3 Attack when enemy uses Shield)" },
@@ -4069,7 +4265,7 @@ const gameData = {
     },
     gachaPool: [
         // Common Cards (100% in Basic Crate, 45% in Premium, 20% in Elite, 15% in RisingStar, 15% in Event)
-          { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+       { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 2, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 3, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 4, name: "Jo Yuri", group: "Actress", image: "jyr.jpg", health: 113, maxHealth: 113, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -4142,92 +4338,92 @@ const gameData = {
                 { id: 108, name: "Jo Yuri", group: "Actress", image: "yuri1.jpg", health: 245, maxHealth: 245, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 109, name: "Kim Da-mi", group: "Actress", image: "goldkim.jpg", health: 239, maxHealth: 239, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
                 { id: 110, name: "Kwon Eun-bi", group: "Actress", image: "keunbi.jpg", health: 241, maxHealth: 241, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 }
-                
-            ],
-            quests: {
-                main: [
-                    { id: 0, name: "Demo Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 1500 }, completed: false, claimed: false },
-                    { id: 1, name: "New Player", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
-                    { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
-                    { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 11 }, completed: false, claimed: false },
-                    { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 200 }, completed: false, claimed: false },
-                    { id: 7, name: "RisingStar Hunter", description: "Collect a RisingStar Card", progress: 0, target: 1, reward: { type: "card", value: 63 }, completed: false, claimed: false },
-                    { id: 8, name: "Ultimate Collector", description: "Collect 15 different idols", progress: 0, target: 15, reward: { type: "card", value: 23 }, completed: false, claimed: false },
-                    { id: 9, name: "Battle Legend", description: "Win 50 battles", progress: 0, target: 50, reward: { type: "card", value: 10 }, completed: false, claimed: false }
-                ],
-                daily: [
-                    { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 50 }, completed: false, claimed: false },
-                    { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 30 }, completed: false, claimed: false }
-                ]
-            },
-            battlePass: {
-                unlocked: false,
-                currentLevel: 1,
-                xp: 0,
-                xpToNextLevel: 100,
-                levels: [
-                    { level: 1, reward: { type: "coins", value: 50 }, unlocked: true, claimed: false },
-                    { level: 2, reward: { type: "attackUpgrade", value: 1 }, unlocked: false, claimed: false },
-                    { level: 3, reward: { type: "gachaCoupon", value: 1 }, unlocked: false, claimed: false },
-                    { level: 4, reward: { type: "coins", value: 100 }, unlocked: false, claimed: false },
-                    { level: 5, reward: { type: "shield", value: 2 }, unlocked: false, claimed: false },
-                    { level: 6, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
-                    { level: 7, reward: { type: "coins", value: 200 }, unlocked: false, claimed: false },
-                    { level: 8, reward: { type: "card", value: 15 }, unlocked: false, claimed: false },
-                    { level: 9, reward: { type: "attackBoost", value: 2 }, unlocked: false, claimed: false },
-                    { level: 10, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
-                    { level: 11, reward: { type: "coins", value: 500 }, unlocked: false, claimed: false },
-                    { level: 12, reward: { type: "card", value: 29 }, unlocked: false, claimed: false },
-                    { level: 13, reward: { type: "gachaCoupon", value: 3 }, unlocked: false, claimed: false },
-                    { level: 14, reward: { type: "coins", value: 800 }, unlocked: false, claimed: false },
-                    { level: 15, reward: { type: "card", value: 56, rarity: "stars" }, unlocked: false, claimed: false }
-                ]
-            },
-            enemyCards: [
-                { id: 110, name: "Hanni", group: "NewJeans", image: "hanni0.jpg", health: 80, maxHealth: 80, attack: 8, rarity: "common" },
-                { id: 111, name: "Jennie", group: "BLACKPINK", image: "jennie.jpg", health: 85, maxHealth: 85, attack: 9, rarity: "common" },
-                { id: 112, name: "Karina", group: "aespa", image: "karina.jpg", health: 90, maxHealth: 90, attack: 10, rarity: "common" },
-                { id: 113, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "rare" },
-                { id: 114, name: "Lisa", group: "BLACKPINK", image: "lisa0.jpg", health: 95, maxHealth: 95, attack: 12, rarity: "rare" },
-                { id: 115, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar" },
-                { id: 116, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar" },
-                { id: 117, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 180, maxHealth: 180, attack: 35, rarity: "stars" },
-                { id: 118, name: "Dahyun", group: "TWICE", image: "dahyunL.jpg", health: 160, maxHealth: 160, attack: 17, rarity: "legendary" },
-                { id: 119, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "rare" },
-                { id: 120, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "epic" },
-                { id: 121, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 140, maxHealth: 140, attack: 19, rarity: "legendary" },
-                { id: 122, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 25, rarity: "risingstar" },
-                { id: 123, name: "Bae Suzy", group: "Actress", image: "bae_suzy.jpg", health: 225, maxHealth: 225, attack: 30, rarity: "superstar" },
-                { id: 124, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 23, rarity: "stars" },
-                { id: 125, name: "Yoona", group: "SNSD", image: "yoonaL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary" },
-                { id: 126, name: "Kim Da-mi", group: "Actress", image: "goldkim.jpg", health: 239, maxHealth: 239, attack: 30, rarity: "secret" },
-                { id: 127, name: "Jiyu", group: "KiiiKiii", image: "jiyu.jpg", health: 138, maxHealth: 138, attack: 17, rarity: "epic" },
-                
-                { id: 128, name: "G - Chaewon", group: "LE SSERAFIM", image: "goldenchae.jpg", health: 255, maxHealth: 255, attack: 32, rarity: "superstar" },
-                { id: 129, name: "G - Lisa", group: "BLACKPINK", image: "goldenlisa.jpg", health: 265, maxHealth: 265, attack: 35, rarity: "superstar" }
-            ],
-            settings: {
-                bgmEnabled: true,
-                bgmVolume: 50,
-                sfxEnabled: true,
-                sfxVolume: 70,
-                vibration: false,
-                notifications: true
-            },
-            // Tambahan untuk redeem codes
-            redeemCodes: {
-                available: [
-                    { code: "WELCOME100", reward: { type: "coins", value: 100 }, maxUses: 1, used: 0 },
-                    { code: "FIRSTGACHA", reward: { type: "gachaCoupon", value: 1 }, maxUses: 1, used: 0 },
-                    { code: "IDOL2024", reward: { type: "card", value: 15 }, maxUses: 1, used: 0 },
-                    { code: "BATTLEPASS", reward: { type: "battlePass", value: 1 }, maxUses: 1, used: 0 },
-                    { code: "DISCOUNT50", reward: { type: "discount", value: 50 }, maxUses: 1, used: 0 },
-                    { code: "ATTACKUP", reward: { type: "attackUpgrade", value: 2 }, maxUses: 1, used: 0 },
-                    { code: "LEGENDARY", reward: { type: "card", value: 10, rarity: "legendary" }, maxUses: 1, used: 0 },
-                    { code: "SUPERSTAR", reward: { type: "card", value: 70, rarity: "superstar" }, maxUses: 1, used: 0 },
-                    { code: "GACHAADMIN", reward: { type: "gachaCoupon", value: 5 }, maxUses: 1, used: 0 },                                                                
-                    { code: "CREATORGG", reward: { type: "card", value: 133, rarity: "superstar" }, maxUses: 1, used: 0 }
-                ],
+        
+    ],
+    quests: {
+        main: [
+            { id: 0, name: "Demo Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 1500 }, completed: false, claimed: false },
+            { id: 1, name: "New Player", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+            { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+            { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 11 }, completed: false, claimed: false },
+            { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 200 }, completed: false, claimed: false },
+            { id: 7, name: "RisingStar Hunter", description: "Collect a RisingStar Card", progress: 0, target: 1, reward: { type: "card", value: 63 }, completed: false, claimed: false },
+            { id: 8, name: "Ultimate Collector", description: "Collect 15 different idols", progress: 0, target: 15, reward: { type: "card", value: 23 }, completed: false, claimed: false },
+            { id: 9, name: "Battle Legend", description: "Win 50 battles", progress: 0, target: 50, reward: { type: "card", value: 10 }, completed: false, claimed: false }
+        ],
+        daily: [
+            { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 50 }, completed: false, claimed: false },
+            { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 30 }, completed: false, claimed: false }
+        ]
+    },
+    battlePass: {
+        unlocked: false,
+        currentLevel: 1,
+        xp: 0,
+        xpToNextLevel: 100,
+        levels: [
+            { level: 1, reward: { type: "coins", value: 50 }, unlocked: true, claimed: false },
+            { level: 2, reward: { type: "attackUpgrade", value: 1 }, unlocked: false, claimed: false },
+            { level: 3, reward: { type: "gachaCoupon", value: 1 }, unlocked: false, claimed: false },
+            { level: 4, reward: { type: "coins", value: 100 }, unlocked: false, claimed: false },
+            { level: 5, reward: { type: "shield", value: 2 }, unlocked: false, claimed: false },
+            { level: 6, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
+            { level: 7, reward: { type: "coins", value: 200 }, unlocked: false, claimed: false },
+            { level: 8, reward: { type: "card", value: 15 }, unlocked: false, claimed: false },
+            { level: 9, reward: { type: "attackBoost", value: 2 }, unlocked: false, claimed: false },
+            { level: 10, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
+            { level: 11, reward: { type: "coins", value: 500 }, unlocked: false, claimed: false },
+            { level: 12, reward: { type: "card", value: 29 }, unlocked: false, claimed: false },
+            { level: 13, reward: { type: "gachaCoupon", value: 3 }, unlocked: false, claimed: false },
+            { level: 14, reward: { type: "coins", value: 800 }, unlocked: false, claimed: false },
+            { level: 15, reward: { type: "card", value: 56, rarity: "stars" }, unlocked: false, claimed: false }
+        ]
+    },
+    enemyCards: [
+        { id: 101, name: "Hanni", group: "NewJeans", image: "hanni0.jpg", health: 80, maxHealth: 80, attack: 8, rarity: "common" },
+        { id: 102, name: "Jennie", group: "BLACKPINK", image: "jennie.jpg", health: 85, maxHealth: 85, attack: 9, rarity: "common" },
+        { id: 103, name: "Karina", group: "aespa", image: "karina.jpg", health: 90, maxHealth: 90, attack: 10, rarity: "common" },
+        { id: 104, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "rare" },
+        { id: 105, name: "Lisa", group: "BLACKPINK", image: "lisa0.jpg", health: 95, maxHealth: 95, attack: 12, rarity: "rare" },
+        { id: 106, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar" },
+        { id: 107, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar" },
+        { id: 108, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 180, maxHealth: 180, attack: 35, rarity: "stars" },
+        { id: 109, name: "Dahyun", group: "TWICE", image: "dahyunL.jpg", health: 160, maxHealth: 160, attack: 17, rarity: "legendary" },
+        { id: 110, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "rare" },
+        { id: 111, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "epic" },
+        { id: 112, name: "Asa", group: "BABYMONSTER", image: "asa.jpg", health: 140, maxHealth: 140, attack: 19, rarity: "legendary" },
+        { id: 113, name: "Rora", group: "BABYMONSTER", image: "rora.jpg", health: 160, maxHealth: 160, attack: 25, rarity: "risingstar" },
+        { id: 114, name: "Bae Suzy", group: "Actress", image: "bae_suzy.jpg", health: 225, maxHealth: 225, attack: 30, rarity: "superstar" },
+        { id: 115, name: "Chiquita", group: "BABYMONSTER", image: "chiquita.jpg", health: 165, maxHealth: 165, attack: 23, rarity: "stars" },
+        { id: 116, name: "Yoona", group: "SNSD", image: "yoonaL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary" },
+        { id: 91, name: "Kim Da-mi", group: "Actress", image: "goldkim.jpg", health: 239, maxHealth: 239, attack: 30, rarity: "secret" },
+        { id: 632, name: "Jiyu", group: "KiiiKiii", image: "jiyu.jpg", health: 138, maxHealth: 138, attack: 17, rarity: "epic" },
+        
+        { id: 122, name: "G - Chaewon", group: "LE SSERAFIM", image: "goldenchae.jpg", health: 255, maxHealth: 255, attack: 32, rarity: "superstar" },
+        { id: 133, name: "G - Lisa", group: "BLACKPINK", image: "goldenlisa.jpg", health: 265, maxHealth: 265, attack: 35, rarity: "superstar" }
+    ],
+    settings: {
+        bgmEnabled: true,
+        bgmVolume: 50,
+        sfxEnabled: true,
+        sfxVolume: 70,
+        vibration: false,
+        notifications: true
+    },
+    // Tambahan untuk redeem codes
+    redeemCodes: {
+        available: [
+            { code: "WELCOME100", reward: { type: "coins", value: 100 }, maxUses: 1, used: 0 },
+            { code: "FIRSTGACHA", reward: { type: "gachaCoupon", value: 1 }, maxUses: 1, used: 0 },
+            { code: "IDOL2024", reward: { type: "card", value: 15 }, maxUses: 1, used: 0 },
+            { code: "BATTLEPASS", reward: { type: "battlePass", value: 1 }, maxUses: 1, used: 0 },
+            { code: "DISCOUNT50", reward: { type: "discount", value: 50 }, maxUses: 1, used: 0 },
+            { code: "ATTACKUP", reward: { type: "attackUpgrade", value: 2 }, maxUses: 1, used: 0 },
+            { code: "LEGENDARY", reward: { type: "card", value: 10, rarity: "legendary" }, maxUses: 1, used: 0 },
+            { code: "SUPERSTAR", reward: { type: "card", value: 70, rarity: "superstar" }, maxUses: 1, used: 0 },
+            { code: "GACHAADMIN", reward: { type: "gachaCoupon", value: 5 }, maxUses: 1, used: 0 },                                                                
+            { code: "CREATORGG", reward: { type: "card", value: 133, rarity: "superstar" }, maxUses: 1, used: 0 }
+        ],
         history: []
     },
     // Tambahan untuk discount cards
@@ -4305,6 +4501,9 @@ function initGame() {
     
     // Update market prices
     updateMarketPrices();
+    
+    // Check unlimited luck boost timer
+    checkUnlimitedLuckBoost();
     
     // Start background music
     if (gameData.settings.bgmEnabled) {
@@ -4658,13 +4857,25 @@ function updateInventoryDisplay() {
     document.getElementById('attack-upgrade-count').textContent = gameData.attackUpgrades;
     document.getElementById('shield-count').textContent = gameData.shields.length;
     document.getElementById('boost-count').textContent = gameData.attackBoosts.length;
-    document.getElementById('luck-boost-count').textContent = gameData.luckBoosts.active ? gameData.luckBoosts.remainingUses : 0;
+    
+    // Update luck boost display
+    let luckBoostDisplay = 0;
+    if (gameData.luckBoosts.active) {
+        luckBoostDisplay = gameData.luckBoosts.remainingUses;
+    }
+    if (gameData.luckBoosts.unlimitedActive) {
+        const timeLeft = Math.max(0, gameData.luckBoosts.unlimitedEndTime - Date.now());
+        const minutesLeft = Math.ceil(timeLeft / (60 * 1000));
+        luckBoostDisplay = `${minutesLeft}m`;
+    }
+    document.getElementById('luck-boost-count').textContent = luckBoostDisplay;
+    
     document.getElementById('skill-count').textContent = gameData.skills.owned.length;
     
     // Update luck boost indicator
-    if (gameData.luckBoosts.active) {
+    if (gameData.luckBoosts.active || gameData.luckBoosts.unlimitedActive) {
         document.getElementById('luck-boost-indicator').classList.remove('hidden');
-        document.getElementById('luck-boost-remaining').textContent = gameData.luckBoosts.remainingUses;
+        document.getElementById('luck-boost-remaining').textContent = luckBoostDisplay;
     } else {
         document.getElementById('luck-boost-indicator').classList.add('hidden');
     }
@@ -5805,12 +6016,30 @@ function buyItem(itemId, itemType) {
             updateInventoryDisplay();
             addToBattleLog(`You bought an Attack Boost! You now have ${gameData.attackBoosts.length} boost(s) available.`, 'player');
         } else if (itemType === 'luck') {
-            // Activate luck boost
-            gameData.luckBoosts.active = true;
-            gameData.luckBoosts.remainingUses = 20;
-            gameData.luckBoosts.boostAmount = 1; // 1% increase
+            // Activate luck boost berdasarkan jenis
+            if (item.id === 1) {
+                // Luck Boost biasa: 1% untuk 20 pembukaan
+                gameData.luckBoosts.active = true;
+                gameData.luckBoosts.remainingUses = 20;
+                gameData.luckBoosts.boostAmount = 1;
+                addToBattleLog(`You activated a Luck Boost! Your next 20 gacha openings have +1% increased luck!`, 'player');
+            } else if (item.id === 2) {
+                // Luck Boost Plus: 3% untuk 20 pembukaan
+                gameData.luckBoosts.active = true;
+                gameData.luckBoosts.remainingUses = 20;
+                gameData.luckBoosts.boostAmount = 3;
+                addToBattleLog(`You activated a Luck Boost Plus! Your next 20 gacha openings have +3% increased luck!`, 'player');
+            } else if (item.id === 3) {
+                // Unlimited Luck Boost: 1.5% untuk 30 menit
+                gameData.luckBoosts.unlimitedActive = true;
+                gameData.luckBoosts.unlimitedEndTime = Date.now() + (30 * 60 * 1000); // 30 menit
+                gameData.luckBoosts.boostAmount = 1.5;
+                addToBattleLog(`You activated Unlimited Luck Boost! All gacha openings for 30 minutes have +1.5% increased luck!`, 'player');
+                
+                // Set timer untuk mengecek expired
+                setTimeout(checkUnlimitedLuckBoost, 31 * 60 * 1000);
+            }
             updateInventoryDisplay();
-            addToBattleLog(`You activated a Luck Boost! Your next 20 gacha openings have increased luck!`, 'player');
         } else if (itemType === 'skill') {
             // Add skill to owned skills
             gameData.skills.owned.push(item);
@@ -5854,7 +6083,17 @@ function buyItem(itemId, itemType) {
     }
 }
 
-// Open gacha crate dengan probabilitas yang disesuaikan
+// Check unlimited luck boost timer
+function checkUnlimitedLuckBoost() {
+    if (gameData.luckBoosts.unlimitedActive && Date.now() > gameData.luckBoosts.unlimitedEndTime) {
+        gameData.luckBoosts.unlimitedActive = false;
+        updateInventoryDisplay();
+        addToBattleLog("Your Unlimited Luck Boost has expired!", 'player');
+        saveGameData();
+    }
+}
+
+// Open gacha crate dengan probabilitas yang disesuaikan dan luck boost
 function openGachaCrate(rarity) {
     // Play gacha sound
     if (gameData.settings.sfxEnabled) {
@@ -5868,12 +6107,17 @@ function openGachaCrate(rarity) {
     }
     
     // Use luck boost if active
+    let currentLuckBoost = 0;
+    
     if (gameData.luckBoosts.active) {
         gameData.luckBoosts.remainingUses--;
+        currentLuckBoost = gameData.luckBoosts.boostAmount;
         if (gameData.luckBoosts.remainingUses <= 0) {
             gameData.luckBoosts.active = false;
         }
         updateInventoryDisplay();
+    } else if (gameData.luckBoosts.unlimitedActive) {
+        currentLuckBoost = gameData.luckBoosts.boostAmount;
     }
     
     // Filter gacha pool by crate type with different probabilities
@@ -5906,11 +6150,9 @@ function openGachaCrate(rarity) {
         }
     } else if (rarity === 'risingstar') {
         // RisingStar Crate: 18% common, 30% rare, 51.5% epic, 0.5% risingstar/legendary
-        // Apply luck boost if active
+        // Apply luck boost
         let legendaryRisingStarChance = 0.005; // 0.5% base chance
-        if (gameData.luckBoosts.active) {
-            legendaryRisingStarChance += (gameData.luckBoosts.boostAmount / 100); // Add 1% from boost
-        }
+        legendaryRisingStarChance += (currentLuckBoost / 100); // Add luck boost
         
         const randomValue = Math.random();
         if (randomValue < 0.20) {
@@ -5928,11 +6170,9 @@ function openGachaCrate(rarity) {
         }
     } else if (rarity === 'superstar') {
         // Event Crate: 15% common, 25% rare, 58.5% epic, 1.5% superstar
-        // Apply luck boost if active
+        // Apply luck boost
         let superstarChance = 0.015; // 1.5% base chance
-        if (gameData.luckBoosts.active) {
-            superstarChance += (gameData.luckBoosts.boostAmount / 100); // Add 1% from boost
-        }
+        superstarChance += (currentLuckBoost / 100); // Add luck boost
         
         const randomValue = Math.random();
         if (randomValue < 0.15) {
@@ -5950,10 +6190,9 @@ function openGachaCrate(rarity) {
         let secretChance = 0.005; // 0.5% base chance
         let legendaryChance = 0.015; // 1.5% base chance
         
-        if (gameData.luckBoosts.active) {
-            secretChance += (gameData.luckBoosts.boostAmount / 100);
-            legendaryChance += (gameData.luckBoosts.boostAmount / 100);
-        }
+        // Apply luck boost
+        secretChance += (currentLuckBoost / 100);
+        legendaryChance += (currentLuckBoost / 100);
         
         const randomValue = Math.random();
         if (randomValue < 0.15) {
@@ -7136,9 +7375,12 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
 
 // Initialize the game when the page loads
 window.addEventListener('DOMContentLoaded', initGame);
+
  </script>
 </body>
 </html>
+
+
 
 
 
