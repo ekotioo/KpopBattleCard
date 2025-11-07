@@ -218,16 +218,28 @@ body {
 header {
     text-align: center;
     margin-bottom: 20px;
-    padding: 15px 0;
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    color: white;
+    padding: 15px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    
     position: relative;
     overflow: hidden;
+    
     min-height: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+/* Default background (ketika animated header OFF) */
+header {
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.9), rgba(22, 33, 62, 0.9));
+}
+
+/* Ketika animated header ON */
+header.animated {
+    background: none;
 }
 
 .header-video {
@@ -238,23 +250,23 @@ header {
     height: 100%;
     object-fit: cover;
     z-index: -2;
+    display: none;
 }
 
-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5));
-    z-index: -1;
+header.animated .header-video {
+    display: block; /* Ini yang bikin video muncul */
 }
+
+header.animated::before {
+    display: block; /* Overlay gelap */
+}
+
+
 header h1 {
-  font-size: 3rem;
+  font-size: 2.2rem;
   margin-bottom: 10px;
   font-weight: 800;
-  font-family: 'Sora', cursive;
+  font-family: 'Orbitron', cursive;
   background: linear-gradient(135deg, #00f0ff, #ff00c8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -263,6 +275,24 @@ header h1 {
                0 0 40px #ff00c8,
                0 0 80px #ff00c8;
 }
+
+    /* Animasi nyala pelan */
+    animation: flicker 2.5s infinite alternate;
+}
+
+@keyframes flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow:
+            0 0 5px #fff,
+            0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 40px #fff;
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+    }
+}
+
 
 .player-info {
     display: flex;
@@ -3644,12 +3674,13 @@ input:checked + .toggle-slider:before {
 
     <!-- Game Container (Initially Hidden) -->
     <div class="container" id="game-container" style="display: none;">
-        <header>
-            
-                <video autoplay muted loop playsinline class="header-video">
-        <source src="header-bg.mp4" type="video/mp4">
-        <source src="header-bg.webm" type="video/webm">
-    </video>
+    <header id="main-header">
+        <video autoplay muted loop playsinline class="header-video">
+            <source src="header-bg.mp4" type="video/mp4">
+            <source src="header-bg.webm" type="video/webm">
+        </video>
+        
+       
             
             <h1>Battle Of Idol</h1>
             <div class="player-info">
@@ -4017,6 +4048,20 @@ input:checked + .toggle-slider:before {
                 <h3 class="modal-title">Settings</h3>
                 <button class="close-modal">&times;</button>
             </div>
+            
+            
+            <div class="setting-item">
+    <div class="setting-label">Animated Header</div>
+    <div class="setting-control">
+        <label class="toggle-switch">
+            <input type="checkbox" id="animated-header-toggle">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+</div>
+            
+            
+            
             <div class="settings-container">
                 <div class="setting-item">
                     <div class="setting-label">Background Music</div>
@@ -4406,12 +4451,14 @@ const gameData = {
         { id: 133, name: "G - Lisa", group: "BLACKPINK", image: "goldenlisa.jpg", health: 265, maxHealth: 265, attack: 35, rarity: "superstar" }
     ],
     settings: {
-        bgmEnabled: true,
-        bgmVolume: 50,
-        sfxEnabled: true,
-        sfxVolume: 70,
-        vibration: false,
-        notifications: true
+    bgmEnabled: true,
+    bgmVolume: 50,
+    sfxEnabled: true,
+    sfxVolume: 70,
+    vibration: false,
+    notifications: true,
+    animatedHeader: false 
+
     },
     // Tambahan untuk redeem codes
     redeemCodes: {
@@ -4625,6 +4672,14 @@ function applySettings() {
         sounds[key].volume = gameData.settings.sfxVolume / 100;
     }
     
+    // Animated Header - TAMBAH INI
+    const header = document.getElementById('main-header');
+    if (gameData.settings.animatedHeader) {
+        header.classList.add('animated');
+    } else {
+        header.classList.remove('animated');
+    }
+    
     // Update settings modal UI
     document.getElementById('bgm-toggle').checked = gameData.settings.bgmEnabled;
     document.getElementById('bgm-volume').value = gameData.settings.bgmVolume;
@@ -4632,7 +4687,9 @@ function applySettings() {
     document.getElementById('sfx-volume').value = gameData.settings.sfxVolume;
     document.getElementById('vibration-toggle').checked = gameData.settings.vibration;
     document.getElementById('notifications-toggle').checked = gameData.settings.notifications;
+    document.getElementById('animated-header-toggle').checked = gameData.settings.animatedHeader; // <-- TAMBAH INI
 }
+    
 
 // Set up event listeners
 function setupEventListeners() {
@@ -4753,18 +4810,19 @@ function setupEventListeners() {
     });
 
     document.getElementById('settings-save-btn').addEventListener('click', () => {
-        // Save settings
-        gameData.settings.bgmEnabled = document.getElementById('bgm-toggle').checked;
-        gameData.settings.bgmVolume = document.getElementById('bgm-volume').value;
-        gameData.settings.sfxEnabled = document.getElementById('sfx-toggle').checked;
-        gameData.settings.sfxVolume = document.getElementById('sfx-volume').value;
-        gameData.settings.vibration = document.getElementById('vibration-toggle').checked;
-        gameData.settings.notifications = document.getElementById('notifications-toggle').checked;
-        
-        applySettings();
-        saveGameData();
-        document.getElementById('settings-modal').classList.remove('active');
-    });
+    // Save settings
+    gameData.settings.bgmEnabled = document.getElementById('bgm-toggle').checked;
+    gameData.settings.bgmVolume = document.getElementById('bgm-volume').value;
+    gameData.settings.sfxEnabled = document.getElementById('sfx-toggle').checked;
+    gameData.settings.sfxVolume = document.getElementById('sfx-volume').value;
+    gameData.settings.vibration = document.getElementById('vibration-toggle').checked;
+    gameData.settings.notifications = document.getElementById('notifications-toggle').checked;
+    gameData.settings.animatedHeader = document.getElementById('animated-header-toggle').checked; // <-- JANGAN LUPA INI
+    
+    applySettings(); // Ini yang akan memanggil function di atas
+    saveGameData();
+    document.getElementById('settings-modal').classList.remove('active');
+});
 
     // Topup modal
     document.getElementById('topup-btn').addEventListener('click', () => {
