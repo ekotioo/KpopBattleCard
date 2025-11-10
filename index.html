@@ -431,17 +431,7 @@ nav {
 }
 
 /* Efek saat aktif/terpilih */
-.nav-btn.active {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
 
-.nav-btn.active::before {
-    opacity: 1;
-}
 
 /* Efek hover */
 .nav-btn:hover {
@@ -4569,8 +4559,43 @@ let selectedCouponCrate = null;
 
 
 
-
+// FUNGSI VALIDASI DATA TAMBAHAN
+function validateGameData() {
+    // Validasi cards array
+    if (!Array.isArray(gameData.cards)) {
+        gameData.cards = [];
+    }
     
+    // Validasi setiap card
+    gameData.cards = gameData.cards.filter(card => {
+        return card && 
+               typeof card === 'object' && 
+               card.id !== undefined && 
+               card.name !== undefined;
+    });
+    
+    // Validasi currentCard
+    if (gameData.currentCard && !gameData.cards.some(card => card.id === gameData.currentCard.id)) {
+        gameData.currentCard = null;
+    }
+    
+    // Validasi skills
+    if (!gameData.skills) {
+        gameData.skills = { owned: [], equipped: {} };
+    }
+    if (!Array.isArray(gameData.skills.owned)) {
+        gameData.skills.owned = [];
+    }
+    if (typeof gameData.skills.equipped !== 'object') {
+        gameData.skills.equipped = {};
+    }
+}
+    
+
+
+
+
+
 
 
 
@@ -4594,17 +4619,22 @@ const backgroundMusic = new Audio('https://assets.mixkit.co/music/preview/mixkit
 backgroundMusic.loop = true;
 backgroundMusic.volume = gameData.settings.bgmVolume / 100;
 
-// Initialize Game
+// PANGGIL VALIDASI DATA SAAT LOAD GAME
 function initGame() {
     // Check if user is already logged in
     const savedUsername = localStorage.getItem('battleOfIdol_username');
     if (savedUsername) {
         gameData.username = savedUsername;
         loadGameData();
+        
+        // === PERBAIKAN 1: VALIDASI DATA SETELAH LOAD ===
+        validateGameData();
+        
         showGameScreen();
     } else {
         showLoginScreen();
     }
+    
     
     // Set up event listeners
     setupEventListeners();
@@ -4778,16 +4808,25 @@ function setupEventListeners() {
     });
 
     // Navigation
-    document.querySelectorAll('.nav-btn').forEach(button => {
-        button.addEventListener('click', () => {
+    // Navigation - PERBAIKAN
+document.querySelectorAll('.nav-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        try {
             const screenId = button.getAttribute('data-screen');
+            
+            // === PERBAIKAN 18: VALIDASI SCREEN ID ===
+            if (!screenId || !document.getElementById(screenId)) {
+                console.error("Invalid screen ID:", screenId);
+                return;
+            }
+            
             switchScreen(screenId);
             
-            // Update active nav button
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-        });
+        } catch (error) {
+            console.error("Error in navigation:", error);
+        }
     });
+});
 
     // Battle controls
     document.getElementById('play-btn').addEventListener('click', () => {
@@ -4937,21 +4976,32 @@ function setupAdditionalEventListeners() {
     });
 }
 
-// Switch between screens
+// PERBAIKAN FUNGSI SWITCH SCREEN
 function switchScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
-    document.getElementById(screenId).classList.add('active');
-    
-    // Update home stats when switching to home screen
-    if (screenId === 'home') {
-        updateHomeStats();
-    }
-    
-    // Update inventory when switching to collection screen
-    if (screenId === 'collection') {
-        updateInventoryDisplay();
+    try {
+        document.querySelectorAll('.screen').forEach(screen => {
+            screen.classList.remove('active');
+        });
+        
+        // === PERBAIKAN 16: VALIDASI SCREEN ID ===
+        const targetScreen = document.getElementById(screenId);
+        if (targetScreen) {
+            targetScreen.classList.add('active');
+        } else {
+            console.error("Screen not found:", screenId);
+            return;
+        }
+        
+        if (screenId === 'collection') {
+            // === PERBAIKAN 17: DELAY UNTUK MEMASTIKAN DATA SIAP ===
+            setTimeout(() => {
+                updateInventoryDisplay();
+                loadCollection();
+            }, 50);
+        }
+        
+    } catch (error) {
+        console.error("Error switching screen:", error);
     }
 }
 
@@ -5015,157 +5065,401 @@ function updateInventoryDisplay() {
     }
 }
 
-// Set current card
+// PERBAIKAN FUNGSI SET CURRENT CARD
 function setCurrentCard(card) {
-    gameData.currentCard = card;
-    const playerCardImg = document.querySelector('.player-card .card-img');
-    const playerCardName = document.querySelector('.player-card .card-name');
-    const playerMaxHealth = document.getElementById('player-max-health');
-    const playerAttack = document.getElementById('player-attack');
-    
-    // Fix: Ensure the image path is correctly set
-    playerCardImg.src = card.image;
-    playerCardName.textContent = card.name;
-    playerMaxHealth.textContent = card.maxHealth;
-    playerAttack.textContent = card.attack;
-    
-    // Update card rarity class
-    const playerCard = document.querySelector('.player-card .card');
-    playerCard.className = 'card';
-    playerCard.classList.add(`rarity-${card.rarity}`);
-    
-    // Update skill effect
-    const skillEffect = document.getElementById('player-skill-effect');
-    skillEffect.className = 'skill-effect hidden';
-    if (gameData.skills.equipped[card.id]) {
-        const skill = gameData.skills.equipped[card.id];
-        skillEffect.classList.remove('hidden');
-        skillEffect.classList.add(`${skill.name.toLowerCase().replace(' ', '-')}-effect`);
+    try {
+        // === PERBAIKAN 1: VALIDASI INPUT CARD ===
+        if (!card) {
+            console.error("Attempted to set null card as current");
+            
+            // Fallback: set ke card pertama yang tersedia
+            if (gameData.cards.length > 0) {
+                card = gameData.cards[0];
+                console.warn("Falling back to first available card:", card);
+            } else {
+                console.error("No cards available to set as current");
+                resetPlayerCardDisplay();
+                return;
+            }
+        }
+        
+        // === PERBAIKAN 2: VALIDASI PROPERTI CARD ===
+        const safeCard = {
+            id: card.id || Date.now(),
+            name: card.name || 'Unknown Card',
+            group: card.group || 'Unknown Group', 
+            image: card.image || 'placeholder.jpg',
+            health: card.health || 100,
+            maxHealth: card.maxHealth || 100,
+            attack: card.attack || 10,
+            rarity: card.rarity || 'common',
+            wins: card.wins || 0,
+            battles: card.battles || 0,
+            favorite: card.favorite || false,
+            upgrades: card.upgrades || 0
+        };
+        
+        gameData.currentCard = safeCard;
+        
+        // === PERBAIKAN 3: VALIDASI ELEMEN DOM ===
+        const playerCardImg = document.querySelector('.player-card .card-img');
+        const playerCardName = document.querySelector('.player-card .card-name');
+        const playerMaxHealth = document.getElementById('player-max-health');
+        const playerAttack = document.getElementById('player-attack');
+        
+        if (!playerCardImg || !playerCardName || !playerMaxHealth || !playerAttack) {
+            console.error("DOM elements for player card not found");
+            return;
+        }
+        
+        // === PERBAIKAN 4: SET DATA DENGAN FALLBACK ===
+        playerCardImg.src = safeCard.image;
+        playerCardImg.onerror = function() {
+            console.warn("Failed to load card image, using placeholder");
+            this.src = 'placeholder.jpg';
+        };
+        
+        playerCardName.textContent = safeCard.name;
+        playerMaxHealth.textContent = safeCard.maxHealth;
+        playerAttack.textContent = safeCard.attack;
+        
+        // === PERBAIKAN 5: UPDATE CARD RARITY CLASS ===
+        const playerCard = document.querySelector('.player-card .card');
+        if (playerCard) {
+            // Hapus semua class rarity sebelumnya
+            playerCard.className = 'card';
+            // Tambah class rarity baru
+            playerCard.classList.add(`rarity-${safeCard.rarity}`);
+        } else {
+            console.error("Player card element not found");
+        }
+        
+        // === PERBAIKAN 6: UPDATE SKILL EFFECT ===
+        const skillEffect = document.getElementById('player-skill-effect');
+        if (skillEffect) {
+            // Reset skill effect
+            skillEffect.className = 'skill-effect hidden';
+            
+            // Apply skill effect jika ada skill yang equipped
+            if (gameData.skills && gameData.skills.equipped && gameData.skills.equipped[safeCard.id]) {
+                const skill = gameData.skills.equipped[safeCard.id];
+                if (skill && skill.name) {
+                    skillEffect.classList.remove('hidden');
+                    const skillClass = skill.name.toLowerCase().replace(/\s+/g, '-') + '-effect';
+                    skillEffect.classList.add(skillClass);
+                    console.log("Applied skill effect:", skillClass);
+                }
+            }
+        } else {
+            console.warn("Skill effect element not found");
+        }
+        
+        // === PERBAIKAN 7: UPDATE HEALTH BAR ===
+        const playerHealthBar = document.querySelector('.player-health');
+        if (playerHealthBar) {
+            playerHealthBar.style.width = '100%';
+            playerHealthBar.style.transition = 'width 0.5s ease';
+        }
+        
+        // === PERBAIKAN 8: UPDATE BATTLE BUTTON STATE ===
+        const playBtn = document.getElementById('play-btn');
+        if (playBtn) {
+            playBtn.disabled = false;
+            playBtn.textContent = "START BATTLE";
+        }
+        
+        // === PERBAIKAN 9: LOG SUCCESS ===
+        console.log("Successfully set current card:", safeCard.name, safeCard.id);
+        
+        // === PERBAIKAN 10: SAVE GAME DATA DENGAN ERROR HANDLING ===
+        try {
+            saveGameData();
+        } catch (saveError) {
+            console.error("Error saving game data after setting card:", saveError);
+        }
+        
+    } catch (error) {
+        console.error("Error in setCurrentCard:", error);
+        
+        // Emergency fallback
+        resetPlayerCardDisplay();
     }
-    
-    // Update health bar
-    document.querySelector('.player-health').style.width = '100%';
-    
-    // Save game data
-    saveGameData();
 }
 
-// Load collection
+// === FUNGSI BANTUAN BARU: RESET PLAYER CARD DISPLAY ===
+function resetPlayerCardDisplay() {
+    try {
+        const playerCardImg = document.querySelector('.player-card .card-img');
+        const playerCardName = document.querySelector('.player-card .card-name');
+        const playerMaxHealth = document.getElementById('player-max-health');
+        const playerAttack = document.getElementById('player-attack');
+        const playerHealthBar = document.querySelector('.player-health');
+        const playBtn = document.getElementById('play-btn');
+        const skillEffect = document.getElementById('player-skill-effect');
+        
+        if (playerCardImg) playerCardImg.src = 'placeholder.jpg';
+        if (playerCardName) playerCardName.textContent = 'No Card Equipped';
+        if (playerMaxHealth) playerMaxHealth.textContent = '0';
+        if (playerAttack) playerAttack.textContent = '0';
+        if (playerHealthBar) playerHealthBar.style.width = '0%';
+        if (playBtn) {
+            playBtn.disabled = true;
+            playBtn.textContent = "EQUIP A CARD FIRST";
+        }
+        if (skillEffect) skillEffect.className = 'skill-effect hidden';
+        
+        // Reset card rarity
+        const playerCard = document.querySelector('.player-card .card');
+        if (playerCard) {
+            playerCard.className = 'card';
+            playerCard.classList.add('rarity-common');
+        }
+        
+    } catch (error) {
+        console.error("Error in resetPlayerCardDisplay:", error);
+    }
+}
+
+// === FUNGSI BANTUAN BARU: VALIDATE CARD BEFORE SETTING ===
+function validateCardBeforeSet(card) {
+    if (!card) return false;
+    
+    const requiredProps = ['id', 'name', 'image', 'maxHealth', 'attack', 'rarity'];
+    const missingProps = requiredProps.filter(prop => card[prop] === undefined || card[prop] === null);
+    
+    if (missingProps.length > 0) {
+        console.warn("Card missing required properties:", missingProps, card);
+        return false;
+    }
+    
+    // Validasi tipe data
+    if (typeof card.id !== 'number') {
+        console.warn("Card ID is not a number:", card.id);
+        return false;
+    }
+    
+    if (typeof card.name !== 'string') {
+        console.warn("Card name is not a string:", card.name);
+        return false;
+    }
+    
+    if (typeof card.maxHealth !== 'number' || card.maxHealth <= 0) {
+        console.warn("Invalid card maxHealth:", card.maxHealth);
+        return false;
+    }
+    
+    if (typeof card.attack !== 'number' || card.attack < 0) {
+        console.warn("Invalid card attack:", card.attack);
+        return false;
+    }
+    
+    return true;
+}
+
+// === VERSI ALTERNATIF: SET CURRENT CARD DENGAN VALIDASI TAMBAHAN ===
+function setCurrentCardWithValidation(card) {
+    // Validasi card sebelum set
+    if (!validateCardBeforeSet(card)) {
+        console.error("Card validation failed, cannot set as current");
+        
+        // Coba cari card yang valid dari collection
+        const validCard = gameData.cards.find(c => validateCardBeforeSet(c));
+        if (validCard) {
+            console.log("Found valid card, using instead:", validCard.name);
+            setCurrentCard(validCard);
+        } else {
+            resetPlayerCardDisplay();
+        }
+        return;
+    }
+    
+    // Jika valid, panggil fungsi utama
+    setCurrentCard(card);
+}
+
+
+// PERBAIKAN FUNGSI LOAD COLLECTION
 function loadCollection() {
     const collectionContainer = document.querySelector('.collection-container');
+    
+    // Validasi container exists
+    if (!collectionContainer) {
+        console.error("Collection container not found!");
+        return;
+    }
+    
     collectionContainer.innerHTML = '';
+    
+    // Validasi data cards
+    if (!gameData.cards || !Array.isArray(gameData.cards)) {
+        console.error("Invalid cards data:", gameData.cards);
+        gameData.cards = [];
+    }
     
     if (gameData.cards.length === 0) {
         collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px;">You don\'t have any cards yet. Go to the Store to get your first card!</div>';
         return;
     }
     
-    gameData.cards.forEach(card => {
-        // Check if card is from gacha (not from store)
-        const isGachaCard = card.id <= 74; // IDs 1-74 are from gacha
-        
-        const winRate = card.battles > 0 ? Math.round((card.wins / card.battles) * 100) : 0;
-        
-        // Check if card can be upgraded (superstar and risingstar cards cannot be upgraded)
-        const canUpgrade = card.upgrades < 8 && gameData.attackUpgrades > 0 && 
-                          card.rarity !== 'risingstar' && card.rarity !== 'superstar';
-        
-        const equippedSkill = gameData.skills.equipped[card.id];
-        
-        // Calculate sell price with market fluctuations
-        const sellPrice = calculateSellPrice(card);
-        const priceChange = gameData.marketPrices.priceChanges[card.id] || 0;
-        
-        const cardElement = document.createElement('div');
-        cardElement.className = 'collection-card';
-        cardElement.innerHTML = `
-            ${card.favorite ? '<div class="favorite-star"><i class="fas fa-star"></i></div>' : ''}
-            <img src="${card.image}" alt="${card.name}" class="collection-card-full">
-            <div class="collection-card-info">
-                <div class="collection-card-name">${card.name}</div>
-                <div class="collection-card-group">${card.group} - <span class="rarity-${card.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${card.rarity.toUpperCase()}</span></div>
-                <div class="collection-card-stats">
-                    <span>HP: ${card.maxHealth}</span>
-                    <span>ATK: ${card.attack} ${card.upgrades > 0 ? `(+${card.upgrades})` : ''}</span>
+    try {
+        gameData.cards.forEach(card => {
+            // VALIDASI DATA CARD - PERBAIKAN UTAMA
+            if (!card || typeof card !== 'object') {
+                console.warn("Invalid card data:", card);
+                return;
+            }
+            
+            // Pastikan properti yang diperlukan ada
+            const safeCard = {
+                id: card.id || 0,
+                name: card.name || 'Unknown Card',
+                group: card.group || 'Unknown Group',
+                image: card.image || 'placeholder.jpg',
+                health: card.health || 0,
+                maxHealth: card.maxHealth || 0,
+                attack: card.attack || 0,
+                rarity: card.rarity || 'common',
+                wins: card.wins || 0,
+                battles: card.battles || 0,
+                favorite: card.favorite || false,
+                upgrades: card.upgrades || 0
+            };
+            
+            // Check if card is from gacha (not from store)
+            const isGachaCard = safeCard.id <= 74; // IDs 1-74 are from gacha
+            
+            const winRate = safeCard.battles > 0 ? Math.round((safeCard.wins / safeCard.battles) * 100) : 0;
+            
+            // Check if card can be upgraded (superstar and risingstar cards cannot be upgraded)
+            const canUpgrade = safeCard.upgrades < 8 && gameData.attackUpgrades > 0 && 
+                              safeCard.rarity !== 'risingstar' && safeCard.rarity !== 'superstar';
+            
+            const equippedSkill = gameData.skills.equipped[safeCard.id];
+            
+            // Calculate sell price with market fluctuations
+            const sellPrice = calculateSellPrice(safeCard);
+            const priceChange = gameData.marketPrices.priceChanges[safeCard.id] || 0;
+            
+            const cardElement = document.createElement('div');
+            cardElement.className = 'collection-card';
+            cardElement.innerHTML = `
+                ${safeCard.favorite ? '<div class="favorite-star"><i class="fas fa-star"></i></div>' : ''}
+                <img src="${safeCard.image}" alt="${safeCard.name}" class="collection-card-full" onerror="this.src='placeholder.jpg'">
+                <div class="collection-card-info">
+                    <div class="collection-card-name">${safeCard.name}</div>
+                    <div class="collection-card-group">${safeCard.group} - <span class="rarity-${safeCard.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${safeCard.rarity.toUpperCase()}</span></div>
+                    <div class="collection-card-stats">
+                        <span>HP: ${safeCard.maxHealth}</span>
+                        <span>ATK: ${safeCard.attack} ${safeCard.upgrades > 0 ? `(+${safeCard.upgrades})` : ''}</span>
+                    </div>
+                    <div class="win-rate">
+                        <i class="fas fa-trophy"></i>
+                        <span>Win Rate: ${winRate}% (${safeCard.wins}/${safeCard.battles})</span>
+                    </div>
+                    <div class="market-price">
+                        <i class="fas fa-coins"></i>
+                        <span>Sell Price: ${sellPrice}</span>
+                        ${priceChange !== 0 ? 
+                            `<span class="${priceChange > 0 ? 'price-up' : 'price-down'}">
+                                <i class="fas fa-${priceChange > 0 ? 'arrow-up' : 'arrow-down'}"></i>
+                                ${Math.abs(Math.round(priceChange * 100))}%
+                            </span>` : ''
+                        }
+                    </div>
+                    ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
+                    <div class="card-actions">
+                        <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
+                        <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
+                        <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
+                        <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
+                        ${isGachaCard ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
+                    </div>
                 </div>
-                <div class="win-rate">
-                    <i class="fas fa-trophy"></i>
-                    <span>Win Rate: ${winRate}% (${card.wins}/${card.battles})</span>
-                </div>
-                <div class="market-price">
-                    <i class="fas fa-coins"></i>
-                    <span>Sell Price: ${sellPrice}</span>
-                    ${priceChange !== 0 ? 
-                        `<span class="${priceChange > 0 ? 'price-up' : 'price-down'}">
-                            <i class="fas fa-${priceChange > 0 ? 'arrow-up' : 'arrow-down'}"></i>
-                            ${Math.abs(Math.round(priceChange * 100))}%
-                        </span>` : ''
+            `;
+            collectionContainer.appendChild(cardElement);
+        });
+
+        // Add event listeners to equip buttons
+        document.querySelectorAll('.equip-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    if (card) {
+                        setCurrentCard(card);
+                        loadCollection(); // Refresh to update equip status
                     }
-                </div>
-                ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
-                <div class="card-actions">
-                    <button class="equip-btn" data-id="${card.id}">${gameData.currentCard && gameData.currentCard.id === card.id ? 'EQUIPPED' : 'EQUIP'}</button>
-                    <button class="upgrade-btn" data-id="${card.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${card.upgrades}/8)</button>
-                    <button class="skill-btn" data-id="${card.id}">SKILL</button>
-                    <button class="favorite-btn ${card.favorite ? 'favorited' : ''}" data-id="${card.id}">${card.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
-                    ${isGachaCard ? `<button class="sell-btn" data-id="${card.id}">SELL</button>` : ''}
-                </div>
-            </div>
-        `;
-        collectionContainer.appendChild(cardElement);
-    });
-
-    // Add event listeners to equip buttons
-    document.querySelectorAll('.equip-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const cardId = parseInt(e.target.getAttribute('data-id'));
-            const card = gameData.cards.find(c => c.id === cardId);
-            if (card) {
-                setCurrentCard(card);
-                loadCollection(); // Refresh to update equip status
-            }
+                } catch (error) {
+                    console.error("Error in equip button:", error);
+                    addToBattleLog("Error equipping card!", 'player');
+                }
+            });
         });
-    });
 
-    // Add event listeners to upgrade buttons
-    document.querySelectorAll('.upgrade-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const cardId = parseInt(e.target.getAttribute('data-id'));
-            upgradeCardAttack(cardId);
+        // Add event listeners to upgrade buttons
+        document.querySelectorAll('.upgrade-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    upgradeCardAttack(cardId);
+                } catch (error) {
+                    console.error("Error in upgrade button:", error);
+                    addToBattleLog("Error upgrading card!", 'player');
+                }
+            });
         });
-    });
 
-    // Add event listeners to favorite buttons
-    document.querySelectorAll('.favorite-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const cardId = parseInt(e.target.getAttribute('data-id'));
-            toggleFavoriteCard(cardId);
+        // Add event listeners to favorite buttons
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    toggleFavoriteCard(cardId);
+                } catch (error) {
+                    console.error("Error in favorite button:", error);
+                    addToBattleLog("Error favoriting card!", 'player');
+                }
+            });
         });
-    });
 
-    // Add event listeners to skill buttons
-    document.querySelectorAll('.skill-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const cardId = parseInt(e.target.getAttribute('data-id'));
-            const card = gameData.cards.find(c => c.id === cardId);
-            if (card) {
-                showSkillModal(card);
-            }
+        // Add event listeners to skill buttons
+        document.querySelectorAll('.skill-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    if (card) {
+                        showSkillModal(card);
+                    }
+                } catch (error) {
+                    console.error("Error in skill button:", error);
+                    addToBattleLog("Error opening skill modal!", 'player');
+                }
+            });
         });
-    });
 
-    // Add event listeners to sell buttons
-    document.querySelectorAll('.sell-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const cardId = parseInt(e.target.getAttribute('data-id'));
-            const card = gameData.cards.find(c => c.id === cardId);
-            if (card && gameData.cards.length > 1) {
-                showSellCardModal(card);
-            } else {
-                addToBattleLog("You can't sell your only card!", 'player');
-            }
+        // Add event listeners to sell buttons
+        document.querySelectorAll('.sell-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    if (card && gameData.cards.length > 1) {
+                        showSellCardModal(card);
+                    } else {
+                        addToBattleLog("You can't sell your only card!", 'player');
+                    }
+                } catch (error) {
+                    console.error("Error in sell button:", error);
+                    addToBattleLog("Error selling card!", 'player');
+                }
+            });
         });
-    });
+
+    } catch (error) {
+        console.error("Error loading collection:", error);
+        collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px; color: red;">Error loading collection. Please refresh the page.</div>';
+    }
 }
 
 // Show skill modal
@@ -6248,144 +6542,218 @@ function checkUnlimitedLuckBoost() {
     }
 }
 
-// Open gacha crate dengan probabilitas yang disesuaikan dan luck boost
+
+
+
+
+
+
+
+// PERBAIKAN FUNGSI OPEN GACHA CRATE
 function openGachaCrate(rarity) {
-    // Play gacha sound
-    if (gameData.settings.sfxEnabled) {
-        sounds.gacha.play().catch(e => console.log("Audio play failed"));
-    }
-    
-    // Update quest progress for first gacha
-    if (!firstGachaDone) {
-        updateQuestProgress('First Gacha', 1, 'main');
-        firstGachaDone = true;   
-    }
-    
-    // Use luck boost if active
-    let currentLuckBoost = 0;
-    
-    if (gameData.luckBoosts.active) {
-        gameData.luckBoosts.remainingUses--;
-        currentLuckBoost = gameData.luckBoosts.boostAmount;
-        if (gameData.luckBoosts.remainingUses <= 0) {
-            gameData.luckBoosts.active = false;
+    try {
+        // Play gacha sound
+        if (gameData.settings.sfxEnabled) {
+            sounds.gacha.play().catch(e => console.log("Audio play failed"));
         }
-        updateInventoryDisplay();
-    } else if (gameData.luckBoosts.unlimitedActive) {
-        currentLuckBoost = gameData.luckBoosts.boostAmount;
-    }
-    
-    // Filter gacha pool by crate type with different probabilities
-    let availableCards = [];
-    
-    if (rarity === 'common') {
-        // Basic Crate: 100% common
-        availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-    } else if (rarity === 'rare') {
-        // Premium Crate: 45% common, 55% rare
-        const commonCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-        const rareCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
         
-        if (Math.random() < 0.45) {
-            // 45% chance for common
-            availableCards = commonCards;
-        } else {
-            // 55% chance for rare
-            availableCards = rareCards;
+        // Update quest progress for first gacha
+        if (!firstGachaDone) {
+            updateQuestProgress('First Gacha', 1, 'main');
+            firstGachaDone = true;   
         }
-    } else if (rarity === 'epic') {
-        // Elite Crate: 20% common, 35% rare, 45% epic
-        const randomValue = Math.random();
-        if (randomValue < 0.20) {
+        
+        // Use luck boost if active
+        let currentLuckBoost = 0;
+        
+        if (gameData.luckBoosts.active) {
+            gameData.luckBoosts.remainingUses--;
+            currentLuckBoost = gameData.luckBoosts.boostAmount;
+            if (gameData.luckBoosts.remainingUses <= 0) {
+                gameData.luckBoosts.active = false;
+            }
+            updateInventoryDisplay();
+        } else if (gameData.luckBoosts.unlimitedActive) {
+            currentLuckBoost = gameData.luckBoosts.boostAmount;
+        }
+        
+        // Filter gacha pool by crate type with different probabilities
+        let availableCards = [];
+        
+        if (rarity === 'common') {
+            // Basic Crate: 100% common
             availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-        } else if (randomValue < 0.55) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
-        } else {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+        } else if (rarity === 'rare') {
+            // Premium Crate: 45% common, 55% rare
+            const commonCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+            const rareCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+            
+            if (Math.random() < 0.45) {
+                // 45% chance for common
+                availableCards = commonCards;
+            } else {
+                // 55% chance for rare
+                availableCards = rareCards;
+            }
+        } else if (rarity === 'epic') {
+            // Elite Crate: 20% common, 35% rare, 45% epic
+            const randomValue = Math.random();
+            if (randomValue < 0.20) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+            } else if (randomValue < 0.55) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+            } else {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+            }
+        } else if (rarity === 'risingstar') {
+            // RisingStar Crate: 18% common, 30% rare, 51.5% epic, 0.5% risingstar/legendary
+            // Apply luck boost
+            let legendaryRisingStarChance = 0.005; // 0.5% base chance
+            legendaryRisingStarChance += (currentLuckBoost / 100); // Add luck boost
+            
+            const randomValue = Math.random();
+            if (randomValue < 0.20) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+            } else if (randomValue < 0.48) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+            } else if (randomValue < (1 - legendaryRisingStarChance)) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+            } else {
+                // Chance for legendary or risingstar
+                const legendaryAndRisingStar = gameData.gachaPool.filter(card => 
+                    card.rarity === 'legendary' || card.rarity === 'risingstar'
+                );
+                availableCards = legendaryAndRisingStar;
+            }
+        } else if (rarity === 'superstar') {
+            // Event Crate: 15% common, 25% rare, 58.5% epic, 1.5% superstar
+            // Apply luck boost
+            let superstarChance = 0.015; // 1.5% base chance
+            superstarChance += (currentLuckBoost / 100); // Add luck boost
+            
+            const randomValue = Math.random();
+            if (randomValue < 0.15) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+            } else if (randomValue < 0.40) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+            } else if (randomValue < (1 - superstarChance)) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+            } else {
+                // Chance for superstar
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'superstar');
+            }
+        } else if (rarity === 'secret') {
+            // Golden St×rs Crate: 15% common, 25% rare, 58% epic, 1.5% legendary, 0.5% secret
+            let secretChance = 0.005; // 0.5% base chance
+            let legendaryChance = 0.015; // 1.5% base chance
+            
+            // Apply luck boost
+            secretChance += (currentLuckBoost / 100);
+            legendaryChance += (currentLuckBoost / 100);
+            
+            const randomValue = Math.random();
+            if (randomValue < 0.15) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+            } else if (randomValue < 0.40) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
+            } else if (randomValue < (1 - legendaryChance - secretChance)) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
+            } else if (randomValue < (1 - secretChance)) {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'legendary');
+            } else {
+                availableCards = gameData.gachaPool.filter(card => card.rarity === 'secret');
+            }
         }
-    } else if (rarity === 'risingstar') {
-        // RisingStar Crate: 18% common, 30% rare, 51.5% epic, 0.5% risingstar/legendary
-        // Apply luck boost
-        let legendaryRisingStarChance = 0.005; // 0.5% base chance
-        legendaryRisingStarChance += (currentLuckBoost / 100); // Add luck boost
         
-        const randomValue = Math.random();
-        if (randomValue < 0.20) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-        } else if (randomValue < 0.48) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
-        } else if (randomValue < (1 - legendaryRisingStarChance)) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
-        } else {
-            // Chance for legendary or risingstar
-            const legendaryAndRisingStar = gameData.gachaPool.filter(card => 
-                card.rarity === 'legendary' || card.rarity === 'risingstar'
-            );
-            availableCards = legendaryAndRisingStar;
+        // === PERBAIKAN 1: VALIDASI AVAILABLE CARDS ===
+        if (!availableCards || availableCards.length === 0) {
+            console.error("No available cards for rarity:", rarity);
+            addToBattleLog("Error: No cards available in this crate!", 'player');
+            return;
         }
-    } else if (rarity === 'superstar') {
-        // Event Crate: 15% common, 25% rare, 58.5% epic, 1.5% superstar
-        // Apply luck boost
-        let superstarChance = 0.015; // 1.5% base chance
-        superstarChance += (currentLuckBoost / 100); // Add luck boost
         
-        const randomValue = Math.random();
-        if (randomValue < 0.15) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-        } else if (randomValue < 0.40) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
-        } else if (randomValue < (1 - superstarChance)) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
-        } else {
-            // Chance for superstar
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'superstar');
+        // Randomly select a card from available pool
+        const randomIndex = Math.floor(Math.random() * availableCards.length);
+        const wonCard = availableCards[randomIndex];
+        
+        // === PERBAIKAN 2: VALIDASI KARTU HASIL GACHA ===
+        if (!wonCard || typeof wonCard !== 'object') {
+            console.error("Invalid card won from gacha:", wonCard);
+            addToBattleLog("Error: Invalid card received from gacha!", 'player');
+            return;
         }
-    } else if (rarity === 'secret') {
-        // Golden St×rs Crate: 15% common, 25% rare, 58% epic, 1.5% legendary, 0.5% secret
-        let secretChance = 0.005; // 0.5% base chance
-        let legendaryChance = 0.015; // 1.5% base chance
         
-        // Apply luck boost
-        secretChance += (currentLuckBoost / 100);
-        legendaryChance += (currentLuckBoost / 100);
+        // === PERBAIKAN 3: BUAT SALINAN KARTU YANG AMAN ===
+        const safeCard = {
+            id: wonCard.id || Date.now(),
+            name: wonCard.name || 'Unknown Card',
+            group: wonCard.group || 'Unknown Group',
+            image: wonCard.image || 'placeholder.jpg',
+            health: wonCard.health || 100,
+            maxHealth: wonCard.maxHealth || 100,
+            attack: wonCard.attack || 10,
+            rarity: wonCard.rarity || 'common',
+            wins: 0,
+            battles: 0,
+            favorite: false,
+            upgrades: 0
+        };
         
-        const randomValue = Math.random();
-        if (randomValue < 0.15) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
-        } else if (randomValue < 0.40) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'rare');
-        } else if (randomValue < (1 - legendaryChance - secretChance)) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'epic');
-        } else if (randomValue < (1 - secretChance)) {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'legendary');
-        } else {
-            availableCards = gameData.gachaPool.filter(card => card.rarity === 'secret');
+        // === PERBAIKAN 4: CEK DUPLIKAT ID ===
+        const existingCard = gameData.cards.find(c => c.id === safeCard.id);
+        if (existingCard) {
+            // Jika ID sudah ada, generate ID baru yang unik
+            safeCard.id = Date.now() + Math.floor(Math.random() * 1000);
+            console.log("Duplicate ID detected, generated new ID:", safeCard.id);
+        }
+        
+        // === PERBAIKAN 5: VALIDASI FINAL SEBELUM PUSH ===
+        if (!safeCard.id || !safeCard.name) {
+            console.error("Invalid safe card data:", safeCard);
+            addToBattleLog("Error: Failed to create card data!", 'player');
+            return;
+        }
+        
+        // Add to collection
+        gameData.cards.push(safeCard);
+        
+        // Auto-equip if this is the first card
+        if (gameData.cards.length === 1) {
+            setCurrentCard(safeCard);
+        }
+        
+        // Update quest progress
+        updateQuestProgress('Gacha Enthusiast', 1);
+        updateQuestProgress('Idol Collector', 1);
+        
+        // Show gacha result with special effects for rare cards
+        showGachaResult(safeCard);
+        
+        // === PERBAIKAN 6: REFRESH DENGAN DELAY UNTUK MEMASTIKAN DATA SIAP ===
+        setTimeout(() => {
+            try {
+                loadCollection();
+                updateHomeStats();
+                saveGameData();
+                
+                console.log("Successfully added card to collection:", safeCard.name, "ID:", safeCard.id);
+            } catch (refreshError) {
+                console.error("Error refreshing after gacha:", refreshError);
+            }
+        }, 100);
+        
+    } catch (error) {
+        // === PERBAIKAN 7: ERROR HANDLING UTAMA ===
+        console.error("Error in openGachaCrate:", error);
+        addToBattleLog("Error opening gacha crate!", 'player');
+        
+        // Fallback: tetap save game data untuk mencegah data corruption
+        try {
+            saveGameData();
+        } catch (saveError) {
+            console.error("Error saving game data after gacha error:", saveError);
         }
     }
-    
-    // Randomly select a card from available pool
-    const randomIndex = Math.floor(Math.random() * availableCards.length);
-    const wonCard = availableCards[randomIndex];
-    
-    // Add to collection
-    gameData.cards.push({...wonCard});
-    
-    // Auto-equip if this is the first card
-    if (gameData.cards.length === 1) {
-        setCurrentCard(wonCard);
-    }
-    
-    // Update quest progress
-    updateQuestProgress('Gacha Enthusiast', 1);
-    updateQuestProgress('Idol Collector', 1);
-    
-    // Show gacha result with special effects for rare cards
-    showGachaResult(wonCard);
-    
-    // Refresh collection
-    loadCollection();
-    updateHomeStats();
-    saveGameData();
 }
 
 // Show gacha result modal dengan efek khusus untuk setiap rarity
@@ -6476,6 +6844,9 @@ function playLegendaryEffect(card) {
         gachaCardDisplay.classList.remove('legendary-shake');
     }, 1000);
 }
+
+
+
 
 // Efek khusus untuk kartu RisingStar
 function playRisingStarEffect(card) {
