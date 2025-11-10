@@ -4320,7 +4320,7 @@ const gameData = {
         luck: [
             { id: 1, name: "Luck Boost", price: 500, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1% for 20 openings" },
             { id: 2, name: "Luck Boost Plus", price: 700, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 3% for 20 openings" },
-            { id: 3, name: "Unlimited Luck Boost", price: 1400, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 1.5% for 30 minutes" }
+            { id: 3, name: "Unlimited Luck Boost", price: 1400, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 0.8% for 25 minutes" }
         ],
         skills: [
             { id: 1, name: "War Blitz", price: 800, type: "skill", image: "warblitz.jpg", description: "-4 HP, +7 Attack (+3 Attack when enemy uses Shield)" },
@@ -5764,7 +5764,25 @@ function formatCount(count) {
 
 
 // Load store items dengan diskon
-function loadStoreItems(category) {
+function loadStoreItems<!DOCTYPE html>
+<html lang="in">
+<head>
+    <meta charset="UTF-8">
+    <title>Judul halaman</title>
+</head>
+<body>
+    <!DOCTYPE html>
+    <html lang="in">
+    <head>
+        <meta charset="UTF-8">
+        <title>Judul halaman</title>
+    </head>
+    <body>
+        
+    </body>
+    </html>
+</body>
+</html>(category) {
     const storeItemsContainer = document.querySelector('.store-items');
     storeItemsContainer.innerHTML = '';
     
@@ -6464,31 +6482,35 @@ function buyItem(itemId, itemType) {
             gameData.attackBoosts.push(item);
             updateInventoryDisplay();
             addToBattleLog(`You bought an Attack Boost! You now have ${gameData.attackBoosts.length} boost(s) available.`, 'player');
-        } else if (itemType === 'luck') {
-            // Activate luck boost berdasarkan jenis
-            if (item.id === 1) {
-                // Luck Boost biasa: 1% untuk 20 pembukaan
-                gameData.luckBoosts.active = true;
-                gameData.luckBoosts.remainingUses = 20;
-                gameData.luckBoosts.boostAmount = 1;
-                addToBattleLog(`You activated a Luck Boost! Your next 20 gacha openings have +1% increased luck!`, 'player');
-            } else if (item.id === 2) {
-                // Luck Boost Plus: 3% untuk 20 pembukaan
-                gameData.luckBoosts.active = true;
-                gameData.luckBoosts.remainingUses = 20;
-                gameData.luckBoosts.boostAmount = 3;
-                addToBattleLog(`You activated a Luck Boost Plus! Your next 20 gacha openings have +3% increased luck!`, 'player');
-            } else if (item.id === 3) {
-                // Unlimited Luck Boost: 1.5% untuk 30 menit
-                gameData.luckBoosts.unlimitedActive = true;
-                gameData.luckBoosts.unlimitedEndTime = Date.now() + (30 * 60 * 1000); // 30 menit
-                gameData.luckBoosts.boostAmount = 1.5;
-                addToBattleLog(`You activated Unlimited Luck Boost! All gacha openings for 30 minutes have +1.5% increased luck!`, 'player');
-                
-                // Set timer untuk mengecek expired
-                setTimeout(checkUnlimitedLuckBoost, 31 * 60 * 1000);
-            }
-            updateInventoryDisplay();
+            } else if (itemType === 'luck') {
+        // Activate luck boost berdasarkan jenis
+        if (item.id === 1) {
+            // Luck Boost biasa: 1% untuk 20 pembukaan
+            gameData.luckBoosts.active = true;
+            gameData.luckBoosts.remainingUses = 20;
+            gameData.luckBoosts.boostAmount = 1;
+            addToBattleLog(`You activated a Luck Boost! Your next 20 gacha openings have +1% increased luck!`, 'player');
+        } else if (item.id === 2) {
+            // Luck Boost Plus: 3% untuk 20 pembukaan
+            gameData.luckBoosts.active = true;
+            gameData.luckBoosts.remainingUses = 20;
+            gameData.luckBoosts.boostAmount = 3;
+            addToBattleLog(`You activated a Luck Boost Plus! Your next 20 gacha openings have +3% increased luck!`, 'player');
+        } else if (item.id === 3) {
+            // Unlimited Luck Boost: 0.8% untuk 25 menit ← UBAH DI SINI
+            gameData.luckBoosts.unlimitedActive = true;
+            gameData.luckBoosts.unlimitedEndTime = Date.now() + (25 * 60 * 1000); // 25 menit
+            gameData.luckBoosts.boostAmount = 0.8; // ← UBAH DI SINI
+            addToBattleLog(`You activated Unlimited Luck Boost! All gacha openings for 25 minutes have +0.8% increased luck!`, 'player');
+            
+            // Set timer untuk mengecek expired
+            setTimeout(checkUnlimitedLuckBoost, 26 * 60 * 1000); // 26 menit (sedikit lebih lama)
+        }
+        updateInventoryDisplay();
+        
+        
+        
+        
         } else if (itemType === 'skill') {
             // Add skill to owned skills
             gameData.skills.owned.push(item);
@@ -6532,7 +6554,6 @@ function buyItem(itemId, itemType) {
     }
 }
 
-// Check unlimited luck boost timer
 function checkUnlimitedLuckBoost() {
     if (gameData.luckBoosts.unlimitedActive && Date.now() > gameData.luckBoosts.unlimitedEndTime) {
         gameData.luckBoosts.unlimitedActive = false;
