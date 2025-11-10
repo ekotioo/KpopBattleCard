@@ -1564,29 +1564,76 @@ close-modal:hover {
     gap: 15px;
 }
 
-.setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+/* Styles untuk settings modal yang diperbaiki */
+.settings-section {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.setting-label {
-    font-weight: 600;
-}
-
-.setting-control {
+.settings-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--accent);
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
+.settings-section-title i {
+    font-size: 1rem;
+    color: var(--primary);
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+    padding-bottom: 5px;
+}
+
+.setting-info {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.setting-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    color: var(--text-light);
+}
+
+.setting-description {
+    font-size: 0.8rem;
+    color: #aaa;
+    line-height: 1.4;
+}
+
+.setting-control {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    min-width: 150px;
+}
+
+/* Toggle Switch yang Diperbaiki */
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 50px;
-    height: 24px;
+    width: 54px;
+    height: 28px;
+    flex-shrink: 0;
 }
 
 .toggle-switch input {
@@ -1604,35 +1651,230 @@ close-modal:hover {
     bottom: 0;
     background-color: #555;
     transition: .4s;
-    border-radius: 24px;
+    border-radius: 28px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 16px;
-    width: 16px;
+    height: 20px;
+    width: 20px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background: linear-gradient(135deg, #fff, #f0f0f0);
     transition: .4s;
     border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 input:checked + .toggle-slider {
-    background-color: var(--secondary);
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
 }
 
 input:checked + .toggle-slider:before {
     transform: translateX(26px);
+    background: white;
+}
+
+/* Volume Control yang Diperbaiki */
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    justify-content: flex-end;
 }
 
 .volume-slider {
     width: 100px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+    -webkit-appearance: none;
+    transition: all 0.3s ease;
 }
 
-/* Logout Button in Settings */
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: all 0.2s ease;
+    border: 2px solid var(--secondary);
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: var(--accent);
+}
+
+.volume-label {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 10px;
+}
+
+/* Redeem Section yang Diperbaiki */
+.redeem-section {
+    margin-top: 10px;
+}
+
+.redeem-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.redeem-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.redeem-input:focus {
+    outline: 2px solid var(--primary);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.redeem-btn {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.redeem-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(106, 90, 249, 0.4);
+}
+
+.redeem-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.redeem-history {
+    margin-top: 15px;
+}
+
+.redeem-history-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--accent);
+}
+
+.redeem-history-list {
+    max-height: 120px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.redeem-history-item {
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.redeem-code {
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.redeem-reward {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* Tutorial Section yang Diperbaiki */
+.tutorial-step {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border-left: 4px solid var(--primary);
+}
+
+.tutorial-step h4 {
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tutorial-step p {
+    font-size: 0.85rem;
+    color: #aaa;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Account Section */
+.account-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.account-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.stat-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.account-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
 .logout-btn {
+    flex: 1;
     padding: 12px;
     background: var(--danger);
     color: white;
@@ -1641,12 +1883,53 @@ input:checked + .toggle-slider:before {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .logout-btn:hover {
     background: #e8355f;
     transform: translateY(-2px);
+}
+
+#settings-save-btn {
+    flex: 1;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 400px) {
+    .setting-item {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .setting-control {
+        align-items: stretch;
+    }
+    
+    .volume-control {
+        justify-content: space-between;
+    }
+    
+    .account-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .account-actions {
+        flex-direction: column;
+    }
+    
+    .redeem-form {
+        flex-direction: column;
+    }
 }
 
 /* Responsive Adjustments */
@@ -3666,6 +3949,597 @@ input:checked + .toggle-slider:before {
 
 
 
+
+
+
+
+/* Shorts Screen */
+/* Improved Shorts Screen */
+#shorts {
+    padding: 0;
+    background: #000;
+    position: relative;
+}
+
+.shorts-container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Improved Shorts Performance */
+.shorts-video-container {
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    will-change: scroll-position;
+}
+
+.shorts-video-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    background: #000;
+}
+
+.shorts-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+}
+
+/* Preload videos for better performance */
+.shorts-video[data-preloaded="true"] {
+    display: block;
+}
+
+/* Hide non-active videos to improve performance */
+.shorts-video-item:not(.active) .shorts-video {
+    visibility: hidden;
+}
+
+.shorts-video-item.active .shorts-video {
+    visibility: visible;
+}
+
+/* Smooth transitions */
+.shorts-video-item {
+    transition: opacity 0.3s ease;
+}
+
+/* Optimize right controls */
+.shorts-right-controls {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Progress bar improvements */
+.shorts-progress-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 1000;
+}
+
+.shorts-progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Loading state improvements */
+.shorts-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.5);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Video Info Overlay */
+.shorts-video-info {
+    position: absolute;
+    bottom: 80px;
+    left: 15px;
+    right: 15px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 10;
+}
+
+.shorts-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.group-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.verified-badge {
+    color: #0095f6;
+    font-size: 0.9rem;
+}
+
+.shorts-description {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    max-width: 80%;
+}
+
+.shorts-music {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.music-icon {
+    font-size: 0.8rem;
+}
+
+/* Right Side Controls */
+.shorts-right-controls {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    z-index: 10;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.control-item:active {
+    transform: scale(0.9);
+}
+
+.control-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.control-icon.liked {
+    background: rgba(255, 59, 92, 0.2);
+    color: #ff3b5c;
+}
+
+.control-count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Bottom Progress Bar */
+.shorts-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 10;
+}
+
+.shorts-progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Loading Spinner */
+.shorts-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    z-index: 5;
+}
+
+/* Touch Improvements */
+.shorts-video-container {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.shorts-video-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Video Play/Pause Overlay */
+.video-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.video-play-overlay.visible {
+    opacity: 1;
+}
+
+.play-pause-icon {
+    font-size: 4rem;
+    color: white;
+    opacity: 0.8;
+}
+
+/* Additional Controls */
+/* Modern Bottom Controls - PERBAIKI INI */
+/* Modern Bottom Controls - LEBIH TRANSPARAN DAN KECIL */
+.shorts-bottom-controls {
+    position: absolute;
+    bottom: 15px; /* Lebih dekat ke bawah */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Lebih kecil */
+    background: rgba(0, 0, 0, 0.2); /* SANGAT transparan */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Hampir tidak terlihat */
+    border-radius: 20px; /* Lebih kecil */
+    padding: 6px 12px; /* Lebih kecil */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.bottom-control-btn {
+    background: rgba(255, 255, 255, 0.08); /* SANGAT transparan */
+    border: none;
+    border-radius: 50%;
+    width: 35px; /* Lebih kecil */
+    height: 35px; /* Lebih kecil */
+    color: white;
+    font-size: 0.9rem; /* Lebih kecil */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    backdrop-filter: blur(3px);
+}
+
+.bottom-control-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+}
+
+.bottom-control-btn:active {
+    transform: scale(0.9);
+}
+
+/* Right controls - KEMBALI KE UKURAN SEMULA */
+.shorts-right-controls {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Kembali ke ukuran semula */
+    align-items: center;
+    z-index: 10;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Kembali ke ukuran semula */
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.control-icon {
+    width: 48px; /* Kembali ke ukuran semula */
+    height: 48px; /* Kembali ke ukuran semula */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-size: 1.2rem; /* Kembali ke ukuran semula */
+    transition: all 0.3s ease;
+}
+
+.control-icon.liked {
+    background: rgba(255, 59, 92, 0.2);
+    color: #ff3b5c;
+}
+
+.control-count {
+    font-size: 0.8rem; /* Kembali ke ukuran semula */
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Video Info - Kembali ke posisi semula */
+.shorts-video-info {
+    position: absolute;
+    bottom: 80px; /* Kembali ke posisi semula */
+    left: 15px;
+    right: 15px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 10;
+}
+
+.shorts-group {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Kembali ke ukuran semula */
+    margin-bottom: 10px; /* Kembali ke ukuran semula */
+}
+
+.group-name {
+    font-size: 1.1rem; /* Kembali ke ukuran semula */
+    font-weight: 600;
+}
+
+.verified-badge {
+    color: #0095f6;
+    font-size: 0.9rem; /* Kembali ke ukuran semula */
+}
+
+.shorts-description {
+    font-size: 0.95rem; /* Kembali ke ukuran semula */
+    line-height: 1.4;
+    margin-bottom: 10px; /* Kembali ke ukuran semula */
+    max-width: 80%; /* Kembali ke ukuran semula */
+}
+
+.shorts-music {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Kembali ke ukuran semula */
+    font-size: 0.85rem; /* Kembali ke ukuran semula */
+    opacity: 0.9;
+}
+
+.music-icon {
+    font-size: 0.8rem; /* Kembali ke ukuran semula */
+}
+
+/* Progress bar - tipis saja */
+.shorts-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1); /* Lebih transparan */
+    z-index: 1000;
+}
+
+.shorts-progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Responsive untuk mobile */
+@media (max-width: 480px) {
+    .shorts-bottom-controls {
+        gap: 4px;
+        padding: 4px 10px;
+        bottom: 10px;
+    }
+    
+    .bottom-control-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    
+    /* Right controls tetap besar di mobile */
+    .shorts-right-controls {
+        right: 10px;
+        bottom: 100px;
+        gap: 15px;
+    }
+    
+    .control-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
+    
+    .control-count {
+        font-size: 0.75rem;
+    }
+}
+   
+   
+   /* Comment Modal Styles */
+.comment-container {
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    max-height: 300px;
+}
+
+.comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.comment-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-author {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+}
+
+.comment-text {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: var(--text-light);
+}
+
+.comment-time {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-top: 3px;
+}
+
+.comment-input-container {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.comment-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.comment-input:focus {
+    outline: 2px solid var(--primary);
+}
+
+.comment-submit-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-submit-btn:hover {
+    background: #ff4d8d;
+    transform: scale(1.05);
+}
+
+.comment-submit-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Bot comment styling */
+.comment-item.bot .comment-avatar {
+    background: linear-gradient(135deg, var(--secondary), #8a82ff);
+}
+
+.comment-item.user .comment-avatar {
+    background: linear-gradient(135deg, var(--primary), #ff4d8d);
+}
+   
+
+
+
+
+
+
+
+
         
     </style>
 </head>
@@ -3695,37 +4569,44 @@ input:checked + .toggle-slider:before {
     <!-- Game Container (Initially Hidden) -->
     <div class="container" id="game-container" style="display: none;">
     <header id="main-header">
-        <video autoplay muted loop playsinline class="header-video">
-            <source src="header-bg.mp4" type="video/mp4">
-            <source src="header-bg.webm" type="video/webm">
-        </video>
-        
-       
-            
-            <h1>Battle Of Idol</h1>
-            <div class="player-info">
-                <div class="player-name" id="player-name-display">Player</div>
-                <div class="player-level">
-                    <i class="fas fa-level-up-alt level-icon"></i> Level: <span id="player-level">1</span>
-                </div>
-                <div class="player-resources">
-                    <div class="coins" id="topup-btn">
-                        <i class="fas fa-coins coin-icon"></i> <span id="coin-count">0</span>
-                    </div>
-                    <div class="luck-boost-indicator hidden" id="luck-boost-indicator">
-                        <i class="fas fa-clover luck-icon"></i> <span id="luck-boost-remaining">0</span>
-                    </div>
-                    <button class="settings-btn" id="settings-btn">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                </div>
+    <video autoplay muted loop playsinline class="header-video">
+        <source src="header-bg.mp4" type="video/mp4">
+        <source src="header-bg.webm" type="video/webm">
+    </video>
+    
+    <h1>Battle Of Idol</h1>
+    <div class="player-info">
+        <div class="player-name" id="player-name-display">Player</div>
+        <div class="player-level">
+            <i class="fas fa-level-up-alt level-icon"></i> Level: <span id="player-level">1</span>
+        </div>
+        <div class="player-resources">
+            <!-- PERBAIKAN: Pastikan topup-btn ada di sini -->
+            <div class="coins" id="topup-btn">
+                <i class="fas fa-coins coin-icon"></i> <span id="coin-count">0</span>
             </div>
-        </header>
+            <div class="luck-boost-indicator hidden" id="luck-boost-indicator">
+                <i class="fas fa-clover luck-icon"></i> <span id="luck-boost-remaining">0</span>
+            </div>
+            <button class="settings-btn" id="settings-btn">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+    </div>
+</header>
 
         <nav>
     <button class="nav-btn active" data-screen="home">
         <i class="fas fa-home"></i> Home
     </button>
+    
+    
+    <button class="nav-btn" data-screen="shorts">
+        <i class="fas fa-play-circle"></i> Idol Shorts
+    </button>
+    
+    
+    
    
     <button class="nav-btn" data-screen="battle">
         <i class="fas fa-fist-raised"></i> Battle
@@ -3743,6 +4624,53 @@ input:checked + .toggle-slider:before {
 </nav>
 
 
+
+<!-- Shorts Screen -->
+<section id="shorts" class="screen">
+    <div class="shorts-container">
+        <div class="shorts-video-container">
+            <!-- Videos will be loaded by JavaScript -->
+        </div>
+        <div class="shorts-progress-container">
+            <div class="shorts-progress-bar"></div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- Topup Modal -->
+    <div id="topup-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Top Up Coins</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="topup-options">
+            <div class="topup-option" data-amount="2500" data-price="12000">
+                <div class="topup-amount">2,500 Coins</div>
+                <div class="topup-price">Rp 12,000</div>
+            </div>
+            <div class="topup-option" data-amount="5000" data-price="21500">
+                <div class="topup-amount">5,000 Coins</div>
+                <div class="topup-price">Rp 21,500</div>
+            </div>
+            <div class="topup-option" data-amount="8000" data-price="35000">
+                <div class="topup-amount">8,000 Coins</div>
+                <div class="topup-price">Rp 35,000</div>
+            </div>
+            <div class="topup-option" data-amount="10000" data-price="75000">
+                <div class="topup-amount">10,000 Coins</div>
+                <div class="topup-price">Rp 67,000</div>                  
+            </div>
+            <div class="topup-option" data-amount="30000" data-price="187000">
+                <div class="topup-amount">30,000 Coins</div>
+                <div class="topup-price">Rp 187,000</div>                   
+            </div>
+        </div>
+        <button class="action-btn play-btn" id="topup-close-btn" style="margin-top: 15px;">Close</button>
+    </div>
+</div>
 
 
 
@@ -4079,50 +5007,72 @@ input:checked + .toggle-slider:before {
     
     
 
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Settings</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            
-            
-            <div class="setting-item">
-    <div class="setting-label">Animated Header</div>
-    <div class="setting-control">
-        <label class="toggle-switch">
-            <input type="checkbox" id="animated-header-toggle">
-            <span class="toggle-slider"></span>
-        </label>
-    </div>
-</div>
-            
-            
-            
-            <div class="settings-container">
+   <!-- Settings Modal -->
+<div id="settings-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Settings</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        
+        <div class="settings-container">
+            <!-- Audio Settings Section -->
+            <div class="settings-section">
+                <h4 class="settings-section-title">
+                    <i class="fas fa-volume-up"></i>
+                    Audio Settings
+                </h4>
+                
+                <!-- Background Music Setting -->
                 <div class="setting-item">
-                    <div class="setting-label">Background Music</div>
+                    <div class="setting-info">
+                        <div class="setting-label">Background Music</div>
+                        <div class="setting-description">Game background music and soundtrack</div>
+                    </div>
                     <div class="setting-control">
                         <label class="toggle-switch">
                             <input type="checkbox" id="bgm-toggle" checked>
                             <span class="toggle-slider"></span>
                         </label>
-                        <input type="range" min="0" max="100" value="50" class="volume-slider" id="bgm-volume">
+                        <div class="volume-control">
+                            <input type="range" min="0" max="100" value="50" class="volume-slider" id="bgm-volume">
+                            <span class="volume-label" id="bgm-volume-label">50%</span>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Sound Effects Setting -->
                 <div class="setting-item">
-                    <div class="setting-label">Sound Effects</div>
+                    <div class="setting-info">
+                        <div class="setting-label">Sound Effects</div>
+                        <div class="setting-description">Battle sounds, gacha effects, and notifications</div>
+                    </div>
                     <div class="setting-control">
                         <label class="toggle-switch">
                             <input type="checkbox" id="sfx-toggle" checked>
                             <span class="toggle-slider"></span>
                         </label>
-                        <input type="range" min="0" max="100" value="70" class="volume-slider" id="sfx-volume">
+                        <div class="volume-control">
+                            <input type="range" min="0" max="100" value="70" class="volume-slider" id="sfx-volume">
+                            <span class="volume-label" id="sfx-volume-label">70%</span>
+                        </div>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Gameplay Settings Section -->
+            <div class="settings-section">
+                <h4 class="settings-section-title">
+                    <i class="fas fa-gamepad"></i>
+                    Gameplay Settings
+                </h4>
+                
+                <!-- Vibration Setting -->
                 <div class="setting-item">
-                    <div class="setting-label">Vibration</div>
+                    <div class="setting-info">
+                        <div class="setting-label">Vibration</div>
+                        <div class="setting-description">Haptic feedback during battles and gacha</div>
+                    </div>
                     <div class="setting-control">
                         <label class="toggle-switch">
                             <input type="checkbox" id="vibration-toggle">
@@ -4130,8 +5080,13 @@ input:checked + .toggle-slider:before {
                         </label>
                     </div>
                 </div>
+                
+                <!-- Notifications Setting -->
                 <div class="setting-item">
-                    <div class="setting-label">Notifications</div>
+                    <div class="setting-info">
+                        <div class="setting-label">Notifications</div>
+                        <div class="setting-description">Quest reminders and daily rewards</div>
+                    </div>
                     <div class="setting-control">
                         <label class="toggle-switch">
                             <input type="checkbox" id="notifications-toggle" checked>
@@ -4140,94 +5095,160 @@ input:checked + .toggle-slider:before {
                     </div>
                 </div>
                 
-                <!-- Redeem Code Section -->
-                <div class="redeem-section">
-                    <h3 class="redeem-title">Redeem Code</h3>
-                    <div class="redeem-form">
-                        <input type="text" class="redeem-input" id="redeem-code-input" placeholder="Enter redeem code">
-                        <button class="redeem-btn" id="redeem-btn">Redeem</button>
+                <!-- Animated Header Setting -->
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">Animated Header</div>
+                        <div class="setting-description">Dynamic background animation in header</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="animated-header-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
                     </div>
                 </div>
                 
-                <!-- Tutorial Section -->
+                <!-- Battle Animations Setting -->
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">Battle Animations</div>
+                        <div class="setting-description">Special effects during battles</div>
+                    </div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="battle-animations-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Redeem Code Section -->
+            <div class="settings-section">
+                <h4 class="settings-section-title">
+                    <i class="fas fa-gift"></i>
+                    Redeem Codes
+                </h4>
+                
+                <div class="redeem-section">
+                    <div class="redeem-form">
+                        <input type="text" class="redeem-input" id="redeem-code-input" placeholder="Enter redeem code (e.g., WELCOME100)">
+                        <button class="redeem-btn" id="redeem-btn">
+                            <i class="fas fa-ticket-alt"></i>
+                            Redeem
+                        </button>
+                    </div>
+                    
+                    <div class="redeem-history">
+                        <div class="redeem-history-title">Recent Redeems</div>
+                        <div class="redeem-history-list" id="redeem-history-list">
+                            <!-- Redeem history will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tutorial Section -->
+            <div class="settings-section">
+                <h4 class="settings-section-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    Game Tutorial
+                </h4>
+                
                 <div class="tutorial-section">
-                    <h3 class="tutorial-title">Game Tutorial</h3>
                     <div class="tutorial-content">
                         <div class="tutorial-step">
-                            <h4>Getting Started</h4>
+                            <h4>🎮 Getting Started</h4>
                             <p>Welcome to Battle Of Idol! Start by opening your first free gacha crate in the Store to get your first idol card.</p>
                         </div>
                         <div class="tutorial-step">
-                            <h4>Equipping Cards</h4>
-                            <p>Go to the Collection screen and equip your card to use it in battles.</p>
+                            <h4>🃏 Equipping Cards</h4>
+                            <p>Go to the Collection screen and equip your card to use it in battles. You can only use one card at a time.</p>
                         </div>
                         <div class="tutorial-step">
-                            <h4>Battling</h4>
+                            <h4>⚔️ Battling</h4>
                             <p>In the Battle screen, press START BATTLE to begin. The battle is automatic, but you can use shields and attack boosts during the fight.</p>
                         </div>
                         <div class="tutorial-step">
-                            <h4>Skills</h4>
+                            <h4>✨ Skills</h4>
                             <p>Buy skills in the Store and equip them to your cards in the Collection screen. Each skill provides unique advantages in battle.</p>
                         </div>
                         <div class="tutorial-step">
-                            <h4>Quests & Rewards</h4>
-                            <p>Complete quests in the Quests screen to earn coins, cards, and other rewards.</p>
+                            <h4>🏆 Quests & Rewards</h4>
+                            <p>Complete quests in the Quests screen to earn coins, cards, and other rewards. Check both Main and Daily quests!</p>
                         </div>
                         <div class="tutorial-step">
-                            <h4>Gacha System</h4>
-                            <p>Open crates in the Store to get new idol cards. Higher rarity crates have better chances for rare cards.</p>
+                            <h4>🎁 Gacha System</h4>
+                            <p>Open crates in the Store to get new idol cards. Higher rarity crates have better chances for rare cards. Use Luck Boosts to increase your chances!</p>
                         </div>
                         <div class="tutorial-step">
-                            <h4>Luck Boosts</h4>
-                            <p>Buy Luck Boosts in the Store to increase your chances of getting rare cards from gacha crates. Each boost lasts for 20 gacha openings.</p>
+                            <h4>💰 Economy</h4>
+                            <p>• Gacha cards (ID 1-74) can be sold<br>
+                               • Store cards (ID 100+) cannot be sold<br>
+                               • Use discount cards for better prices<br>
+                               • Complete quests for free coins</p>
                         </div>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Account Section -->
+            <div class="settings-section">
+                <h4 class="settings-section-title">
+                    <i class="fas fa-user"></i>
+                    Account
+                </h4>
                 
-                <button class="logout-btn" id="logout-btn">Logout</button>
-                <button class="action-btn play-btn" id="settings-save-btn" style="margin-top: 15px;">Save Settings</button>
+                <div class="account-info">
+                    <div class="account-stat">
+                        <span class="stat-label">Username:</span>
+                        <span class="stat-value" id="settings-username">Player</span>
+                    </div>
+                    <div class="account-stat">
+                        <span class="stat-label">Player Level:</span>
+                        <span class="stat-value" id="settings-level">1</span>
+                    </div>
+                    <div class="account-stat">
+                        <span class="stat-label">Total Cards:</span>
+                        <span class="stat-value" id="settings-total-cards">0</span>
+                    </div>
+                    <div class="account-stat">
+                        <span class="stat-label">Play Time:</span>
+                        <span class="stat-value" id="settings-play-time">0h 0m</span>
+                    </div>
+                </div>
+                
+                <div class="account-actions">
+                    <button class="logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                    <button class="action-btn play-btn" id="settings-save-btn">
+                        <i class="fas fa-save"></i>
+                        Save Settings
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
+   
 
-    <!-- Topup Modal -->
-    <div id="topup-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Top Up Coins</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="topup-options">
-                <div class="topup-option" data-amount="2500" data-price="12000">
-                    <div class="topup-amount">2,500 Coins</div>
-                    <div class="topup-price">Rp 12,000</div>
-                </div>
-                <div class="topup-option" data-amount="5000" data-price="21500">
-                    <div class="topup-amount">5,000 Coins</div>
-                    <div class="topup-price">Rp 21,500</div>
-                </div>
-                <div class="topup-option" data-amount="8000" data-price="35000">
-                    <div class="topup-amount">8,000 Coins</div>
-                    <div class="topup-price">Rp 35,000</div>
-                </div>
-                <div class="topup-option" data-amount="10000" data-price="75000">
-                    <div class="topup-amount">10,000 Coins</div>
-                    <div class="topup-price">Rp 67,000</div>                  
-                </div>
-                <div class="topup-option" data-amount="30000" data-price="187000">
-                <div class="topup-amount">30,000 Coins</div>
-                    <div class="topup-price">Rp 187,000</div>                   
-                </div>
-            </div>
-            <button class="action-btn play-btn" id="topup-close-btn" style="margin-top: 15px;">Close</button>
-        </div>
-    </div>
+
+
+
+
+
+
+
+
+
+
 
     <!-- Skill Modal -->
     <div id="skill-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Manage Skills</h3>
+                                <h3 class="modal-title">Manage Skills</h3>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="skill-modal-content">
@@ -4265,9 +5286,31 @@ input:checked + .toggle-slider:before {
                     <button class="trade-btn" id="confirm-trade-btn" disabled>Confirm Trade</button>
                     <button class="cancel-trade-btn" id="cancel-trade-btn">Cancel</button>
                 </div>
+          <!-- Comment Modal -->
+<div id="comment-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Comments</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="comment-container">
+            <div class="comment-list" id="comment-list">
+                <!-- Comments will be loaded here -->
+            </div>
+            <div class="comment-input-container">
+                <input type="text" class="comment-input" id="comment-input" placeholder="Add a comment...">
+                <button class="comment-submit-btn" id="comment-submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
     </div>
+</div>
+
+
+
+
+
 
     <script>
     // Game Data dengan tambahan fitur baru
@@ -4350,86 +5393,86 @@ const gameData = {
         ]
     },
     gachaPool: [
-        // Common Cards (100% in Basic Crate, 45% in Premium, 20% in Elite, 15% in RisingStar, 15% in Event)
-       { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 2, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 3, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 4, name: "Jo Yuri", group: "Actress", image: "jyr.jpg", health: 113, maxHealth: 113, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 5, name: "Leeseo", group: "IVE", image: "leseo.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 6, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 113, maxHealth: 113, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 7, name: "Sana", group: "TWICE", image: "sanatw.jpg", health: 112, maxHealth: 112, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 8, name: "Ian", group: "HEARTS2HEARTS", image: "ianh2h.jpg", health: 111, maxHealth: 111, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                
-                // Rare Cards (55% in Premium, 35% in Elite, 25% in RisingStar, 25% in Event)
-                { id: 20, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 21, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 22, name: "Winter", group: "aespa", image: "winter.jpg", health: 130, maxHealth: 130, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 23, name: "Sakura", group: "LE SSERAFIM", image: "sakura.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 24, name: "Kazuha", group: "LE SSERAFIM", image: "kazuha.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 25, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 26, name: "Giselle", group: "aespa", image: "gisel.jpg", health: 125, maxHealth: 125, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 27, name: "Haerin", group: "NewJeans", image: "haerin.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 28, name: "Hyein", group: "NewJeans", image: "hyein.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 29, name: "Jisoo", group: "BLACKPINK", image: "jisso.jpg", health: 130, maxHealth: 130, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 30, name: "Dahyun", group: "TWICE", image: "dahyunn.jpg", health: 128, maxHealth: 128, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 31, name: "Rose", group: "BLACKPINK", image: "rose.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 32, name: "Rei", group: "IVE", image: "rei.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 33, name: "Liz", group: "IVE", image: "liz.jpg", health: 115, maxHealth: 115, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 34, name: "Wonhee", group: "ILLIT", image: "wonhee.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 35, name: "Iroha", group: "ILLIT", image: "iroha.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 36, name: "Minju", group: "ILLIT", image: "minju.jpg", health: 115, maxHealth: 115, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 37, name: "Jiwoo", group: "HEARTS2HEARTS", image: "jiwoo.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 38, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 39, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 125, maxHealth: 125, attack: 17, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 40, name: "Haewon", group: "NMIXX", image: "haewon.jpg", health: 128, maxHealth: 128, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                
-                // Epic Cards (45% in Elite, 58% in RisingStar, 58% in Event)
-                { id: 55, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 56, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 57, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 58, name: "Yunjin", group: "LE SSERAFIM", image: "yunjin.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 59, name: "Eunchae", group: "LE SSERAFIM", image: "eunchae.jpg", health: 133, maxHealth: 133, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 60, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 61, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 62, name: "Jiyu", group: "KiiiKiii", image: "jiyu.jpg", health: 138, maxHealth: 138, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                
-                // Legendary Cards (2% in RisingStar, 2% in Event)
-                { id: 770, name: "Haerin", group: "NewJeans", image: "haerinL.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 71, name: "Yoona", group: "SNSD", image: "yoonaL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 72, name: "IU", group: "Soloist", image: "iuL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 73, name: "Taeyeon", group: "SNSD", image: "taeyonL.jpg", health: 138, maxHealth: 138, attack: 19, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 74, name: "Carmen", group: "HEARTS2HEARTS", image: "carmenL.jpg", health: 145, maxHealth: 145, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 75, name: "Asa", group: "BABYMONSTER", image: "asaL.jpg", health: 155, maxHealth: 155, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 76, name: "Yeji", group: "ITZY", image: "yejiL.jpg", health: 148, maxHealth: 148, attack: 19, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 77, name: "Dahyun", group: "TWICE", image: "dahyunL.jpg", health: 160, maxHealth: 160, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                
-                // RisingStar Cards (2% in RisingStar)
-                { id: 85, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 86, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 87, name: "Hanni", group: "NewJeans", image: "hanni2.jpg", health: 210, maxHealth: 210, attack: 26, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 88, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 89, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 90, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 91, name: "Mira", group: "HUNTR/X", image: "mira2.jpg", health: 215, maxHealth: 215, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 92, name: "Rora", group: "BABYMONSTER", image: "rora2.jpg", health: 120, maxHealth: 120, attack: 26, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 93, name: "Rose", group: "BLACKPINK", image: "rose2.jpg", health: 235, maxHealth: 235, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                
-                // Superstar+ Cards (2% in Event)
-                { id: 102, name: "Han Sohee", group: "Actress", image: "han_sohee.jpg", health: 215, maxHealth: 215, attack: 29, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 103, name: "Go Younjung", group: "Actress", image: "go_younjung.jpg", health: 235, maxHealth: 235, attack: 27, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 104, name: "Bae Suzy", group: "Actress", image: "bae_suzy.jpg", health: 225, maxHealth: 225, attack: 30, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 105, name: "Park Shin Hye", group: "Actress", image: "park_shin_hye.jpg", health: 220, maxHealth: 220, attack: 27, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 106, name: "Kim Yoo Jung", group: "Actress", image: "kim_yoojung.jpg", health: 223, maxHealth: 223, attack: 28, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 107, name: "Shin Eun-Soo", group: "Actress", image: "eunsoo.jpg", health: 185, maxHealth: 185, attack: 23, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 108, name: "Jo Yuri", group: "Actress", image: "yuri1.jpg", health: 245, maxHealth: 245, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 109, name: "Kim Da-mi", group: "Actress", image: "goldkim.jpg", health: 239, maxHealth: 239, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                { id: 110, name: "Kwon Eun-bi", group: "Actress", image: "keunbi.jpg", health: 241, maxHealth: 241, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-               
-                 { id: 111, name: "Lisa × Jennie", group: "BLACKPINK", image: "lisajennie.jpg", health: 266, maxHealth: 266, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                 { id: 112, name: "Chaewon × Sakura", group: "LE-SSERAFIM", image: "chaesakura.jpg", health: 266, maxHealth: 266, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-                 
-                 { id: 113, name: "Karina × Winter", group: "aespa", image: "karinawinter.jpg", health: 266, maxHealth: 266, attack: 31, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 }
-    ],
+    // Common Cards (100% in Basic Crate, 45% in Premium, 20% in Elite, 15% in RisingStar, 15% in Event)
+    { id: 1, name: "Hanni", group: "NewJeans", image: "hanni.jpg", health: 100, maxHealth: 100, attack: 10, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 2, name: "Karina", group: "aespa", image: "karina.jpg", health: 100, maxHealth: 100, attack: 11, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 3, name: "Minji", group: "NewJeans", image: "minji.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 4, name: "Jo Yuri", group: "Actress", image: "jyr.jpg", health: 113, maxHealth: 113, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 5, name: "Leeseo", group: "IVE", image: "leseo.jpg", health: 110, maxHealth: 110, attack: 12, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 6, name: "Ahyeon", group: "BABYMONSTER", image: "ahyeon.jpg", health: 113, maxHealth: 113, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 7, name: "Sana", group: "TWICE", image: "sanatw.jpg", health: 112, maxHealth: 112, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 8, name: "Ian", group: "HEARTS2HEARTS", image: "ianh2h.jpg", health: 111, maxHealth: 111, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    
+    // Rare Cards (55% in Premium, 35% in Elite, 25% in RisingStar, 25% in Event)
+    { id: 9, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 10, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 11, name: "Winter", group: "aespa", image: "winter.jpg", health: 130, maxHealth: 130, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 12, name: "Sakura", group: "LE SSERAFIM", image: "sakura.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 13, name: "Kazuha", group: "LE SSERAFIM", image: "kazuha.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 14, name: "Ningning", group: "aespa", image: "ning.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 15, name: "Giselle", group: "aespa", image: "gisel.jpg", health: 125, maxHealth: 125, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 16, name: "Haerin", group: "NewJeans", image: "haerin.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 17, name: "Hyein", group: "NewJeans", image: "hyein.jpg", health: 120, maxHealth: 120, attack: 13, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 18, name: "Jisoo", group: "BLACKPINK", image: "jisso.jpg", health: 130, maxHealth: 130, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 19, name: "Dahyun", group: "TWICE", image: "dahyunn.jpg", health: 128, maxHealth: 128, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 20, name: "Rose", group: "BLACKPINK", image: "rose.jpg", health: 125, maxHealth: 125, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 21, name: "Rei", group: "IVE", image: "rei.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 22, name: "Liz", group: "IVE", image: "liz.jpg", health: 115, maxHealth: 115, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 23, name: "Wonhee", group: "ILLIT", image: "wonhee.jpg", health: 120, maxHealth: 120, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 24, name: "Iroha", group: "ILLIT", image: "iroha.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 25, name: "Minju", group: "ILLIT", image: "minju.jpg", health: 115, maxHealth: 115, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 26, name: "Jiwoo", group: "HEARTS2HEARTS", image: "jiwoo.jpg", health: 125, maxHealth: 125, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 27, name: "Rumi", group: "HUNTR/X", image: "rumi.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 28, name: "Ruka", group: "BABYMONSTER", image: "ruka.jpg", health: 125, maxHealth: 125, attack: 17, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 29, name: "Haewon", group: "NMIXX", image: "haewon.jpg", health: 128, maxHealth: 128, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    
+    // Epic Cards (45% in Elite, 58% in RisingStar, 58% in Event)
+    { id: 30, name: "Wonyoung", group: "IVE", image: "wonyung.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 31, name: "Yujin", group: "IVE", image: "yujin.jpg", health: 135, maxHealth: 135, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 32, name: "Chaewon", group: "LE SSERAFIM", image: "chaewon.jpg", health: 130, maxHealth: 130, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 33, name: "Yunjin", group: "LE SSERAFIM", image: "yunjin.jpg", health: 130, maxHealth: 130, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 34, name: "Eunchae", group: "LE SSERAFIM", image: "eunchae.jpg", health: 133, maxHealth: 133, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 35, name: "Youngseo", group: "ILLIT", image: "young.jpg", health: 130, maxHealth: 130, attack: 15, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 36, name: "Pharita", group: "BABYMONSTER", image: "pharita.jpg", health: 140, maxHealth: 140, attack: 16, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 37, name: "Jiyu", group: "KiiiKiii", image: "jiyu.jpg", health: 138, maxHealth: 138, attack: 17, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    
+    // Legendary Cards (2% in RisingStar, 2% in Event)
+    { id: 38, name: "Haerin", group: "NewJeans", image: "haerinL.jpg", health: 140, maxHealth: 140, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 39, name: "Yoona", group: "SNSD", image: "yoonaL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 40, name: "IU", group: "Soloist", image: "iuL.jpg", health: 140, maxHealth: 140, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 41, name: "Taeyeon", group: "SNSD", image: "taeyonL.jpg", health: 138, maxHealth: 138, attack: 19, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 42, name: "Carmen", group: "HEARTS2HEARTS", image: "carmenL.jpg", health: 145, maxHealth: 145, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 43, name: "Asa", group: "BABYMONSTER", image: "asaL.jpg", health: 155, maxHealth: 155, attack: 18, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 44, name: "Yeji", group: "ITZY", image: "yejiL.jpg", health: 148, maxHealth: 148, attack: 19, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 45, name: "Dahyun", group: "TWICE", image: "dahyunL.jpg", health: 160, maxHealth: 160, attack: 17, rarity: "legendary", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    
+    // RisingStar Cards (2% in RisingStar) - SEMUA BISA DIJUAL
+    { id: 46, name: "Jennie", group: "BLACKPINK", image: "jennie2.jpg", health: 200, maxHealth: 200, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 47, name: "Karina", group: "aespa", image: "karina2.jpg", health: 220, maxHealth: 220, attack: 28, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 48, name: "Hanni", group: "NewJeans", image: "hanni2.jpg", health: 210, maxHealth: 210, attack: 26, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 49, name: "Carmen", group: "HEARTS2HEARTS", image: "carmen2.jpg", health: 230, maxHealth: 230, attack: 30, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 50, name: "IU", group: "Soloist", image: "iu2.jpg", health: 240, maxHealth: 240, attack: 32, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 51, name: "Yoona", group: "SNSD", image: "yoona2.jpg", health: 235, maxHealth: 235, attack: 29, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 52, name: "Mira", group: "HUNTR/X", image: "mira2.jpg", health: 215, maxHealth: 215, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 53, name: "Rora", group: "BABYMONSTER", image: "rora2.jpg", health: 220, maxHealth: 220, attack: 26, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 54, name: "Rose", group: "BLACKPINK", image: "rose2.jpg", health: 235, maxHealth: 235, attack: 25, rarity: "risingstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    
+    // Superstar Cards (2% in Event) - SEMUA BISA DIJUAL
+    { id: 55, name: "Han Sohee", group: "Actress", image: "han_sohee.jpg", health: 215, maxHealth: 215, attack: 29, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 56, name: "Go Younjung", group: "Actress", image: "go_younjung.jpg", health: 235, maxHealth: 235, attack: 27, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 57, name: "Bae Suzy", group: "Actress", image: "bae_suzy.jpg", health: 225, maxHealth: 225, attack: 30, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 58, name: "Park Shin Hye", group: "Actress", image: "park_shin_hye.jpg", health: 220, maxHealth: 220, attack: 27, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 59, name: "Kim Yoo Jung", group: "Actress", image: "kim_yoojung.jpg", health: 223, maxHealth: 223, attack: 28, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 60, name: "Shin Eun-Soo", group: "Actress", image: "eunsoo.jpg", health: 185, maxHealth: 185, attack: 23, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    
+    // Secret Cards (0.5% in Golden St×rs) - TIDAK BISA DIJUAL
+    { id: 61, name: "Jo Yuri", group: "Actress", image: "yuri1.jpg", health: 245, maxHealth: 245, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 62, name: "Kim Da-mi", group: "Actress", image: "goldkim.jpg", health: 239, maxHealth: 239, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 63, name: "Kwon Eun-bi", group: "Actress", image: "keunbi.jpg", health: 241, maxHealth: 241, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 64, name: "Lisa × Jennie", group: "BLACKPINK", image: "lisajennie.jpg", health: 266, maxHealth: 266, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 65, name: "Chaewon × Sakura", group: "LE-SSERAFIM", image: "chaesakura.jpg", health: 266, maxHealth: 266, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+    { id: 66, name: "Karina × Winter", group: "aespa", image: "karinawinter.jpg", health: 266, maxHealth: 266, attack: 31, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 }
+],
     quests: {
         main: [
             { id: 0, name: "New Player Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
@@ -4557,6 +5600,247 @@ let firstGachaDone = false;
 let cardToManageSkills = null;
 let selectedCouponCrate = null;
 
+let currentShortsIndex = 0;
+let isShortsPlaying = false;
+let shortsProgressInterval;
+let autoPlayEnabled = false;
+
+
+// VARIABEL BARU UNTUK SHORTS SCROLL BEHAVIOR
+let canScroll = true;
+let isAutoScrolling = false;
+let currentCommentVideoId = null;
+
+
+
+
+const shortsData = [
+
+
+{
+        id: 0,
+        video: "chaepics.mp4",
+        group: "chae_chaewon",
+        description: "아름다운 날' #chaewon #chaewon #lesserafim #Battleofidol",
+        
+        likes: 236032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+
+{
+        id: 1,
+        video: "wonyung1.mp4",
+        group: "IVE Official",
+        description: "Oh my my.. #wonyung #ive #Kpop #battleofidol",
+        music: "Original Sound - IVE",
+        likes: 821247,
+        isLiked: false,
+        duration: 15,
+        comments: [
+            { id: 1, author: "KpopLover", text: "Jiwoo is so talented! 🔥", time: "2 hours ago", type: "bot" },
+            { id: 2, author: "IdolFan", text: "Her dance moves are incredible! 💫", time: "1 hour ago", type: "bot" },
+            { id: 3, author: "MusicEnthusiast", text: "This song is stuck in my head! 🎵", time: "30 minutes ago", type: "bot" }
+        ]
+    },
+
+    {
+        id: 2,
+        video: "jiwooshorts.mp4",
+        group: "Hearts2Hearts",
+        description: "Jiwoo Mode On! #Hearts2hearts #Kpop #battleofidol",
+        music: "Original Sound - Hearts2Hearts",
+        likes: 81247,
+        isLiked: false,
+        duration: 15,
+        comments: [
+            { id: 1, author: "KpopLover", text: "Jiwoo is so talented! 🔥", time: "2 hours ago", type: "bot" },
+            { id: 2, author: "IdolFan", text: "Her dance moves are incredible! 💫", time: "1 hour ago", type: "bot" },
+            { id: 3, author: "MusicEnthusiast", text: "This song is stuck in my head! 🎵", time: "30 minutes ago", type: "bot" }
+        ]
+    },
+    {
+        id: 3,
+        video: "iushorts1.mp4",
+        group: "IU",
+        description: "행복한 하루 보내세요 ☺️  #iu #kpop #battleofidol",
+        music: "Original Sound - IU",
+        likes: 529923,
+        isLiked: false,
+        duration: 18,
+        comments: [
+            { id: 1, author: "UaenaForever", text: "IU never disappoints! 🌟", time: "3 hours ago", type: "bot" },
+            { id: 2, author: "KpopStan", text: "Her voice is angelic! 👼", time: "2 hours ago", type: "bot" },
+            { id: 3, author: "MusicLover", text: "This made my day better! 💖", time: "1 hour ago", type: "bot" }
+        ]
+    },
+    {
+        id: 4,
+        video: "chaewoncute.mp4",
+        group: "LE SSERAFIM",
+        description: "Chaewon outfit today  #LESSERAFIM #Chaewon #Battleofidol",
+        music: "Original Sound - LE SSERAFIM",
+        likes: 415632,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "Fearnot", text: "Chaewon's visuals are no joke! 😍", time: "4 hours ago", type: "bot" },
+            { id: 2, author: "KpopFan", text: "LE SSERAFIM never misses! 💯", time: "3 hours ago", type: "bot" },
+            { id: 3, author: "DanceEnthusiast", text: "Her stage presence is amazing! 💃", time: "2 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 5,
+        video: "giselle1.mp4",
+        group: "aespa",
+        description: "With Giselle #aespa #giselle #Battleofidol",
+        music: "Original Sound - aespa",
+        likes: 615632,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MY", text: "Giselle's rap is fire! 🔥", time: "5 hours ago", type: "bot" },
+            { id: 2, author: "KpopAddict", text: "aespa's concept is so unique! 🌙", time: "4 hours ago", type: "bot" },
+            { id: 3, author: "MusicFan", text: "This choreography is insane! 💫", time: "3 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 6,
+        video: "hannicute.mp4",
+        group: "NewJeans",
+        description: "Hello I'am Hanni 🦦  #njz #freenewjans #hanni #Battleofidol",
+        music: "Original Sound - NewJeans",
+        likes: 1296032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "Bunny", text: "Hanni is so adorable! 🐰", time: "6 hours ago", type: "bot" },
+            { id: 2, author: "NewJeansFan", text: "NewJeans music is always fresh! 🎶", time: "5 hours ago", type: "bot" },
+            { id: 3, author: "KpopEnjoyer", text: "Her energy is contagious! ⚡", time: "4 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 7,
+        video: "rorashorts1.mp4",
+        group: "BABYMONSTER",
+        description: "🤭 #yg #babymonster #rora #Battleofidol",
+        music: "Original Sound - Babymonster",
+        likes: 256032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+            ]
+    },
+    
+            
+            
+{
+        id: 8,
+        video: "lisajennie.mp4",
+        group: "BLACKPINK",
+        description: "Lisa and Jennie 🔥  #blackpink #lisa #jennie #Battleofidol",
+        music: "Original Sound - BLACKPINK",
+        likes: 1256000,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+            ]
+    },
+    
+                
+       {
+        id: 9,
+        video: "soheecute.mp4",
+        group: "xeesoxee",
+        description: "아름다운 날 #sohee #hansohee #Battleofidol",
+        music: "Original Sound - XEESOXEE",
+        likes: 436032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 10,
+        video: "karina1.mp4",
+        group: "aespa",
+        description: "Hello #karina #aespa #Battleofidol",
+        music: "Original Sound - aespa",
+        likes: 1136032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+    {
+     id: 11,
+        video: "iushorts2.mp4",
+        group: "IU",
+        description: "행복한 주말 보내세요  #iu #leejieun #Battleofidol",
+        music: "Original Sound - IU",
+        likes: 2136032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 12,
+        video: "jiwoocarmen.mp4",
+        group: "Hearts2Hearts",
+        description: "휴가를 가다' #hearts2hearts #carmen #jiwoo #Battleofidol",
+        music: "Original Sound - Hearts2Hearts",
+        likes: 936032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+        {
+        id: 13,
+        video: "miyeon.mp4",
+        group: "i-Dle Official",
+        description: "매우 행복하다 #idle #miyeon #hyeri #Battleofidol",
+        music: "Original Sound - idle",
+        likes: 336145,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    }
+];
+
+
+
+
+
+
 
 
 // FUNGSI VALIDASI DATA TAMBAHAN
@@ -4619,6 +5903,349 @@ const backgroundMusic = new Audio('https://assets.mixkit.co/music/preview/mixkit
 backgroundMusic.loop = true;
 backgroundMusic.volume = gameData.settings.bgmVolume / 100;
 
+
+
+
+
+// Perbaikan fungsi loadCollection untuk hanya menampilkan tombol jual untuk kartu gacha
+function loadCollection() {
+    const collectionContainer = document.querySelector('.collection-container');
+    
+    // Validasi container exists
+    if (!collectionContainer) {
+        console.error("Collection container not found!");
+        return;
+    }
+    
+    collectionContainer.innerHTML = '';
+    
+    // Validasi data cards
+    if (!gameData.cards || !Array.isArray(gameData.cards)) {
+        console.error("Invalid cards data:", gameData.cards);
+        gameData.cards = [];
+    }
+    
+    if (gameData.cards.length === 0) {
+        collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px;">You don\'t have any cards yet. Go to the Store to get your first card!</div>';
+        return;
+    }
+    
+    try {
+        gameData.cards.forEach(card => {
+            // VALIDASI DATA CARD - PERBAIKAN UTAMA
+            if (!card || typeof card !== 'object') {
+                console.warn("Invalid card data:", card);
+                return;
+            }
+            
+            // Pastikan properti yang diperlukan ada
+            const safeCard = {
+                id: card.id || 0,
+                name: card.name || 'Unknown Card',
+                group: card.group || 'Unknown Group',
+                image: card.image || 'placeholder.jpg',
+                health: card.health || 0,
+                maxHealth: card.maxHealth || 0,
+                attack: card.attack || 0,
+                rarity: card.rarity || 'common',
+                wins: card.wins || 0,
+                battles: card.battles || 0,
+                favorite: card.favorite || false,
+                upgrades: card.upgrades || 0
+            };
+            
+            // PERBAIKAN: Tentukan apakah kartu bisa dijual
+            // Kartu dari gacha (ID 1-74) bisa dijual, kartu dari store (ID 100+) tidak bisa dijual
+            const isGachaCard = safeCard.id <= 74;
+            const canBeSold = isGachaCard;
+            
+            const winRate = safeCard.battles > 0 ? Math.round((safeCard.wins / safeCard.battles) * 100) : 0;
+            
+            // Check if card can be upgraded (superstar dan risingstar tidak bisa diupgrade)
+            const canUpgrade = safeCard.upgrades < 8 && gameData.attackUpgrades > 0 && 
+                              safeCard.rarity !== 'risingstar' && safeCard.rarity !== 'superstar';
+            
+            const equippedSkill = gameData.skills.equipped[safeCard.id];
+            
+            // Calculate sell price dengan market fluctuations
+            const sellPrice = calculateSellPrice(safeCard);
+            const priceChange = gameData.marketPrices.priceChanges[safeCard.id] || 0;
+            
+            const cardElement = document.createElement('div');
+            cardElement.className = 'collection-card';
+            cardElement.innerHTML = `
+                ${safeCard.favorite ? '<div class="favorite-star"><i class="fas fa-star"></i></div>' : ''}
+                <img src="${safeCard.image}" alt="${safeCard.name}" class="collection-card-full" onerror="this.src='placeholder.jpg'">
+                <div class="collection-card-info">
+                    <div class="collection-card-name">${safeCard.name}</div>
+                    <div class="collection-card-group">${safeCard.group} - <span class="rarity-${safeCard.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${safeCard.rarity.toUpperCase()}</span></div>
+                    <div class="collection-card-stats">
+                        <span>HP: ${safeCard.maxHealth}</span>
+                        <span>ATK: ${safeCard.attack} ${safeCard.upgrades > 0 ? `(+${safeCard.upgrades})` : ''}</span>
+                    </div>
+                    <div class="win-rate">
+                        <i class="fas fa-trophy"></i>
+                        <span>Win Rate: ${winRate}% (${safeCard.wins}/${safeCard.battles})</span>
+                    </div>
+                    ${canBeSold ? `
+                    <div class="market-price">
+                        <i class="fas fa-coins"></i>
+                        <span>Sell Price: ${sellPrice}</span>
+                        ${priceChange !== 0 ? 
+                            `<span class="${priceChange > 0 ? 'price-up' : 'price-down'}">
+                                <i class="fas fa-${priceChange > 0 ? 'arrow-up' : 'arrow-down'}"></i>
+                                ${Math.abs(Math.round(priceChange * 100))}%
+                            </span>` : ''
+                        }
+                    </div>
+                    ` : '<div class="market-price" style="color: #aaa;">Store Card - Cannot Be Sold</div>'}
+                    ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
+                    <div class="card-actions">
+                        <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
+                        <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
+                        <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
+                        <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
+                        ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
+                    </div>
+                </div>
+            `;
+            collectionContainer.appendChild(cardElement);
+        });
+
+        // Add event listeners untuk tombol equip
+        document.querySelectorAll('.equip-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    if (card) {
+                        setCurrentCard(card);
+                        loadCollection(); // Refresh untuk update status equip
+                    }
+                } catch (error) {
+                    console.error("Error in equip button:", error);
+                    addToBattleLog("Error equipping card!", 'player');
+                }
+            });
+        });
+
+        // Add event listeners untuk tombol upgrade
+        document.querySelectorAll('.upgrade-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    upgradeCardAttack(cardId);
+                } catch (error) {
+                    console.error("Error in upgrade button:", error);
+                    addToBattleLog("Error upgrading card!", 'player');
+                }
+            });
+        });
+
+        // Add event listeners untuk tombol favorite
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    toggleFavoriteCard(cardId);
+                } catch (error) {
+                    console.error("Error in favorite button:", error);
+                    addToBattleLog("Error favoriting card!", 'player');
+                }
+            });
+        });
+
+        // Add event listeners untuk tombol skill
+        document.querySelectorAll('.skill-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    if (card) {
+                        showSkillModal(card);
+                    }
+                } catch (error) {
+                    console.error("Error in skill button:", error);
+                    addToBattleLog("Error opening skill modal!", 'player');
+                }
+            });
+        });
+
+        // Add event listeners untuk tombol sell (hanya untuk kartu gacha)
+        document.querySelectorAll('.sell-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                try {
+                    const cardId = parseInt(e.target.getAttribute('data-id'));
+                    const card = gameData.cards.find(c => c.id === cardId);
+                    
+                    // PERBAIKAN: Validasi tambahan untuk memastikan hanya kartu gacha yang bisa dijual
+                    if (card && card.id <= 74 && gameData.cards.length > 1) {
+                        showSellCardModal(card);
+                    } else if (gameData.cards.length <= 1) {
+                        addToBattleLog("You can't sell your only card!", 'player');
+                    } else {
+                        addToBattleLog("This card cannot be sold!", 'player');
+                    }
+                } catch (error) {
+                    console.error("Error in sell button:", error);
+                    addToBattleLog("Error selling card!", 'player');
+                }
+            });
+        });
+
+    } catch (error) {
+        console.error("Error loading collection:", error);
+        collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px; color: red;">Error loading collection. Please refresh the page.</div>';
+    }
+}
+
+// Perbaikan fungsi confirmSellAllCards untuk hanya menjual kartu gacha
+function confirmSellAllCards() {
+    // PERBAIKAN: Hanya kartu gacha (ID 1-74) yang non-favorite yang bisa dijual
+    const nonFavoriteGachaCards = gameData.cards.filter(card => 
+        !card.favorite && card.id <= 74
+    );
+    
+    let totalValue = 0;
+    
+    nonFavoriteGachaCards.forEach(card => {
+        totalValue += calculateSellPrice(card);
+    });
+    
+    // Hapus kartu gacha non-favorite
+    gameData.cards = gameData.cards.filter(card => 
+        card.favorite || card.id > 74 // Keep favorites dan store-bought cards
+    );
+    
+    // Tambah coins
+    gameData.coins += totalValue;
+    updateCoinDisplay();
+    updateHomeStats();
+    
+    // Jika current card terjual, equip kartu pertama yang tersedia
+    if (gameData.currentCard && !gameData.currentCard.favorite && gameData.currentCard.id <= 74) {
+        if (gameData.cards.length > 0) {
+            setCurrentCard(gameData.cards[0]);
+        } else {
+            gameData.currentCard = null;
+        }
+    }
+    
+    addToBattleLog(`Sold ${nonFavoriteGachaCards.length} gacha cards for ${totalValue} coins!`, 'player');
+    
+    // Tutup modal dan refresh collection
+    document.getElementById('sell-all-modal').classList.remove('active');
+    loadCollection();
+    saveGameData();
+}
+
+// Perbaikan fungsi showSellAllModal untuk hanya menghitung kartu gacha
+function showSellAllModal() {
+    // PERBAIKAN: Hitung total value hanya untuk kartu gacha non-favorite
+    let totalValue = 0;
+    const nonFavoriteGachaCards = gameData.cards.filter(card => 
+        !card.favorite && card.id <= 74
+    );
+    
+    if (nonFavoriteGachaCards.length === 0) {
+        addToBattleLog("No non-favorite gacha cards to sell!", 'player');
+        return;
+    }
+    
+    nonFavoriteGachaCards.forEach(card => {
+        totalValue += calculateSellPrice(card);
+    });
+    
+    document.getElementById('sell-all-price-value').textContent = totalValue;
+    document.getElementById('sell-all-modal').classList.add('active');
+}
+
+// Perbaikan fungsi applySettings untuk volume control yang lebih baik
+function applySettings() {
+      // Background music
+    backgroundMusic.volume = gameData.settings.bgmVolume / 100;
+    if (gameData.settings.bgmEnabled && !backgroundMusic.paused) {
+        backgroundMusic.play().catch(e => console.log("Audio play failed"));
+    } else {
+        backgroundMusic.pause();
+    }
+    
+   // Sound effects volume
+    for (const key in sounds) {
+        sounds[key].volume = gameData.settings.sfxVolume / 100;
+    }
+    
+    // Animated Header
+    const header = document.getElementById('main-header');
+    if (gameData.settings.animatedHeader) {
+        header.classList.add('animated');
+    } else {
+        header.classList.remove('animated');
+    }
+    
+    // Update settings modal UI dengan volume labels
+    document.getElementById('bgm-toggle').checked = gameData.settings.bgmEnabled;
+    document.getElementById('bgm-volume').value = gameData.settings.bgmVolume;
+    document.getElementById('bgm-volume-label').textContent = gameData.settings.bgmVolume;
+    
+    document.getElementById('sfx-toggle').checked = gameData.settings.sfxEnabled;
+    document.getElementById('sfx-volume').value = gameData.settings.sfxVolume;
+    document.getElementById('sfx-volume-label').textContent = gameData.settings.sfxVolume;
+    
+    document.getElementById('vibration-toggle').checked = gameData.settings.vibration;
+    document.getElementById('notifications-toggle').checked = gameData.settings.notifications;
+    document.getElementById('animated-header-toggle').checked = gameData.settings.animatedHeader;
+}
+
+// Tambahkan event listeners untuk volume sliders
+function setupVolumeControls() {
+    // BGM Volume
+    const bgmVolumeSlider = document.getElementById('bgm-volume');
+    const bgmVolumeLabel = document.getElementById('bgm-volume-label');
+    
+    bgmVolumeSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        bgmVolumeLabel.textContent = value;
+        gameData.settings.bgmVolume = value;
+        applySettings();
+    });
+    
+    // SFX Volume
+    const sfxVolumeSlider = document.getElementById('sfx-volume');
+    const sfxVolumeLabel = document.getElementById('sfx-volume-label');
+    
+    sfxVolumeSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        sfxVolumeLabel.textContent = value;
+        gameData.settings.sfxVolume = value;
+        applySettings();
+    });
+    
+    // Toggle switches
+    document.getElementById('bgm-toggle').addEventListener('change', (e) => {
+        gameData.settings.bgmEnabled = e.target.checked;
+        applySettings();
+    });
+    
+    document.getElementById('sfx-toggle').addEventListener('change', (e) => {
+        gameData.settings.sfxEnabled = e.target.checked;
+        applySettings();
+    });
+    
+    document.getElementById('vibration-toggle').addEventListener('change', (e) => {
+        gameData.settings.vibration = e.target.checked;
+    });
+    
+    document.getElementById('notifications-toggle').addEventListener('change', (e) => {
+        gameData.settings.notifications = e.target.checked;
+    });
+    
+    document.getElementById('animated-header-toggle').addEventListener('change', (e) => {
+        gameData.settings.animatedHeader = e.target.checked;
+        applySettings();
+    });
+}
+
 // PANGGIL VALIDASI DATA SAAT LOAD GAME
 function initGame() {
     // Check if user is already logged in
@@ -4639,6 +6266,8 @@ function initGame() {
     // Set up event listeners
     setupEventListeners();
     setupAdditionalEventListeners();
+    setupSettingsModalEvents(); // <-- TAMBAHKAN INI
+    
     
     // Apply settings
     applySettings();
@@ -4714,6 +6343,7 @@ function saveGameData() {
 }
 
 // Load game data from localStorage
+// Load game data from localStorage - VERSI DIPERBAIKI
 function loadGameData() {
     const savedData = localStorage.getItem('battleOfIdol_gameData');
     if (savedData) {
@@ -4743,10 +6373,38 @@ function loadGameData() {
         gameData.discountCards = parsedData.discountCards || { owned: [], activeDiscount: null, dailyDiscountCrateUsed: false };
         gameData.marketPrices = parsedData.marketPrices || { lastUpdate: Date.now(), priceChanges: {}, volatility: 0.1 };
         
+        // PERBAIKAN: Migrasi data redeem history untuk user lama
+        migrateRedeemHistory(parsedData);
+        
         // If current card exists, set it
         if (gameData.currentCard) {
             setCurrentCard(gameData.currentCard);
         }
+    }
+}
+
+// Fungsi migrasi untuk user lama
+function migrateRedeemHistory(oldData) {
+    // Jika history redeem lama tidak memiliki userId, tambahkan
+    if (gameData.redeemCodes.history && gameData.redeemCodes.history.length > 0) {
+        let needsMigration = false;
+        
+        gameData.redeemCodes.history.forEach(history => {
+            if (!history.userId) {
+                history.userId = gameData.username;
+                needsMigration = true;
+            }
+        });
+        
+        if (needsMigration) {
+            console.log("Migrated redeem history for existing user");
+            saveGameData(); // Save setelah migrasi
+        }
+    }
+    
+    // PERBAIKAN: Pastikan available redeem codes ada dan updated
+    if (!gameData.redeemCodes.available || gameData.redeemCodes.available.length === 0) {
+        initializeRedeemCodes();
     }
 }
 
@@ -4766,12 +6424,24 @@ function applySettings() {
     }
     
     // Animated Header - TAMBAH INI
-    const header = document.getElementById('main-header');
+       const header = document.getElementById('main-header');
     if (gameData.settings.animatedHeader) {
         header.classList.add('animated');
     } else {
         header.classList.remove('animated');
     }
+    
+    
+       // Battle animations (jika ada elemen yang perlu dihide/tampilkan)
+    if (gameData.settings.battleAnimations === false) {
+        // Nonaktifkan beberapa animasi battle
+        document.body.classList.add('reduced-animations');
+    } else {
+        document.body.classList.remove('reduced-animations');
+    }
+    
+    
+    
     
     // Update settings modal UI
     document.getElementById('bgm-toggle').checked = gameData.settings.bgmEnabled;
@@ -4975,6 +6645,181 @@ function setupAdditionalEventListeners() {
         }
     });
 }
+
+
+
+
+// ... kode JavaScript yang sudah ada sebelumnya ...
+
+// Setup additional event listeners untuk fitur baru
+function setupAdditionalEventListeners() {
+    // Redeem code
+    document.getElementById('redeem-btn').addEventListener('click', redeemCode);
+    
+    // Discount crate
+    document.getElementById('buy-discount-crate-btn').addEventListener('click', buyDiscountCrate);
+    
+    // Enter key untuk redeem code
+    document.getElementById('redeem-code-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            redeemCode();
+        }
+    });
+}
+
+
+
+// Fungsi untuk mengupdate settings modal
+function updateSettingsModal() {
+
+    document.getElementById('settings-username').textContent = gameData.username;
+    document.getElementById('settings-level').textContent = gameData.level;
+    document.getElementById('settings-total-cards').textContent = gameData.cards.length;
+    
+    // Update settings toggles
+    document.getElementById('bgm-toggle').checked = gameData.settings.bgmEnabled;
+    document.getElementById('bgm-volume').value = gameData.settings.bgmVolume;
+    document.getElementById('bgm-volume-label').textContent = gameData.settings.bgmVolume + '%';
+    
+    document.getElementById('sfx-toggle').checked = gameData.settings.sfxEnabled;
+    document.getElementById('sfx-volume').value = gameData.settings.sfxVolume;
+    document.getElementById('sfx-volume-label').textContent = gameData.settings.sfxVolume + '%';
+    
+    document.getElementById('vibration-toggle').checked = gameData.settings.vibration;
+    document.getElementById('notifications-toggle').checked = gameData.settings.notifications;
+    document.getElementById('animated-header-toggle').checked = gameData.settings.animatedHeader;
+    document.getElementById('battle-animations-toggle').checked = gameData.settings.battleAnimations !== false;
+    
+    // Update redeem history
+    updateRedeemHistoryDisplay();
+}
+
+// Fungsi untuk update redeem history display
+// Fungsi untuk update redeem history display - VERSI DIPERBAIKI
+function updateRedeemHistoryDisplay() {
+    const historyList = document.getElementById('redeem-history-list');
+    if (!historyList) return;
+    
+    historyList.innerHTML = '';
+    
+    // PERBAIKAN: Filter history berdasarkan user yang sedang login
+    const userHistory = gameData.redeemCodes.history
+        .filter(h => h.userId === gameData.username)
+        .slice(-5) // Show last 5 redeems
+        .reverse();
+    
+    if (userHistory.length === 0) {
+        historyList.innerHTML = '<div style="text-align: center; color: #aaa; font-size: 0.8rem; padding: 10px;">No recent redeems</div>';
+        return;
+    }
+    
+    userHistory.forEach(history => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'redeem-history-item';
+        
+        let rewardText = '';
+        if (history.reward.type === 'coins') {
+            rewardText = `${history.reward.value} Coins`;
+        } else if (history.reward.type === 'gachaCoupon') {
+            rewardText = `${history.reward.value} Coupon${history.reward.value > 1 ? 's' : ''}`;
+        } else if (history.reward.type === 'card') {
+            rewardText = 'Special Card';
+        } else if (history.reward.type === 'battlePass') {
+            rewardText = 'Battle Pass';
+        } else if (history.reward.type === 'discount') {
+            rewardText = `${history.reward.value}% Discount`;
+        } else if (history.reward.type === 'attackUpgrade') {
+            rewardText = `${history.reward.value} Upgrade${history.reward.value > 1 ? 's' : ''}`;
+        }
+        
+        // Format date
+        const date = new Date(history.date);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        
+        historyItem.innerHTML = `
+            <div>
+                <span class="redeem-code">${history.code}</span>
+                <div style="font-size: 0.7rem; color: #888; margin-top: 2px;">${formattedDate}</div>
+            </div>
+            <span class="redeem-reward">${rewardText}</span>
+        `;
+        
+        historyList.appendChild(historyItem);
+    });
+}
+
+// Setup event listeners untuk settings modal
+function setupSettingsModalEvents() {
+    // BGM Toggle
+    document.getElementById('bgm-toggle').addEventListener('change', (e) => {
+        gameData.settings.bgmEnabled = e.target.checked;
+        applySettings();
+    });
+    
+    // BGM Volume
+    document.getElementById('bgm-volume').addEventListener('input', (e) => {
+        const value = e.target.value;
+        document.getElementById('bgm-volume-label').textContent = value + '%';
+        gameData.settings.bgmVolume = parseInt(value);
+        applySettings();
+    });
+    
+    // SFX Toggle
+    document.getElementById('sfx-toggle').addEventListener('change', (e) => {
+        gameData.settings.sfxEnabled = e.target.checked;
+        applySettings();
+    });
+    
+    // SFX Volume
+    document.getElementById('sfx-volume').addEventListener('input', (e) => {
+        const value = e.target.value;
+        document.getElementById('sfx-volume-label').textContent = value + '%';
+        gameData.settings.sfxVolume = parseInt(value);
+        applySettings();
+    });
+    
+    // Other toggles
+    document.getElementById('vibration-toggle').addEventListener('change', (e) => {
+        gameData.settings.vibration = e.target.checked;
+    });
+    
+    document.getElementById('notifications-toggle').addEventListener('change', (e) => {
+        gameData.settings.notifications = e.target.checked;
+    });
+    
+    document.getElementById('animated-header-toggle').addEventListener('change', (e) => {
+        gameData.settings.animatedHeader = e.target.checked;
+        applySettings();
+    });
+    
+    document.getElementById('battle-animations-toggle').addEventListener('change', (e) => {
+        gameData.settings.battleAnimations = e.target.checked;
+    });
+    
+    // Save settings button
+    document.getElementById('settings-save-btn').addEventListener('click', () => {
+        saveGameData();
+        addToBattleLog("Settings saved successfully!", 'player');
+        document.getElementById('settings-modal').classList.remove('active');
+    });
+    
+    // Settings modal open event
+    document.getElementById('settings-btn').addEventListener('click', () => {
+        updateSettingsModal();
+        document.getElementById('settings-modal').classList.add('active');
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
 
 // PERBAIKAN FUNGSI SWITCH SCREEN
 function switchScreen(screenId) {
@@ -5278,6 +7123,13 @@ function setCurrentCardWithValidation(card) {
 }
 
 
+
+
+
+
+
+
+
 // PERBAIKAN FUNGSI LOAD COLLECTION
 function loadCollection() {
     const collectionContainer = document.querySelector('.collection-container');
@@ -5462,6 +7314,13 @@ function loadCollection() {
     }
 }
 
+
+
+
+
+
+
+
 // Show skill modal
 function showSkillModal(card) {
     cardToManageSkills = card;
@@ -5622,6 +7481,10 @@ function confirmSellAllCards() {
     saveGameData();
 }
 
+
+
+
+
 // Calculate sell price for a card dengan market fluctuations
 function calculateSellPrice(card) {
     let basePrice = 0;
@@ -5641,6 +7504,20 @@ function calculateSellPrice(card) {
     
     return finalPrice;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Show sell card modal
 function showSellCardModal(card) {
@@ -5752,6 +7629,1091 @@ function formatCount(count) {
     }
     return count.toString();
 }
+
+
+
+
+
+
+
+
+// Initialize Shorts dengan multiple videos
+function initShorts() {
+    console.log('🎬 Initializing Shorts with', shortsData.length, 'videos...');
+    
+    try {
+        // Reset state
+        currentShortsIndex = 0;
+        isShortsPlaying = false;
+        clearInterval(shortsProgressInterval);
+        shortsVideos = [];
+        
+        const container = document.querySelector('.shorts-video-container');
+        if (!container) {
+            console.error('❌ Shorts container not found');
+            return;
+        }
+        
+        // Clear container
+        container.innerHTML = '';
+        
+        // Create all video elements
+        shortsData.forEach((short, index) => {
+            const videoItem = createShortVideoElement(short, index);
+            if (videoItem) {
+                container.appendChild(videoItem);
+                
+                // Store video reference
+                const videoElement = videoItem.querySelector('.shorts-video');
+                if (videoElement) {
+                    shortsVideos.push({
+                        element: videoItem,
+                        video: videoElement,
+                        short: short,
+                        index: index
+                    });
+                }
+            }
+        });
+        
+        console.log('✅ Created', shortsVideos.length, 'video elements');
+        
+        // Setup scroll handler
+        setupScrollHandler(container);
+        
+        // Setup video events untuk video pertama
+        if (shortsVideos.length > 0) {
+            setupVideoEvents(0);
+        }
+        
+        // Add bottom controls
+        addBottomControls();
+        
+        console.log('✅ Shorts initialized successfully');
+        
+    } catch (error) {
+        console.error('❌ Error in initShorts:', error);
+    }
+}
+
+// Setup scroll handler untuk multiple videos
+function setupScrollHandler(container) {
+    let scrollTimeout;
+    
+    container.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            handleScrollEnd(container);
+        }, 150);
+    }, { passive: true });
+}
+
+// Handle scroll end
+function handleScrollEnd(container) {
+    const scrollTop = container.scrollTop;
+    const containerHeight = container.clientHeight;
+    const newIndex = Math.round(scrollTop / containerHeight);
+    
+    if (newIndex >= 0 && newIndex < shortsVideos.length && newIndex !== currentShortsIndex) {
+        switchToShort(newIndex);
+    }
+}
+
+// Switch to short
+function switchToShort(newIndex) {
+    console.log(`🔄 Switching from ${currentShortsIndex} to ${newIndex}`);
+    
+    // Pause current video
+    pauseCurrentShort();
+    
+    const oldIndex = currentShortsIndex;
+    currentShortsIndex = newIndex;
+    
+    // Update active states
+    updateActiveStates(oldIndex, newIndex);
+    
+    // Play new video
+    loadAndPlayShort(newIndex);
+}
+
+// Pause current short
+function pauseCurrentShort() {
+    if (shortsVideos[currentShortsIndex]) {
+        const video = shortsVideos[currentShortsIndex].video;
+        if (video) {
+            video.pause();
+        }
+    }
+    clearInterval(shortsProgressInterval);
+    isShortsPlaying = false;
+}
+
+// Update active states
+function updateActiveStates(oldIndex, newIndex) {
+    // Remove active from old video
+    if (shortsVideos[oldIndex]) {
+        shortsVideos[oldIndex].element.classList.remove('active');
+    }
+    
+    // Add active to new video
+    if (shortsVideos[newIndex]) {
+        shortsVideos[newIndex].element.classList.add('active');
+    }
+}
+
+// Setup video events untuk specific index
+function setupVideoEvents(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const overlay = videoData.element.querySelector('.video-play-overlay');
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    if (!video) return;
+    
+    // Click to play/pause
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            togglePlayPause();
+        });
+    }
+    
+    
+    
+    
+    
+    
+    // Video event listeners
+    video.addEventListener('loadeddata', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+    
+    video.addEventListener('waiting', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'flex';
+        }
+    });
+    
+    video.addEventListener('canplay', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+    
+    video.addEventListener('ended', function() {
+        console.log(`Video ${index} ended`);
+        isShortsPlaying = false;
+        updatePlayPauseUI(false);
+        
+        // Reset progress bar
+        const progressBar = document.querySelector('.shorts-progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+        
+        clearInterval(shortsProgressInterval);
+        
+        // Jika ini video terakhir, refresh ke awal
+        if (index === shortsVideos.length - 1) {
+            setTimeout(() => {
+                refreshShorts();
+            }, 2000);
+        }
+    });
+    
+    video.addEventListener('error', function() {
+        console.error(`Video ${index} error`);
+        if (loadingElement) {
+            loadingElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i><br><span>Load failed</span>';
+        }
+    });
+}
+
+// Load and play short
+function loadAndPlayShort(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    console.log(`🎥 Loading short ${index}`);
+    
+    // Setup events jika belum
+    if (!video._eventsSetup) {
+        setupVideoEvents(index);
+        video._eventsSetup = true;
+    }
+    
+    // Show loading
+    if (loadingElement) {
+        loadingElement.style.display = 'flex';
+        loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    }
+    
+    // Try to play
+    video.play().then(() => {
+        console.log(`✅ Video ${index} playing`);
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+        isShortsPlaying = true;
+        updatePlayPauseUI(true);
+        startProgressBar(index, videoData.short.duration);
+    }).catch(error => {
+        console.log(`⚠️ Video ${index} play failed:`, error);
+        if (loadingElement) {
+            loadingElement.innerHTML = '<i class="fas fa-play"></i><br><span>Tap to play</span>';
+        }
+    });
+}
+
+// Create short video element untuk multiple videos
+function createShortVideoElement(short, index) {
+    const videoItem = document.createElement('div');
+    videoItem.className = `shorts-video-item ${index === 0 ? 'active' : ''}`;
+    videoItem.setAttribute('data-index', index);
+    
+    videoItem.innerHTML = `
+        <video class="shorts-video" preload="auto" playsinline webkit-playsinline muted>
+            <source src="${short.video}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <div class="video-play-overlay ${index === 0 ? '' : 'visible'}">
+            <div class="play-pause-icon">
+                <i class="fas ${index === 0 ? 'fa-pause' : 'fa-play'}"></i>
+            </div>
+        </div>
+        
+        <div class="shorts-video-info">
+            <div class="shorts-group">
+                <span class="group-name">${short.group}</span>
+                <span class="verified-badge"><i class="fas fa-check-circle"></i></span>
+            </div>
+            <div class="shorts-description">${short.description}</div>
+            <div class="shorts-music">
+                <i class="fas fa-music music-icon"></i>
+                <span>${short.music}</span>
+            </div>
+        </div>
+        
+        <div class="shorts-right-controls">
+            <div class="control-item" onclick="toggleLike(${index})">
+                <div class="control-icon ${short.isLiked ? 'liked' : ''}">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="control-count">${formatCount(short.likes)}</div>
+            </div>
+            <div class="control-item" onclick="commentShort(${index})">
+                <div class="control-icon">
+                    <i class="fas fa-comment"></i>
+                </div>
+                <div class="control-count">Comment</div>
+            </div>
+            <div class="control-item" onclick="shareShort(${index})">
+                <div class="control-icon">
+                    <i class="fas fa-share"></i>
+                </div>
+                <div class="control-count">Share</div>
+            </div>
+            <div class="control-item" onclick="toggleSound(${index})">
+                <div class="control-icon">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <div class="control-count">Sound</div>
+            </div>
+        </div>
+        
+        <div class="shorts-loading" style="display: ${index === 0 ? 'flex' : 'none'};">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+    `;
+    
+    return videoItem;
+}
+
+
+
+
+
+// Update play/pause UI
+function updatePlayPauseUI(playing) {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const overlay = videoData.element.querySelector('.video-play-overlay');
+    const icon = videoData.element.querySelector('.play-pause-icon i');
+    
+    if (!overlay || !icon) return;
+    
+    if (playing) {
+        overlay.classList.remove('visible');
+        icon.className = 'fas fa-pause';
+    } else {
+        overlay.classList.add('visible');
+        icon.className = 'fas fa-play';
+    }
+}
+
+// Start progress bar
+function startProgressBar(index, duration) {
+    clearInterval(shortsProgressInterval);
+    
+    const progressBar = document.querySelector('.shorts-progress-bar');
+    const videoData = shortsVideos[index];
+    
+    if (!progressBar || !videoData || !videoData.video) return;
+    
+    progressBar.style.width = '0%';
+    
+    shortsProgressInterval = setInterval(() => {
+        if (isShortsPlaying && videoData.video && !videoData.video.paused) {
+            const progress = (videoData.video.currentTime / duration) * 100;
+            progressBar.style.width = Math.min(progress, 100) + '%';
+            
+            if (progress >= 100) {
+                clearInterval(shortsProgressInterval);
+            }
+        }
+    }, 100);
+}
+
+// Toggle play/pause untuk video aktif
+function togglePlayPause() {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    if (!video) return;
+    
+    if (isShortsPlaying) {
+        // Pause
+        video.pause();
+        isShortsPlaying = false;
+        updatePlayPauseUI(false);
+        clearInterval(shortsProgressInterval);
+    } else {
+        // Play
+        if (loadingElement) {
+            loadingElement.style.display = 'flex';
+        }
+        
+        video.play().then(() => {
+            isShortsPlaying = true;
+            updatePlayPauseUI(true);
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+            startProgressBar(currentShortsIndex, videoData.short.duration);
+        }).catch(error => {
+            console.log('Play failed:', error);
+            if (loadingElement) {
+                loadingElement.innerHTML = '<i class="fas fa-play"></i><br><span>Tap to play</span>';
+            }
+        });
+    }
+}
+
+
+
+// Refresh current video - NEW FUNCTION
+function refreshCurrentVideo() {
+    console.log('🔄 Refreshing current video...');
+    
+    const video = getCurrentVideo();
+    if (!video) {
+        console.error('❌ No video found to refresh');
+        return;
+    }
+    
+    // Reset video ke awal
+    video.currentTime = 0;
+    isShortsPlaying = false;
+    
+    // Show play overlay
+    showPlayOverlay();
+    
+    // Update button state
+    updateControlButtons();
+    
+    // Add visual feedback
+    const refreshBtn = document.querySelector('.refresh-btn');
+    if (refreshBtn) {
+        refreshBtn.classList.add('pulse');
+        setTimeout(() => {
+            refreshBtn.classList.remove('pulse');
+        }, 500);
+    }
+    
+    console.log('✅ Video refreshed to start');
+    addToBattleLog('Video refreshed', 'player');
+}
+
+// Helper function untuk mendapatkan video saat ini - NEW FUNCTION
+function getCurrentVideo() {
+    if (currentShortsIndex >= 0 && currentShortsIndex < shortsVideos.length) {
+        return shortsVideos[currentShortsIndex]?.video;
+    }
+    return null;
+}
+
+// Show play overlay - NEW FUNCTION
+function showPlayOverlay() {
+    if (currentShortsIndex >= 0 && currentShortsIndex < shortsVideos.length) {
+        const videoData = shortsVideos[currentShortsIndex];
+        if (videoData) {
+            const overlay = videoData.element.querySelector('.video-play-overlay');
+            if (overlay) {
+                overlay.style.display = 'flex';
+            }
+        }
+    }
+}
+
+
+// Volume control functions - NEW FUNCTIONS
+function toggleMute() {
+    const video = getCurrentVideo();
+    if (!video) return;
+    
+    isMuted = !isMuted;
+    video.muted = isMuted;
+    
+    // Update UI
+    updateControlButtons();
+    
+    console.log(isMuted ? '🔇 Muted' : '🔊 Unmuted');
+    addToBattleLog(isMuted ? 'Sound muted' : 'Sound unmuted', 'player');
+}
+
+function changeVolume(volume) {
+    const video = getCurrentVideo();
+    if (!video) return;
+    
+    currentVolume = parseInt(volume);
+    video.volume = currentVolume / 100;
+    
+    // Update mute state jika volume 0
+    if (currentVolume === 0) {
+        video.muted = true;
+        isMuted = true;
+    } else if (isMuted) {
+        video.muted = false;
+        isMuted = false;
+    }
+    
+    updateControlButtons();
+    
+    console.log(`🔊 Volume: ${currentVolume}%`);
+}
+
+function toggleFullscreen() {
+    const container = document.querySelector('.shorts-container');
+    if (!container) return;
+    
+    if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => {
+            console.log('Fullscreen failed:', err);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+    
+    console.log('🖥️ Toggled fullscreen');
+}
+
+
+
+// Update control buttons - NEW FUNCTION
+function updateControlButtons() {
+    const playPauseBtn = document.querySelector('.play-pause-btn');
+    const playPauseIcon = playPauseBtn?.querySelector('i');
+    const volumeBtn = document.querySelector('.volume-btn');
+    const volumeIcon = volumeBtn?.querySelector('i');
+    
+    // Update play/pause button
+    if (playPauseIcon) {
+        playPauseIcon.className = isShortsPlaying ? 'fas fa-pause' : 'fas fa-play';
+        playPauseBtn.title = isShortsPlaying ? 'Pause Video' : 'Play Video';
+        const tooltip = playPauseBtn.querySelector('.btn-tooltip');
+        if (tooltip) tooltip.textContent = isShortsPlaying ? 'Pause' : 'Play';
+    }
+    
+    // Update volume button
+    if (volumeIcon) {
+        volumeIcon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+        volumeBtn.title = isMuted ? 'Unmute' : 'Mute';
+        const tooltip = volumeBtn.querySelector('.btn-tooltip');
+        if (tooltip) tooltip.textContent = isMuted ? 'Unmute' : 'Mute';
+    }
+}
+
+
+
+// Stop current video
+// Stop current video - UPDATED FUNCTION
+function stopCurrentVideo() {
+    const video = getCurrentVideo();
+    if (!video) return;
+    
+    video.pause();
+    video.currentTime = 0;
+    isShortsPlaying = false;
+    
+    // Show play overlay
+    showPlayOverlay();
+    
+    // Update buttons
+    updateControlButtons();
+    
+    // Add visual feedback
+    const stopBtn = document.querySelector('.stop-btn');
+    if (stopBtn) {
+        stopBtn.classList.add('pulse');
+        setTimeout(() => {
+            stopBtn.classList.remove('pulse');
+        }, 500);
+    }
+    
+    console.log('⏹️ Video stopped');
+    addToBattleLog('Video stopped', 'player');
+}
+
+
+
+
+
+// Perbaiki fungsi refreshShorts
+function refreshShorts() {
+    console.log('🔄 Refreshing shorts to top...');
+    
+    // Stop current video
+    stopCurrentVideo();
+    
+    // Reset scroll state
+    canScroll = true;
+    isAutoScrolling = false;
+    
+    // Scroll to first video
+    const container = document.querySelector('.shorts-video-container');
+    if (container) {
+        isAutoScrolling = true;
+        container.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
+        // Reset ke video pertama setelah scroll selesai
+        setTimeout(() => {
+            currentShortsIndex = 0;
+            
+            // Update active states
+            shortsVideos.forEach((videoData, index) => {
+                if (videoData.element) {
+                    if (index === 0) {
+                        videoData.element.classList.add('active');
+                    } else {
+                        videoData.element.classList.remove('active');
+                    }
+                }
+            });
+            
+            // Load first video
+            loadAndPlayShort(0);
+            isAutoScrolling = false;
+        }, 500);
+    }
+    
+    console.log('✅ Refreshed to first video');
+}
+
+// Perbaiki fungsi handleScrollEnd
+function handleScrollEnd(container) {
+    if (isAutoScrolling) return;
+    
+    const scrollTop = container.scrollTop;
+    const containerHeight = container.clientHeight;
+    const newIndex = Math.round(scrollTop / containerHeight);
+    
+    // Cek apakah sudah mencapai video terakhir
+    if (newIndex >= shortsVideos.length - 1) {
+        // Jika video terakhir selesai, reset ke awal
+        const currentVideoData = shortsVideos[newIndex];
+        if (currentVideoData && currentVideoData.video) {
+            const video = currentVideoData.video;
+            if (video.ended || video.currentTime >= video.duration - 1) {
+                console.log('🎬 Last video ended, auto-refreshing to top');
+                setTimeout(() => {
+                    refreshShorts();
+                }, 2000);
+                return;
+            }
+        }
+    }
+    
+    if (newIndex >= 0 && newIndex < shortsVideos.length && newIndex !== currentShortsIndex) {
+        switchToShort(newIndex);
+    }
+}
+
+// Perbaiki fungsi switchToShort untuk menangani scroll ke video terakhir
+function switchToShort(newIndex) {
+    console.log(`🔄 Switching from ${currentShortsIndex} to ${newIndex}`);
+    
+    // Pause current video
+    pauseCurrentShort();
+    
+    const oldIndex = currentShortsIndex;
+    currentShortsIndex = newIndex;
+    
+    // Update active states
+    updateActiveStates(oldIndex, newIndex);
+    
+    // Play new video
+    loadAndPlayShort(newIndex);
+    
+    // Cek jika ini video terakhir
+    if (newIndex === shortsVideos.length - 1) {
+        console.log('📺 Last video reached, setting up auto-refresh');
+    }
+}
+
+// Perbaiki fungsi loadAndPlayShort untuk menangani video end
+function loadAndPlayShort(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    console.log(`🎥 Loading short ${index}`);
+    
+    // Setup events jika belum
+    if (!video._eventsSetup) {
+        setupVideoEvents(index);
+        video._eventsSetup = true;
+    }
+    
+    // Show loading
+    if (loadingElement) {
+        loadingElement.style.display = 'flex';
+        loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    }
+    
+    // Reset video untuk memastikan mulai dari awal
+    video.currentTime = 0;
+    
+    // Try to play
+    video.play().then(() => {
+        console.log(`✅ Video ${index} playing`);
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+        isShortsPlaying = true;
+        updatePlayPauseUI(true);
+        startProgressBar(index, videoData.short.duration);
+    }).catch(error => {
+        console.log(`⚠️ Video ${index} play failed:`, error);
+        if (loadingElement) {
+            loadingElement.innerHTML = '<i class="fas fa-play"></i><br><span>Tap to play</span>';
+        }
+    });
+}
+
+// Perbaiki fungsi setupVideoEvents untuk menangani video end
+function setupVideoEvents(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const overlay = videoData.element.querySelector('.video-play-overlay');
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    if (!video) return;
+    
+    // Click to play/pause
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            togglePlayPause();
+        });
+    }
+    
+    // Video event listeners
+    video.addEventListener('loadeddata', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+    
+    video.addEventListener('waiting', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'flex';
+        }
+    });
+    
+    video.addEventListener('canplay', function() {
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+    
+    video.addEventListener('ended', function() {
+        console.log(`Video ${index} ended`);
+        isShortsPlaying = false;
+        updatePlayPauseUI(false);
+        
+        // Reset progress bar
+        const progressBar = document.querySelector('.shorts-progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+        
+        clearInterval(shortsProgressInterval);
+        
+        // Jika ini video terakhir, refresh ke awal setelah delay
+        if (index === shortsVideos.length - 1) {
+            console.log('🎬 Last video ended, preparing auto-refresh');
+            setTimeout(() => {
+                refreshShorts();
+            }, 3000); // Delay 3 detik sebelum refresh
+        }
+    });
+    
+    video.addEventListener('error', function() {
+        console.error(`Video ${index} error`);
+        if (loadingElement) {
+            loadingElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i><br><span>Load failed</span>';
+        }
+    });
+}
+
+// Perbaiki fungsi addBottomControls untuk mengubah refresh button
+function addBottomControls() {
+    const container = document.querySelector('.shorts-container');
+    if (!container) return;
+    
+    // Remove existing controls
+    const existingControls = container.querySelector('.shorts-bottom-controls');
+    if (existingControls) {
+        existingControls.remove();
+    }
+    
+    const bottomControls = document.createElement('div');
+    bottomControls.className = 'shorts-bottom-controls';
+    bottomControls.innerHTML = `
+        <!-- Refresh Button -->
+        <button class="bottom-control-btn refresh-btn" onclick="refreshShorts()" title="Back to Top">
+            <i class="fas fa-arrow-up"></i>
+            <span class="btn-tooltip"> </span>
+        </button>
+    `;
+    
+    container.appendChild(bottomControls);
+    
+    // Update button states
+    updateControlButtons();
+}
+
+// Tambahkan fungsi untuk mencegah scroll setelah video terakhir
+function setupScrollHandler(container) {
+    let scrollTimeout;
+    let lastScrollTop = 0;
+    
+    container.addEventListener('scroll', () => {
+        if (isAutoScrolling) return;
+        
+        const scrollTop = container.scrollTop;
+        const containerHeight = container.clientHeight;
+        const scrollHeight = container.scrollHeight;
+        
+        // Cek jika user mencoba scroll melewati video terakhir
+        if (scrollTop + containerHeight >= scrollHeight - 10) {
+            // Jika sudah di video terakhir dan mencoba scroll lebih jauh
+            if (currentShortsIndex === shortsVideos.length - 1) {
+                // Berikan feedback visual
+                container.style.overflow = 'hidden';
+                setTimeout(() => {
+                    container.style.overflow = 'auto';
+                    refreshShorts();
+                }, 1000);
+                return;
+            }
+        }
+        
+        lastScrollTop = scrollTop;
+        
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            handleScrollEnd(container);
+        }, 150);
+    }, { passive: true });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Toggle auto play
+function toggleAutoPlay() {
+    autoPlayEnabled = !autoPlayEnabled;
+    
+    const autoPlayBtn = document.querySelector('.shorts-bottom-controls .bottom-control-btn:nth-child(3)');
+    if (autoPlayBtn) {
+        const icon = autoPlayBtn.querySelector('i');
+        if (icon) {
+            icon.className = autoPlayEnabled ? 'fas fa-toggle-on' : 'fas fa-toggle-off';
+        }
+        autoPlayBtn.title = autoPlayEnabled ? 'Disable Auto Play' : 'Enable Auto Play';
+    }
+    
+    console.log(`🔁 Auto play ${autoPlayEnabled ? 'enabled' : 'disabled'}`);
+}
+
+// Interaction functions
+// Interaction functions
+function toggleLike(index) {
+    if (index < 0 || index >= shortsData.length) return;
+    
+    const short = shortsData[index];
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const controlIcon = videoData.element.querySelector('.control-icon');
+    const likesCount = videoData.element.querySelector('.control-count');
+    
+    if (!controlIcon || !likesCount) return;
+    
+    if (short.isLiked) {
+        short.likes--;
+        short.isLiked = false;
+        controlIcon.classList.remove('liked');
+    } else {
+        short.likes++;
+        short.isLiked = true;
+        controlIcon.classList.add('liked');
+    }
+    
+    likesCount.textContent = formatCount(short.likes);
+    
+    controlIcon.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        controlIcon.style.transform = 'scale(1)';
+    }, 200);
+}
+
+function toggleSound(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const soundIcon = videoData.element.querySelector('.control-item:nth-child(4) .control-icon i');
+    
+    if (!video || !soundIcon) return;
+    
+    if (video.muted) {
+        video.muted = false;
+        soundIcon.className = 'fas fa-volume-up';
+    } else {
+        video.muted = true;
+        soundIcon.className = 'fas fa-volume-mute';
+    }
+}
+
+// GANTI FUNGSI INI:
+function commentShort(index) {
+    showCommentModal(index);
+}
+
+function shareShort(index) {
+    addToBattleLog(`Share feature for ${shortsData[index].group} short is coming soon!`, 'player');
+}
+
+// ==================== TAMBAHKAN FUNGSI COMMENT DI SINI ====================
+
+function submitComment() {
+    const commentInput = document.getElementById('comment-input');
+    const commentText = commentInput.value.trim();
+    
+    if (!commentText) {
+        addToBattleLog("Please enter a comment!", 'player');
+        return;
+    }
+    
+    if (currentCommentVideoId === null) return;
+    
+    const short = shortsData[currentCommentVideoId];
+    
+    // Create new comment
+    const newComment = {
+        id: Date.now(),
+        author: gameData.username,
+        text: commentText,
+        time: "Just now",
+        type: "user"
+    };
+    
+    // Add to comments array
+    if (!short.comments) {
+        short.comments = [];
+    }
+    short.comments.push(newComment);
+    
+    // Add to comment list
+    const commentList = document.getElementById('comment-list');
+    const commentElement = createCommentElement(newComment);
+    commentList.appendChild(commentElement);
+    
+    // Clear input
+    commentInput.value = '';
+    
+    // Scroll to bottom
+    setTimeout(() => {
+        commentList.scrollTop = commentList.scrollHeight;
+    }, 100);
+    
+    // Add bot reply after delay
+    setTimeout(() => {
+        addBotReply(short);
+    }, 2000);
+    
+    addToBattleLog("Comment posted!", 'player');
+}
+
+function addBotReply(short) {
+    const botComments = [
+        "Great comment! 👍",
+        "I agree with this! 👏",
+        "Thanks for sharing! 💫",
+        "This is so true! 🔥",
+        "Love this perspective! 💖",
+        "Well said! 🎯",
+        "You read my mind! ✨",
+        "This comment wins! 🏆"
+    ];
+    
+    const randomComment = botComments[Math.floor(Math.random() * botComments.length)];
+    const botNames = ["KpopFan", "IdolLover", "MusicEnjoyer", "DanceMaster", "VisualStan"];
+    const randomName = botNames[Math.floor(Math.random() * botNames.length)];
+    
+    const botReply = {
+        id: Date.now() + 1,
+        author: randomName,
+        text: randomComment,
+        time: "Just now",
+        type: "bot"
+    };
+    
+    short.comments.push(botReply);
+    
+    const commentList = document.getElementById('comment-list');
+    const commentElement = createCommentElement(botReply);
+    commentList.appendChild(commentElement);
+    
+    // Scroll to bottom
+    setTimeout(() => {
+        commentList.scrollTop = commentList.scrollHeight;
+    }, 100);
+}
+
+function showCommentModal(videoIndex) {
+    currentCommentVideoId = videoIndex;
+    const short = shortsData[videoIndex];
+    const commentList = document.getElementById('comment-list');
+    
+    // Clear previous comments
+    commentList.innerHTML = '';
+    
+    // Load comments
+    if (short.comments && short.comments.length > 0) {
+        short.comments.forEach(comment => {
+            const commentElement = createCommentElement(comment);
+            commentList.appendChild(commentElement);
+        });
+    } else {
+        commentList.innerHTML = '<div class="text-center" style="padding: 20px; color: #aaa;">No comments yet. Be the first to comment!</div>';
+    }
+    
+    // Scroll to bottom
+    setTimeout(() => {
+        commentList.scrollTop = commentList.scrollHeight;
+    }, 100);
+    
+    // Show modal
+    document.getElementById('comment-modal').classList.add('active');
+    
+    // Focus on input
+    setTimeout(() => {
+        document.getElementById('comment-input').focus();
+    }, 300);
+}
+
+function createCommentElement(comment) {
+    const commentDiv = document.createElement('div');
+    commentDiv.className = `comment-item ${comment.type}`;
+    
+    const avatarText = comment.author.substring(0, 2).toUpperCase();
+    
+    commentDiv.innerHTML = `
+        <div class="comment-avatar">${avatarText}</div>
+        <div class="comment-content">
+            <div class="comment-author">${comment.author}</div>
+            <div class="comment-text">${comment.text}</div>
+            <div class="comment-time">${comment.time}</div>
+        </div>
+    `;
+    
+    return commentDiv;
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+// Update switchScreen function
+function switchScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.remove('active');
+    });
+    document.getElementById(screenId).classList.add('active');
+    
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-screen="${screenId}"]`).classList.add('active');
+    
+    if (screenId !== 'shorts') {
+        // Pause current video when leaving
+        pauseCurrentShort();
+    } else {
+        // Initialize shorts when entering
+        setTimeout(() => {
+            initShorts();
+        }, 100);
+    }
+}
+
 
 
 
@@ -7671,9 +10633,10 @@ function addToBattleLog(message, type) {
     battleLog.scrollTop = battleLog.scrollHeight;
 }
 
-// Redeem code function
+// Redeem code function - MINIMAL FIX
 function redeemCode() {
-    const code = document.getElementById('redeem-code-input').value.trim().toUpperCase();
+    const codeInput = document.getElementById('redeem-code-input');
+    const code = codeInput.value.trim().toUpperCase();
     
     if (!code) {
         addToBattleLog("Please enter a redeem code!", 'player');
@@ -7688,23 +10651,20 @@ function redeemCode() {
         return;
     }
     
-    // Cek apakah kode sudah mencapai max uses
-    if (redeemCodeData.used >= redeemCodeData.maxUses) {
-        addToBattleLog("This redeem code has reached its maximum uses!", 'player');
-        return;
-    }
-    
-    // Cek apakah user sudah menggunakan kode ini sebelumnya
+    // PERBAIKAN: Hapus pengecekan used >= maxUses (biar bisa selalu dipake)
+    // Cukup cek apakah user sudah pakai kode ini
     const alreadyUsed = gameData.redeemCodes.history.some(h => h.code === code);
+    
     if (alreadyUsed) {
         addToBattleLog("You have already used this redeem code!", 'player');
+        codeInput.value = '';
         return;
     }
     
     // Berikan reward
     giveRedeemReward(redeemCodeData.reward);
     
-    // Update penggunaan kode
+    // Update penggunaan kode (tapi tetap biar used < maxUses selalu true)
     redeemCodeData.used++;
     
     // Tambahkan ke history
@@ -7715,7 +10675,7 @@ function redeemCode() {
     });
     
     // Reset input
-    document.getElementById('redeem-code-input').value = '';
+    codeInput.value = '';
     
     // Save game data
     saveGameData();
@@ -7907,6 +10867,5 @@ window.addEventListener('DOMContentLoaded', initGame);
  </script>
 </body>
 </html>
-
 
 
