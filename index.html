@@ -4959,20 +4959,52 @@ let firstGachaDone = false;
 let cardToManageSkills = null;
 let selectedCouponCrate = null;
 
-// FUNGSI VALIDASI DATA
+// FUNGSI VALIDASI DATA YANG DIPERBAIKI
 function validateGameData() {
+    console.log("Validating game data...");
+    
+    // Pastikan cards adalah array
     if (!Array.isArray(gameData.cards)) {
+        console.warn("gameData.cards is not an array, resetting to empty array");
         gameData.cards = [];
     }
     
+    // Bersihkan kartu yang tidak valid
     gameData.cards = gameData.cards.filter(card => {
-        return card && typeof card === 'object' && card.id !== undefined && card.name !== undefined;
+        if (!card || typeof card !== 'object') {
+            console.warn("Removing invalid card (null or not object)");
+            return false;
+        }
+        
+        // Pastikan properti dasar ada
+        if (card.id === undefined) {
+            console.warn("Removing card without id:", card);
+            return false;
+        }
+        
+        // Tambahkan properti default jika tidak ada
+        if (card.name === undefined) card.name = "Unknown Card";
+        if (card.group === undefined) card.group = "Unknown Group";
+        if (card.image === undefined) card.image = "placeholder.jpg";
+        if (card.health === undefined) card.health = 100;
+        if (card.maxHealth === undefined) card.maxHealth = 100;
+        if (card.attack === undefined) card.attack = 10;
+        if (card.rarity === undefined) card.rarity = "common";
+        if (card.wins === undefined) card.wins = 0;
+        if (card.battles === undefined) card.battles = 0;
+        if (card.favorite === undefined) card.favorite = false;
+        if (card.upgrades === undefined) card.upgrades = 0;
+        
+        return true;
     });
     
+    // Perbaiki currentCard jika tidak ada di koleksi
     if (gameData.currentCard && !gameData.cards.some(card => card.id === gameData.currentCard.id)) {
+        console.warn("Current card not found in collection, resetting to null");
         gameData.currentCard = null;
     }
     
+    // Inisialisasi skills jika belum ada
     if (!gameData.skills) {
         gameData.skills = { owned: [], equipped: {} };
     }
@@ -4982,6 +5014,16 @@ function validateGameData() {
     if (typeof gameData.skills.equipped !== 'object') {
         gameData.skills.equipped = {};
     }
+    
+    // Bersihkan equipped skills yang tidak valid
+    for (const cardId in gameData.skills.equipped) {
+        const skill = gameData.skills.equipped[cardId];
+        if (!skill || typeof skill !== 'object' || !skill.id) {
+            delete gameData.skills.equipped[cardId];
+        }
+    }
+    
+    console.log("Game data validation complete. Cards count:", gameData.cards.length);
 }
 
 // Sound Effects
@@ -5006,25 +5048,33 @@ backgroundMusic.volume = gameData.settings.bgmVolume / 100;
 
 // INITIALIZE GAME
 function initGame() {
-    const savedUsername = localStorage.getItem('battleOfIdol_username');
-    if (savedUsername) {
-        gameData.username = savedUsername;
-        loadGameData();
-        validateGameData();
-        showGameScreen();
-    } else {
-        showLoginScreen();
-    }
-    
-    setupEventListeners();
-    setupAdditionalEventListeners();
-    setupSettingsModalEvents();
-    applySettings();
-    
-    if (gameData.settings.bgmEnabled) {
-        backgroundMusic.play().catch(e => {
-            console.log("Autoplay prevented. User interaction required to play audio.");
-        });
+    console.log("Initializing game...");
+    try {
+        const savedUsername = localStorage.getItem('battleOfIdol_username');
+        if (savedUsername) {
+            gameData.username = savedUsername;
+            loadGameData();
+            validateGameData(); // Validasi data saat inisialisasi
+            showGameScreen();
+        } else {
+            showLoginScreen();
+        }
+        
+        setupEventListeners();
+        setupAdditionalEventListeners();
+        setupSettingsModalEvents();
+        applySettings();
+        
+        if (gameData.settings.bgmEnabled) {
+            backgroundMusic.play().catch(e => {
+                console.log("Autoplay prevented. User interaction required to play audio.");
+            });
+        }
+        
+        console.log("Game initialized successfully");
+    } catch (error) {
+        console.error("Error initializing game:", error);
+        alert("Error initializing game. Please refresh the page.");
     }
 }
 
@@ -5036,84 +5086,126 @@ function showLoginScreen() {
 
 // SHOW GAME SCREEN
 function showGameScreen() {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('game-container').style.display = 'flex';
-    
-    document.getElementById('player-name-display').textContent = gameData.username;
-    document.getElementById('player-name-home').textContent = gameData.username;
-    
-    updateCoinDisplay();
-    updateLevelDisplay();
-    updateHomeStats();
-    updateInventoryDisplay();
-    loadCollection();
-    loadStoreItems('crates');
-    loadQuests('main');
-    updateRedeemHistory();
+    console.log("Showing game screen...");
+    try {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('game-container').style.display = 'flex';
+        
+        document.getElementById('player-name-display').textContent = gameData.username;
+        document.getElementById('player-name-home').textContent = gameData.username;
+        
+        updateCoinDisplay();
+        updateLevelDisplay();
+        updateHomeStats();
+        updateInventoryDisplay();
+        
+        // Load collection dengan error handling
+        try {
+            loadCollection();
+        } catch (error) {
+            console.error("Error loading collection:", error);
+            // Reset collection jika error
+            const collectionContainer = document.querySelector('.collection-container');
+            if (collectionContainer) {
+                collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px; color: red;">Error loading collection. Please refresh the page.</div>';
+            }
+        }
+        
+        loadStoreItems('crates');
+        loadQuests('main');
+        updateRedeemHistory();
+        
+        console.log("Game screen shown successfully");
+    } catch (error) {
+        console.error("Error showing game screen:", error);
+    }
 }
 
 // SAVE GAME DATA
 function saveGameData() {
-    const gameDataToSave = {
-        username: gameData.username,
-        coins: gameData.coins,
-        level: gameData.level,
-        xp: gameData.xp,
-        xpToNextLevel: gameData.xpToNextLevel,
-        currentCard: gameData.currentCard,
-        attackUpgrades: gameData.attackUpgrades,
-        attackBoosts: gameData.attackBoosts,
-        cards: gameData.cards,
-        shields: gameData.shields,
-        skills: gameData.skills,
-        luckBoosts: gameData.luckBoosts,
-        gachaCoupons: gameData.gachaCoupons,
-        quests: gameData.quests,
-        battlePass: gameData.battlePass,
-        settings: gameData.settings,
-        firstGachaDone: firstGachaDone,
-        redeemCodes: gameData.redeemCodes,
-        discountCards: gameData.discountCards
-    };
-    
-    localStorage.setItem('battleOfIdol_gameData', JSON.stringify(gameDataToSave));
+    try {
+        console.log("Saving game data...");
+        const gameDataToSave = {
+            username: gameData.username,
+            coins: gameData.coins,
+            level: gameData.level,
+            xp: gameData.xp,
+            xpToNextLevel: gameData.xpToNextLevel,
+            currentCard: gameData.currentCard,
+            attackUpgrades: gameData.attackUpgrades,
+            attackBoosts: gameData.attackBoosts,
+            cards: gameData.cards,
+            shields: gameData.shields,
+            skills: gameData.skills,
+            luckBoosts: gameData.luckBoosts,
+            gachaCoupons: gameData.gachaCoupons,
+            quests: gameData.quests,
+            battlePass: gameData.battlePass,
+            settings: gameData.settings,
+            firstGachaDone: firstGachaDone,
+            redeemCodes: gameData.redeemCodes,
+            discountCards: gameData.discountCards
+        };
+        
+        localStorage.setItem('battleOfIdol_gameData', JSON.stringify(gameDataToSave));
+        console.log("Game data saved successfully");
+    } catch (error) {
+        console.error("Error saving game data:", error);
+    }
 }
 
 // LOAD GAME DATA
 function loadGameData() {
-    const savedData = localStorage.getItem('battleOfIdol_gameData');
-    if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        
-        gameData.username = parsedData.username;
-        gameData.coins = parsedData.coins;
-        gameData.level = parsedData.level;
-        gameData.xp = parsedData.xp;
-        gameData.xpToNextLevel = parsedData.xpToNextLevel;
-        gameData.currentCard = parsedData.currentCard;
-        gameData.attackUpgrades = parsedData.attackUpgrades;
-        gameData.attackBoosts = parsedData.attackBoosts;
-        gameData.cards = parsedData.cards;
-        gameData.shields = parsedData.shields;
-        gameData.skills = parsedData.skills || { owned: [], equipped: {} };
-        gameData.luckBoosts = parsedData.luckBoosts;
-        gameData.gachaCoupons = parsedData.gachaCoupons || 0;
-        gameData.quests = parsedData.quests;
-        gameData.battlePass = parsedData.battlePass;
-        gameData.settings = parsedData.settings;
-        firstGachaDone = parsedData.firstGachaDone;
-        
-        gameData.redeemCodes = parsedData.redeemCodes || { available: [], history: [] };
-        gameData.discountCards = parsedData.discountCards || { owned: [], activeDiscount: null, dailyDiscountCrateUsed: false };
-        
-        if (gameData.currentCard) {
-            setCurrentCard(gameData.currentCard);
+    console.log("Loading game data...");
+    try {
+        const savedData = localStorage.getItem('battleOfIdol_gameData');
+        if (savedData) {
+            const parsedData = JSON.parse(savedData);
+            
+            gameData.username = parsedData.username || gameData.username;
+            gameData.coins = parsedData.coins || 0;
+            gameData.level = parsedData.level || 1;
+            gameData.xp = parsedData.xp || 0;
+            gameData.xpToNextLevel = parsedData.xpToNextLevel || 100;
+            gameData.currentCard = parsedData.currentCard || null;
+            gameData.attackUpgrades = parsedData.attackUpgrades || 0;
+            gameData.attackBoosts = parsedData.attackBoosts || [1];
+            gameData.cards = parsedData.cards || [];
+            gameData.shields = parsedData.shields || [1];
+            gameData.skills = parsedData.skills || { owned: [], equipped: {} };
+            gameData.luckBoosts = parsedData.luckBoosts || {
+                active: false,
+                remainingUses: 0,
+                boostAmount: 0,
+                unlimitedActive: false,
+                unlimitedEndTime: 0
+            };
+            gameData.gachaCoupons = parsedData.gachaCoupons || 0;
+            gameData.quests = parsedData.quests || gameData.quests;
+            gameData.battlePass = parsedData.battlePass || gameData.battlePass;
+            gameData.settings = parsedData.settings || gameData.settings;
+            firstGachaDone = parsedData.firstGachaDone || false;
+            
+            gameData.redeemCodes = parsedData.redeemCodes || { available: [], history: [] };
+            gameData.discountCards = parsedData.discountCards || { owned: [], activeDiscount: null, dailyDiscountCrateUsed: false };
+            
+            if (gameData.currentCard) {
+                setCurrentCard(gameData.currentCard);
+            }
+            
+            console.log("Game data loaded successfully. Cards:", gameData.cards.length);
         }
+    } catch (error) {
+        console.error("Error loading game data:", error);
+        // Reset to default jika ada error
+        gameData.cards = [];
+        gameData.currentCard = null;
     }
 }
 
-// PERBAIKAN UTAMA: LOAD COLLECTION DENGAN SORTING DAN SELL SYSTEM YANG DIPERBAIKI
+// PERBAIKAN UTAMA: LOAD COLLECTION DENGAN ERROR HANDLING YANG LEBIH BAIK
 function loadCollection() {
+    console.log("Loading collection...");
     const collectionContainer = document.querySelector('.collection-container');
     
     if (!collectionContainer) {
@@ -5121,21 +5213,38 @@ function loadCollection() {
         return;
     }
     
-    collectionContainer.innerHTML = '';
-    
-    if (!gameData.cards || !Array.isArray(gameData.cards)) {
-        console.error("Invalid cards data:", gameData.cards);
-        gameData.cards = [];
-    }
-    
-    if (gameData.cards.length === 0) {
-        collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px;">You don\'t have any cards yet. Go to the Store to get your first card!</div>';
-        return;
-    }
-    
     try {
+        // Clear container
+        collectionContainer.innerHTML = '';
+        
+        // Validasi data kartu
+        if (!Array.isArray(gameData.cards)) {
+            console.error("Invalid cards data:", gameData.cards);
+            gameData.cards = [];
+        }
+        
+        // Tampilkan pesan jika tidak ada kartu
+        if (gameData.cards.length === 0) {
+            collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px;">You don\'t have any cards yet. Go to the Store to get your first card!</div>';
+            return;
+        }
+        
+        // Validasi dan sort kartu
+        const validCards = gameData.cards.filter(card => {
+            if (!card || typeof card !== 'object') {
+                console.warn("Removing invalid card from collection:", card);
+                return false;
+            }
+            return true;
+        });
+        
+        if (validCards.length === 0) {
+            collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px;">No valid cards found in your collection.</div>';
+            return;
+        }
+        
         // SORTING: Favorite dulu, kemudian rarity tinggi ke rendah
-        const sortedCards = [...gameData.cards].sort((a, b) => {
+        const sortedCards = [...validCards].sort((a, b) => {
             if (a.favorite && !b.favorite) return -1;
             if (!a.favorite && b.favorite) return 1;
             
@@ -5154,79 +5263,95 @@ function loadCollection() {
             
             if (aRarity !== bRarity) return aRarity - bRarity;
             
-            return a.name.localeCompare(b.name);
+            return (a.name || '').localeCompare(b.name || '');
         });
         
+        // Render setiap kartu
         sortedCards.forEach(card => {
-            if (!card || typeof card !== 'object') {
-                console.warn("Invalid card data:", card);
-                return;
+            try {
+                // Validasi data kartu sebelum rendering
+                const safeCard = {
+                    id: card.id || Date.now(),
+                    name: card.name || 'Unknown Card',
+                    group: card.group || 'Unknown Group',
+                    image: card.image || 'placeholder.jpg',
+                    health: card.health || 0,
+                    maxHealth: card.maxHealth || 0,
+                    attack: card.attack || 0,
+                    rarity: card.rarity || 'common',
+                    wins: card.wins || 0,
+                    battles: card.battles || 0,
+                    favorite: card.favorite || false,
+                    upgrades: card.upgrades || 0
+                };
+                
+                // PERBAIKAN: Hanya kartu yang BUKAN secret dan BUKAN favorite yang bisa dijual
+                const isSecretCard = safeCard.rarity === 'secret';
+                const canBeSold = !isSecretCard && !safeCard.favorite;
+                
+                const winRate = safeCard.battles > 0 ? Math.round((safeCard.wins / safeCard.battles) * 100) : 0;
+                
+                const canUpgrade = safeCard.upgrades < 8 && gameData.attackUpgrades > 0 && 
+                                  safeCard.rarity !== 'risingstar' && safeCard.rarity !== 'superstar' && safeCard.rarity !== 'secret';
+                
+                const equippedSkill = gameData.skills.equipped && gameData.skills.equipped[safeCard.id];
+                
+                const sellPrice = calculateSimpleSellPrice(safeCard);
+                
+                const cardElement = document.createElement('div');
+                cardElement.className = 'collection-card';
+                cardElement.innerHTML = `
+                    ${safeCard.favorite ? '<div class="favorite-star"><i class="fas fa-star"></i></div>' : ''}
+                    <img src="${safeCard.image}" alt="${safeCard.name}" class="collection-card-full" onerror="this.src='placeholder.jpg'">
+                    <div class="collection-card-info">
+                        <div class="collection-card-name">${safeCard.name}</div>
+                        <div class="collection-card-group">${safeCard.group} - <span class="rarity-${safeCard.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${safeCard.rarity.toUpperCase()}</span></div>
+                        <div class="collection-card-stats">
+                            <span>HP: ${safeCard.maxHealth}</span>
+                            <span>ATK: ${safeCard.attack} ${safeCard.upgrades > 0 ? `(+${safeCard.upgrades})` : ''}</span>
+                        </div>
+                        <div class="win-rate">
+                            <i class="fas fa-trophy"></i>
+                            <span>Win Rate: ${winRate}% (${safeCard.wins}/${safeCard.battles})</span>
+                        </div>
+                        <div class="market-price">
+                            <i class="fas fa-coins"></i>
+                            <span>Sell Price: ${sellPrice} coins</span>
+                            ${isSecretCard ? '<span style="color: #ff6b6b; font-size: 0.8rem;">(Cannot be sold)</span>' : ''}
+                            ${safeCard.favorite ? '<span style="color: #ffd700; font-size: 0.8rem;">(Favorite - cannot be sold)</span>' : ''}
+                        </div>
+                        ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
+                        <div class="card-actions">
+                            <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
+                            <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
+                            <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
+                            <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
+                            ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
+                        </div>
+                    </div>
+                `;
+                collectionContainer.appendChild(cardElement);
+                
+            } catch (cardError) {
+                console.error("Error rendering card:", card, cardError);
             }
-            
-            const safeCard = {
-                id: card.id || 0,
-                name: card.name || 'Unknown Card',
-                group: card.group || 'Unknown Group',
-                image: card.image || 'placeholder.jpg',
-                health: card.health || 0,
-                maxHealth: card.maxHealth || 0,
-                attack: card.attack || 0,
-                rarity: card.rarity || 'common',
-                wins: card.wins || 0,
-                battles: card.battles || 0,
-                favorite: card.favorite || false,
-                upgrades: card.upgrades || 0
-            };
-            
-            // PERBAIKAN: Hanya kartu yang BUKAN secret dan BUKAN favorite yang bisa dijual
-            const isSecretCard = safeCard.rarity === 'secret';
-            const canBeSold = !isSecretCard && !safeCard.favorite;
-            
-            const winRate = safeCard.battles > 0 ? Math.round((safeCard.wins / safeCard.battles) * 100) : 0;
-            
-            const canUpgrade = safeCard.upgrades < 8 && gameData.attackUpgrades > 0 && 
-                              safeCard.rarity !== 'risingstar' && safeCard.rarity !== 'superstar' && safeCard.rarity !== 'secret';
-            
-            const equippedSkill = gameData.skills.equipped[safeCard.id];
-            
-            const sellPrice = calculateSimpleSellPrice(safeCard);
-            
-            const cardElement = document.createElement('div');
-            cardElement.className = 'collection-card';
-            cardElement.innerHTML = `
-                ${safeCard.favorite ? '<div class="favorite-star"><i class="fas fa-star"></i></div>' : ''}
-                <img src="${safeCard.image}" alt="${safeCard.name}" class="collection-card-full" onerror="this.src='placeholder.jpg'">
-                <div class="collection-card-info">
-                    <div class="collection-card-name">${safeCard.name}</div>
-                    <div class="collection-card-group">${safeCard.group} - <span class="rarity-${safeCard.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${safeCard.rarity.toUpperCase()}</span></div>
-                    <div class="collection-card-stats">
-                        <span>HP: ${safeCard.maxHealth}</span>
-                        <span>ATK: ${safeCard.attack} ${safeCard.upgrades > 0 ? `(+${safeCard.upgrades})` : ''}</span>
-                    </div>
-                    <div class="win-rate">
-                        <i class="fas fa-trophy"></i>
-                        <span>Win Rate: ${winRate}% (${safeCard.wins}/${safeCard.battles})</span>
-                    </div>
-                    <div class="market-price">
-                        <i class="fas fa-coins"></i>
-                        <span>Sell Price: ${sellPrice} coins</span>
-                        ${isSecretCard ? '<span style="color: #ff6b6b; font-size: 0.8rem;">(Cannot be sold)</span>' : ''}
-                        ${safeCard.favorite ? '<span style="color: #ffd700; font-size: 0.8rem;">(Favorite - cannot be sold)</span>' : ''}
-                    </div>
-                    ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
-                    <div class="card-actions">
-                        <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
-                        <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
-                        <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
-                        <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
-                        ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
-                    </div>
-                </div>
-            `;
-            collectionContainer.appendChild(cardElement);
         });
 
-        // Event listeners untuk semua tombol
+        // Setup event listeners dengan error handling
+        setupCollectionEventListeners();
+        
+        console.log("Collection loaded successfully. Cards:", sortedCards.length);
+        
+    } catch (error) {
+        console.error("Error loading collection:", error);
+        collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px; color: red;">Error loading collection. Please refresh the page.</div>';
+    }
+}
+
+// FUNGSI BARU: Setup event listeners untuk collection
+function setupCollectionEventListeners() {
+    try {
+        // Event listeners untuk semua tombol dengan error handling
         document.querySelectorAll('.equip-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 try {
@@ -5235,6 +5360,7 @@ function loadCollection() {
                     if (card) {
                         setCurrentCard(card);
                         loadCollection();
+                        addToBattleLog(`Equipped ${card.name}!`, 'player');
                     }
                 } catch (error) {
                     console.error("Error in equip button:", error);
@@ -5243,7 +5369,7 @@ function loadCollection() {
             });
         });
 
-        document.querySelectorAll('.upgrade-btn').forEach(button => {
+        document.querySelectorAll('.upgrade-btn:not([disabled])').forEach(button => {
             button.addEventListener('click', (e) => {
                 try {
                     const cardId = parseInt(e.target.getAttribute('data-id'));
@@ -5282,7 +5408,7 @@ function loadCollection() {
             });
         });
 
-        // PERBAIKAN: Event listener untuk tombol sell yang hanya muncul untuk kartu yang bisa dijual
+        // Event listener untuk tombol sell yang hanya muncul untuk kartu yang bisa dijual
         document.querySelectorAll('.sell-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 try {
@@ -5308,8 +5434,7 @@ function loadCollection() {
         });
 
     } catch (error) {
-        console.error("Error loading collection:", error);
-        collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px; color: red;">Error loading collection. Please refresh the page.</div>';
+        console.error("Error setting up collection event listeners:", error);
     }
 }
 
@@ -5353,11 +5478,12 @@ function calculateSimpleSellPrice(card) {
     return Math.max(1, Math.floor(basePrice));
 }
 
-// SET CURRENT CARD
+// SET CURRENT CARD - DIPERBAIKI DENGAN ERROR HANDLING
 function setCurrentCard(card) {
+    console.log("Setting current card:", card);
     try {
         if (!card) {
-            console.error("Attempted to set null card as current");
+            console.warn("Attempted to set null card as current");
             
             if (gameData.cards.length > 0) {
                 card = gameData.cards[0];
@@ -5386,6 +5512,7 @@ function setCurrentCard(card) {
         
         gameData.currentCard = safeCard;
         
+        // Update UI elements
         const playerCardImg = document.querySelector('.player-card .card-img');
         const playerCardName = document.querySelector('.player-card .card-name');
         const playerMaxHealth = document.getElementById('player-max-health');
@@ -5440,11 +5567,8 @@ function setCurrentCard(card) {
             playBtn.textContent = "START BATTLE";
         }
         
-        try {
-            saveGameData();
-        } catch (saveError) {
-            console.error("Error saving game data after setting card:", saveError);
-        }
+        saveGameData();
+        console.log("Current card set successfully:", safeCard.name);
         
     } catch (error) {
         console.error("Error in setCurrentCard:", error);
@@ -5485,8 +5609,9 @@ function resetPlayerCardDisplay() {
     }
 }
 
-// SWITCH SCREEN
+// SWITCH SCREEN - DIPERBAIKI DENGAN ERROR HANDLING
 function switchScreen(screenId) {
+    console.log("Switching to screen:", screenId);
     try {
         document.querySelectorAll('.screen').forEach(screen => {
             screen.classList.remove('active');
@@ -5502,8 +5627,12 @@ function switchScreen(screenId) {
         
         if (screenId === 'collection') {
             setTimeout(() => {
-                updateInventoryDisplay();
-                loadCollection();
+                try {
+                    updateInventoryDisplay();
+                    loadCollection();
+                } catch (error) {
+                    console.error("Error loading collection after screen switch:", error);
+                }
             }, 50);
         }
         
@@ -5514,30 +5643,47 @@ function switchScreen(screenId) {
 
 // UPDATE COIN DISPLAY
 function updateCoinDisplay() {
-    document.getElementById('coin-count').textContent = gameData.coins;
+    const coinCount = document.getElementById('coin-count');
+    if (coinCount) {
+        coinCount.textContent = gameData.coins;
+    }
 }
 
 // UPDATE LEVEL DISPLAY
 function updateLevelDisplay() {
-    document.getElementById('player-level').textContent = gameData.level;
+    const playerLevel = document.getElementById('player-level');
+    if (playerLevel) {
+        playerLevel.textContent = gameData.level;
+    }
 }
 
 // UPDATE HOME STATS
 function updateHomeStats() {
-    document.getElementById('total-cards').textContent = gameData.cards.length;
+    const totalCards = document.getElementById('total-cards');
+    const totalWins = document.getElementById('total-wins');
+    const totalCoins = document.getElementById('total-coins');
+    const playerLevelHome = document.getElementById('player-level-home');
     
-    const totalWins = gameData.cards.reduce((total, card) => total + card.wins, 0);
-    document.getElementById('total-wins').textContent = totalWins;
+    if (totalCards) totalCards.textContent = gameData.cards.length;
     
-    document.getElementById('total-coins').textContent = gameData.coins;
-    document.getElementById('player-level-home').textContent = gameData.level;
+    const wins = gameData.cards.reduce((total, card) => total + (card.wins || 0), 0);
+    if (totalWins) totalWins.textContent = wins;
+    
+    if (totalCoins) totalCoins.textContent = gameData.coins;
+    if (playerLevelHome) playerLevelHome.textContent = gameData.level;
 }
 
 // UPDATE INVENTORY DISPLAY
 function updateInventoryDisplay() {
-    document.getElementById('attack-upgrade-count').textContent = gameData.attackUpgrades;
-    document.getElementById('shield-count').textContent = gameData.shields.length;
-    document.getElementById('boost-count').textContent = gameData.attackBoosts.length;
+    const attackUpgradeCount = document.getElementById('attack-upgrade-count');
+    const shieldCount = document.getElementById('shield-count');
+    const boostCount = document.getElementById('boost-count');
+    const luckBoostCount = document.getElementById('luck-boost-count');
+    const skillCount = document.getElementById('skill-count');
+    
+    if (attackUpgradeCount) attackUpgradeCount.textContent = gameData.attackUpgrades;
+    if (shieldCount) shieldCount.textContent = gameData.shields.length;
+    if (boostCount) boostCount.textContent = gameData.attackBoosts.length;
     
     let luckBoostDisplay = 0;
     if (gameData.luckBoosts.active) {
@@ -5548,23 +5694,31 @@ function updateInventoryDisplay() {
         const minutesLeft = Math.ceil(timeLeft / (60 * 1000));
         luckBoostDisplay = `${minutesLeft}m`;
     }
-    document.getElementById('luck-boost-count').textContent = luckBoostDisplay;
     
-    document.getElementById('skill-count').textContent = gameData.skills.owned.length;
+    if (luckBoostCount) luckBoostCount.textContent = luckBoostDisplay;
+    if (skillCount) skillCount.textContent = gameData.skills.owned.length;
     
-    if (gameData.luckBoosts.active || gameData.luckBoosts.unlimitedActive) {
-        document.getElementById('luck-boost-indicator').classList.remove('hidden');
-        document.getElementById('luck-boost-remaining').textContent = luckBoostDisplay;
-    } else {
-        document.getElementById('luck-boost-indicator').classList.add('hidden');
+    const luckBoostIndicator = document.getElementById('luck-boost-indicator');
+    const luckBoostRemaining = document.getElementById('luck-boost-remaining');
+    
+    if (luckBoostIndicator && luckBoostRemaining) {
+        if (gameData.luckBoosts.active || gameData.luckBoosts.unlimitedActive) {
+            luckBoostIndicator.classList.remove('hidden');
+            luckBoostRemaining.textContent = luckBoostDisplay;
+        } else {
+            luckBoostIndicator.classList.add('hidden');
+        }
     }
     
-    if (gameData.discountCards.dailyDiscountCrateUsed) {
-        document.getElementById('buy-discount-crate-btn').disabled = true;
-        document.getElementById('buy-discount-crate-btn').textContent = "ALREADY USED TODAY";
-    } else {
-        document.getElementById('buy-discount-crate-btn').disabled = false;
-        document.getElementById('buy-discount-crate-btn').textContent = "BUY DAILY DISCOUNT";
+    const buyDiscountBtn = document.getElementById('buy-discount-crate-btn');
+    if (buyDiscountBtn) {
+        if (gameData.discountCards.dailyDiscountCrateUsed) {
+            buyDiscountBtn.disabled = true;
+            buyDiscountBtn.textContent = "ALREADY USED TODAY";
+        } else {
+            buyDiscountBtn.disabled = false;
+            buyDiscountBtn.textContent = "BUY DAILY DISCOUNT";
+        }
     }
 }
 
@@ -5574,10 +5728,14 @@ function showSellCardModal(card) {
     
     const sellPrice = calculateSimpleSellPrice(card);
     
-    document.getElementById('sell-price-value').textContent = sellPrice;
-    document.querySelector('.sell-card-img').src = card.image;
+    const sellPriceValue = document.getElementById('sell-price-value');
+    const sellCardImg = document.querySelector('.sell-card-img');
     
-    document.getElementById('sell-card-modal').classList.add('active');
+    if (sellPriceValue) sellPriceValue.textContent = sellPrice;
+    if (sellCardImg) sellCardImg.src = card.image;
+    
+    const sellModal = document.getElementById('sell-card-modal');
+    if (sellModal) sellModal.classList.add('active');
 }
 
 // CONFIRM SELL CARD
@@ -5603,19 +5761,22 @@ function confirmSellCard() {
                 setCurrentCard(gameData.cards[0]);
             } else {
                 gameData.currentCard = null;
+                resetPlayerCardDisplay();
             }
         }
         
         addToBattleLog(`Sold ${cardToSell.name} for ${sellPrice} coins!`, 'player');
     }
     
-    document.getElementById('sell-card-modal').classList.remove('active');
+    const sellModal = document.getElementById('sell-card-modal');
+    if (sellModal) sellModal.classList.remove('active');
+    
     loadCollection();
     cardToSell = null;
     saveGameData();
 }
 
-// PERBAIKAN: SHOW SELL ALL MODAL untuk kartu non-favorite dan non-secret
+// SHOW SELL ALL MODAL
 function showSellAllModal() {
     const nonFavoriteNonSecretCards = gameData.cards.filter(card => 
         !card.favorite && card.rarity !== 'secret'
@@ -5631,11 +5792,14 @@ function showSellAllModal() {
         totalValue += calculateSimpleSellPrice(card);
     });
     
-    document.getElementById('sell-all-price-value').textContent = totalValue;
-    document.getElementById('sell-all-modal').classList.add('active');
+    const sellAllPriceValue = document.getElementById('sell-all-price-value');
+    if (sellAllPriceValue) sellAllPriceValue.textContent = totalValue;
+    
+    const sellAllModal = document.getElementById('sell-all-modal');
+    if (sellAllModal) sellAllModal.classList.add('active');
 }
 
-// PERBAIKAN: CONFIRM SELL ALL CARDS
+// CONFIRM SELL ALL CARDS
 function confirmSellAllCards() {
     const nonFavoriteNonSecretCards = gameData.cards.filter(card => 
         !card.favorite && card.rarity !== 'secret'
@@ -5659,6 +5823,7 @@ function confirmSellAllCards() {
             setCurrentCard(gameData.cards[0]);
         } else {
             gameData.currentCard = null;
+            resetPlayerCardDisplay();
         }
     }
     
@@ -5670,7 +5835,9 @@ function confirmSellAllCards() {
     
     addToBattleLog(`Sold ${nonFavoriteNonSecretCards.length} cards for ${totalValue} coins!`, 'player');
     
-    document.getElementById('sell-all-modal').classList.remove('active');
+    const sellAllModal = document.getElementById('sell-all-modal');
+    if (sellAllModal) sellAllModal.classList.remove('active');
+    
     loadCollection();
     saveGameData();
 }
@@ -5725,6 +5892,9 @@ function upgradeCardAttack(cardId) {
 function showSkillModal(card) {
     cardToManageSkills = card;
     const skillList = document.querySelector('.skill-list');
+    
+    if (!skillList) return;
+    
     skillList.innerHTML = '';
     
     if (gameData.skills.owned.length === 0) {
@@ -5756,7 +5926,7 @@ function showSkillModal(card) {
             button.addEventListener('click', (e) => {
                 const skillId = parseInt(e.target.getAttribute('data-id'));
                 const skill = gameData.skills.owned.find(s => s.id === skillId);
-                if (skill) {
+                if (skill && cardToManageSkills) {
                     equipSkillToCard(skill, cardToManageSkills);
                 }
             });
@@ -5765,16 +5935,21 @@ function showSkillModal(card) {
         document.querySelectorAll('.skill-unequip-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 const skillId = parseInt(e.target.getAttribute('data-id'));
-                unequipSkillFromCard(cardToManageSkills);
+                if (cardToManageSkills) {
+                    unequipSkillFromCard(cardToManageSkills);
+                }
             });
         });
     }
     
-    document.getElementById('skill-modal').classList.add('active');
+    const skillModal = document.getElementById('skill-modal');
+    if (skillModal) skillModal.classList.add('active');
 }
 
 // EQUIP SKILL TO CARD
 function equipSkillToCard(skill, card) {
+    if (!card || !skill) return;
+    
     if (gameData.skills.equipped[card.id]) {
         unequipSkillFromCard(card);
     }
@@ -5786,7 +5961,9 @@ function equipSkillToCard(skill, card) {
     }
     
     loadCollection();
-    document.getElementById('skill-modal').classList.remove('active');
+    
+    const skillModal = document.getElementById('skill-modal');
+    if (skillModal) skillModal.classList.remove('active');
     
     addToBattleLog(`Equipped ${skill.name} to ${card.name}!`, 'player');
     saveGameData();
@@ -5794,6 +5971,8 @@ function equipSkillToCard(skill, card) {
 
 // UNEQUIP SKILL FROM CARD
 function unequipSkillFromCard(card) {
+    if (!card) return;
+    
     const skill = gameData.skills.equipped[card.id];
     if (skill) {
         delete gameData.skills.equipped[card.id];
@@ -5803,7 +5982,9 @@ function unequipSkillFromCard(card) {
         }
         
         loadCollection();
-        document.getElementById('skill-modal').classList.remove('active');
+        
+        const skillModal = document.getElementById('skill-modal');
+        if (skillModal) skillModal.classList.remove('active');
         
         addToBattleLog(`Unequipped ${skill.name} from ${card.name}!`, 'player');
         saveGameData();
@@ -5813,6 +5994,8 @@ function unequipSkillFromCard(card) {
 // LOAD STORE ITEMS
 function loadStoreItems(category) {
     const storeItemsContainer = document.querySelector('.store-items');
+    if (!storeItemsContainer) return;
+    
     storeItemsContainer.innerHTML = '';
     
     if (category === 'discounts') {
@@ -5839,7 +6022,7 @@ function loadStoreItems(category) {
             storeItemsContainer.appendChild(discountElement);
         });
         
-        document.querySelectorAll('.apply-discount-btn').forEach(button => {
+        document.querySelectorAll('.apply-discount-btn:not([disabled])').forEach(button => {
             button.addEventListener('click', (e) => {
                 const discountId = parseInt(e.target.getAttribute('data-id'));
                 applyDiscountToPurchase(discountId);
@@ -5857,7 +6040,6 @@ function loadStoreItems(category) {
     }
     
     const items = gameData.storeItems[category];
-    
     if (!items) return;
     
     items.forEach(item => {            
@@ -5909,7 +6091,7 @@ function loadStoreItems(category) {
         storeItemsContainer.appendChild(itemElement);
     });
 
-    document.querySelectorAll('.buy-btn').forEach(button => {
+    document.querySelectorAll('.buy-btn:not([disabled])').forEach(button => {
         button.addEventListener('click', (e) => {
             const itemId = parseInt(e.target.getAttribute('data-id'));
             const itemType = e.target.getAttribute('data-type');
@@ -6029,7 +6211,7 @@ function buyItem(itemId, itemType) {
             updateInventoryDisplay();
             addToBattleLog(`You bought ${item.name}! You can now equip it to any card.`, 'player');
         } else if (itemType === 'photocard') {
-            gameData.cards.push({
+            const newCard = {
                 id: item.id,
                 name: item.name,
                 group: item.group,
@@ -6042,7 +6224,9 @@ function buyItem(itemId, itemType) {
                 battles: 0,
                 favorite: false,
                 upgrades: 0
-            });
+            };
+            
+            gameData.cards.push(newCard);
             
             loadCollection();
             updateHomeStats();
@@ -6054,8 +6238,10 @@ function buyItem(itemId, itemType) {
             }
         }
         
-        const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-        loadStoreItems(activeCategory);
+        const activeCategory = document.querySelector('.category-btn.active');
+        if (activeCategory) {
+            loadStoreItems(activeCategory.getAttribute('data-category'));
+        }
         
         saveGameData();
     } else {
@@ -6073,8 +6259,9 @@ function checkUnlimitedLuckBoost() {
     }
 }
 
-// OPEN GACHA CRATE
+// PERBAIKAN UTAMA: OPEN GACHA CRATE DENGAN ERROR HANDLING YANG LEBIH BAIK
 function openGachaCrate(rarity) {
+    console.log("Opening gacha crate with rarity:", rarity);
     try {
         if (gameData.settings.sfxEnabled) {
             sounds.gacha.play().catch(e => console.log("Audio play failed"));
@@ -6174,17 +6361,47 @@ function openGachaCrate(rarity) {
         
         if (!availableCards || availableCards.length === 0) {
             console.error("No available cards for rarity:", rarity);
-            addToBattleLog("Error: No cards available in this crate!", 'player');
-            return;
+            // Fallback ke kartu common jika tidak ada kartu yang tersedia
+            availableCards = gameData.gachaPool.filter(card => card.rarity === 'common');
+            if (availableCards.length === 0) {
+                // Buat kartu default jika pool gacha kosong
+                availableCards = [{
+                    id: Date.now(),
+                    name: "Default Card",
+                    group: "Default",
+                    image: "placeholder.jpg",
+                    health: 100,
+                    maxHealth: 100,
+                    attack: 10,
+                    rarity: "common",
+                    wins: 0,
+                    battles: 0,
+                    favorite: false,
+                    upgrades: 0
+                }];
+            }
         }
         
         const randomIndex = Math.floor(Math.random() * availableCards.length);
-        const wonCard = availableCards[randomIndex];
+        let wonCard = availableCards[randomIndex];
         
         if (!wonCard || typeof wonCard !== 'object') {
             console.error("Invalid card won from gacha:", wonCard);
-            addToBattleLog("Error: Invalid card received from gacha!", 'player');
-            return;
+            // Buat kartu default jika kartu yang didapat tidak valid
+            wonCard = {
+                id: Date.now(),
+                name: "Default Card",
+                group: "Default",
+                image: "placeholder.jpg",
+                health: 100,
+                maxHealth: 100,
+                attack: 10,
+                rarity: "common",
+                wins: 0,
+                battles: 0,
+                favorite: false,
+                upgrades: 0
+            };
         }
         
         const safeCard = {
@@ -6196,40 +6413,49 @@ function openGachaCrate(rarity) {
             maxHealth: wonCard.maxHealth || 100,
             attack: wonCard.attack || 10,
             rarity: wonCard.rarity || 'common',
-            wins: 0,
-            battles: 0,
-            favorite: false,
-            upgrades: 0
+            wins: wonCard.wins || 0,
+            battles: wonCard.battles || 0,
+            favorite: wonCard.favorite || false,
+            upgrades: wonCard.upgrades || 0
         };
         
-        const existingCard = gameData.cards.find(c => c.id === safeCard.id);
-        if (existingCard) {
+        // Cek duplikat ID
+        const existingCardIndex = gameData.cards.findIndex(c => c.id === safeCard.id);
+        if (existingCardIndex !== -1) {
+            console.log("Duplicate ID detected, generating new ID");
             safeCard.id = Date.now() + Math.floor(Math.random() * 1000);
-            console.log("Duplicate ID detected, generated new ID:", safeCard.id);
         }
         
+        // Validasi data kartu sebelum ditambahkan
         if (!safeCard.id || !safeCard.name) {
             console.error("Invalid safe card data:", safeCard);
             addToBattleLog("Error: Failed to create card data!", 'player');
             return;
         }
         
+        // Tambahkan kartu ke koleksi
         gameData.cards.push(safeCard);
+        console.log("Card added to collection:", safeCard.name);
         
+        // Set sebagai current card jika ini kartu pertama
         if (gameData.cards.length === 1) {
             setCurrentCard(safeCard);
         }
         
+        // Update quest progress
         updateQuestProgress('Gacha Enthusiast', 1);
         updateQuestProgress('Idol Collector', 1);
         
+        // Tampilkan hasil gacha
         showGachaResult(safeCard);
         
+        // Refresh collection dan simpan game data
         setTimeout(() => {
             try {
                 loadCollection();
                 updateHomeStats();
                 saveGameData();
+                console.log("Gacha completed successfully");
             } catch (refreshError) {
                 console.error("Error refreshing after gacha:", refreshError);
             }
@@ -6249,12 +6475,16 @@ function openGachaCrate(rarity) {
 
 // SHOW GACHA RESULT
 function showGachaResult(card) {
-    document.querySelector('.gacha-card-display-img').src = card.image;
-    document.querySelector('.gacha-result-name').textContent = card.name;
-    document.querySelector('.gacha-result-group').textContent = card.group;
+    const gachaCardDisplayImg = document.querySelector('.gacha-card-display-img');
+    const gachaResultName = document.querySelector('.gacha-result-name');
+    const gachaResultGroup = document.querySelector('.gacha-result-group');
+    const gachaResultRarity = document.querySelector('.gacha-result-rarity');
+    
+    if (gachaCardDisplayImg) gachaCardDisplayImg.src = card.image;
+    if (gachaResultName) gachaResultName.textContent = card.name;
+    if (gachaResultGroup) gachaResultGroup.textContent = card.group;
     
     let rarityColor = '#aaa';
-    let specialEffect = false;
     
     if (card.rarity === 'rare') {
         rarityColor = '#6a5af9';
@@ -6262,27 +6492,29 @@ function showGachaResult(card) {
         rarityColor = '#ff6b9d';
     } else if (card.rarity === 'legendary') {
         rarityColor = '#ffd166';
-        specialEffect = true;
     } else if (card.rarity === 'risingstar') {
         rarityColor = '#ffd700';
-        specialEffect = true;
     } else if (card.rarity === 'superstar') {
         rarityColor = '#ff00cc';
-        specialEffect = true;
     } else if (card.rarity === 'secret') {
         rarityColor = '#ff6b00';
-        specialEffect = true;
     }
     
-    document.querySelector('.gacha-result-rarity').textContent = card.rarity.toUpperCase();
-    document.querySelector('.gacha-result-rarity').style.color = rarityColor;
+    if (gachaResultRarity) {
+        gachaResultRarity.textContent = card.rarity.toUpperCase();
+        gachaResultRarity.style.color = rarityColor;
+    }
     
     const gachaCardDisplay = document.querySelector('.gacha-card-display');
-    gachaCardDisplay.className = 'gacha-card-display';
-    gachaCardDisplay.classList.add(`rarity-${card.rarity}`);
+    if (gachaCardDisplay) {
+        gachaCardDisplay.className = 'gacha-card-display';
+        gachaCardDisplay.classList.add(`rarity-${card.rarity}`);
+    }
     
+    // Hapus efek khusus sebelumnya
     document.querySelectorAll('.special-effect').forEach(el => el.remove());
     
+    // Mainkan efek berdasarkan rarity
     if (card.rarity === 'legendary') {
         playLegendaryEffect(card);
     } else if (card.rarity === 'risingstar') {
@@ -6297,7 +6529,8 @@ function showGachaResult(card) {
         }
     }
     
-    document.getElementById('gacha-modal').classList.add('active');
+    const gachaModal = document.getElementById('gacha-modal');
+    if (gachaModal) gachaModal.classList.add('active');
 }
 
 // PLAY LEGENDARY EFFECT
@@ -6309,18 +6542,20 @@ function playLegendaryEffect(card) {
     createConfetti('#ffd700', '#ff6b00', '#ffd166');
     
     const gachaCardDisplay = document.querySelector('.gacha-card-display');
-    const legendaryEffect = document.createElement('div');
-    legendaryEffect.className = 'special-effect legendary-effect';
-    legendaryEffect.innerHTML = `<div class="particle-overlay"></div>`;
-    gachaCardDisplay.appendChild(legendaryEffect);
-    
-    gachaCardDisplay.classList.add('legendary-shake');
+    if (gachaCardDisplay) {
+        const legendaryEffect = document.createElement('div');
+        legendaryEffect.className = 'special-effect legendary-effect';
+        legendaryEffect.innerHTML = `<div class="particle-overlay"></div>`;
+        gachaCardDisplay.appendChild(legendaryEffect);
+        
+        gachaCardDisplay.classList.add('legendary-shake');
+        
+        setTimeout(() => {
+            gachaCardDisplay.classList.remove('legendary-shake');
+        }, 1000);
+    }
     
     addToBattleLog(`🌟 LEGENDARY PULL! Amazing! You got ${card.name}! 🌟`, 'player');
-    
-    setTimeout(() => {
-        gachaCardDisplay.classList.remove('legendary-shake');
-    }, 1000);
 }
 
 // PLAY RISINGSTAR EFFECT
@@ -6332,21 +6567,23 @@ function playRisingStarEffect(card) {
     createConfetti('#ffd700', '#ff6b00', '#ff0080', '#9d4edd');
     
     const gachaCardDisplay = document.querySelector('.gacha-card-display');
-    const risingstarEffect = document.createElement('div');
-    risingstarEffect.className = 'special-effect risingstar-effect';
-    risingstarEffect.innerHTML = `
-        <div class="rainbow-overlay"></div>
-        <div class="star-particles"></div>
-    `;
-    gachaCardDisplay.appendChild(risingstarEffect);
-    
-    gachaCardDisplay.classList.add('risingstar-pulse');
+    if (gachaCardDisplay) {
+        const risingstarEffect = document.createElement('div');
+        risingstarEffect.className = 'special-effect risingstar-effect';
+        risingstarEffect.innerHTML = `
+            <div class="rainbow-overlay"></div>
+            <div class="star-particles"></div>
+        `;
+        gachaCardDisplay.appendChild(risingstarEffect);
+        
+        gachaCardDisplay.classList.add('risingstar-pulse');
+        
+        setTimeout(() => {
+            gachaCardDisplay.classList.remove('risingstar-pulse');
+        }, 2000);
+    }
     
     addToBattleLog(`⭐ RISINGSTAR PULL! Incredible! You got ${card.name}! ⭐`, 'player');
-    
-    setTimeout(() => {
-        gachaCardDisplay.classList.remove('risingstar-pulse');
-    }, 2000);
 }
 
 // PLAY SUPERSTAR EFFECT
@@ -6363,21 +6600,26 @@ function playSuperstarEffect(card) {
     createConfetti('#ff00cc', '#ff9900', '#00ccff', '#ffcc00');
     
     const gachaCardDisplay = document.querySelector('.gacha-card-display');
-    const superstarEffect = document.createElement('div');
-    superstarEffect.className = 'special-effect superstar-effect';
-    superstarEffect.innerHTML = `
-        <div class="neon-overlay"></div>
-        <div class="superstar-particles"></div>
-        <div class="spotlight-effect"></div>
-    `;
-    gachaCardDisplay.appendChild(superstarEffect);
+    if (gachaCardDisplay) {
+        const superstarEffect = document.createElement('div');
+        superstarEffect.className = 'special-effect superstar-effect';
+        superstarEffect.innerHTML = `
+            <div class="neon-overlay"></div>
+            <div class="superstar-particles"></div>
+            <div class="spotlight-effect"></div>
+        `;
+        gachaCardDisplay.appendChild(superstarEffect);
+    }
     
     addToBattleLog(`💫 SUPERSTAR PULL! UNBELIEVABLE! You got ${card.name}! 💫`, 'player');
     
-    document.querySelector('.modal-content').classList.add('superstar-glow');
-    setTimeout(() => {
-        document.querySelector('.modal-content').classList.remove('superstar-glow');
-    }, 3000);
+    const modalContent = document.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.classList.add('superstar-glow');
+        setTimeout(() => {
+            modalContent.classList.remove('superstar-glow');
+        }, 3000);
+    }
 }
 
 // PLAY SECRET EFFECT
@@ -6399,23 +6641,28 @@ function playSecretEffect(card) {
     createConfetti('#ff6b00', '#ff0080', '#9d4edd', '#00ccff', '#ffd700', '#ff00cc');
     
     const gachaCardDisplay = document.querySelector('.gacha-card-display');
-    const secretEffect = document.createElement('div');
-    secretEffect.className = 'special-effect secret-effect';
-    secretEffect.innerHTML = `
-        <div class="cosmic-overlay"></div>
-        <div class="secret-particles"></div>
-        <div class="mystic-aura"></div>
-        <div class="dimensional-rift"></div>
-    `;
-    gachaCardDisplay.appendChild(secretEffect);
+    if (gachaCardDisplay) {
+        const secretEffect = document.createElement('div');
+        secretEffect.className = 'special-effect secret-effect';
+        secretEffect.innerHTML = `
+            <div class="cosmic-overlay"></div>
+            <div class="secret-particles"></div>
+            <div class="mystic-aura"></div>
+            <div class="dimensional-rift"></div>
+        `;
+        gachaCardDisplay.appendChild(secretEffect);
+    }
     
     addToBattleLog(`🎊 SECRET PULL! ONCE IN A LIFETIME! You got ${card.name}! 🎊`, 'player');
     
-    document.querySelector('.modal-content').classList.add('secret-reveal');
+    const modalContent = document.querySelector('.modal-content');
+    if (modalContent) {
+        modalContent.classList.add('secret-reveal');
+    }
     document.body.classList.add('secret-background');
     
     setTimeout(() => {
-        document.querySelector('.modal-content').classList.remove('secret-reveal');
+        if (modalContent) modalContent.classList.remove('secret-reveal');
         document.body.classList.remove('secret-background');
     }, 4000);
 }
@@ -6443,58 +6690,91 @@ function createConfetti(...colors) {
 
 // APPLY SETTINGS
 function applySettings() {
-    backgroundMusic.volume = gameData.settings.bgmVolume / 100;
-    if (gameData.settings.bgmEnabled && !backgroundMusic.paused) {
-        backgroundMusic.play().catch(e => console.log("Audio play failed"));
-    } else {
-        backgroundMusic.pause();
+    try {
+        backgroundMusic.volume = gameData.settings.bgmVolume / 100;
+        if (gameData.settings.bgmEnabled && !backgroundMusic.paused) {
+            backgroundMusic.play().catch(e => console.log("Audio play failed"));
+        } else {
+            backgroundMusic.pause();
+        }
+        
+        for (const key in sounds) {
+            if (sounds[key]) {
+                sounds[key].volume = gameData.settings.sfxVolume / 100;
+            }
+        }
+        
+        const header = document.getElementById('main-header');
+        if (header) {
+            if (gameData.settings.animatedHeader) {
+                header.classList.add('animated');
+            } else {
+                header.classList.remove('animated');
+            }
+        }
+        
+        const bgmToggle = document.getElementById('bgm-toggle');
+        const bgmVolume = document.getElementById('bgm-volume');
+        const bgmVolumeLabel = document.getElementById('bgm-volume-label');
+        const sfxToggle = document.getElementById('sfx-toggle');
+        const sfxVolume = document.getElementById('sfx-volume');
+        const sfxVolumeLabel = document.getElementById('sfx-volume-label');
+        const vibrationToggle = document.getElementById('vibration-toggle');
+        const notificationsToggle = document.getElementById('notifications-toggle');
+        const animatedHeaderToggle = document.getElementById('animated-header-toggle');
+        
+        if (bgmToggle) bgmToggle.checked = gameData.settings.bgmEnabled;
+        if (bgmVolume) bgmVolume.value = gameData.settings.bgmVolume;
+        if (bgmVolumeLabel) bgmVolumeLabel.textContent = gameData.settings.bgmVolume;
+        
+        if (sfxToggle) sfxToggle.checked = gameData.settings.sfxEnabled;
+        if (sfxVolume) sfxVolume.value = gameData.settings.sfxVolume;
+        if (sfxVolumeLabel) sfxVolumeLabel.textContent = gameData.settings.sfxVolume;
+        
+        if (vibrationToggle) vibrationToggle.checked = gameData.settings.vibration;
+        if (notificationsToggle) notificationsToggle.checked = gameData.settings.notifications;
+        if (animatedHeaderToggle) animatedHeaderToggle.checked = gameData.settings.animatedHeader;
+        
+    } catch (error) {
+        console.error("Error applying settings:", error);
     }
-    
-    for (const key in sounds) {
-        sounds[key].volume = gameData.settings.sfxVolume / 100;
-    }
-    
-    const header = document.getElementById('main-header');
-    if (gameData.settings.animatedHeader) {
-        header.classList.add('animated');
-    } else {
-        header.classList.remove('animated');
-    }
-    
-    document.getElementById('bgm-toggle').checked = gameData.settings.bgmEnabled;
-    document.getElementById('bgm-volume').value = gameData.settings.bgmVolume;
-    document.getElementById('bgm-volume-label').textContent = gameData.settings.bgmVolume;
-    
-    document.getElementById('sfx-toggle').checked = gameData.settings.sfxEnabled;
-    document.getElementById('sfx-volume').value = gameData.settings.sfxVolume;
-    document.getElementById('sfx-volume-label').textContent = gameData.settings.sfxVolume;
-    
-    document.getElementById('vibration-toggle').checked = gameData.settings.vibration;
-    document.getElementById('notifications-toggle').checked = gameData.settings.notifications;
-    document.getElementById('animated-header-toggle').checked = gameData.settings.animatedHeader;
 }
 
 // SETUP EVENT LISTENERS
 function setupEventListeners() {
-    document.getElementById('login-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const username = document.getElementById('username').value.trim();
-        if (username) {
-            gameData.username = username;
-            localStorage.setItem('battleOfIdol_username', username);
-            showGameScreen();
-            saveGameData();
-        }
-    });
-
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        if (confirm('Are you sure you want to logout? Your progress will be saved.')) {
-            localStorage.removeItem('battleOfIdol_username');
-            localStorage.removeItem('battleOfIdol_gameData');
-            location.reload();
-        }
-    });
-
+    console.log("Setting up event listeners...");
+    
+    // Login form
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const usernameInput = document.getElementById('username');
+            if (usernameInput) {
+                const username = usernameInput.value.trim();
+                if (username) {
+                    gameData.username = username;
+                    localStorage.setItem('battleOfIdol_username', username);
+                    showGameScreen();
+                    saveGameData();
+                }
+            }
+        });
+    }
+    
+    // Logout button
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to logout? Your progress will be saved.')) {
+                localStorage.removeItem('battleOfIdol_username');
+                localStorage.removeItem('battleOfIdol_gameData');
+                location.reload();
+            }
+        });
+    }
+    
+    // Navigation buttons
     document.querySelectorAll('.nav-btn').forEach(button => {
         button.addEventListener('click', () => {
             try {
@@ -6509,17 +6789,30 @@ function setupEventListeners() {
             }
         });
     });
-
-    document.getElementById('play-btn').addEventListener('click', () => {
-        startBattle();
-    });
-    document.getElementById('shield-btn').addEventListener('click', () => {
-        activateShield();
-    });
-    document.getElementById('boost-btn').addEventListener('click', () => {
-        activateBoost();
-    });
-
+    
+    // Battle buttons
+    const playBtn = document.getElementById('play-btn');
+    if (playBtn) {
+        playBtn.addEventListener('click', () => {
+            startBattle();
+        });
+    }
+    
+    const shieldBtn = document.getElementById('shield-btn');
+    if (shieldBtn) {
+        shieldBtn.addEventListener('click', () => {
+            activateShield();
+        });
+    }
+    
+    const boostBtn = document.getElementById('boost-btn');
+    if (boostBtn) {
+        boostBtn.addEventListener('click', () => {
+            activateBoost();
+        });
+    }
+    
+    // Store category buttons
     document.querySelectorAll('.category-btn').forEach(button => {
         button.addEventListener('click', () => {
             const category = button.getAttribute('data-category');
@@ -6529,7 +6822,8 @@ function setupEventListeners() {
             button.classList.add('active');
         });
     });
-
+    
+    // Quest tabs
     document.querySelectorAll('.quest-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             const questType = tab.getAttribute('data-tab');
@@ -6539,73 +6833,123 @@ function setupEventListeners() {
             tab.classList.add('active');
         });
     });
-
+    
+    // Close modal buttons
     document.querySelectorAll('.close-modal').forEach(button => {
         button.addEventListener('click', () => {
-            document.getElementById('gacha-modal').classList.remove('active');
-            document.getElementById('gacha-coupon-modal').classList.remove('active');
-            document.getElementById('battle-result-modal').classList.remove('active');
-            document.getElementById('sell-card-modal').classList.remove('active');
-            document.getElementById('sell-all-modal').classList.remove('active');
-            document.getElementById('settings-modal').classList.remove('active');
-            document.getElementById('topup-modal').classList.remove('active');
-            document.getElementById('skill-modal').classList.remove('active');
+            document.getElementById('gacha-modal')?.classList.remove('active');
+            document.getElementById('gacha-coupon-modal')?.classList.remove('active');
+            document.getElementById('battle-result-modal')?.classList.remove('active');
+            document.getElementById('sell-card-modal')?.classList.remove('active');
+            document.getElementById('sell-all-modal')?.classList.remove('active');
+            document.getElementById('settings-modal')?.classList.remove('active');
+            document.getElementById('topup-modal')?.classList.remove('active');
+            document.getElementById('skill-modal')?.classList.remove('active');
         });
     });
-
-    document.getElementById('gacha-ok-btn').addEventListener('click', () => {
-        document.getElementById('gacha-modal').classList.remove('active');
-    });
-
-    document.getElementById('use-coupon-btn').addEventListener('click', () => {
-        if (selectedCouponCrate) {
-            openGachaCrateWithCoupon(selectedCouponCrate.rarity);
-            document.getElementById('gacha-coupon-modal').classList.remove('active');
-        }
-    });
-
-    document.getElementById('battle-continue-btn').addEventListener('click', () => {
-        document.getElementById('battle-result-modal').classList.remove('active');
-        resetBattle();
-    });
-
-    document.getElementById('confirm-sell-btn').addEventListener('click', confirmSellCard);
-    document.getElementById('cancel-sell-btn').addEventListener('click', () => {
-        document.getElementById('sell-card-modal').classList.remove('active');
-    });
-
-    document.getElementById('sell-all-btn').addEventListener('click', showSellAllModal);
-    document.getElementById('confirm-sell-all-btn').addEventListener('click', confirmSellAllCards);
-    document.getElementById('cancel-sell-all-btn').addEventListener('click', () => {
-        document.getElementById('sell-all-modal').classList.remove('active');
-    });
-
-    document.getElementById('settings-btn').addEventListener('click', () => {
-        document.getElementById('settings-modal').classList.add('active');
-    });
-
-    document.getElementById('settings-save-btn').addEventListener('click', () => {
-        gameData.settings.bgmEnabled = document.getElementById('bgm-toggle').checked;
-        gameData.settings.bgmVolume = document.getElementById('bgm-volume').value;
-        gameData.settings.sfxEnabled = document.getElementById('sfx-toggle').checked;
-        gameData.settings.sfxVolume = document.getElementById('sfx-volume').value;
-        gameData.settings.vibration = document.getElementById('vibration-toggle').checked;
-        gameData.settings.notifications = document.getElementById('notifications-toggle').checked;
-        gameData.settings.animatedHeader = document.getElementById('animated-header-toggle').checked;
-        
-        applySettings();
-        saveGameData();
-        document.getElementById('settings-modal').classList.remove('active');
-    });
-
-    document.getElementById('topup-btn').addEventListener('click', () => {
-        document.getElementById('topup-modal').classList.add('active');
-    });
-
-    document.getElementById('topup-close-btn').addEventListener('click', () => {
-        document.getElementById('topup-modal').classList.remove('active');
-    });
-
+    
+    // Gacha OK button
+    const gachaOkBtn = document.getElementById('gacha-ok-btn');
+    if (gachaOkBtn) {
+        gachaOkBtn.addEventListener('click', () => {
+            document.getElementById('gacha-modal')?.classList.remove('active');
+        });
+    }
+    
+    // Use coupon button
+    const useCouponBtn = document.getElementById('use-coupon-btn');
+    if (useCouponBtn) {
+        useCouponBtn.addEventListener('click', () => {
+            if (selectedCouponCrate) {
+                openGachaCrateWithCoupon(selectedCouponCrate.rarity);
+                document.getElementById('gacha-coupon-modal')?.classList.remove('active');
+            }
+        });
+    }
+    
+    // Battle continue button
+    const battleContinueBtn = document.getElementById('battle-continue-btn');
+    if (battleContinueBtn) {
+        battleContinueBtn.addEventListener('click', () => {
+            document.getElementById('battle-result-modal')?.classList.remove('active');
+            resetBattle();
+        });
+    }
+    
+    // Sell card buttons
+    const confirmSellBtn = document.getElementById('confirm-sell-btn');
+    if (confirmSellBtn) {
+        confirmSellBtn.addEventListener('click', confirmSellCard);
+    }
+    
+    const cancelSellBtn = document.getElementById('cancel-sell-btn');
+    if (cancelSellBtn) {
+        cancelSellBtn.addEventListener('click', () => {
+            document.getElementById('sell-card-modal')?.classList.remove('active');
+        });
+    }
+    
+    // Sell all buttons
+    const sellAllBtn = document.getElementById('sell-all-btn');
+    if (sellAllBtn) {
+        sellAllBtn.addEventListener('click', showSellAllModal);
+    }
+    
+    const confirmSellAllBtn = document.getElementById('confirm-sell-all-btn');
+    if (confirmSellAllBtn) {
+        confirmSellAllBtn.addEventListener('click', confirmSellAllCards);
+    }
+    
+    const cancelSellAllBtn = document.getElementById('cancel-sell-all-btn');
+    if (cancelSellAllBtn) {
+        cancelSellAllBtn.addEventListener('click', () => {
+            document.getElementById('sell-all-modal')?.classList.remove('active');
+        });
+    }
+    
+    // Settings button
+    const settingsBtn = document.getElementById('settings-btn');
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            document.getElementById('settings-modal')?.classList.add('active');
+        });
+    }
+    
+    // Settings save button
+    const settingsSaveBtn = document.getElementById('settings-save-btn');
+    if (settingsSaveBtn) {
+        settingsSaveBtn.addEventListener('click', () => {
+            gameData.settings.bgmEnabled = document.getElementById('bgm-toggle').checked;
+            gameData.settings.bgmVolume = document.getElementById('bgm-volume').value;
+            gameData.settings.sfxEnabled = document.getElementById('sfx-toggle').checked;
+            gameData.settings.sfxVolume = document.getElementById('sfx-volume').value;
+            gameData.settings.vibration = document.getElementById('vibration-toggle').checked;
+            gameData.settings.notifications = document.getElementById('notifications-toggle').checked;
+            gameData.settings.animatedHeader = document.getElementById('animated-header-toggle').checked;
+            
+            applySettings();
+            saveGameData();
+            document.getElementById('settings-modal')?.classList.remove('active');
+        });
+    }
+    
+    // Topup button
+    const topupBtn = document.getElementById('topup-btn');
+    if (topupBtn) {
+        topupBtn.addEventListener('click', () => {
+            document.getElementById('topup-modal')?.classList.add('active');
+        });
+    }
+    
+    // Topup close button
+    const topupCloseBtn = document.getElementById('topup-close-btn');
+    if (topupCloseBtn) {
+        topupCloseBtn.addEventListener('click', () => {
+            document.getElementById('topup-modal')?.classList.remove('active');
+        });
+    }
+    
+    // Topup options
     document.querySelectorAll('.topup-option').forEach(option => {
         option.addEventListener('click', () => {
             const amount = parseInt(option.getAttribute('data-amount'));
@@ -6618,101 +6962,139 @@ function setupEventListeners() {
             
             addToBattleLog(`Successfully purchased ${amount} coins!`, 'player');
             
-            document.getElementById('topup-modal').classList.remove('active');
+            document.getElementById('topup-modal')?.classList.remove('active');
         });
     });
-
-    document.getElementById('skill-close-btn').addEventListener('click', () => {
-        document.getElementById('skill-modal').classList.remove('active');
-    });
+    
+    // Skill close button
+    const skillCloseBtn = document.getElementById('skill-close-btn');
+    if (skillCloseBtn) {
+        skillCloseBtn.addEventListener('click', () => {
+            document.getElementById('skill-modal')?.classList.remove('active');
+        });
+    }
+    
+    console.log("Event listeners setup complete");
 }
 
 // SETUP ADDITIONAL EVENT LISTENERS
 function setupAdditionalEventListeners() {
-    document.getElementById('redeem-btn').addEventListener('click', redeemCode);
+    const redeemBtn = document.getElementById('redeem-btn');
+    if (redeemBtn) {
+        redeemBtn.addEventListener('click', redeemCode);
+    }
     
-    document.getElementById('buy-discount-crate-btn').addEventListener('click', buyDiscountCrate);
+    const buyDiscountCrateBtn = document.getElementById('buy-discount-crate-btn');
+    if (buyDiscountCrateBtn) {
+        buyDiscountCrateBtn.addEventListener('click', buyDiscountCrate);
+    }
     
-    document.getElementById('redeem-code-input').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            redeemCode();
-        }
-    });
+    const redeemCodeInput = document.getElementById('redeem-code-input');
+    if (redeemCodeInput) {
+        redeemCodeInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                redeemCode();
+            }
+        });
+    }
 }
 
 // SETUP SETTINGS MODAL EVENTS
 function setupSettingsModalEvents() {
-    document.getElementById('bgm-toggle').addEventListener('change', (e) => {
-        gameData.settings.bgmEnabled = e.target.checked;
-        applySettings();
-    });
+    const bgmToggle = document.getElementById('bgm-toggle');
+    if (bgmToggle) {
+        bgmToggle.addEventListener('change', (e) => {
+            gameData.settings.bgmEnabled = e.target.checked;
+            applySettings();
+        });
+    }
     
-    document.getElementById('bgm-volume').addEventListener('input', (e) => {
-        const value = e.target.value;
-        document.getElementById('bgm-volume-label').textContent = value + '%';
-        gameData.settings.bgmVolume = parseInt(value);
-        applySettings();
-    });
+    const bgmVolume = document.getElementById('bgm-volume');
+    if (bgmVolume) {
+        bgmVolume.addEventListener('input', (e) => {
+            const value = e.target.value;
+            const bgmVolumeLabel = document.getElementById('bgm-volume-label');
+            if (bgmVolumeLabel) bgmVolumeLabel.textContent = value + '%';
+            gameData.settings.bgmVolume = parseInt(value);
+            applySettings();
+        });
+    }
     
-    document.getElementById('sfx-toggle').addEventListener('change', (e) => {
-        gameData.settings.sfxEnabled = e.target.checked;
-        applySettings();
-    });
+    const sfxToggle = document.getElementById('sfx-toggle');
+    if (sfxToggle) {
+        sfxToggle.addEventListener('change', (e) => {
+            gameData.settings.sfxEnabled = e.target.checked;
+            applySettings();
+        });
+    }
     
-    document.getElementById('sfx-volume').addEventListener('input', (e) => {
-        const value = e.target.value;
-        document.getElementById('sfx-volume-label').textContent = value + '%';
-        gameData.settings.sfxVolume = parseInt(value);
-        applySettings();
-    });
+    const sfxVolume = document.getElementById('sfx-volume');
+    if (sfxVolume) {
+        sfxVolume.addEventListener('input', (e) => {
+            const value = e.target.value;
+            const sfxVolumeLabel = document.getElementById('sfx-volume-label');
+            if (sfxVolumeLabel) sfxVolumeLabel.textContent = value + '%';
+            gameData.settings.sfxVolume = parseInt(value);
+            applySettings();
+        });
+    }
     
-    document.getElementById('vibration-toggle').addEventListener('change', (e) => {
-        gameData.settings.vibration = e.target.checked;
-    });
+    const vibrationToggle = document.getElementById('vibration-toggle');
+    if (vibrationToggle) {
+        vibrationToggle.addEventListener('change', (e) => {
+            gameData.settings.vibration = e.target.checked;
+        });
+    }
     
-    document.getElementById('notifications-toggle').addEventListener('change', (e) => {
-        gameData.settings.notifications = e.target.checked;
-    });
+    const notificationsToggle = document.getElementById('notifications-toggle');
+    if (notificationsToggle) {
+        notificationsToggle.addEventListener('change', (e) => {
+            gameData.settings.notifications = e.target.checked;
+        });
+    }
     
-    document.getElementById('animated-header-toggle').addEventListener('change', (e) => {
-        gameData.settings.animatedHeader = e.target.checked;
-        applySettings();
-    });
+    const animatedHeaderToggle = document.getElementById('animated-header-toggle');
+    if (animatedHeaderToggle) {
+        animatedHeaderToggle.addEventListener('change', (e) => {
+            gameData.settings.animatedHeader = e.target.checked;
+            applySettings();
+        });
+    }
     
-    document.getElementById('battle-animations-toggle').addEventListener('change', (e) => {
-        gameData.settings.battleAnimations = e.target.checked;
-    });
+    const battleAnimationsToggle = document.getElementById('battle-animations-toggle');
+    if (battleAnimationsToggle) {
+        battleAnimationsToggle.addEventListener('change', (e) => {
+            gameData.settings.battleAnimations = e.target.checked;
+        });
+    }
     
-    document.getElementById('settings-save-btn').addEventListener('click', () => {
-        saveGameData();
-        addToBattleLog("Settings saved successfully!", 'player');
-        document.getElementById('settings-modal').classList.remove('active');
-    });
+    const settingsSaveBtn = document.getElementById('settings-save-btn');
+    if (settingsSaveBtn) {
+        settingsSaveBtn.addEventListener('click', () => {
+            saveGameData();
+            addToBattleLog("Settings saved successfully!", 'player');
+            document.getElementById('settings-modal')?.classList.remove('active');
+        });
+    }
     
-    document.getElementById('settings-btn').addEventListener('click', () => {
-        updateSettingsModal();
-        document.getElementById('settings-modal').classList.add('active');
-    });
+    const settingsBtn = document.getElementById('settings-btn');
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            updateSettingsModal();
+            document.getElementById('settings-modal')?.classList.add('active');
+        });
+    }
 }
 
 // UPDATE SETTINGS MODAL
 function updateSettingsModal() {
-    document.getElementById('settings-username').textContent = gameData.username;
-    document.getElementById('settings-level').textContent = gameData.level;
-    document.getElementById('settings-total-cards').textContent = gameData.cards.length;
+    const settingsUsername = document.getElementById('settings-username');
+    const settingsLevel = document.getElementById('settings-level');
+    const settingsTotalCards = document.getElementById('settings-total-cards');
     
-    document.getElementById('bgm-toggle').checked = gameData.settings.bgmEnabled;
-    document.getElementById('bgm-volume').value = gameData.settings.bgmVolume;
-    document.getElementById('bgm-volume-label').textContent = gameData.settings.bgmVolume + '%';
-    
-    document.getElementById('sfx-toggle').checked = gameData.settings.sfxEnabled;
-    document.getElementById('sfx-volume').value = gameData.settings.sfxVolume;
-    document.getElementById('sfx-volume-label').textContent = gameData.settings.sfxVolume + '%';
-    
-    document.getElementById('vibration-toggle').checked = gameData.settings.vibration;
-    document.getElementById('notifications-toggle').checked = gameData.settings.notifications;
-    document.getElementById('animated-header-toggle').checked = gameData.settings.animatedHeader;
-    document.getElementById('battle-animations-toggle').checked = gameData.settings.battleAnimations !== false;
+    if (settingsUsername) settingsUsername.textContent = gameData.username;
+    if (settingsLevel) settingsLevel.textContent = gameData.level;
+    if (settingsTotalCards) settingsTotalCards.textContent = gameData.cards.length;
     
     updateRedeemHistoryDisplay();
 }
@@ -6720,6 +7102,8 @@ function updateSettingsModal() {
 // UPDATE REDEEM HISTORY DISPLAY
 function updateRedeemHistoryDisplay() {
     const historyList = document.getElementById('redeem-history-list');
+    if (!historyList) return;
+    
     historyList.innerHTML = '';
     
     const recentHistory = gameData.redeemCodes.history.slice(-5).reverse();
@@ -6761,6 +7145,8 @@ function updateRedeemHistoryDisplay() {
 function showGachaCouponModal(crate) {
     selectedCouponCrate = crate;
     const couponOptions = document.querySelector('.gacha-coupon-options');
+    if (!couponOptions) return;
+    
     couponOptions.innerHTML = '';
     
     const coinOption = document.createElement('div');
@@ -6798,12 +7184,14 @@ function showGachaCouponModal(crate) {
         });
     });
     
-    document.getElementById('gacha-coupon-modal').classList.add('active');
+    document.getElementById('gacha-coupon-modal')?.classList.add('active');
 }
 
 // OPEN GACHA CRATE WITH COUPON
 function openGachaCrateWithCoupon(rarity) {
     const selectedOption = document.querySelector('.gacha-coupon-option.selected');
+    if (!selectedOption) return;
+    
     const purchaseType = selectedOption.getAttribute('data-type');
     
     if (purchaseType === 'coupon') {
@@ -6832,8 +7220,10 @@ function openGachaCrateWithCoupon(rarity) {
     
     openGachaCrate(rarity);
     
-    const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-    loadStoreItems(activeCategory);
+    const activeCategory = document.querySelector('.category-btn.active');
+    if (activeCategory) {
+        loadStoreItems(activeCategory.getAttribute('data-category'));
+    }
     
     saveGameData();
 }
@@ -6925,6 +7315,8 @@ function completeTrade(skill, cardId) {
             gameData.currentCard = null;
             if (gameData.cards.length > 0) {
                 setCurrentCard(gameData.cards[0]);
+            } else {
+                resetPlayerCardDisplay();
             }
         }
         
@@ -6938,8 +7330,10 @@ function completeTrade(skill, cardId) {
         updateHomeStats();
         updateInventoryDisplay();
         
-        const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-        loadStoreItems(activeCategory);
+        const activeCategory = document.querySelector('.category-btn.active');
+        if (activeCategory) {
+            loadStoreItems(activeCategory.getAttribute('data-category'));
+        }
         
         saveGameData();
     }
@@ -6948,6 +7342,8 @@ function completeTrade(skill, cardId) {
 // LOAD QUESTS
 function loadQuests(questType) {
     const questList = document.querySelector('.quest-list');
+    if (!questList) return;
+    
     questList.innerHTML = '';
     
     if (questType === 'battlepass') {
@@ -6956,6 +7352,7 @@ function loadQuests(questType) {
     }
     
     const quests = gameData.quests[questType];
+    if (!quests) return;
     
     quests.forEach(quest => {
         const progressPercent = Math.min((quest.progress / quest.target) * 100, 100);
@@ -6987,19 +7384,19 @@ function loadQuests(questType) {
         questList.appendChild(questElement);
     });
 
-    document.querySelectorAll('.claim-btn').forEach(button => {
-        if (!button.disabled) {
-            button.addEventListener('click', (e) => {
-                const questName = e.target.closest('.quest-item').querySelector('.quest-name').textContent;
-                claimQuestReward(questName, questType);
-            });
-        }
+    document.querySelectorAll('.claim-btn:not([disabled])').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const questName = e.target.closest('.quest-item').querySelector('.quest-name').textContent;
+            claimQuestReward(questName, questType);
+        });
     });
 }
 
 // LOAD BATTLE PASS
 function loadBattlePass() {
     const questList = document.querySelector('.quest-list');
+    if (!questList) return;
+    
     const battlePassContainer = document.createElement('div');
     battlePassContainer.className = 'battle-pass-container';
     
@@ -7241,7 +7638,8 @@ function startBattle() {
     playerHealth = gameData.currentCard.maxHealth;
     enemyHealth = 100;
     
-    document.getElementById('battle').classList.add('battle-active');
+    const battleElement = document.getElementById('battle');
+    if (battleElement) battleElement.classList.add('battle-active');
     
     if (gameData.settings.sfxEnabled) {
         sounds.battleStart.play().catch(e => console.log("Audio play failed"));
@@ -7266,21 +7664,28 @@ function startBattle() {
     const enemyMaxHealth = document.getElementById('enemy-max-health');
     const enemyAttack = document.getElementById('enemy-attack');
     
-    enemyCardImg.src = enemyCard.image;
-    enemyCardName.textContent = enemyCard.name;
-    enemyMaxHealth.textContent = enemyCard.maxHealth;
-    enemyAttack.textContent = enemyCard.attack;
+    if (enemyCardImg) enemyCardImg.src = enemyCard.image;
+    if (enemyCardName) enemyCardName.textContent = enemyCard.name;
+    if (enemyMaxHealth) enemyMaxHealth.textContent = enemyCard.maxHealth;
+    if (enemyAttack) enemyAttack.textContent = enemyCard.attack;
     
     const enemyCardElement = document.querySelector('.enemy-card .card');
-    enemyCardElement.className = 'card';
-    enemyCardElement.classList.add(`rarity-${enemyCard.rarity}`);
+    if (enemyCardElement) {
+        enemyCardElement.className = 'card';
+        enemyCardElement.classList.add(`rarity-${enemyCard.rarity}`);
+    }
     
     applySkillEffects();
     
-    document.querySelector('.player-health').style.width = '100%';
-    document.querySelector('.enemy-health').style.width = '100%';
+    const playerHealthBar = document.querySelector('.player-health');
+    const enemyHealthBar = document.querySelector('.enemy-health');
     
-    document.querySelector('.battle-log').innerHTML = '';
+    if (playerHealthBar) playerHealthBar.style.width = '100%';
+    if (enemyHealthBar) enemyHealthBar.style.width = '100%';
+    
+    const battleLog = document.querySelector('.battle-log');
+    if (battleLog) battleLog.innerHTML = '';
+    
     addToBattleLog("Battle started! Auto battle engaged!", 'player');
     
     battleInterval = setInterval(autoBattle, 1500);
@@ -7322,10 +7727,13 @@ function applySkillEffects() {
             break;
     }
     
-    document.querySelector('.player-health').style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
-    document.querySelector('.enemy-health').style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+    const playerHealthBar = document.querySelector('.player-health');
+    const enemyHealthBar = document.querySelector('.enemy-health');
+    const playerAttack = document.getElementById('player-attack');
     
-    document.getElementById('player-attack').textContent = gameData.currentCard.attack;
+    if (playerHealthBar) playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+    if (enemyHealthBar) enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+    if (playerAttack) playerAttack.textContent = gameData.currentCard.attack;
     
     if (enemySkill) {
         if (gameData.settings.sfxEnabled) {
@@ -7357,14 +7765,17 @@ function applySkillEffects() {
                 break;
         }
         
-        document.querySelector('.player-health').style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
-        document.querySelector('.enemy-health').style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+        if (playerHealthBar) playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+        if (enemyHealthBar) enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
         
-        document.getElementById('enemy-attack').textContent = enemyCard.attack;
+        const enemyAttack = document.getElementById('enemy-attack');
+        if (enemyAttack) enemyAttack.textContent = enemyCard.attack;
         
         const enemySkillEffect = document.getElementById('enemy-skill-effect');
-        enemySkillEffect.className = 'skill-effect';
-        enemySkillEffect.classList.add(`${enemySkill.name.toLowerCase().replace(' ', '-')}-effect`);
+        if (enemySkillEffect) {
+            enemySkillEffect.className = 'skill-effect';
+            enemySkillEffect.classList.add(`${enemySkill.name.toLowerCase().replace(' ', '-')}-effect`);
+        }
     }
 }
 
@@ -7380,7 +7791,8 @@ function autoBattle() {
         
         if (boostTimeLeft <= 0) {
             activeBoost = null;
-            document.getElementById('player-boost-effect').classList.add('hidden');
+            const playerBoostEffect = document.getElementById('player-boost-effect');
+            if (playerBoostEffect) playerBoostEffect.classList.add('hidden');
             addToBattleLog("Your attack boost expired!", 'player');
         }
     }
@@ -7397,12 +7809,14 @@ function autoBattle() {
             case 'Iron Strike':
                 if (enemyBoost && enemyBoostTimeLeft > 0) {
                     playerHealth = Math.min(playerHealth + 5, gameData.currentCard.maxHealth);
-                    document.querySelector('.player-health').style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+                    const playerHealthBar = document.querySelector('.player-health');
+                    if (playerHealthBar) playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
                     addToBattleLog("Iron Strike bonus: +5 HP (enemy has Attack Boost)!", 'player');
                 }
                 break;
             case 'Ice Guard':
                 if (enemyBoost && enemyBoostTimeLeft > 0) {
+                    // Efek Ice Guard saat enemy punya boost
                 }
                 if (enemyShield && enemyShieldTimeLeft > 0) {
                     enemyShieldTimeLeft -= 2;
@@ -7419,8 +7833,10 @@ function autoBattle() {
         
         if (enemyShieldTimeLeft <= 0) {
             enemyShield = null;
-            document.getElementById('enemy-shield-effect').classList.add('hidden');
-            document.getElementById('enemy-shield-status').classList.add('hidden');
+            const enemyShieldEffect = document.getElementById('enemy-shield-effect');
+            const enemyShieldStatus = document.getElementById('enemy-shield-status');
+            if (enemyShieldEffect) enemyShieldEffect.classList.add('hidden');
+            if (enemyShieldStatus) enemyShieldStatus.classList.add('hidden');
             addToBattleLog("Enemy's shield broke!", 'enemy');
         }
     }
@@ -7429,7 +7845,9 @@ function autoBattle() {
     
     if (enemyHealth < 0) enemyHealth = 0;
     
-    document.querySelector('.enemy-health').style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+    const enemyHealthBar = document.querySelector('.enemy-health');
+    if (enemyHealthBar) enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+    
     addToBattleLog(`${gameData.currentCard.name} attacked for ${actualDamage} damage!`, 'player');
     
     if (gameData.settings.sfxEnabled) {
@@ -7437,13 +7855,15 @@ function autoBattle() {
     }
     
     const enemyCardElement = document.querySelector('.enemy-card .card');
-    enemyCardElement.classList.add('shake', 'attack-flash');
-    
-    showDamageText(enemyCardElement, actualDamage, false);
-    
-    setTimeout(() => {
-        enemyCardElement.classList.remove('shake', 'attack-flash');
-    }, 500);
+    if (enemyCardElement) {
+        enemyCardElement.classList.add('shake', 'attack-flash');
+        
+        showDamageText(enemyCardElement, actualDamage, false);
+        
+        setTimeout(() => {
+            enemyCardElement.classList.remove('shake', 'attack-flash');
+        }, 500);
+    }
     
     if (enemyHealth <= 0) {
         endBattle(true);
@@ -7461,8 +7881,10 @@ function autoBattle() {
             if (shield) {
                 enemyShield = shield;
                 enemyShieldTimeLeft = shield.duration;
-                document.getElementById('enemy-shield-effect').classList.remove('hidden');
-                document.getElementById('enemy-shield-status').classList.remove('hidden');
+                const enemyShieldEffect = document.getElementById('enemy-shield-effect');
+                const enemyShieldStatus = document.getElementById('enemy-shield-status');
+                if (enemyShieldEffect) enemyShieldEffect.classList.remove('hidden');
+                if (enemyShieldStatus) enemyShieldStatus.classList.remove('hidden');
                 addToBattleLog(`${enemyCard.name} activated a shield!`, 'enemy');
             }
         }
@@ -7475,8 +7897,10 @@ function autoBattle() {
             if (boost) {
                 enemyBoost = boost;
                 enemyBoostTimeLeft = boost.duration;
-                document.getElementById('enemy-boost-effect').classList.remove('hidden');
-                document.getElementById('enemy-boost-status').classList.remove('hidden');
+                const enemyBoostEffect = document.getElementById('enemy-boost-effect');
+                const enemyBoostStatus = document.getElementById('enemy-boost-status');
+                if (enemyBoostEffect) enemyBoostEffect.classList.remove('hidden');
+                if (enemyBoostStatus) enemyBoostStatus.classList.remove('hidden');
                 addToBattleLog(`${enemyCard.name} activated an attack boost!`, 'enemy');
             }
         }
@@ -7489,8 +7913,10 @@ function autoBattle() {
             
             if (enemyBoostTimeLeft <= 0) {
                 enemyBoost = null;
-                document.getElementById('enemy-boost-effect').classList.add('hidden');
-                document.getElementById('enemy-boost-status').classList.add('hidden');
+                const enemyBoostEffect = document.getElementById('enemy-boost-effect');
+                const enemyBoostStatus = document.getElementById('enemy-boost-status');
+                if (enemyBoostEffect) enemyBoostEffect.classList.add('hidden');
+                if (enemyBoostStatus) enemyBoostStatus.classList.add('hidden');
                 addToBattleLog("Enemy's attack boost expired!", 'enemy');
             }
         }
@@ -7506,12 +7932,14 @@ function autoBattle() {
                 case 'Iron Strike':
                     if (activeBoost && boostTimeLeft > 0) {
                         enemyHealth = Math.min(enemyHealth + 5, enemyCard.maxHealth);
-                        document.querySelector('.enemy-health').style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
+                        const enemyHealthBar = document.querySelector('.enemy-health');
+                        if (enemyHealthBar) enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
                         addToBattleLog("Enemy Iron Strike bonus: +5 HP (you have Attack Boost)!", 'enemy');
                     }
                     break;
                 case 'Ice Guard':
                     if (activeBoost && boostTimeLeft > 0) {
+                        // Efek Ice Guard enemy
                     }
                     if (activeShield && shieldTimeLeft > 0) {
                         shieldTimeLeft -= 2;
@@ -7529,7 +7957,8 @@ function autoBattle() {
             
             if (shieldTimeLeft <= 0) {
                 activeShield = null;
-                document.getElementById('player-shield-effect').classList.add('hidden');
+                const playerShieldEffect = document.getElementById('player-shield-effect');
+                if (playerShieldEffect) playerShieldEffect.classList.add('hidden');
                 addToBattleLog("Your shield broke!", 'player');
             }
         }
@@ -7543,7 +7972,9 @@ function autoBattle() {
         
         if (playerHealth < 0) playerHealth = 0;
         
-        document.querySelector('.player-health').style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+        const playerHealthBar = document.querySelector('.player-health');
+        if (playerHealthBar) playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
+        
         addToBattleLog(`${enemyCard.name} attacked for ${damage} damage!`, 'enemy');
         
         if (gameData.settings.sfxEnabled) {
@@ -7551,13 +7982,15 @@ function autoBattle() {
         }
         
         const playerCardElement = document.querySelector('.player-card .card');
-        playerCardElement.classList.add('shake', 'attack-flash');
-        
-        showDamageText(playerCardElement, damage, true);
-        
-        setTimeout(() => {
-            playerCardElement.classList.remove('shake', 'attack-flash');
-        }, 500);
+        if (playerCardElement) {
+            playerCardElement.classList.add('shake', 'attack-flash');
+            
+            showDamageText(playerCardElement, damage, true);
+            
+            setTimeout(() => {
+                playerCardElement.classList.remove('shake', 'attack-flash');
+            }, 500);
+        }
         
         if (playerHealth <= 0) {
             endBattle(false);
@@ -7584,7 +8017,9 @@ function showDamageText(targetElement, damage, isPlayer) {
     document.body.appendChild(damageText);
     
     setTimeout(() => {
-        damageText.remove();
+        if (damageText.parentNode) {
+            damageText.remove();
+        }
     }, 1000);
 }
 
@@ -7601,7 +8036,8 @@ function activateShield() {
     gameData.shields.shift();
     updateInventoryDisplay();
     
-    document.getElementById('player-shield-effect').classList.remove('hidden');
+    const playerShieldEffect = document.getElementById('player-shield-effect');
+    if (playerShieldEffect) playerShieldEffect.classList.remove('hidden');
     
     if (gameData.settings.sfxEnabled) {
         sounds.shield.play().catch(e => console.log("Audio play failed"));
@@ -7609,10 +8045,13 @@ function activateShield() {
     
     addToBattleLog(`You activated ${activeShield.name}!`, 'player');
     
-    document.getElementById('shield-btn').classList.add('pulse', 'power-up');
-    setTimeout(() => {
-        document.getElementById('shield-btn').classList.remove('pulse', 'power-up');
-    }, 1000);
+    const shieldBtn = document.getElementById('shield-btn');
+    if (shieldBtn) {
+        shieldBtn.classList.add('pulse', 'power-up');
+        setTimeout(() => {
+            shieldBtn.classList.remove('pulse', 'power-up');
+        }, 1000);
+    }
 }
 
 // ACTIVATE BOOST
@@ -7628,7 +8067,8 @@ function activateBoost() {
     gameData.attackBoosts.shift();
     updateInventoryDisplay();
     
-    document.getElementById('player-boost-effect').classList.remove('hidden');
+    const playerBoostEffect = document.getElementById('player-boost-effect');
+    if (playerBoostEffect) playerBoostEffect.classList.remove('hidden');
     
     if (gameData.settings.sfxEnabled) {
         sounds.boost.play().catch(e => console.log("Audio play failed"));
@@ -7636,10 +8076,13 @@ function activateBoost() {
     
     addToBattleLog(`You activated ${activeBoost.name}!`, 'player');
     
-    document.getElementById('boost-btn').classList.add('pulse', 'power-up');
-    setTimeout(() => {
-        document.getElementById('boost-btn').classList.remove('pulse', 'power-up');
-    }, 1000);
+    const boostBtn = document.getElementById('boost-btn');
+    if (boostBtn) {
+        boostBtn.classList.add('pulse', 'power-up');
+        setTimeout(() => {
+            boostBtn.classList.remove('pulse', 'power-up');
+        }, 1000);
+    }
 }
 
 // END BATTLE
@@ -7647,26 +8090,30 @@ function endBattle(playerWon) {
     gameData.isBattleActive = false;
     clearInterval(battleInterval);
     
-    document.getElementById('battle').classList.remove('battle-active');
+    const battleElement = document.getElementById('battle');
+    if (battleElement) battleElement.classList.remove('battle-active');
     
-    gameData.currentCard.battles++;
-    if (playerWon) {
-        gameData.currentCard.wins++;
-    }
-    
-    if (gameData.skills.equipped[gameData.currentCard.id]) {
-        const equippedSkill = gameData.skills.equipped[gameData.currentCard.id];
-        
-        switch(equippedSkill.name) {
-            case 'War Blitz':
-                gameData.currentCard.attack -= 7;
-                break;
-            case 'Iron Strike':
-                gameData.currentCard.attack += 6;
-                break;
+    if (gameData.currentCard) {
+        gameData.currentCard.battles++;
+        if (playerWon) {
+            gameData.currentCard.wins++;
         }
         
-        document.getElementById('player-attack').textContent = gameData.currentCard.attack;
+        if (gameData.skills.equipped[gameData.currentCard.id]) {
+            const equippedSkill = gameData.skills.equipped[gameData.currentCard.id];
+            
+            switch(equippedSkill.name) {
+                case 'War Blitz':
+                    gameData.currentCard.attack -= 7;
+                    break;
+                case 'Iron Strike':
+                    gameData.currentCard.attack += 6;
+                    break;
+            }
+            
+            const playerAttack = document.getElementById('player-attack');
+            if (playerAttack) playerAttack.textContent = gameData.currentCard.attack;
+        }
     }
     
     updateQuestProgress('Battle Master', playerWon ? 1 : 0);
@@ -7730,27 +8177,29 @@ function endBattle(playerWon) {
 // SHOW BATTLE RESULT
 function showBattleResult(isWin, coins, xp) {
     const modal = document.getElementById('battle-result-modal');
+    if (!modal) return;
+    
     const resultSection = modal.querySelector('.battle-result');
-    const resultIcon = resultSection.querySelector('.result-icon i');
-    const resultTitle = resultSection.querySelector('.result-title');
-    const resultDesc = resultSection.querySelector('.result-desc');
-    const rewardCoins = resultSection.querySelector('.reward-item:nth-child(1) .reward-amount');
-    const rewardXp = resultSection.querySelector('.reward-item:nth-child(2) .reward-amount');
+    const resultIcon = resultSection?.querySelector('.result-icon i');
+    const resultTitle = resultSection?.querySelector('.result-title');
+    const resultDesc = resultSection?.querySelector('.result-desc');
+    const rewardCoins = resultSection?.querySelector('.reward-item:nth-child(1) .reward-amount');
+    const rewardXp = resultSection?.querySelector('.reward-item:nth-child(2) .reward-amount');
     
     if (isWin) {
-        resultSection.className = 'battle-result win';
-        resultIcon.className = 'fas fa-trophy';
-        resultTitle.textContent = 'Victory!';
-        resultDesc.textContent = 'You defeated the enemy idol!';
-        rewardCoins.textContent = `+${coins}`;
-        rewardXp.textContent = `+${xp} XP`;
+        if (resultSection) resultSection.className = 'battle-result win';
+        if (resultIcon) resultIcon.className = 'fas fa-trophy';
+        if (resultTitle) resultTitle.textContent = 'Victory!';
+        if (resultDesc) resultDesc.textContent = 'You defeated the enemy idol!';
+        if (rewardCoins) rewardCoins.textContent = `+${coins}`;
+        if (rewardXp) rewardXp.textContent = `+${xp} XP`;
     } else {
-        resultSection.className = 'battle-result lose';
-        resultIcon.className = 'fas fa-times';
-        resultTitle.textContent = 'Defeat!';
-        resultDesc.textContent = 'Your idol was defeated!';
-        rewardCoins.textContent = '+0';
-        rewardXp.textContent = '+0 XP';
+        if (resultSection) resultSection.className = 'battle-result lose';
+        if (resultIcon) resultIcon.className = 'fas fa-times';
+        if (resultTitle) resultTitle.textContent = 'Defeat!';
+        if (resultDesc) resultDesc.textContent = 'Your idol was defeated!';
+        if (rewardCoins) rewardCoins.textContent = '+0';
+        if (rewardXp) rewardXp.textContent = '+0 XP';
     }
     
     modal.classList.add('active');
@@ -7760,8 +8209,13 @@ function showBattleResult(isWin, coins, xp) {
 function resetBattle() {
     playerHealth = gameData.currentCard ? gameData.currentCard.maxHealth : 0;
     enemyHealth = 100;
-    document.querySelector('.player-health').style.width = gameData.currentCard ? '100%' : '0%';
-    document.querySelector('.enemy-health').style.width = '100%';
+    
+    const playerHealthBar = document.querySelector('.player-health');
+    const enemyHealthBar = document.querySelector('.enemy-health');
+    
+    if (playerHealthBar) playerHealthBar.style.width = gameData.currentCard ? '100%' : '0%';
+    if (enemyHealthBar) enemyHealthBar.style.width = '100%';
+    
     isPlayerTurn = true;
     activeShield = null;
     activeBoost = null;
@@ -7773,20 +8227,33 @@ function resetBattle() {
     enemyBoostTimeLeft = 0;
     enemySkill = null;
     
-    document.getElementById('player-shield-effect').classList.add('hidden');
-    document.getElementById('player-boost-effect').classList.add('hidden');
-    document.getElementById('enemy-shield-effect').classList.add('hidden');
-    document.getElementById('enemy-boost-effect').classList.add('hidden');
-    document.getElementById('enemy-skill-effect').classList.add('hidden');
-    document.getElementById('enemy-shield-status').classList.add('hidden');
-    document.getElementById('enemy-boost-status').classList.add('hidden');
+    const playerShieldEffect = document.getElementById('player-shield-effect');
+    const playerBoostEffect = document.getElementById('player-boost-effect');
+    const enemyShieldEffect = document.getElementById('enemy-shield-effect');
+    const enemyBoostEffect = document.getElementById('enemy-boost-effect');
+    const enemySkillEffect = document.getElementById('enemy-skill-effect');
+    const enemyShieldStatus = document.getElementById('enemy-shield-status');
+    const enemyBoostStatus = document.getElementById('enemy-boost-status');
     
-    document.querySelector('.battle-log').innerHTML = '<div class="log-entry player-log">Press START BATTLE to begin a new battle!</div>';
+    if (playerShieldEffect) playerShieldEffect.classList.add('hidden');
+    if (playerBoostEffect) playerBoostEffect.classList.add('hidden');
+    if (enemyShieldEffect) enemyShieldEffect.classList.add('hidden');
+    if (enemyBoostEffect) enemyBoostEffect.classList.add('hidden');
+    if (enemySkillEffect) enemySkillEffect.classList.add('hidden');
+    if (enemyShieldStatus) enemyShieldStatus.classList.add('hidden');
+    if (enemyBoostStatus) enemyBoostStatus.classList.add('hidden');
+    
+    const battleLog = document.querySelector('.battle-log');
+    if (battleLog) {
+        battleLog.innerHTML = '<div class="log-entry player-log">Press START BATTLE to begin a new battle!</div>';
+    }
 }
 
 // ADD TO BATTLE LOG
 function addToBattleLog(message, type) {
     const battleLog = document.querySelector('.battle-log');
+    if (!battleLog) return;
+    
     const logEntry = document.createElement('div');
     logEntry.className = `log-entry ${type}-log`;
     logEntry.textContent = message;
@@ -7797,7 +8264,10 @@ function addToBattleLog(message, type) {
 
 // REDEEM CODE
 function redeemCode() {
-    const code = document.getElementById('redeem-code-input').value.trim().toUpperCase();
+    const redeemCodeInput = document.getElementById('redeem-code-input');
+    if (!redeemCodeInput) return;
+    
+    const code = redeemCodeInput.value.trim().toUpperCase();
     
     if (!code) {
         addToBattleLog("Please enter a redeem code!", 'player');
@@ -7832,7 +8302,7 @@ function redeemCode() {
         date: new Date().toISOString()
     });
     
-    document.getElementById('redeem-code-input').value = '';
+    redeemCodeInput.value = '';
     
     saveGameData();
     
@@ -7933,8 +8403,11 @@ function buyDiscountCrate() {
     
     addToBattleLog(`You got a ${randomDiscount}% discount card!`, 'player');
     
-    document.getElementById('buy-discount-crate-btn').disabled = true;
-    document.getElementById('buy-discount-crate-btn').textContent = "ALREADY USED TODAY";
+    const buyDiscountBtn = document.getElementById('buy-discount-crate-btn');
+    if (buyDiscountBtn) {
+        buyDiscountBtn.disabled = true;
+        buyDiscountBtn.textContent = "ALREADY USED TODAY";
+    }
     
     saveGameData();
 }
@@ -7950,8 +8423,10 @@ function applyDiscountToPurchase(discountId) {
     
     gameData.discountCards.activeDiscount = discount;
     
-    const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-    loadStoreItems(activeCategory);
+    const activeCategory = document.querySelector('.category-btn.active');
+    if (activeCategory) {
+        loadStoreItems(activeCategory.getAttribute('data-category'));
+    }
     
     addToBattleLog(`Applied ${discount.discount}% discount to your purchases!`, 'player');
     saveGameData();
@@ -7967,8 +8442,10 @@ function removeDiscountCard(discountId) {
     
     updateInventoryDisplay();
     
-    const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-    loadStoreItems(activeCategory);
+    const activeCategory = document.querySelector('.category-btn.active');
+    if (activeCategory) {
+        loadStoreItems(activeCategory.getAttribute('data-category'));
+    }
     
     addToBattleLog("Discount card removed!", 'player');
     saveGameData();
@@ -7986,6 +8463,7 @@ window.addEventListener('DOMContentLoaded', initGame);
 
 // Reset daily discount crate every 24 hours
 setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
+
 
  </script>
 </body>
