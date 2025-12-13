@@ -5773,8 +5773,8 @@ const gameData = {
             { id: 105, name: "Special Sana", group: "TWICE", image: "sanaS.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "epic", price: 7000, description: "Exclusive photocard not available in gacha" },
             { id: 106, name: "Seorina", group: "Actress", image: "seorina.jpg", health: 182, maxHealth: 182, attack: 17, rarity: "superstar", price: 8500, description: "Exclusive photocard not available in gacha" },
             { id: 107, name: "Cha Hae-In", group: "Solo Leveling", image: "chahaein.jpg", health: 218, maxHealth: 218, attack: 18, rarity: "superstar", price: 15000, description: "Exclusive photocard not available in gacha" },
-            { id: 108, name: "Rose Christmas 2025", group: "BLACKPINK", image: "rosech.jpg", health: 250, maxHealth: 250, attack: 28, rarity: "secret", price: 9900, description: "Exclusive photocard not available in gacha" },
-            { id: 109, name: "Chaewon Christmas 2025", group: "LE-SSERAFIM", image: "chaech.jpg", health: 250, maxHealth: 250, attack: 27, rarity: "secret", price: 9900, description: "Exclusive photocard not available in gacha" }
+            { id: 108, name: "Rose Christmas 2025", group: "BLACKPINK", image: "rosech.jpg", health: 250, maxHealth: 250, attack: 28, rarity: "secret", price: 15000, description: "Exclusive photocard not available in gacha" },
+            { id: 109, name: "Chaewon Christmas 2025", group: "LE-SSERAFIM", image: "chaech.jpg", health: 250, maxHealth: 250, attack: 28, rarity: "secret", price: 15000, description: "Exclusive photocard not available in gacha" }
         ],
         discounts: [
             { id: 1, name: "10% Discount", discount: 10, uses: 5, type: "discount", image: "discount.jpg", description: "10% discount on gacha and photocards" },
@@ -7002,38 +7002,50 @@ function tradeSecretForCoupons(cardId) {
     
 
 // FUNGSI BARU: Tampilkan modal konfirmasi trade secret
+// FUNGSI BARU: Tampilkan modal konfirmasi trade secret (FIXED - AUTO CLOSE)
 function showSecretTradeModal(card) {
+    console.log("Showing trade modal for:", card.name);
+    
+    // Tutup SEMUA modal yang sedang terbuka
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.remove('active');
+    });
+    
     const modal = document.createElement('div');
     modal.className = 'modal active';
+    modal.id = 'secret-trade-modal'; // Tambahkan ID khusus
+    modal.style.display = 'flex';
+    modal.style.zIndex = '1000';
     modal.innerHTML = `
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 400px;">
             <div class="modal-header">
-                <h3 class="modal-title">Trade Secret Card</h3>
+                <h3 class="modal-title" style="color: #ffd700;">Trade Secret Card</h3>
                 <button class="close-modal">&times;</button>
             </div>
-            <div class="trade-confirmation" style="text-align: center; padding: 20px;">
-                <div class="trade-card-preview" style="width: 150px; height: 200px; margin: 0 auto 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.3);">
+            <div style="text-align: center; padding: 20px;">
+                <div style="width: 150px; height: 200px; margin: 0 auto 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.3);">
                     <img src="${card.image}" alt="${card.name}" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 
-                <h4 style="color: #ffd700; margin-bottom: 15px;">Trade ${card.name} for 5 Gacha Coupons?</h4>
+                <h4 style="color: #ffd700; margin-bottom: 10px;">${card.name}</h4>
+                <p style="color: #aaa; margin-bottom: 20px;">${card.group} - SECRET</p>
                 
-                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
-                    <p style="margin-bottom: 10px; color: #aaa;">⚠️ You will receive:</p>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(255, 215, 0, 0.3);">
+                    <p style="margin-bottom: 10px; color: #aaa;">Trade this card for:</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px;">
                         <i class="fas fa-ticket-alt" style="font-size: 2rem; color: #ffd700;"></i>
                         <span style="font-size: 1.5rem; font-weight: bold; color: #ffd700;">5 Gacha Coupons</span>
                     </div>
-                    <p style="margin-top: 10px; font-size: 0.9rem; color: #ff6b6b;">
-                        Note: This card will be removed from your collection
+                    <p style="font-size: 0.9rem; color: #ff6b6b; margin: 0;">
+                        <i class="fas fa-exclamation-triangle"></i> This card will be removed
                     </p>
                 </div>
                 
                 <div style="display: flex; gap: 10px; justify-content: center;">
-                    <button id="confirm-secret-trade-btn" style="padding: 12px 30px; background: linear-gradient(135deg, #4cd964, #2ecc71); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    <button id="confirm-secret-trade-btn" style="padding: 12px 30px; background: linear-gradient(135deg, #4cd964, #2ecc71); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem;">
                         <i class="fas fa-check"></i> CONFIRM TRADE
                     </button>
-                    <button id="cancel-secret-trade-btn" style="padding: 12px 30px; background: #ef476f; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    <button id="cancel-secret-trade-btn" style="padding: 12px 30px; background: #ef476f; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.9rem;">
                         <i class="fas fa-times"></i> CANCEL
                     </button>
                 </div>
@@ -7043,28 +7055,36 @@ function showSecretTradeModal(card) {
     
     document.body.appendChild(modal);
     
-    // Event listener untuk close button
-    modal.querySelector('.close-modal').addEventListener('click', () => {
+    // FUNGSI untuk menutup modal
+    const closeModal = () => {
+        console.log("Closing secret trade modal");
         modal.remove();
-    });
+        // Juga hapus dari DOM untuk memastikan
+        const existingModal = document.getElementById('secret-trade-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+    };
     
-    // Event listener untuk cancel button
-    modal.querySelector('#cancel-secret-trade-btn').addEventListener('click', () => {
-        modal.remove();
-    });
+    // Event listeners
+    modal.querySelector('.close-modal').addEventListener('click', closeModal);
     
-    // Event listener untuk confirm trade button
+    modal.querySelector('#cancel-secret-trade-btn').addEventListener('click', closeModal);
+    
     modal.querySelector('#confirm-secret-trade-btn').addEventListener('click', () => {
+        console.log("Confirm trade clicked for:", card.name);
         processSecretTrade(card.id);
-        modal.remove();
+        closeModal(); // PASTIKAN INI DIPANGGIL
     });
     
     // Close modal jika klik di luar
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            modal.remove();
+            closeModal();
         }
     });
+    
+    console.log("Trade modal shown successfully");
 }
 
 // FUNGSI BARU: Proses trade kartu// FUNGSI BARU: Proses trade kartu secret (FIXED)
