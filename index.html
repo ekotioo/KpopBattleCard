@@ -5797,6 +5797,7 @@ const gameData = {
         { id: 628, name: "Sana", group: "TWICE", image: "sanatw.jpg", health: 112, maxHealth: 112, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 629, name: "Ian", group: "HEARTS2HEARTS", image: "ianh2h.jpg", health: 111, maxHealth: 111, attack: 13, rarity: "common", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         
+        
         // Rare Cards
         { id: 630, name: "Danielle", group: "NewJeans", image: "danielle.jpg", health: 125, maxHealth: 125, attack: 14, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 631, name: "Lisa", group: "BLACKPINK", image: "lisa.jpg", health: 120, maxHealth: 120, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -5860,9 +5861,9 @@ const gameData = {
         { id: 60, name: "Shin Eun-Soo", group: "Actress", image: "eunsoo.jpg", health: 185, maxHealth: 185, attack: 23, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         
         // Secret Cards - TIDAK BISA DIJUAL
-        { id: 61, name: "Jo Yuri", group: "Actress", image: "yuri1.jpg", health: 245, maxHealth: 245, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 62, name: "Kim Da-mi", group: "Actress", image: "goldkim.jpg", health: 239, maxHealth: 239, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 63, name: "Kwon Eun-bi", group: "Actress", image: "keunbi.jpg", health: 241, maxHealth: 241, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 61, name: "The Golden Jo Yuri", group: "Actress", image: "yuri1.jpg", health: 245, maxHealth: 245, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 62, name: "The Golden Kim Da-mi", group: "Actress", image: "goldkim.jpg", health: 239, maxHealth: 239, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 63, name: "The Golden Kwon Eun-bi", group: "Actress", image: "keunbi.jpg", health: 241, maxHealth: 241, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 64, name: "Lisa × Jennie", group: "BLACKPINK", image: "lisajennie.jpg", health: 266, maxHealth: 266, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 65, name: "Chaewon × Sakura", group: "LE-SSERAFIM", image: "chaesakura.jpg", health: 266, maxHealth: 266, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 66, name: "Karina × Winter", group: "aespa", image: "karinawinter.jpg", health: 266, maxHealth: 266, attack: 31, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -5870,7 +5871,13 @@ const gameData = {
         { id: 68, name: "Sana Christmas 2025", group: "TWICE", image: "sanach.jpg", health: 250, maxHealth: 250, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 69, name: "Wonyung Christmas 2025", group: "IVE", image: "wonyungch.jpg", health: 250, maxHealth: 250, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 70, name: "Kang Hye-Won Christmas 2025", group: "Actress", image: "hyewonch.jpg", health: 250, maxHealth: 250, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 71, name: "Sakura Christmas 2025", group: "LE-SSERAFIM", image: "sakurach.jpg", health: 250, maxHealth: 250, attack: 31, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 }
+        { id: 71, name: "Sakura Christmas 2025", group: "LE-SSERAFIM", image: "sakurach.jpg", health: 250, maxHealth: 250, attack: 31, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        
+        // Rare 2 Card
+        { id: 71, name: "Jung So-min", group: "Actress", image: "somin.jpg", health: 119, maxHealth: 119, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 72, name: "Seorina", group: "Actress", image: "rina.jpg", health: 123, maxHealth: 123, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 73, name: "Han Sohee", group: "Actress", image: "soheee.jpg", health: 125, maxHealth: 125, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        
     ],
     quests: {
         main: [
@@ -5886,6 +5893,7 @@ const gameData = {
         daily: [
             { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 50 }, completed: false, claimed: false },
             { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 30 }, completed: false, claimed: false }
+            
         ]
     },
     battlePass: {
@@ -5934,6 +5942,7 @@ const gameData = {
         { id: 122, name: "G - Chaewon", group: "LE SSERAFIM", image: "goldenchae.jpg", health: 255, maxHealth: 255, attack: 32, rarity: "superstar" },
         { id: 133, name: "G - Lisa", group: "BLACKPINK", image: "goldenlisa.jpg", health: 265, maxHealth: 265, attack: 35, rarity: "superstar" },
         { id: 167, name: "Danielle Crtismas 2025", group: "NewJeans", image: "daniellech.jpg", health: 250, maxHealth: 250, attack: 29, rarity: "secret" },
+        { id: 70, name: "Kang Hye-Won Christmas 2025", group: "Actress", image: "hyewonch.jpg", health: 250, maxHealth: 250, attack: 30, rarity: "secret" }
     ],
     settings: {
         bgmEnabled: true,
