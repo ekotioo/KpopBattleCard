@@ -6426,6 +6426,15 @@ function initGame() {
     } catch (error) {
         console.error("Error initializing game:", error);
         alert("Error initializing game. Please refresh the page.");
+        
+       
+console.log("Total cards:", gameData.cards.length);
+console.log("Secret cards:", gameData.cards.filter(c => c.rarity === 'secret').length);
+debugSecretCards(); // Panggil fungsi debug
+        
+        
+        
+        
     }
 }
 
@@ -6678,7 +6687,7 @@ function loadCollection() {
                  
                     
                     
-// tes 1                 
+                
                     
                     
 <div class="collection-card-info">
@@ -6714,21 +6723,22 @@ function loadCollection() {
         ''
     }
     
-    <div class="card-actions">
-        <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
-        <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
-        <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
-        <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
-        ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
-        
-        <!-- TAMBAHAN BARU: Tombol trade untuk kartu secret duplikat -->
-        ${safeCard.rarity === 'secret' && hasDuplicateSecretCards(safeCard.id) ? 
-            `<button class="trade-gacha-btn" data-id="${safeCard.id}">
-                <i class="fas fa-exchange-alt"></i> TRADE FOR 5 GACHA COUPONS
-            </button>` : 
-            ''
-        }
-    </div>
+
+<div class="card-actions">
+    <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
+    <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
+    <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
+    <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
+    
+    ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
+    
+    <!-- TAMBAH INI: Tombol trade untuk kartu secret duplikat -->
+    ${safeCard.rarity === 'secret' && hasDuplicateSecretCards(safeCard.id) ? 
+        `<button class="trade-gacha-btn" data-id="${safeCard.id}" style="background: linear-gradient(135deg, #ff00cc, #ff9900); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; margin-top: 5px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 5px;">
+            <i class="fas fa-exchange-alt"></i> TRADE FOR 5 GACHA COUPONS
+        </button>` : 
+        ''
+    }
 </div>
                 `;
                 
@@ -6760,108 +6770,78 @@ function loadCollection() {
 // tes 4
 
 // FUNGSI BARU: Setup event listeners untuk collection
+// FUNGSI BARU: Setup event listeners untuk collection (FIXED VERSION)
 function setupCollectionEventListeners() {
+    console.log("Setting up collection event listeners...");
+    
     try {
-        // Event listeners untuk semua tombol dengan error handling
-        document.querySelectorAll('.equip-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                try {
-                    const cardId = parseInt(e.target.getAttribute('data-id'));
-                    const card = gameData.cards.find(c => c.id === cardId);
-                    if (card) {
-                        setCurrentCard(card);
-                        loadCollection();
-                        addToBattleLog(`Equipped ${card.name}!`, 'player');
-                    }
-                } catch (error) {
-                    console.error("Error in equip button:", error);
-                    addToBattleLog("Error equipping card!", 'player');
+        // Gunakan event delegation untuk semua tombol di collection container
+        const collectionContainer = document.querySelector('.collection-container');
+        if (!collectionContainer) {
+            console.error("Collection container not found!");
+            return;
+        }
+        
+        // Event delegation untuk semua tombol
+        collectionContainer.addEventListener('click', function(e) {
+            const target = e.target;
+            const button = target.closest('button');
+            
+            if (!button) return;
+            
+            const cardId = parseInt(button.getAttribute('data-id'));
+            if (isNaN(cardId)) return;
+            
+            const card = gameData.cards.find(c => c.id === cardId);
+            if (!card) return;
+            
+            // Handle different button types
+            if (button.classList.contains('equip-btn')) {
+                console.log("Equip button clicked for card:", card.name);
+                setCurrentCard(card);
+                loadCollection();
+                addToBattleLog(`Equipped ${card.name}!`, 'player');
+                
+            } else if (button.classList.contains('upgrade-btn') && !button.disabled) {
+                console.log("Upgrade button clicked for card:", card.name);
+                upgradeCardAttack(cardId);
+                
+            } else if (button.classList.contains('favorite-btn')) {
+                console.log("Favorite button clicked for card:", card.name);
+                toggleFavoriteCard(cardId);
+                
+            } else if (button.classList.contains('skill-btn')) {
+                console.log("Skill button clicked for card:", card.name);
+                showSkillModal(card);
+                
+            } else if (button.classList.contains('sell-btn')) {
+                console.log("Sell button clicked for card:", card.name);
+                if (card && card.rarity !== 'secret' && !card.favorite && gameData.cards.length > 1) {
+                    showSellCardModal(card);
+                } else if (gameData.cards.length <= 1) {
+                    addToBattleLog("You can't sell your only card!", 'player');
+                } else if (card && card.favorite) {
+                    addToBattleLog("Favorite cards cannot be sold!", 'player');
+                } else if (card && card.rarity === 'secret') {
+                    addToBattleLog("Secret cards cannot be sold!", 'player');
+                } else {
+                    addToBattleLog("This card cannot be sold!", 'player');
                 }
-            });
+                
+            } else if (button.classList.contains('trade-gacha-btn')) {
+                console.log("Trade button clicked for card:", card.name);
+                console.log("Card rarity:", card.rarity);
+                console.log("Has duplicate?", hasDuplicateSecretCards(cardId));
+                tradeSecretForCoupons(cardId);
+            }
         });
-
-        document.querySelectorAll('.upgrade-btn:not([disabled])').forEach(button => {
-            button.addEventListener('click', (e) => {
-                try {
-                    const cardId = parseInt(e.target.getAttribute('data-id'));
-                    upgradeCardAttack(cardId);
-                } catch (error) {
-                    console.error("Error in upgrade button:", error);
-                    addToBattleLog("Error upgrading card!", 'player');
-                }
-            });
-        });
-
-        document.querySelectorAll('.favorite-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                try {
-                    const cardId = parseInt(e.target.getAttribute('data-id'));
-                    toggleFavoriteCard(cardId);
-                } catch (error) {
-                    console.error("Error in favorite button:", error);
-                    addToBattleLog("Error favoriting card!", 'player');
-                }
-            });
-        });
-
-        document.querySelectorAll('.skill-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                try {
-                    const cardId = parseInt(e.target.getAttribute('data-id'));
-                    const card = gameData.cards.find(c => c.id === cardId);
-                    if (card) {
-                        showSkillModal(card);
-                    }
-                } catch (error) {
-                    console.error("Error in skill button:", error);
-                    addToBattleLog("Error opening skill modal!", 'player');
-                }
-            });
-        });
-
-        // Event listener untuk tombol sell yang hanya muncul untuk kartu yang bisa dijual
-        document.querySelectorAll('.sell-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                try {
-                    const cardId = parseInt(e.target.getAttribute('data-id'));
-                    const card = gameData.cards.find(c => c.id === cardId);
-                    
-                    if (card && card.rarity !== 'secret' && !card.favorite && gameData.cards.length > 1) {
-                        showSellCardModal(card);
-                    } else if (gameData.cards.length <= 1) {
-                        addToBattleLog("You can't sell your only card!", 'player');
-                    } else if (card && card.favorite) {
-                        addToBattleLog("Favorite cards cannot be sold!", 'player');
-                    } else if (card && card.rarity === 'secret') {
-                        addToBattleLog("Secret cards cannot be sold!", 'player');
-                    } else {
-                        addToBattleLog("This card cannot be sold!", 'player');
-                    }
-                } catch (error) {
-                    console.error("Error in sell button:", error);
-                    addToBattleLog("Error selling card!", 'player');
-                }
-            });
-        });
-
+        
+        console.log("Collection event listeners setup complete");
+        
     } catch (error) {
         console.error("Error setting up collection event listeners:", error);
     }
 }
-
-
-// Event listener untuk tombol trade gacha coupons
-document.querySelectorAll('.trade-gacha-btn').forEach(button => {
-    button.addEventListener('click', (e) => {
-        try {
-            const cardId = parseInt(e.target.getAttribute('data-id'));
-            tradeSecretForCoupons(cardId);
-        } catch (error) {
-            console.error("Error in trade button:", error);
-            addToBattleLog("Error trading card!", 'player');
-        }
-    });
-});
 
 
 
@@ -6913,21 +6893,32 @@ function calculateSimpleSellPrice(card) {
 // tess 2
 
 // FUNGSI BARU: Cek apakah kartu secret ada duplikat
+// FUNGSI BARU: Cek apakah kartu secret ada duplikat (FIXED)
 function hasDuplicateSecretCards(cardId) {
+    console.log("Checking duplicate for card ID:", cardId);
+    
     if (!cardId) return false;
     
-    // Hitung berapa banyak kartu dengan ID yang sama
-    const sameIdCount = gameData.cards.filter(card => 
-        card.id === cardId && card.rarity === 'secret'
-    ).length;
-    
-    // Juga hitung berdasarkan nama (untuk kartu secret yang sama meski ID berbeda)
     const card = gameData.cards.find(c => c.id === cardId);
-    if (!card) return false;
+    if (!card) {
+        console.log("Card not found");
+        return false;
+    }
     
+    console.log("Card found:", card.name, "rarity:", card.rarity);
+    
+    // Cek dulu apakah kartu ini secret
+    if (card.rarity !== 'secret') {
+        console.log("Card is not secret");
+        return false;
+    }
+    
+    // Hitung berapa banyak kartu dengan NAMA yang sama dan rarity secret
     const sameNameCount = gameData.cards.filter(c => 
         c.name === card.name && c.rarity === 'secret'
     ).length;
+    
+    console.log("Same name count:", sameNameCount);
     
     // Return true jika ada lebih dari 1 kartu secret dengan nama yang sama
     return sameNameCount > 1;
@@ -6965,23 +6956,50 @@ function getDuplicateSecretCards() {
 
 
 // FUNGSI BARU: Trade kartu secret untuk gacha coupons
+// FUNGSI BARU: Trade kartu secret untuk gacha coupons (FIXED)
 function tradeSecretForCoupons(cardId) {
+    console.log("=== TRADE SECRET FUNCTION CALLED ===");
+    console.log("Card ID:", cardId);
+    
     const card = gameData.cards.find(c => c.id === cardId);
     
-    if (!card || card.rarity !== 'secret') {
-        addToBattleLog("This card cannot be traded!", 'player');
+    if (!card) {
+        console.log("Card not found!");
+        addToBattleLog("Card not found!", 'player');
+        return;
+    }
+    
+    console.log("Card found:", card.name, "Rarity:", card.rarity);
+    
+    if (card.rarity !== 'secret') {
+        console.log("Card is not secret!");
+        addToBattleLog("Only secret cards can be traded!", 'player');
         return;
     }
     
     // Cek apakah benar ada duplikat
-    if (!hasDuplicateSecretCards(cardId)) {
-        addToBattleLog("You need to have duplicate secret cards to trade!", 'player');
+    const hasDuplicate = hasDuplicateSecretCards(cardId);
+    console.log("Has duplicate:", hasDuplicate);
+    
+    if (!hasDuplicate) {
+        addToBattleLog("You need duplicate secret cards to trade! (You must have at least 2 of the same secret card)", 'player');
         return;
     }
     
+    console.log("Showing trade modal...");
     // Tampilkan konfirmasi modal
     showSecretTradeModal(card);
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 // FUNGSI BARU: Tampilkan modal konfirmasi trade secret
 function showSecretTradeModal(card) {
@@ -7049,24 +7067,34 @@ function showSecretTradeModal(card) {
     });
 }
 
-// FUNGSI BARU: Proses trade kartu secret
+// FUNGSI BARU: Proses trade kartu// FUNGSI BARU: Proses trade kartu secret (FIXED)
 function processSecretTrade(cardId) {
+    console.log("Processing trade for card ID:", cardId);
+    
     const cardIndex = gameData.cards.findIndex(c => c.id === cardId);
     
     if (cardIndex === -1) {
+        console.error("Card not found!");
         addToBattleLog("Card not found!", 'player');
         return;
     }
     
     const tradedCard = gameData.cards[cardIndex];
+    console.log("Trading card:", tradedCard.name);
     
     // Hapus kartu dari koleksi
     gameData.cards.splice(cardIndex, 1);
+    console.log("Card removed. Remaining cards:", gameData.cards.length);
     
     // Tambahkan 5 gacha coupons
     gameData.gachaCoupons += 5;
+    console.log("Added 5 gacha coupons. Total:", gameData.gachaCoupons);
     
     // Tambahkan ke history trade
+    if (!gameData.secretTradeHistory) {
+        gameData.secretTradeHistory = [];
+    }
+    
     gameData.secretTradeHistory.push({
         cardName: tradedCard.name,
         cardId: tradedCard.id,
@@ -7076,11 +7104,12 @@ function processSecretTrade(cardId) {
     
     // Update tampilan
     updateInventoryDisplay();
-    loadCollection();
+    loadCollection(); // Reload collection untuk update tombol
     updateHomeStats();
     
     // Hapus dari equipped jika sedang dipakai
     if (gameData.currentCard && gameData.currentCard.id === cardId) {
+        console.log("Card was equipped, resetting...");
         if (gameData.cards.length > 0) {
             setCurrentCard(gameData.cards[0]);
         } else {
@@ -7101,10 +7130,11 @@ function processSecretTrade(cardId) {
         sounds.victory.play().catch(e => console.log("Audio play failed"));
     }
     
-    addToBattleLog(`Traded ${tradedCard.name} for 5 Gacha Coupons! 🎫`, 'player');
+    addToBattleLog(`✓ Success! Traded ${tradedCard.name} for 5 Gacha Coupons! 🎫`, 'player');
     
     // Simpan game data
     saveGameData();
+    console.log("Trade completed successfully");
 }
 
 
