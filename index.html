@@ -4869,7 +4869,34 @@ input:checked + .toggle-slider:before {
     background: linear-gradient(135deg, var(--primary), #ff4d8d);
 }
    
+/* Tambahkan di bagian CSS (bisa di akhir) */
+.trade-gacha-btn {
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #ff00cc, #ff9900);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
 
+.trade-gacha-btn:hover {
+    background: linear-gradient(135deg, #ff9900, #ff00cc);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 0, 204, 0.3);
+}
+
+.trade-gacha-btn:active {
+    transform: translateY(0);
+}
 
 
         
@@ -6464,26 +6491,27 @@ function saveGameData() {
     try {
         console.log("Saving game data...");
         const gameDataToSave = {
-            username: gameData.username,
-            coins: gameData.coins,
-            level: gameData.level,
-            xp: gameData.xp,
-            xpToNextLevel: gameData.xpToNextLevel,
-            currentCard: gameData.currentCard,
-            attackUpgrades: gameData.attackUpgrades,
-            attackBoosts: gameData.attackBoosts,
-            cards: gameData.cards,
-            shields: gameData.shields,
-            skills: gameData.skills,
-            luckBoosts: gameData.luckBoosts,
-            gachaCoupons: gameData.gachaCoupons,
-            quests: gameData.quests,
-            battlePass: gameData.battlePass,
-            settings: gameData.settings,
-            firstGachaDone: firstGachaDone,
-            redeemCodes: gameData.redeemCodes,
-            discountCards: gameData.discountCards
-        };
+    username: gameData.username,
+    coins: gameData.coins,
+    level: gameData.level,
+    xp: gameData.xp,
+    xpToNextLevel: gameData.xpToNextLevel,
+    currentCard: gameData.currentCard,
+    attackUpgrades: gameData.attackUpgrades,
+    attackBoosts: gameData.attackBoosts,
+    cards: gameData.cards,
+    shields: gameData.shields,
+    skills: gameData.skills,
+    luckBoosts: gameData.luckBoosts,
+    gachaCoupons: gameData.gachaCoupons,
+    quests: gameData.quests,
+    battlePass: gameData.battlePass,
+    settings: gameData.settings,
+    firstGachaDone: firstGachaDone,
+    redeemCodes: gameData.redeemCodes,
+    discountCards: gameData.discountCards,
+    secretTradeHistory: gameData.secretTradeHistory  // <-- TAMBAH INI
+};
         
         localStorage.setItem('battleOfIdol_gameData', JSON.stringify(gameDataToSave));
         console.log("Game data saved successfully");
@@ -6641,33 +6669,72 @@ function loadCollection() {
                 cardElement.innerHTML = `
                     ${safeCard.favorite ? '<div class="favorite-star"><i class="fas fa-star"></i></div>' : ''}
                     <img src="${safeCard.image}" alt="${safeCard.name}" class="collection-card-full" onerror="this.src='placeholder.jpg'">
-                    <div class="collection-card-info">
-                        <div class="collection-card-name">${safeCard.name}</div>
-                        <div class="collection-card-group">${safeCard.group} - <span class="rarity-${safeCard.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${safeCard.rarity.toUpperCase()}</span></div>
-                        <div class="collection-card-stats">
-                            <span>HP: ${safeCard.maxHealth}</span>
-                            <span>ATK: ${safeCard.attack} ${safeCard.upgrades > 0 ? `(+${safeCard.upgrades})` : ''}</span>
-                        </div>
-                        <div class="win-rate">
-                            <i class="fas fa-trophy"></i>
-                            <span>Win Rate: ${winRate}% (${safeCard.wins}/${safeCard.battles})</span>
-                        </div>
-                        <div class="market-price">
-                            <i class="fas fa-coins"></i>
-                            <span>Sell Price: ${sellPrice} coins</span>
-                            ${isSecretCard ? '<span style="color: #ff6b6b; font-size: 0.8rem;">(Cannot be sold)</span>' : ''}
-                            ${safeCard.favorite ? '<span style="color: #ffd700; font-size: 0.8rem;">(Favorite - cannot be sold)</span>' : ''}
-                        </div>
-                        ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
-                        <div class="card-actions">
-                            <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
-                            <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
-                            <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
-                            <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
-                            ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
-                        </div>
-                    </div>
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                    
+                    
+// tes 1                 
+                    
+                    
+<div class="collection-card-info">
+    <div class="collection-card-name">${safeCard.name}</div>
+    <div class="collection-card-group">${safeCard.group} - <span class="rarity-${safeCard.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${safeCard.rarity.toUpperCase()}</span></div>
+    <div class="collection-card-stats">
+        <span>HP: ${safeCard.maxHealth}</span>
+        <span>ATK: ${safeCard.attack} ${safeCard.upgrades > 0 ? `(+${safeCard.upgrades})` : ''}</span>
+    </div>
+    <div class="win-rate">
+        <i class="fas fa-trophy"></i>
+        <span>Win Rate: ${winRate}% (${safeCard.wins}/${safeCard.battles})</span>
+    </div>
+    <div class="market-price">
+        <i class="fas fa-coins"></i>
+        <span>Sell Price: ${sellPrice} coins</span>
+        ${isSecretCard ? '<span style="color: #ff6b6b; font-size: 0.8rem;">(Cannot be sold)</span>' : ''}
+        ${safeCard.favorite ? '<span style="color: #ffd700; font-size: 0.8rem;">(Favorite - cannot be sold)</span>' : ''}
+    </div>
+    ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
+    
+    <!-- TAMBAHAN BARU: Informasi duplikat secret card -->
+    ${safeCard.rarity === 'secret' && hasDuplicateSecretCards(safeCard.id) ? 
+        `<div class="duplicate-info" style="background: linear-gradient(135deg, rgba(255, 0, 204, 0.1), rgba(255, 153, 0, 0.1)); padding: 8px; border-radius: 8px; margin: 8px 0; border: 1px solid rgba(255, 0, 204, 0.3);">
+            <div style="display: flex; align-items: center; gap: 8px; color: #ffd700;">
+                <i class="fas fa-exchange-alt"></i>
+                <span style="font-size: 0.85rem; font-weight: 600;">Duplicate Secret Card</span>
+            </div>
+            <div style="font-size: 0.75rem; color: #aaa; margin-top: 4px;">
+                Can be traded for 5 Gacha Coupons
+            </div>
+        </div>` : 
+        ''
+    }
+    
+    <div class="card-actions">
+        <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
+        <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
+        <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
+        <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
+        ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
+        
+        <!-- TAMBAHAN BARU: Tombol trade untuk kartu secret duplikat -->
+        ${safeCard.rarity === 'secret' && hasDuplicateSecretCards(safeCard.id) ? 
+            `<button class="trade-gacha-btn" data-id="${safeCard.id}">
+                <i class="fas fa-exchange-alt"></i> TRADE FOR 5 GACHA COUPONS
+            </button>` : 
+            ''
+        }
+    </div>
+</div>
                 `;
+                
+                
+                
+// tess               
                 collectionContainer.appendChild(cardElement);
                 
             } catch (cardError) {
@@ -6685,6 +6752,12 @@ function loadCollection() {
         collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px; color: red;">Error loading collection. Please refresh the page.</div>';
     }
 }
+
+
+
+
+
+// tes 4
 
 // FUNGSI BARU: Setup event listeners untuk collection
 function setupCollectionEventListeners() {
@@ -6776,6 +6849,26 @@ function setupCollectionEventListeners() {
     }
 }
 
+
+// Event listener untuk tombol trade gacha coupons
+document.querySelectorAll('.trade-gacha-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+        try {
+            const cardId = parseInt(e.target.getAttribute('data-id'));
+            tradeSecretForCoupons(cardId);
+        } catch (error) {
+            console.error("Error in trade button:", error);
+            addToBattleLog("Error trading card!", 'player');
+        }
+    });
+});
+
+
+
+
+
+// tesss
+
 // FUNGSI BARU: Hitung harga jual kartu yang sederhana
 function calculateSimpleSellPrice(card) {
     let basePrice = 0;
@@ -6815,6 +6908,208 @@ function calculateSimpleSellPrice(card) {
     
     return Math.max(1, Math.floor(basePrice));
 }
+
+
+// tess 2
+
+// FUNGSI BARU: Cek apakah kartu secret ada duplikat
+function hasDuplicateSecretCards(cardId) {
+    if (!cardId) return false;
+    
+    // Hitung berapa banyak kartu dengan ID yang sama
+    const sameIdCount = gameData.cards.filter(card => 
+        card.id === cardId && card.rarity === 'secret'
+    ).length;
+    
+    // Juga hitung berdasarkan nama (untuk kartu secret yang sama meski ID berbeda)
+    const card = gameData.cards.find(c => c.id === cardId);
+    if (!card) return false;
+    
+    const sameNameCount = gameData.cards.filter(c => 
+        c.name === card.name && c.rarity === 'secret'
+    ).length;
+    
+    // Return true jika ada lebih dari 1 kartu secret dengan nama yang sama
+    return sameNameCount > 1;
+}
+
+
+
+// tess 3
+
+
+
+// FUNGSI BARU: Dapatkan semua kartu secret duplikat
+function getDuplicateSecretCards() {
+    const secretCards = gameData.cards.filter(card => card.rarity === 'secret');
+    const cardCounts = {};
+    
+    // Hitung jumlah per nama kartu secret
+    secretCards.forEach(card => {
+        cardCounts[card.name] = (cardCounts[card.name] || 0) + 1;
+    });
+    
+    // Filter hanya yang memiliki duplikat (lebih dari 1)
+    const duplicates = [];
+    secretCards.forEach(card => {
+        if (cardCounts[card.name] > 1) {
+            duplicates.push({
+                ...card,
+                duplicateCount: cardCounts[card.name]
+            });
+        }
+    });
+    
+    return duplicates;
+}
+
+
+// FUNGSI BARU: Trade kartu secret untuk gacha coupons
+function tradeSecretForCoupons(cardId) {
+    const card = gameData.cards.find(c => c.id === cardId);
+    
+    if (!card || card.rarity !== 'secret') {
+        addToBattleLog("This card cannot be traded!", 'player');
+        return;
+    }
+    
+    // Cek apakah benar ada duplikat
+    if (!hasDuplicateSecretCards(cardId)) {
+        addToBattleLog("You need to have duplicate secret cards to trade!", 'player');
+        return;
+    }
+    
+    // Tampilkan konfirmasi modal
+    showSecretTradeModal(card);
+}
+
+// FUNGSI BARU: Tampilkan modal konfirmasi trade secret
+function showSecretTradeModal(card) {
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Trade Secret Card</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="trade-confirmation" style="text-align: center; padding: 20px;">
+                <div class="trade-card-preview" style="width: 150px; height: 200px; margin: 0 auto 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 15px rgba(0,0,0,0.3);">
+                    <img src="${card.image}" alt="${card.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                
+                <h4 style="color: #ffd700; margin-bottom: 15px;">Trade ${card.name} for 5 Gacha Coupons?</h4>
+                
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                    <p style="margin-bottom: 10px; color: #aaa;">⚠️ You will receive:</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-ticket-alt" style="font-size: 2rem; color: #ffd700;"></i>
+                        <span style="font-size: 1.5rem; font-weight: bold; color: #ffd700;">5 Gacha Coupons</span>
+                    </div>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: #ff6b6b;">
+                        Note: This card will be removed from your collection
+                    </p>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button id="confirm-secret-trade-btn" style="padding: 12px 30px; background: linear-gradient(135deg, #4cd964, #2ecc71); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        <i class="fas fa-check"></i> CONFIRM TRADE
+                    </button>
+                    <button id="cancel-secret-trade-btn" style="padding: 12px 30px; background: #ef476f; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        <i class="fas fa-times"></i> CANCEL
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Event listener untuk close button
+    modal.querySelector('.close-modal').addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    // Event listener untuk cancel button
+    modal.querySelector('#cancel-secret-trade-btn').addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    // Event listener untuk confirm trade button
+    modal.querySelector('#confirm-secret-trade-btn').addEventListener('click', () => {
+        processSecretTrade(card.id);
+        modal.remove();
+    });
+    
+    // Close modal jika klik di luar
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// FUNGSI BARU: Proses trade kartu secret
+function processSecretTrade(cardId) {
+    const cardIndex = gameData.cards.findIndex(c => c.id === cardId);
+    
+    if (cardIndex === -1) {
+        addToBattleLog("Card not found!", 'player');
+        return;
+    }
+    
+    const tradedCard = gameData.cards[cardIndex];
+    
+    // Hapus kartu dari koleksi
+    gameData.cards.splice(cardIndex, 1);
+    
+    // Tambahkan 5 gacha coupons
+    gameData.gachaCoupons += 5;
+    
+    // Tambahkan ke history trade
+    gameData.secretTradeHistory.push({
+        cardName: tradedCard.name,
+        cardId: tradedCard.id,
+        date: new Date().toISOString(),
+        couponsReceived: 5
+    });
+    
+    // Update tampilan
+    updateInventoryDisplay();
+    loadCollection();
+    updateHomeStats();
+    
+    // Hapus dari equipped jika sedang dipakai
+    if (gameData.currentCard && gameData.currentCard.id === cardId) {
+        if (gameData.cards.length > 0) {
+            setCurrentCard(gameData.cards[0]);
+        } else {
+            gameData.currentCard = null;
+            resetPlayerCardDisplay();
+        }
+    }
+    
+    // Hapus skill jika ada
+    if (gameData.skills.equipped[cardId]) {
+        delete gameData.skills.equipped[cardId];
+    }
+    
+    // Tampilkan efek konfirmasi
+    createConfetti('#ffd700', '#ff9900', '#ff00cc');
+    
+    if (gameData.settings.sfxEnabled) {
+        sounds.victory.play().catch(e => console.log("Audio play failed"));
+    }
+    
+    addToBattleLog(`Traded ${tradedCard.name} for 5 Gacha Coupons! 🎫`, 'player');
+    
+    // Simpan game data
+    saveGameData();
+}
+
+
+
+
 
 // SET CURRENT CARD - DIPERBAIKI DENGAN ERROR HANDLING
 function setCurrentCard(card) {
@@ -7012,6 +7307,7 @@ function updateHomeStats() {
 }
 
 // UPDATE INVENTORY DISPLAY
+// UPDATE INVENTORY DISPLAY
 function updateInventoryDisplay() {
     const attackUpgradeCount = document.getElementById('attack-upgrade-count');
     const shieldCount = document.getElementById('shield-count');
@@ -7047,6 +7343,33 @@ function updateInventoryDisplay() {
             luckBoostIndicator.classList.add('hidden');
         }
     }
+    
+    // ============ TAMBAHAN BARU: DISPLAY GACHA COUPONS ============
+    // Cari atau tambahkan elemen untuk menampilkan jumlah gacha coupons
+    const inventoryItems = document.querySelector('.inventory-items');
+    if (inventoryItems) {
+        let couponItem = inventoryItems.querySelector('.inventory-item[data-type="coupons"]');
+        
+        if (!couponItem) {
+            // Tambahkan elemen baru jika belum ada
+            couponItem = document.createElement('div');
+            couponItem.className = 'inventory-item';
+            couponItem.setAttribute('data-type', 'coupons');
+            couponItem.innerHTML = `
+                <i class="fas fa-ticket-alt inventory-item-icon"></i>
+                <div class="inventory-item-count" id="gacha-coupon-count">${gameData.gachaCoupons}</div>
+                <div class="inventory-item-name">Gacha Coupons</div>
+            `;
+            inventoryItems.appendChild(couponItem);
+        } else {
+            // Update jumlah coupons jika elemen sudah ada
+            const gachaCouponCount = couponItem.querySelector('#gacha-coupon-count');
+            if (gachaCouponCount) {
+                gachaCouponCount.textContent = gameData.gachaCoupons;
+            }
+        }
+    }
+    // ============ AKHIR TAMBAHAN BARU ============
     
     const buyDiscountBtn = document.getElementById('buy-discount-crate-btn');
     if (buyDiscountBtn) {
@@ -9044,6 +9367,7 @@ function setupSettingsModalEvents() {
 }
 
 // UPDATE SETTINGS MODAL
+// UPDATE SETTINGS MODAL
 function updateSettingsModal() {
     const settingsUsername = document.getElementById('settings-username');
     const settingsLevel = document.getElementById('settings-level');
@@ -9054,6 +9378,43 @@ function updateSettingsModal() {
     if (settingsTotalCards) settingsTotalCards.textContent = gameData.cards.length;
     
     updateRedeemHistoryDisplay();
+    
+    // ========== TAMBAHKAN KODE INI DI SINI ==========
+    // Update display untuk secret trade history
+    const accountInfo = document.querySelector('.account-info');
+    if (accountInfo) {
+        // Hapus stat secret trade yang lama jika ada
+        const oldSecretTradeStat = accountInfo.querySelector('.account-stat[data-type="secret-trade"]');
+        if (oldSecretTradeStat) {
+            oldSecretTradeStat.remove();
+        }
+        
+        // Buat stat baru untuk secret trade
+        const secretTradeInfo = document.createElement('div');
+        secretTradeInfo.className = 'account-stat';
+        secretTradeInfo.setAttribute('data-type', 'secret-trade');
+        secretTradeInfo.innerHTML = `
+            <span class="stat-label">Secret Cards Traded:</span>
+            <span class="stat-value">${gameData.secretTradeHistory ? gameData.secretTradeHistory.length : 0}</span>
+        `;
+        
+        // Tambahkan ke account-info (setelah total cards)
+        accountInfo.appendChild(secretTradeInfo);
+        
+        // Juga tambahkan stat untuk Gacha Coupons jika belum ada
+        const couponStat = accountInfo.querySelector('.account-stat[data-type="gacha-coupons"]');
+        if (!couponStat) {
+            const couponInfo = document.createElement('div');
+            couponInfo.className = 'account-stat';
+            couponInfo.setAttribute('data-type', 'gacha-coupons');
+            couponInfo.innerHTML = `
+                <span class="stat-label">Gacha Coupons:</span>
+                <span class="stat-value">${gameData.gachaCoupons || 0}</span>
+            `;
+            accountInfo.appendChild(couponInfo);
+        }
+    }
+    // ========== AKHIR KODE YANG DITAMBAHKAN ==========
 }
 
 // UPDATE REDEEM HISTORY DISPLAY
@@ -10425,4 +10786,3 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
-
