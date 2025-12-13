@@ -1344,6 +1344,137 @@ nav {
 }
 
 
+/* Update Popup Modal - Same style as other modals */
+#update-popup.modal {
+    display: none;
+}
+
+#update-popup.modal.active {
+    display: flex;
+}
+
+#update-popup .modal-content {
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+    border-radius: 15px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: modalAppear 0.3s ease;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#update-popup .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+#update-popup .modal-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#update-popup .close-modal {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #aaa;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+#update-popup .close-modal:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: rotate(90deg);
+}
+
+/* Update Content Styles */
+.update-content {
+    text-align: center;
+}
+
+.update-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.update-message {
+    margin-bottom: 20px;
+    color: var(--text-light);
+    line-height: 1.5;
+}
+
+.update-features {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.update-features h4 {
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.update-features ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.update-features li {
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.update-features li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-weight: bold;
+}
+
+.update-code {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 15px 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.update-note {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-top: 10px;
+}
+
 
 
 
@@ -3953,6 +4084,794 @@ input:checked + .toggle-slider:before {
 
 
 
+// update disini
+
+
+
+/* Minimal Update Popup Styles */
+.update-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.update-popup-content {
+    background: linear-gradient(145deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    border-radius: 16px;
+    padding: 25px;
+    width: 85%;
+    max-width: 380px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--primary);
+    position: relative;
+    animation: popupScale 0.4s ease;
+}
+
+.update-popup-header {
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.update-popup-header h3 {
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, #ff6b00, #ff0080);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.update-popup-header p {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.update-event-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(135deg, #ff0000, #ff6b00);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    animation: pulse 1.5s infinite;
+}
+
+.update-christmas-countdown {
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.update-christmas-countdown h4 {
+    color: #ffd700;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+#christmas-countdown-timer {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #ff6b6b;
+    font-family: 'Orbitron', monospace;
+}
+
+.update-feature-list {
+    margin: 15px 0;
+}
+
+.update-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.update-feature-icon {
+    font-size: 1rem;
+    color: var(--primary);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.update-feature-text h4 {
+    color: var(--accent);
+    margin-bottom: 2px;
+    font-size: 0.9rem;
+}
+
+.update-feature-text p {
+    color: #aaa;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+.update-popup-footer {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.close-update-popup {
+    padding: 8px 20px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.close-update-popup:hover {
+    background: #e8355f;
+    transform: translateY(-2px);
+}
+
+.dont-show-again {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
+    cursor: pointer;
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.dont-show-again input {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popupScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* Simple Christmas Title Effect */
+.christmas-title {
+    position: relative;
+    display: inline-block;
+}
+
+.christmas-title::before {
+    content: '🎄';
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+}
+
+.christmas-title::after {
+    content: '🎅';
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+}
+
+
+/* Shorts Screen */
+/* Improved Shorts Screen */
+#shorts {
+    padding: 0;
+    background: #000;
+    position: relative;
+}
+
+.shorts-container {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Improved Shorts Performance */
+.shorts-video-container {
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    will-change: scroll-position;
+}
+
+.shorts-video-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    background: #000;
+}
+
+.shorts-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+}
+
+/* Preload videos for better performance */
+.shorts-video[data-preloaded="true"] {
+    display: block;
+}
+
+/* Hide non-active videos to improve performance */
+.shorts-video-item:not(.active) .shorts-video {
+    visibility: hidden;
+}
+
+.shorts-video-item.active .shorts-video {
+    visibility: visible;
+}
+
+/* Smooth transitions */
+.shorts-video-item {
+    transition: opacity 0.3s ease;
+}
+
+/* Optimize right controls */
+.shorts-right-controls {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+/* Progress bar improvements */
+.shorts-progress-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 1000;
+}
+
+.shorts-progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Loading state improvements */
+.shorts-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.5);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Video Info Overlay */
+.shorts-video-info {
+    position: absolute;
+    bottom: 80px;
+    left: 15px;
+    right: 15px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 10;
+}
+
+.shorts-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.group-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.verified-badge {
+    color: #0095f6;
+    font-size: 0.9rem;
+}
+
+.shorts-description {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    max-width: 80%;
+}
+
+.shorts-music {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+.music-icon {
+    font-size: 0.8rem;
+}
+
+/* Right Side Controls */
+.shorts-right-controls {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    z-index: 10;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.control-item:active {
+    transform: scale(0.9);
+}
+
+.control-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.control-icon.liked {
+    background: rgba(255, 59, 92, 0.2);
+    color: #ff3b5c;
+}
+
+.control-count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Bottom Progress Bar */
+.shorts-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    z-index: 10;
+}
+
+.shorts-progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Loading Spinner */
+.shorts-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    z-index: 5;
+}
+
+/* Touch Improvements */
+.shorts-video-container {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.shorts-video-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Video Play/Pause Overlay */
+.video-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.video-play-overlay.visible {
+    opacity: 1;
+}
+
+.play-pause-icon {
+    font-size: 4rem;
+    color: white;
+    opacity: 0.8;
+}
+
+/* Additional Controls */
+/* Modern Bottom Controls - PERBAIKI INI */
+/* Modern Bottom Controls - LEBIH TRANSPARAN DAN KECIL */
+.shorts-bottom-controls {
+    position: absolute;
+    bottom: 15px; /* Lebih dekat ke bawah */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Lebih kecil */
+    background: rgba(0, 0, 0, 0.2); /* SANGAT transparan */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Hampir tidak terlihat */
+    border-radius: 20px; /* Lebih kecil */
+    padding: 6px 12px; /* Lebih kecil */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.bottom-control-btn {
+    background: rgba(255, 255, 255, 0.08); /* SANGAT transparan */
+    border: none;
+    border-radius: 50%;
+    width: 35px; /* Lebih kecil */
+    height: 35px; /* Lebih kecil */
+    color: white;
+    font-size: 0.9rem; /* Lebih kecil */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    backdrop-filter: blur(3px);
+}
+
+.bottom-control-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+}
+
+.bottom-control-btn:active {
+    transform: scale(0.9);
+}
+
+/* Right controls - KEMBALI KE UKURAN SEMULA */
+.shorts-right-controls {
+    position: absolute;
+    right: 15px;
+    bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Kembali ke ukuran semula */
+    align-items: center;
+    z-index: 10;
+}
+
+.control-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Kembali ke ukuran semula */
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.control-icon {
+    width: 48px; /* Kembali ke ukuran semula */
+    height: 48px; /* Kembali ke ukuran semula */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    font-size: 1.2rem; /* Kembali ke ukuran semula */
+    transition: all 0.3s ease;
+}
+
+.control-icon.liked {
+    background: rgba(255, 59, 92, 0.2);
+    color: #ff3b5c;
+}
+
+.control-count {
+    font-size: 0.8rem; /* Kembali ke ukuran semula */
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Video Info - Kembali ke posisi semula */
+.shorts-video-info {
+    position: absolute;
+    bottom: 80px; /* Kembali ke posisi semula */
+    left: 15px;
+    right: 15px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    z-index: 10;
+}
+
+.shorts-group {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Kembali ke ukuran semula */
+    margin-bottom: 10px; /* Kembali ke ukuran semula */
+}
+
+.group-name {
+    font-size: 1.1rem; /* Kembali ke ukuran semula */
+    font-weight: 600;
+}
+
+.verified-badge {
+    color: #0095f6;
+    font-size: 0.9rem; /* Kembali ke ukuran semula */
+}
+
+.shorts-description {
+    font-size: 0.95rem; /* Kembali ke ukuran semula */
+    line-height: 1.4;
+    margin-bottom: 10px; /* Kembali ke ukuran semula */
+    max-width: 80%; /* Kembali ke ukuran semula */
+}
+
+.shorts-music {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Kembali ke ukuran semula */
+    font-size: 0.85rem; /* Kembali ke ukuran semula */
+    opacity: 0.9;
+}
+
+.music-icon {
+    font-size: 0.8rem; /* Kembali ke ukuran semula */
+}
+
+/* Progress bar - tipis saja */
+.shorts-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1); /* Lebih transparan */
+    z-index: 1000;
+}
+
+.shorts-progress-bar {
+    height: 100%;
+    background: #fff;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+/* Responsive untuk mobile */
+@media (max-width: 480px) {
+    .shorts-bottom-controls {
+        gap: 4px;
+        padding: 4px 10px;
+        bottom: 10px;
+    }
+    
+    .bottom-control-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+    
+    /* Right controls tetap besar di mobile */
+    .shorts-right-controls {
+        right: 10px;
+        bottom: 100px;
+        gap: 15px;
+    }
+    
+    .control-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
+    
+    .control-count {
+        font-size: 0.75rem;
+    }
+}
+   
+   
+   /* Comment Modal Styles */
+.comment-container {
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    max-height: 300px;
+}
+
+.comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.comment-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-author {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+}
+
+.comment-text {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: var(--text-light);
+}
+
+.comment-time {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-top: 3px;
+}
+
+.comment-input-container {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.comment-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.comment-input:focus {
+    outline: 2px solid var(--primary);
+}
+
+.comment-submit-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-submit-btn:hover {
+    background: #ff4d8d;
+    transform: scale(1.05);
+}
+
+.comment-submit-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Bot comment styling */
+.comment-item.bot .comment-avatar {
+    background: linear-gradient(135deg, var(--secondary), #8a82ff);
+}
+
+.comment-item.user .comment-avatar {
+    background: linear-gradient(135deg, var(--primary), #ff4d8d);
+}
+   
+
+
+
         
     </style>
 </head>
@@ -4013,6 +4932,11 @@ input:checked + .toggle-slider:before {
         <i class="fas fa-home"></i> Home
     </button>
    
+        <button class="nav-btn" data-screen="shorts">
+        <i class="fas fa-play-circle"></i> Idol Shorts
+    </button>
+   
+   
     <button class="nav-btn" data-screen="battle">
         <i class="fas fa-fist-raised"></i> Battle
     </button>
@@ -4063,6 +4987,75 @@ input:checked + .toggle-slider:before {
         <button class="action-btn play-btn" id="topup-close-btn" style="margin-top: 15px;">Close</button>
     </div>
 </div>
+
+
+
+
+
+<!-- Update Information Modal (Same style as topup modal) -->
+<div id="update-popup" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Christmas Update v1.2</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        
+        <div class="update-content">
+            <div class="update-icon">
+                <i class="fas fa-gift"></i>
+            </div>
+            
+            <p class="update-message">
+                Welcome to Battle Of Idol Christmas Special Edition! 
+                Enjoy new features and exclusive content.
+            </p>
+            
+            <div class="update-features">
+                <h4>🎄 New Features:</h4>
+                <ul>
+                    <li>Christmas 2025 Exclusive Photocards</li>
+                    <li>Special Lightning Effects for Secret Cards</li>
+                    <li>Christmas-themed UI Enhancements</li>
+                    <li>New Redeem Codes Available</li>
+                </ul>
+            </div>
+            
+            <div class="update-code">
+                Redeem Code: <strong>CHRISTMAS2025</strong>
+            </div>
+            
+            <p class="update-note">
+                Note: Use the code in Settings → Redeem Codes to get 2,500 coins!
+            </p>
+            
+            <button class="action-btn play-btn" id="update-close-btn" style="margin-top: 15px;">
+                <i class="fas fa-check"></i> Got It!
+            </button>
+            
+            <div class="dont-show-again" style="margin-top: 15px; text-align: center;">
+                <input type="checkbox" id="dont-show-again-update">
+                <label for="dont-show-again-update" style="color: #aaa; font-size: 0.8rem; cursor: pointer;">
+                    Don't show this again
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Shorts Screen -->
+<section id="shorts" class="screen">
+    <div class="shorts-container">
+        <div class="shorts-video-container">
+            <!-- Videos will be loaded by JavaScript -->
+        </div>
+        <div class="shorts-progress-container">
+            <div class="shorts-progress-bar"></div>
+        </div>
+    </div>
+</section>
 
 
 
@@ -4753,7 +5746,7 @@ const gameData = {
             { id: 105, name: "Special Sana", group: "TWICE", image: "sanaS.jpg", health: 150, maxHealth: 150, attack: 18, rarity: "epic", price: 7000, description: "Exclusive photocard not available in gacha" },
             { id: 106, name: "Seorina", group: "Actress", image: "seorina.jpg", health: 182, maxHealth: 182, attack: 17, rarity: "superstar", price: 8500, description: "Exclusive photocard not available in gacha" },
             { id: 107, name: "Cha Hae-In", group: "Solo Leveling", image: "chahaein.jpg", health: 218, maxHealth: 218, attack: 18, rarity: "superstar", price: 15000, description: "Exclusive photocard not available in gacha" },
-            { id: 108, name: "Rose", group: "BLACKPINK", image: "rosech.jpg", health: 250, maxHealth: 250, attack: 28, rarity: "secret", price: 9900, description: "Exclusive photocard not available in gacha" }
+            { id: 108, name: "Rose Christmas 2025", group: "BLACKPINK", image: "rosech.jpg", health: 250, maxHealth: 250, attack: 28, rarity: "secret", price: 9900, description: "Exclusive photocard not available in gacha" }
         ],
         discounts: [
             { id: 1, name: "10% Discount", discount: 10, uses: 5, type: "discount", image: "discount.jpg", description: "10% discount on gacha and photocards" },
@@ -4965,6 +5958,254 @@ let firstGachaDone = false;
 let cardToManageSkills = null;
 let selectedCouponCrate = null;
 
+
+let shortsVideos = [];
+let currentShortsIndex = 0;
+let isShortsPlaying = false;
+let shortsProgressInterval;
+let autoPlayEnabled = false;
+let isMuted = false;
+let currentVolume = 70;
+
+
+// VARIABEL BARU UNTUK SHORTS SCROLL BEHAVIOR
+let canScroll = true;
+let isAutoScrolling = false;
+let currentCommentVideoId = null;
+
+
+
+const shortsData = [
+
+
+{
+        id: 0,
+        video: "chaepics.mp4",
+        group: "chae_chaewon",
+        description: "아름다운 날' #chaewon #chaewon #lesserafim #Battleofidol",
+        
+        likes: 236032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+
+{
+        id: 1,
+        video: "wonyung1.mp4",
+        group: "IVE Official",
+        description: "Oh my my.. #wonyung #ive #Kpop #battleofidol",
+        music: "Original Sound - IVE",
+        likes: 821247,
+        isLiked: false,
+        duration: 15,
+        comments: [
+            { id: 1, author: "KpopLover", text: "Jiwoo is so talented! 🔥", time: "2 hours ago", type: "bot" },
+            { id: 2, author: "IdolFan", text: "Her dance moves are incredible! 💫", time: "1 hour ago", type: "bot" },
+            { id: 3, author: "MusicEnthusiast", text: "This song is stuck in my head! 🎵", time: "30 minutes ago", type: "bot" }
+        ]
+    },
+
+    {
+        id: 2,
+        video: "jiwooshorts.mp4",
+        group: "Hearts2Hearts",
+        description: "Jiwoo Mode On! #Hearts2hearts #Kpop #battleofidol",
+        music: "Original Sound - Hearts2Hearts",
+        likes: 81247,
+        isLiked: false,
+        duration: 15,
+        comments: [
+            { id: 1, author: "KpopLover", text: "Jiwoo is so talented! 🔥", time: "2 hours ago", type: "bot" },
+            { id: 2, author: "IdolFan", text: "Her dance moves are incredible! 💫", time: "1 hour ago", type: "bot" },
+            { id: 3, author: "MusicEnthusiast", text: "This song is stuck in my head! 🎵", time: "30 minutes ago", type: "bot" }
+        ]
+    },
+    {
+        id: 3,
+        video: "iushorts1.mp4",
+        group: "IU",
+        description: "행복한 하루 보내세요 ☺️  #iu #kpop #battleofidol",
+        music: "Original Sound - IU",
+        likes: 529923,
+        isLiked: false,
+        duration: 18,
+        comments: [
+            { id: 1, author: "UaenaForever", text: "IU never disappoints! 🌟", time: "3 hours ago", type: "bot" },
+            { id: 2, author: "KpopStan", text: "Her voice is angelic! 👼", time: "2 hours ago", type: "bot" },
+            { id: 3, author: "MusicLover", text: "This made my day better! 💖", time: "1 hour ago", type: "bot" }
+        ]
+    },
+    {
+        id: 4,
+        video: "chaewoncute.mp4",
+        group: "LE SSERAFIM",
+        description: "Chaewon outfit today  #LESSERAFIM #Chaewon #Battleofidol",
+        music: "Original Sound - LE SSERAFIM",
+        likes: 415632,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "Fearnot", text: "Chaewon's visuals are no joke! 😍", time: "4 hours ago", type: "bot" },
+            { id: 2, author: "KpopFan", text: "LE SSERAFIM never misses! 💯", time: "3 hours ago", type: "bot" },
+            { id: 3, author: "DanceEnthusiast", text: "Her stage presence is amazing! 💃", time: "2 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 5,
+        video: "giselle1.mp4",
+        group: "aespa",
+        description: "With Giselle #aespa #giselle #Battleofidol",
+        music: "Original Sound - aespa",
+        likes: 615632,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MY", text: "Giselle's rap is fire! 🔥", time: "5 hours ago", type: "bot" },
+            { id: 2, author: "KpopAddict", text: "aespa's concept is so unique! 🌙", time: "4 hours ago", type: "bot" },
+            { id: 3, author: "MusicFan", text: "This choreography is insane! 💫", time: "3 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 6,
+        video: "hannicute.mp4",
+        group: "NewJeans",
+        description: "Hello I'am Hanni 🦦  #njz #freenewjans #hanni #Battleofidol",
+        music: "Original Sound - NewJeans",
+        likes: 1296032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "Bunny", text: "Hanni is so adorable! 🐰", time: "6 hours ago", type: "bot" },
+            { id: 2, author: "NewJeansFan", text: "NewJeans music is always fresh! 🎶", time: "5 hours ago", type: "bot" },
+            { id: 3, author: "KpopEnjoyer", text: "Her energy is contagious! ⚡", time: "4 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 7,
+        video: "rorashorts1.mp4",
+        group: "BABYMONSTER",
+        description: "🤭 #yg #babymonster #rora #Battleofidol",
+        music: "Original Sound - Babymonster",
+        likes: 256032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+            ]
+    },
+    
+            
+            
+{
+        id: 8,
+        video: "lisajennie.mp4",
+        group: "BLACKPINK",
+        description: "Lisa and Jennie 🔥  #blackpink #lisa #jennie #Battleofidol",
+        music: "Original Sound - BLACKPINK",
+        likes: 1256000,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+            ]
+    },
+    
+                
+       {
+        id: 9,
+        video: "soheecute.mp4",
+        group: "xeesoxee",
+        description: "아름다운 날 #sohee #hansohee #Battleofidol",
+        music: "Original Sound - XEESOXEE",
+        likes: 436032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 10,
+        video: "karina1.mp4",
+        group: "aespa",
+        description: "Hello #karina #aespa #Battleofidol",
+        music: "Original Sound - aespa",
+        likes: 1136032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+    {
+     id: 11,
+        video: "iushorts2.mp4",
+        group: "IU",
+        description: "행복한 주말 보내세요  #iu #leejieun #Battleofidol",
+        music: "Original Sound - IU",
+        likes: 2136032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+    {
+        id: 12,
+        video: "jiwoocarmen.mp4",
+        group: "Hearts2Hearts",
+        description: "휴가를 가다' #hearts2hearts #carmen #jiwoo #Battleofidol",
+        music: "Original Sound - Hearts2Hearts",
+        likes: 936032,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    },
+        {
+        id: 13,
+        video: "miyeon.mp4",
+        group: "i-Dle Official",
+        description: "매우 행복하다 #idle #miyeon #hyeri #Battleofidol",
+        music: "Original Sound - idle",
+        likes: 336145,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" },
+            { id: 2, author: "YGStan", text: "BABYMONSTER is the future! 🌟", time: "6 hours ago", type: "bot" },
+            { id: 3, author: "KpopListener", text: "Can't wait for their comeback! 💝", time: "5 hours ago", type: "bot" }
+        ]
+    }
+];
+
+
+
+
+
+
+
+
+
+
 // FUNGSI VALIDASI DATA YANG DIPERBAIKI
 function validateGameData() {
     console.log("Validating game data...");
@@ -5052,7 +6293,74 @@ const backgroundMusic = new Audio('https://assets.mixkit.co/music/preview/mixkit
 backgroundMusic.loop = true;
 backgroundMusic.volume = gameData.settings.bgmVolume / 100;
 
-// INITIALIZE GAME
+// ============================
+// UPDATE MODAL (SAME AS OTHER MODALS)
+// ============================
+
+// Fungsi untuk menampilkan popup update
+function showUpdatePopup() {
+    const dontShowAgain = localStorage.getItem('battleOfIdol_hideUpdatePopup');
+    if (dontShowAgain === 'true') {
+        return;
+    }
+    
+    const updatePopup = document.getElementById('update-popup');
+    if (updatePopup) {
+        updatePopup.classList.add('active');
+    }
+}
+
+// Fungsi untuk menutup popup update
+function closeUpdatePopup() {
+    const updatePopup = document.getElementById('update-popup');
+    if (updatePopup) {
+        updatePopup.classList.remove('active');
+    }
+    
+    const dontShowAgainCheckbox = document.getElementById('dont-show-again-update');
+    if (dontShowAgainCheckbox && dontShowAgainCheckbox.checked) {
+        localStorage.setItem('battleOfIdol_hideUpdatePopup', 'true');
+    }
+}
+
+// Setup event listener untuk popup update
+function setupUpdatePopupEvents() {
+    // Tombol close di header
+    const updateCloseModalBtn = document.querySelector('#update-popup .close-modal');
+    if (updateCloseModalBtn) {
+        updateCloseModalBtn.addEventListener('click', closeUpdatePopup);
+    }
+    
+    // Tombol "Got It!"
+    const updateCloseBtn = document.getElementById('update-close-btn');
+    if (updateCloseBtn) {
+        updateCloseBtn.addEventListener('click', closeUpdatePopup);
+    }
+    
+    // Checkbox "Don't show again"
+    const dontShowCheckbox = document.getElementById('dont-show-again-update');
+    if (dontShowCheckbox) {
+        dontShowCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                localStorage.setItem('battleOfIdol_hideUpdatePopup', 'true');
+            } else {
+                localStorage.removeItem('battleOfIdol_hideUpdatePopup');
+            }
+        });
+    }
+    
+    // Close dengan klik di luar modal
+    const updatePopup = document.getElementById('update-popup');
+    if (updatePopup) {
+        updatePopup.addEventListener('click', (e) => {
+            if (e.target === updatePopup) {
+                closeUpdatePopup();
+            }
+        });
+    }
+}
+
+// Tambahkan ke initGame
 function initGame() {
     console.log("Initializing game...");
     try {
@@ -5060,8 +6368,14 @@ function initGame() {
         if (savedUsername) {
             gameData.username = savedUsername;
             loadGameData();
-            validateGameData(); // Validasi data saat inisialisasi
+            validateGameData();
             showGameScreen();
+            
+            // Tampilkan popup setelah 500ms
+            setTimeout(() => {
+                showUpdatePopup();
+            }, 500);
+            
         } else {
             showLoginScreen();
         }
@@ -5069,6 +6383,8 @@ function initGame() {
         setupEventListeners();
         setupAdditionalEventListeners();
         setupSettingsModalEvents();
+        setupUpdatePopupEvents(); // Tambahkan ini
+        
         applySettings();
         
         if (gameData.settings.bgmEnabled) {
@@ -5083,6 +6399,20 @@ function initGame() {
         alert("Error initializing game. Please refresh the page.");
     }
 }
+
+// Tambahkan juga ke fungsi close-modal umum
+document.addEventListener('DOMContentLoaded', function() {
+    // Event listener untuk semua tombol close-modal
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        });
+    });
+});
+
 
 // SHOW LOGIN SCREEN
 function showLoginScreen() {
@@ -5996,6 +7326,625 @@ function unequipSkillFromCard(card) {
         saveGameData();
     }
 }
+
+
+
+// short disini
+
+
+// Function to initialize Shorts
+function initShorts() {
+    console.log('🎬 Initializing Shorts...');
+    
+    try {
+        // Reset state
+        currentShortsIndex = 0;
+        isShortsPlaying = false;
+        clearInterval(shortsProgressInterval);
+        shortsVideos = [];
+        
+        const container = document.querySelector('.shorts-video-container');
+        if (!container) {
+            console.error('❌ Shorts container not found');
+            return;
+        }
+        
+        // Clear container
+        container.innerHTML = '';
+        
+        // Create video elements
+        shortsData.forEach((short, index) => {
+            const videoItem = document.createElement('div');
+            videoItem.className = `shorts-video-item ${index === 0 ? 'active' : ''}`;
+            videoItem.setAttribute('data-index', index);
+            
+            videoItem.innerHTML = `
+                <video class="shorts-video" preload="metadata" playsinline webkit-playsinline muted>
+                    <source src="${short.video}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                
+                <div class="video-play-overlay ${index === 0 ? '' : 'visible'}">
+                    <div class="play-pause-icon">
+                        <i class="fas ${index === 0 ? 'fa-pause' : 'fa-play'}"></i>
+                    </div>
+                </div>
+                
+                <div class="shorts-video-info">
+                    <div class="shorts-group">
+                        <span class="group-name">${short.group}</span>
+                        <span class="verified-badge"><i class="fas fa-check-circle"></i></span>
+                    </div>
+                    <div class="shorts-description">${short.description}</div>
+                    <div class="shorts-music">
+                        <i class="fas fa-music music-icon"></i>
+                        <span>${short.music}</span>
+                    </div>
+                </div>
+                
+                <div class="shorts-right-controls">
+                    <div class="control-item" onclick="toggleLike(${index})">
+                        <div class="control-icon ${short.isLiked ? 'liked' : ''}">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="control-count">${formatCount(short.likes)}</div>
+                    </div>
+                    <div class="control-item" onclick="showCommentModal(${index})">
+                        <div class="control-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="control-count">Comment</div>
+                    </div>
+                    <div class="control-item" onclick="shareShort(${index})">
+                        <div class="control-icon">
+                            <i class="fas fa-share"></i>
+                        </div>
+                        <div class="control-count">Share</div>
+                    </div>
+                    <div class="control-item" onclick="toggleSound(${index})">
+                        <div class="control-icon">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <div class="control-count">Sound</div>
+                    </div>
+                </div>
+                
+                <div class="shorts-loading" style="display: ${index === 0 ? 'flex' : 'none'};">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            `;
+            
+            container.appendChild(videoItem);
+            
+            // Store video reference
+            const videoElement = videoItem.querySelector('.shorts-video');
+            if (videoElement) {
+                shortsVideos.push({
+                    element: videoItem,
+                    video: videoElement,
+                    short: short,
+                    index: index
+                });
+            }
+        });
+        
+        console.log('✅ Created', shortsVideos.length, 'video elements');
+        
+        // Setup scroll handler
+        setupShortsScrollHandler(container);
+        
+        // Setup video events for first video
+        if (shortsVideos.length > 0) {
+            setupVideoEvents(0);
+        }
+        
+        // Add bottom controls
+        addBottomControls();
+        
+        console.log('✅ Shorts initialized successfully');
+        
+    } catch (error) {
+        console.error('❌ Error in initShorts:', error);
+    }
+}
+
+// Setup scroll handler
+function setupShortsScrollHandler(container) {
+    let scrollTimeout;
+    let isScrolling = false;
+    
+    container.addEventListener('scroll', () => {
+        if (isScrolling) return;
+        
+        isScrolling = true;
+        clearTimeout(scrollTimeout);
+        
+        scrollTimeout = setTimeout(() => {
+            handleShortsScrollEnd(container);
+            isScrolling = false;
+        }, 150);
+    }, { passive: true });
+}
+
+// Handle scroll end
+function handleShortsScrollEnd(container) {
+    const scrollTop = container.scrollTop;
+    const containerHeight = container.clientHeight;
+    const newIndex = Math.round(scrollTop / containerHeight);
+    
+    if (newIndex >= 0 && newIndex < shortsVideos.length && newIndex !== currentShortsIndex) {
+        switchToShort(newIndex);
+    }
+}
+
+// Switch to short
+function switchToShort(newIndex) {
+    console.log(`🔄 Switching from ${currentShortsIndex} to ${newIndex}`);
+    
+    // Pause current video
+    pauseCurrentShort();
+    
+    const oldIndex = currentShortsIndex;
+    currentShortsIndex = newIndex;
+    
+    // Update active states
+    updateActiveStates(oldIndex, newIndex);
+    
+    // Play new video
+    loadAndPlayShort(newIndex);
+}
+
+// Pause current short
+function pauseCurrentShort() {
+    if (shortsVideos[currentShortsIndex]) {
+        const video = shortsVideos[currentShortsIndex].video;
+        if (video) {
+            video.pause();
+        }
+    }
+    clearInterval(shortsProgressInterval);
+    isShortsPlaying = false;
+    updatePlayPauseUI(false);
+}
+
+// Update active states
+function updateActiveStates(oldIndex, newIndex) {
+    // Remove active from old video
+    if (shortsVideos[oldIndex]) {
+        shortsVideos[oldIndex].element.classList.remove('active');
+    }
+    
+    // Add active to new video
+    if (shortsVideos[newIndex]) {
+        shortsVideos[newIndex].element.classList.add('active');
+    }
+}
+
+// Setup video events
+function setupVideoEvents(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const overlay = videoData.element.querySelector('.video-play-overlay');
+    
+    if (!video) return;
+    
+    // Click to play/pause
+    if (overlay) {
+        overlay.addEventListener('click', function() {
+            togglePlayPause();
+        });
+    }
+    
+    // Video loaded
+    video.addEventListener('loadeddata', function() {
+        const loadingElement = videoData.element.querySelector('.shorts-loading');
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+    
+    // Video waiting (buffering)
+    video.addEventListener('waiting', function() {
+        const loadingElement = videoData.element.querySelector('.shorts-loading');
+        if (loadingElement) {
+            loadingElement.style.display = 'flex';
+        }
+    });
+    
+    // Video can play
+    video.addEventListener('canplay', function() {
+        const loadingElement = videoData.element.querySelector('.shorts-loading');
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+    });
+    
+    // Video ended
+    video.addEventListener('ended', function() {
+        console.log(`Video ${index} ended`);
+        isShortsPlaying = false;
+        updatePlayPauseUI(false);
+        
+        // Reset progress bar
+        const progressBar = document.querySelector('.shorts-progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+        
+        clearInterval(shortsProgressInterval);
+        
+        // Auto play next if enabled
+        if (autoPlayEnabled && index < shortsVideos.length - 1) {
+            setTimeout(() => {
+                switchToShort(index + 1);
+                scrollToShort(index + 1);
+            }, 1000);
+        }
+    });
+    
+    // Video error
+    video.addEventListener('error', function() {
+        console.error(`Video ${index} error`);
+        const loadingElement = videoData.element.querySelector('.shorts-loading');
+        if (loadingElement) {
+            loadingElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i><br><span>Load failed</span>';
+        }
+    });
+}
+
+// Load and play short
+function loadAndPlayShort(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const loadingElement = videoData.element.querySelector('.shorts-loading');
+    
+    console.log(`🎥 Loading short ${index}`);
+    
+    // Show loading
+    if (loadingElement) {
+        loadingElement.style.display = 'flex';
+        loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    }
+    
+    // Try to play
+    const playPromise = video.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            console.log(`✅ Video ${index} playing`);
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+            isShortsPlaying = true;
+            updatePlayPauseUI(true);
+            startProgressBar(index, videoData.short.duration);
+        }).catch(error => {
+            console.log(`⚠️ Video ${index} play failed:`, error);
+            if (loadingElement) {
+                loadingElement.innerHTML = '<i class="fas fa-play"></i><br><span>Tap to play</span>';
+            }
+        });
+    }
+}
+
+// Start progress bar
+function startProgressBar(index, duration) {
+    clearInterval(shortsProgressInterval);
+    
+    const progressBar = document.querySelector('.shorts-progress-bar');
+    const videoData = shortsVideos[index];
+    
+    if (!progressBar || !videoData || !videoData.video) return;
+    
+    progressBar.style.width = '0%';
+    
+    shortsProgressInterval = setInterval(() => {
+        if (isShortsPlaying && videoData.video && !videoData.video.paused) {
+            const progress = (videoData.video.currentTime / duration) * 100;
+            progressBar.style.width = Math.min(progress, 100) + '%';
+            
+            if (progress >= 100) {
+                clearInterval(shortsProgressInterval);
+            }
+        }
+    }, 100);
+}
+
+// Update play/pause UI
+function updatePlayPauseUI(playing) {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const overlay = videoData.element.querySelector('.video-play-overlay');
+    const icon = videoData.element.querySelector('.play-pause-icon i');
+    
+    if (!overlay || !icon) return;
+    
+    if (playing) {
+        overlay.classList.remove('visible');
+        icon.className = 'fas fa-pause';
+    } else {
+        overlay.classList.add('visible');
+        icon.className = 'fas fa-play';
+    }
+}
+
+// Toggle play/pause
+function togglePlayPause() {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    
+    if (!video) return;
+    
+    if (isShortsPlaying) {
+        // Pause
+        video.pause();
+        isShortsPlaying = false;
+        updatePlayPauseUI(false);
+        clearInterval(shortsProgressInterval);
+    } else {
+        // Play
+        video.play().then(() => {
+            isShortsPlaying = true;
+            updatePlayPauseUI(true);
+            startProgressBar(currentShortsIndex, videoData.short.duration);
+        }).catch(error => {
+            console.log('Play failed:', error);
+        });
+    }
+}
+
+// Add bottom controls
+function addBottomControls() {
+    const container = document.querySelector('.shorts-container');
+    if (!container) return;
+    
+    // Remove existing controls
+    const existingControls = container.querySelector('.shorts-bottom-controls');
+    if (existingControls) {
+        existingControls.remove();
+    }
+    
+    const bottomControls = document.createElement('div');
+    bottomControls.className = 'shorts-bottom-controls';
+    bottomControls.innerHTML = `
+        <button class="bottom-control-btn refresh-btn" onclick="refreshShorts()" title="Back to Top">
+            <i class="fas fa-arrow-up"></i>
+            <span class="btn-tooltip">Top</span>
+            </button>
+        
+  
+    `;
+    
+    container.appendChild(bottomControls);
+    
+    // Update button states
+    updateControlButtons();
+}
+
+// Update control buttons
+function updateControlButtons() {
+    const playPauseBtn = document.querySelector('.play-pause-btn');
+    const playPauseIcon = playPauseBtn?.querySelector('i');
+    const autoPlayBtn = document.querySelector('.auto-play-btn');
+    const autoPlayIcon = autoPlayBtn?.querySelector('i');
+    const volumeBtn = document.querySelector('.volume-btn');
+    const volumeIcon = volumeBtn?.querySelector('i');
+    
+    // Update play/pause button
+    if (playPauseIcon) {
+        playPauseIcon.className = isShortsPlaying ? 'fas fa-pause' : 'fas fa-play';
+        playPauseBtn.title = isShortsPlaying ? 'Pause Video' : 'Play Video';
+    }
+    
+    // Update auto play button
+    if (autoPlayIcon) {
+        autoPlayIcon.className = autoPlayEnabled ? 'fas fa-toggle-on' : 'fas fa-toggle-off';
+        autoPlayBtn.title = autoPlayEnabled ? 'Disable Auto Play' : 'Enable Auto Play';
+    }
+    
+    // Update volume button
+    if (volumeIcon) {
+        volumeIcon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+        volumeBtn.title = isMuted ? 'Unmute' : 'Mute';
+    }
+    
+    // Update volume slider
+    const volumeSlider = document.querySelector('.volume-slider');
+    if (volumeSlider) {
+        volumeSlider.value = currentVolume;
+    }
+}
+
+// Toggle auto play
+function toggleAutoPlay() {
+    autoPlayEnabled = !autoPlayEnabled;
+    updateControlButtons();
+    console.log(`🔁 Auto play ${autoPlayEnabled ? 'enabled' : 'disabled'}`);
+}
+
+// Toggle mute
+function toggleMute() {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    if (!video) return;
+    
+    isMuted = !isMuted;
+    video.muted = isMuted;
+    updateControlButtons();
+    
+    console.log(isMuted ? '🔇 Muted' : '🔊 Unmuted');
+}
+
+// Change volume
+function changeVolume(volume) {
+    const videoData = shortsVideos[currentShortsIndex];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    if (!video) return;
+    
+    currentVolume = parseInt(volume);
+    video.volume = currentVolume / 100;
+    
+    // Update mute state if volume is 0
+    if (currentVolume === 0) {
+        isMuted = true;
+        video.muted = true;
+    } else if (isMuted && currentVolume > 0) {
+        isMuted = false;
+        video.muted = false;
+    }
+    
+    updateControlButtons();
+    console.log(`🔊 Volume: ${currentVolume}%`);
+}
+
+// Refresh shorts
+function refreshShorts() {
+    console.log('🔄 Refreshing shorts...');
+    
+    // Pause current video
+    pauseCurrentShort();
+    
+    // Scroll to first video
+    const container = document.querySelector('.shorts-video-container');
+    if (container) {
+        container.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
+        setTimeout(() => {
+            switchToShort(0);
+        }, 500);
+    }
+}
+
+// Scroll to short
+function scrollToShort(index) {
+    const container = document.querySelector('.shorts-video-container');
+    if (container) {
+        const itemHeight = container.clientHeight;
+        container.scrollTo({
+            top: index * itemHeight,
+            behavior: 'smooth'
+        });
+    }
+}
+
+// Toggle like
+function toggleLike(index) {
+    if (index < 0 || index >= shortsData.length) return;
+    
+    const short = shortsData[index];
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const controlIcon = videoData.element.querySelector('.control-icon');
+    const likesCount = videoData.element.querySelector('.control-count');
+    
+    if (!controlIcon || !likesCount) return;
+    
+    if (short.isLiked) {
+        short.likes--;
+        short.isLiked = false;
+        controlIcon.classList.remove('liked');
+    } else {
+        short.likes++;
+        short.isLiked = true;
+        controlIcon.classList.add('liked');
+    }
+    
+    likesCount.textContent = formatCount(short.likes);
+    
+    controlIcon.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        controlIcon.style.transform = 'scale(1)';
+    }, 200);
+}
+
+// Toggle sound
+function toggleSound(index) {
+    const videoData = shortsVideos[index];
+    if (!videoData) return;
+    
+    const video = videoData.video;
+    const soundIcon = videoData.element.querySelector('.control-item:nth-child(4) .control-icon i');
+    
+    if (!video || !soundIcon) return;
+    
+    if (video.muted) {
+        video.muted = false;
+        soundIcon.className = 'fas fa-volume-up';
+    } else {
+        video.muted = true;
+        soundIcon.className = 'fas fa-volume-mute';
+    }
+}
+
+// Share short
+function shareShort(index) {
+    if (navigator.share) {
+        navigator.share({
+            title: shortsData[index].group,
+            text: shortsData[index].description,
+            url: window.location.href
+        }).then(() => {
+            console.log('Shared successfully');
+            addToBattleLog(`Shared ${shortsData[index].group} short!`, 'player');
+        }).catch(console.error);
+    } else {
+        addToBattleLog(`Share feature for ${shortsData[index].group} short is coming soon!`, 'player');
+    }
+}
+
+// Format count (like 1.2k, 1.2m)
+function formatCount(num) {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'm';
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'k';
+    }
+    return num.toString();
+}
+
+// Update switchScreen function untuk Shorts
+const originalSwitchScreen = switchScreen;
+switchScreen = function(screenId) {
+    originalSwitchScreen(screenId);
+    
+    if (screenId !== 'shorts') {
+        // Pause current video when leaving
+        pauseCurrentShort();
+    } else {
+        // Initialize shorts when entering
+        setTimeout(() => {
+            initShorts();
+        }, 100);
+    }
+};
+
+// ========== AKHIR PERBAIKAN SHORTS ==========
+
+
+
+
+
+
+
+
+
+
 
 // LOAD STORE ITEMS
 function loadStoreItems(category) {
