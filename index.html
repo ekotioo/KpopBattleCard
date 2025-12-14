@@ -6587,6 +6587,7 @@ function loadGameData() {
 }
 
 // PERBAIKAN UTAMA: LOAD COLLECTION DENGAN ERROR HANDLING YANG LEBIH BAIK
+// PERBAIKAN UTAMA: LOAD COLLECTION DENGAN ERROR HANDLING YANG LEBIH BAIK
 function loadCollection() {
     console.log("Loading collection...");
     const collectionContainer = document.querySelector('.collection-container');
@@ -6686,73 +6687,156 @@ function loadCollection() {
                 cardElement.innerHTML = `
                     ${safeCard.favorite ? '<div class="favorite-star"><i class="fas fa-star"></i></div>' : ''}
                     <img src="${safeCard.image}" alt="${safeCard.name}" class="collection-card-full" onerror="this.src='placeholder.jpg'">
-                 
-                 
-                 
-                 
-                 
-                 
-                 
                     
-                    
-                
-                    
-                    
-<div class="collection-card-info">
-    <div class="collection-card-name">${safeCard.name}</div>
-    <div class="collection-card-group">${safeCard.group} - <span class="rarity-${safeCard.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${safeCard.rarity.toUpperCase()}</span></div>
-    <div class="collection-card-stats">
-        <span>HP: ${safeCard.maxHealth}</span>
-        <span>ATK: ${safeCard.attack} ${safeCard.upgrades > 0 ? `(+${safeCard.upgrades})` : ''}</span>
-    </div>
-    <div class="win-rate">
-        <i class="fas fa-trophy"></i>
-        <span>Win Rate: ${winRate}% (${safeCard.wins}/${safeCard.battles})</span>
-    </div>
-    <div class="market-price">
-        <i class="fas fa-coins"></i>
-        <span>Sell Price: ${sellPrice} coins</span>
-        ${isSecretCard ? '<span style="color: #ff6b6b; font-size: 0.8rem;">(Cannot be sold)</span>' : ''}
-        ${safeCard.favorite ? '<span style="color: #ffd700; font-size: 0.8rem;">(Favorite - cannot be sold)</span>' : ''}
-    </div>
-    ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
-    
-    <!-- TAMBAHAN BARU: Informasi duplikat secret card -->
-    ${safeCard.rarity === 'secret' && hasDuplicateSecretCards(safeCard.id) ? 
-        `<div class="duplicate-info" style="background: linear-gradient(135deg, rgba(255, 0, 204, 0.1), rgba(255, 153, 0, 0.1)); padding: 8px; border-radius: 8px; margin: 8px 0; border: 1px solid rgba(255, 0, 204, 0.3);">
-            <div style="display: flex; align-items: center; gap: 8px; color: #ffd700;">
-                <i class="fas fa-exchange-alt"></i>
-                <span style="font-size: 0.85rem; font-weight: 600;">Duplicate Secret Card</span>
-            </div>
-            <div style="font-size: 0.75rem; color: #aaa; margin-top: 4px;">
-                Can be traded for 5 Gacha Coupons
-            </div>
-        </div>` : 
-        ''
-    }
-    
-
-<div class="card-actions">
-    <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
-    <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
-    <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
-    <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}</button>
-    
-    ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
-    
-    <!-- TAMBAH INI: Tombol trade untuk kartu secret duplikat -->
-    ${safeCard.rarity === 'secret' && hasDuplicateSecretCards(safeCard.id) ? 
-        `<button class="trade-gacha-btn" data-id="${safeCard.id}" style="background: linear-gradient(135deg, #ff00cc, #ff9900); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; margin-top: 5px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 5px;">
-            <i class="fas fa-exchange-alt"></i> TRADE FOR 5 GACHA COUPONS
-        </button>` : 
-        ''
-    }
-</div>
+                    <div class="collection-card-info">
+                        <div class="collection-card-name">${safeCard.name}</div>
+                        <div class="collection-card-group">${safeCard.group} - <span class="rarity-${safeCard.rarity}" style="padding: 2px 5px; border-radius: 4px; font-size: 0.7rem;">${safeCard.rarity.toUpperCase()}</span></div>
+                        <div class="collection-card-stats">
+                            <span>HP: ${safeCard.maxHealth}</span>
+                            <span>ATK: ${safeCard.attack} ${safeCard.upgrades > 0 ? `(+${safeCard.upgrades})` : ''}</span>
+                        </div>
+                        <div class="win-rate">
+                            <i class="fas fa-trophy"></i>
+                            <span>Win Rate: ${winRate}% (${safeCard.wins}/${safeCard.battles})</span>
+                        </div>
+                        <div class="market-price">
+                            <i class="fas fa-coins"></i>
+                            <span>Sell Price: ${sellPrice} coins</span>
+                            ${isSecretCard ? '<span style="color: #ff6b6b; font-size: 0.8rem;">(Cannot be sold)</span>' : ''}
+                            ${safeCard.favorite ? '<span style="color: #ffd700; font-size: 0.8rem;">(Favorite - cannot be sold)</span>' : ''}
+                        </div>
+                        ${equippedSkill ? `<div class="skill-equipped">Skill: ${equippedSkill.name}</div>` : ''}
+                        
+                        <!-- TAMBAHAN BARU: Informasi duplikat secret card -->
+                        ${safeCard.rarity === 'secret' && hasDuplicateSecretCards(safeCard.id) ? 
+                            `<div class="duplicate-info" style="background: linear-gradient(135deg, rgba(255, 0, 204, 0.1), rgba(255, 153, 0, 0.1)); padding: 8px; border-radius: 8px; margin: 8px 0; border: 1px solid rgba(255, 0, 204, 0.3);">
+                                <div style="display: flex; align-items: center; gap: 8px; color: #ffd700;">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span style="font-size: 0.85rem; font-weight: 600;">Duplicate Secret Card</span>
+                                </div>
+                                <div style="font-size: 0.75rem; color: #aaa; margin-top: 4px;">
+                                    Can be traded for 5 Gacha Coupons
+                                </div>
+                            </div>` : 
+                            ''
+                        }
+                        
+                        <div class="card-actions">
+                            <button class="equip-btn" data-id="${safeCard.id}">${gameData.currentCard && gameData.currentCard.id === safeCard.id ? 'EQUIPPED' : 'EQUIP'}</button>
+                            <button class="upgrade-btn" data-id="${safeCard.id}" ${!canUpgrade ? 'disabled' : ''}>UPGRADE (${safeCard.upgrades}/8)</button>
+                            <button class="skill-btn" data-id="${safeCard.id}">SKILL</button>
+                            <button class="favorite-btn ${safeCard.favorite ? 'favorited' : ''}" data-id="${safeCard.id}">
+                                ${safeCard.favorite ? 'FAVORITED' : 'FAVORITE'}
+                            </button>
+                            
+                            ${canBeSold ? `<button class="sell-btn" data-id="${safeCard.id}">SELL</button>` : ''}
+                            
+                            <!-- TAMBAH INI: Tombol trade untuk kartu secret duplikat -->
+                            ${safeCard.rarity === 'secret' && hasDuplicateSecretCards(safeCard.id) ? 
+                                `<button class="trade-gacha-btn" data-id="${safeCard.id}" style="background: linear-gradient(135deg, #ff00cc, #ff9900); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; margin-top: 5px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                    <i class="fas fa-exchange-alt"></i> TRADE FOR 5 GACHA COUPONS
+                                </button>` : 
+                                ''
+                            }
+                        </div>
+                    </div>
                 `;
                 
+                // PERBAIKAN BUG FAVORIT: TAMBAHKAN EVENT LISTENER LANGSUNG UNTUK TOMBOL FAVORIT
+                const favoriteBtn = cardElement.querySelector('.favorite-btn');
+if (favoriteBtn) {
+    favoriteBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log("Direct favorite button click for card ID:", safeCard.id);
+        const cardId = parseInt(this.getAttribute('data-id'));
+        if (cardId) {
+            toggleFavoriteCard(cardId);
+        }
+    });
+}
                 
+                // Tambahkan event listener langsung untuk tombol upgrade
+                const upgradeBtn = cardElement.querySelector('.upgrade-btn');
+                if (upgradeBtn && !upgradeBtn.disabled) {
+                    upgradeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log("Direct upgrade button click for card ID:", safeCard.id);
+                        const cardId = parseInt(this.getAttribute('data-id'));
+                        if (cardId) {
+                            upgradeCardAttack(cardId);
+                        }
+                    });
+                }
                 
-// tess               
+                // Tambahkan event listener langsung untuk tombol equip
+                const equipBtn = cardElement.querySelector('.equip-btn');
+                if (equipBtn) {
+                    equipBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log("Direct equip button click for card ID:", safeCard.id);
+                        const cardId = parseInt(this.getAttribute('data-id'));
+                        const card = gameData.cards.find(c => c.id === cardId);
+                        if (card) {
+                            setCurrentCard(card);
+                            loadCollection();
+                            addToBattleLog(`Equipped ${card.name}!`, 'player');
+                        }
+                    });
+                }
+                
+                // Tambahkan event listener langsung untuk tombol skill
+                const skillBtn = cardElement.querySelector('.skill-btn');
+                if (skillBtn) {
+                    skillBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log("Direct skill button click for card ID:", safeCard.id);
+                        const cardId = parseInt(this.getAttribute('data-id'));
+                        const card = gameData.cards.find(c => c.id === cardId);
+                        if (card) {
+                            showSkillModal(card);
+                        }
+                    });
+                }
+                
+                // Tambahkan event listener langsung untuk tombol sell
+                const sellBtn = cardElement.querySelector('.sell-btn');
+                if (sellBtn) {
+                    sellBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log("Direct sell button click for card ID:", safeCard.id);
+                        const cardId = parseInt(this.getAttribute('data-id'));
+                        const card = gameData.cards.find(c => c.id === cardId);
+                        if (card && card.rarity !== 'secret' && !card.favorite && gameData.cards.length > 1) {
+                            showSellCardModal(card);
+                        } else if (gameData.cards.length <= 1) {
+                            addToBattleLog("You can't sell your only card!", 'player');
+                        } else if (card && card.favorite) {
+                            addToBattleLog("Favorite cards cannot be sold!", 'player');
+                        } else if (card && card.rarity === 'secret') {
+                            addToBattleLog("Secret cards cannot be sold!", 'player');
+                        }
+                    });
+                }
+                
+                // Tambahkan event listener langsung untuk tombol trade
+                const tradeBtn = cardElement.querySelector('.trade-gacha-btn');
+                if (tradeBtn) {
+                    tradeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log("Direct trade button click for card ID:", safeCard.id);
+                        const cardId = parseInt(this.getAttribute('data-id'));
+                        if (cardId) {
+                            tradeSecretForCoupons(cardId);
+                        }
+                    });
+                }
+                
                 collectionContainer.appendChild(cardElement);
                 
             } catch (cardError) {
@@ -6778,7 +6862,11 @@ function loadCollection() {
 // tes 4
 
 // FUNGSI BARU: Setup event listeners untuk collection
-// FUNGSI BARU: Setup event listeners untuk collection (FIXED VERSION)
+// FUNGSI BARU: Setup event listeners untuk collection (FIXED - dengan event delegation yang benar)
+
+
+
+// FUNGSI BARU: Setup event listeners untuk collection (FIXED - dengan event delegation yang benar)
 function setupCollectionEventListeners() {
     console.log("Setting up collection event listeners...");
     
@@ -6790,41 +6878,178 @@ function setupCollectionEventListeners() {
             return;
         }
         
-        // Event delegation untuk semua tombol
+        // PERBAIKAN UTAMA: Event delegation yang lebih spesifik
         collectionContainer.addEventListener('click', function(e) {
-            const target = e.target;
-            const button = target.closest('button');
+            // Debug log
+            console.log("Collection container clicked, target:", e.target.className);
             
-            if (!button) return;
+            // Tangani tombol favorit secara khusus
+            if (e.target.classList.contains('favorite-btn') || 
+                (e.target.closest && e.target.closest('.favorite-btn'))) {
+                
+                const favoriteBtn = e.target.classList.contains('favorite-btn') ? 
+                    e.target : e.target.closest('.favorite-btn');
+                
+                if (!favoriteBtn) return;
+                
+                console.log("Favorite button clicked!");
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Dapatkan cardId dari button
+                let cardId = null;
+                if (favoriteBtn.hasAttribute('data-id')) {
+                    cardId = parseInt(favoriteBtn.getAttribute('data-id'));
+                } else {
+                    // Coba dapatkan dari parent card
+                    const cardElement = favoriteBtn.closest('.collection-card');
+                    if (cardElement) {
+                        const equipBtn = cardElement.querySelector('.equip-btn');
+                        if (equipBtn && equipBtn.hasAttribute('data-id')) {
+                            cardId = parseInt(equipBtn.getAttribute('data-id'));
+                        }
+                    }
+                }
+                
+                if (!cardId || isNaN(cardId)) {
+                    console.log("No valid card ID found for favorite button");
+                    return;
+                }
+                
+                console.log("Toggling favorite for card ID:", cardId);
+                toggleFavoriteCard(cardId);
+                return;
+            }
             
-            const cardId = parseInt(button.getAttribute('data-id'));
-            if (isNaN(cardId)) return;
+            // Tangani tombol upgrade
+            if (e.target.classList.contains('upgrade-btn') || 
+                (e.target.closest && e.target.closest('.upgrade-btn'))) {
+                
+                const upgradeBtn = e.target.classList.contains('upgrade-btn') ? 
+                    e.target : e.target.closest('.upgrade-btn');
+                
+                if (!upgradeBtn || upgradeBtn.disabled) return;
+                
+                console.log("Upgrade button clicked!");
+                e.preventDefault();
+                e.stopPropagation();
+                
+                let cardId = null;
+                if (upgradeBtn.hasAttribute('data-id')) {
+                    cardId = parseInt(upgradeBtn.getAttribute('data-id'));
+                }
+                
+                if (!cardId || isNaN(cardId)) {
+                    console.log("No valid card ID found for upgrade button");
+                    return;
+                }
+                
+                console.log("Upgrading card ID:", cardId);
+                upgradeCardAttack(cardId);
+                return;
+            }
             
-            const card = gameData.cards.find(c => c.id === cardId);
-            if (!card) return;
-            
-            // Handle different button types
-            if (button.classList.contains('equip-btn')) {
-                console.log("Equip button clicked for card:", card.name);
+            // Tangani tombol equip
+            if (e.target.classList.contains('equip-btn') || 
+                (e.target.closest && e.target.closest('.equip-btn'))) {
+                
+                const equipBtn = e.target.classList.contains('equip-btn') ? 
+                    e.target : e.target.closest('.equip-btn');
+                
+                if (!equipBtn) return;
+                
+                console.log("Equip button clicked!");
+                e.preventDefault();
+                e.stopPropagation();
+                
+                let cardId = null;
+                if (equipBtn.hasAttribute('data-id')) {
+                    cardId = parseInt(equipBtn.getAttribute('data-id'));
+                }
+                
+                if (!cardId || isNaN(cardId)) {
+                    console.log("No valid card ID found for equip button");
+                    return;
+                }
+                
+                const card = gameData.cards.find(c => c.id === cardId);
+                if (!card) {
+                    console.log("Card not found with ID:", cardId);
+                    return;
+                }
+                
+                console.log("Equipping card:", card.name);
                 setCurrentCard(card);
                 loadCollection();
                 addToBattleLog(`Equipped ${card.name}!`, 'player');
+                return;
+            }
+            
+            // Tangani tombol skill
+            if (e.target.classList.contains('skill-btn') || 
+                (e.target.closest && e.target.closest('.skill-btn'))) {
                 
-            } else if (button.classList.contains('upgrade-btn') && !button.disabled) {
-                console.log("Upgrade button clicked for card:", card.name);
-                upgradeCardAttack(cardId);
+                const skillBtn = e.target.classList.contains('skill-btn') ? 
+                    e.target : e.target.closest('.skill-btn');
                 
-            } else if (button.classList.contains('favorite-btn')) {
-                console.log("Favorite button clicked for card:", card.name);
-                toggleFavoriteCard(cardId);
+                if (!skillBtn) return;
                 
-            } else if (button.classList.contains('skill-btn')) {
-                console.log("Skill button clicked for card:", card.name);
+                console.log("Skill button clicked!");
+                e.preventDefault();
+                e.stopPropagation();
+                
+                let cardId = null;
+                if (skillBtn.hasAttribute('data-id')) {
+                    cardId = parseInt(skillBtn.getAttribute('data-id'));
+                }
+                
+                if (!cardId || isNaN(cardId)) {
+                    console.log("No valid card ID found for skill button");
+                    return;
+                }
+                
+                const card = gameData.cards.find(c => c.id === cardId);
+                if (!card) {
+                    console.log("Card not found with ID:", cardId);
+                    return;
+                }
+                
+                console.log("Showing skill modal for card:", card.name);
                 showSkillModal(card);
+                return;
+            }
+            
+            // Tangani tombol sell
+            if (e.target.classList.contains('sell-btn') || 
+                (e.target.closest && e.target.closest('.sell-btn'))) {
                 
-            } else if (button.classList.contains('sell-btn')) {
-                console.log("Sell button clicked for card:", card.name);
+                const sellBtn = e.target.classList.contains('sell-btn') ? 
+                    e.target : e.target.closest('.sell-btn');
+                
+                if (!sellBtn) return;
+                
+                console.log("Sell button clicked!");
+                e.preventDefault();
+                e.stopPropagation();
+                
+                let cardId = null;
+                if (sellBtn.hasAttribute('data-id')) {
+                    cardId = parseInt(sellBtn.getAttribute('data-id'));
+                }
+                
+                if (!cardId || isNaN(cardId)) {
+                    console.log("No valid card ID found for sell button");
+                    return;
+                }
+                
+                const card = gameData.cards.find(c => c.id === cardId);
+                if (!card) {
+                    console.log("Card not found with ID:", cardId);
+                    return;
+                }
+                
                 if (card && card.rarity !== 'secret' && !card.favorite && gameData.cards.length > 1) {
+                    console.log("Showing sell modal for card:", card.name);
                     showSellCardModal(card);
                 } else if (gameData.cards.length <= 1) {
                     addToBattleLog("You can't sell your only card!", 'player');
@@ -6835,12 +7060,35 @@ function setupCollectionEventListeners() {
                 } else {
                     addToBattleLog("This card cannot be sold!", 'player');
                 }
+                return;
+            }
+            
+            // Tangani tombol trade-gacha
+            if (e.target.classList.contains('trade-gacha-btn') || 
+                (e.target.closest && e.target.closest('.trade-gacha-btn'))) {
                 
-            } else if (button.classList.contains('trade-gacha-btn')) {
-                console.log("Trade button clicked for card:", card.name);
-                console.log("Card rarity:", card.rarity);
-                console.log("Has duplicate?", hasDuplicateSecretCards(cardId));
+                const tradeBtn = e.target.classList.contains('trade-gacha-btn') ? 
+                    e.target : e.target.closest('.trade-gacha-btn');
+                
+                if (!tradeBtn) return;
+                
+                console.log("Trade button clicked!");
+                e.preventDefault();
+                e.stopPropagation();
+                
+                let cardId = null;
+                if (tradeBtn.hasAttribute('data-id')) {
+                    cardId = parseInt(tradeBtn.getAttribute('data-id'));
+                }
+                
+                if (!cardId || isNaN(cardId)) {
+                    console.log("No valid card ID found for trade button");
+                    return;
+                }
+                
+                console.log("Trading card ID:", cardId);
                 tradeSecretForCoupons(cardId);
+                return;
             }
         });
         
@@ -6855,7 +7103,7 @@ function setupCollectionEventListeners() {
 
 
 
-// tesss
+
 
 // FUNGSI BARU: Hitung harga jual kartu yang sederhana
 function calculateSimpleSellPrice(card) {
@@ -7562,13 +7810,20 @@ function confirmSellAllCards() {
 }
 
 // TOGGLE FAVORITE CARD
+// TOGGLE FAVORITE CARD
 function toggleFavoriteCard(cardId) {
+    console.log("toggleFavoriteCard called with cardId:", cardId);
+    
     const card = gameData.cards.find(c => c.id === cardId);
     if (card) {
+        console.log("Card found:", card.name, "Current favorite status:", card.favorite);
         card.favorite = !card.favorite;
+        console.log("New favorite status:", card.favorite);
         loadCollection();
         addToBattleLog(`${card.name} ${card.favorite ? 'added to' : 'removed from'} favorites!`, 'player');
         saveGameData();
+    } else {
+        console.error("Card not found with ID:", cardId);
     }
 }
 
@@ -10844,3 +11099,7 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
+
+
+
+
