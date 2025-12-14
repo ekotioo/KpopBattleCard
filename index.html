@@ -5060,6 +5060,7 @@ input:checked + .toggle-slider:before {
             </button>
             
             <div class="dont-show-again" style="margin-top: 15px; text-align: center;">
+                <input type="checkbox" id="dont-show-again-update">
                 
                 </label>
             </div>
@@ -5875,7 +5876,7 @@ const gameData = {
         { id: 72, name: "Seorina", group: "Actress", image: "rina.jpg", health: 123, maxHealth: 123, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 73, name: "Han Sohee", group: "Actress", image: "soheee.jpg", health: 125, maxHealth: 125, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 74, name: "Haum", group: "KiiiKiii", image: "haum.jpg", health: 125, maxHealth: 123, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 75, name: "Sullyoon", group: "NMIXX", image: "sully.jpg", health: 125, maxHealth: 127, attack: 19, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 7, name: "Sullyoon", group: "NMIXX", image: "sully.jpg", health: 125, maxHealth: 127, attack: 19, rarity: "epic", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         
     ],
     quests: {
@@ -6352,13 +6353,10 @@ function closeUpdatePopup() {
     const updatePopup = document.getElementById('update-popup');
     if (updatePopup) {
         updatePopup.classList.remove('active');
-    }
+    }           
     
-    const dontShowAgainCheckbox = document.getElementById('dont-show-again-update');
-    if (dontShowAgainCheckbox && dontShowAgainCheckbox.checked) {
-        localStorage.setItem('battleOfIdol_hideUpdatePopup', 'true');
-    }
-}
+} 
+     
 
 // Setup event listener untuk popup update
 function setupUpdatePopupEvents() {
@@ -6374,17 +6372,7 @@ function setupUpdatePopupEvents() {
         updateCloseBtn.addEventListener('click', closeUpdatePopup);
     }
     
-    // Checkbox "Don't show again"
-    const dontShowCheckbox = document.getElementById('dont-show-again-update');
-    if (dontShowCheckbox) {
-        dontShowCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                localStorage.setItem('battleOfIdol_hideUpdatePopup', 'true');
-            } else {
-                localStorage.removeItem('battleOfIdol_hideUpdatePopup');
-            }
-        });
-    }
+   
     
     // Close dengan klik di luar modal
     const updatePopup = document.getElementById('update-popup');
