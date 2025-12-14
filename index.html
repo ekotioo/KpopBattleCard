@@ -5565,12 +5565,7 @@ input:checked + .toggle-slider:before {
                         </button>
                     </div>
                     
-                    <div class="redeem-history">
-                        <div class="redeem-history-title">Recent Redeems</div>
-                        <div class="redeem-history-list" id="redeem-history-list">
-                            <!-- Redeem history will be populated here -->
-                        </div>
-                    </div>
+                                     </div>
                 </div>
             </div>
             
@@ -7536,7 +7531,11 @@ function resetPlayerCardDisplay() {
     }
 }
 
+
+
+
 // SWITCH SCREEN - DIPERBAIKI DENGAN ERROR HANDLING
+// Versi sederhana - hanya tambah di switchScreen
 function switchScreen(screenId) {
     console.log("Switching to screen:", screenId);
     try {
@@ -7551,6 +7550,42 @@ function switchScreen(screenId) {
             console.error("Screen not found:", screenId);
             return;
         }
+        
+        // ============ SHORTS AUTO-SCROLL & PLAY ============
+        if (screenId === 'shorts') {
+            setTimeout(() => {
+                // Inisialisasi
+                initShorts();
+                
+                // Scroll ke video pertama
+                const container = document.querySelector('.shorts-video-container');
+                if (container) {
+                    container.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                
+                // Auto-play video pertama setelah 800ms
+                setTimeout(() => {
+                    if (shortsVideos.length > 0) {
+                        // Reset index ke 0
+                        currentShortsIndex = 0;
+                        
+                        // Update active state
+                        shortsVideos.forEach((video, index) => {
+                            video.element.classList.remove('active');
+                        });
+                        if (shortsVideos[0]) {
+                            shortsVideos[0].element.classList.add('active');
+                        }
+                        
+                        // Play video pertama
+                        loadAndPlayShort(0);
+                    }
+                }, 800);
+            }, 100);
+        }
+           
+        
+        
         
         if (screenId === 'collection') {
             setTimeout(() => {
@@ -11087,7 +11122,3 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
-
-
-
-
