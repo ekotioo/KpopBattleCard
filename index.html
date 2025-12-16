@@ -4898,6 +4898,22 @@ input:checked + .toggle-slider:before {
     transform: translateY(0);
 }
 
+/* Tambahkan di bagian CSS */
+.enemy-card .card-name {
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bot-username {
+    font-size: 0.8rem;
+    color: #ff6b6b;
+    font-style: italic;
+}
+
 
         
     </style>
@@ -5158,6 +5174,9 @@ input:checked + .toggle-slider:before {
                 </div>
             </div>
         </section>
+
+
+
 
         <!-- Battle Screen -->
         <section id="battle" class="screen">
@@ -5880,6 +5899,14 @@ const gameData = {
         
         
     ],
+    
+    
+
+    
+    
+    
+    
+    
     quests: {
         main: [
             { id: 0, name: "New Player Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
@@ -5984,6 +6011,38 @@ const gameData = {
     }
 };
 
+
+const botNames = [
+    "KpopMaster42", "IdolHunter99", "DanceKing77", "MusicLover88", 
+    "StanTwice", "BlinkForever", "ArmyBTS7", "MYaespa", 
+    "NewJeansFan", "LesserafimStan", "IveEnjoyer", "StayC_High",
+    "SoneGirlsGen", "ReveluvRed", "EXOLover", "Carat17",
+    "Moaville", "AtinyPirate", "StayKids", "NCTZen",
+    "WizOne", "OrbitLoona", "MoomooMamamoo", "BuddyGFriend",
+    "FantasyMonstaX", "AghaseGot7", "ShawolShinee", "CassieTVXQ",
+    "InspiritInfinite", "BanaB1A4", "MelodyBTOB", "UniversePentagon",
+    "NeverlandGIdle", "MidzyITZY", "NswerNMIXX", "DiveIVE",
+    "EngeneEnhypen", "DiveIVE", "FearnotLSF", "TokkiNewJeans",
+    "MBBMonstaX", "AhgaseGot7", "MELODYBTOB", "UNIVERSEpentagon",
+    "MOAMOO", "Reveluv", "Sone", "EXO_L",
+    "VIP_BIGBANG", "Blackjack_2NE1", "Neverland_GIDLE", "MIDZY_ITZY",
+    "ATEEZ_ATINY", "STRAY_KIDS_STAY", "TREASURE_TEUME", "ENHYPEN_ENGENE",
+    "Dreamcatcher_InSomnia", "LOONA_Orbit", "fromis_9_flover", "Weeekly_Daily",
+    "STAYC_SWITH", "Billlie_Belllie've", "P1Harmony_P1ece", "JustB_Justus"
+];
+
+
+
+
+function getRandomBotName() {
+    // Pilih nama acak dari daftar botNames
+    const randomIndex = Math.floor(Math.random() * botNames.length);
+    return botNames[randomIndex];
+}
+
+
+
+
 // Game State
 let playerHealth = 100;
 let enemyHealth = 100;
@@ -6018,6 +6077,9 @@ let currentVolume = 70;
 let canScroll = true;
 let isAutoScrolling = false;
 let currentCommentVideoId = null;
+
+
+let currentBotName = "";
 
 
 
@@ -7402,6 +7464,23 @@ function showSecretTradeModal(card) {
     
     console.log("Trade modal shown successfully");
 }
+
+
+
+// code 1
+
+// Fungsi untuk menampilkan nama bot di battle arena
+function updateBotNameInBattle() {
+    currentBotName = getRandomBotName();
+    const enemyCardName = document.querySelector('.enemy-card .card-name');
+    if (enemyCardName) {
+        enemyCardName.textContent = `${enemyCard.name} (@${currentBotName})`;
+    }
+}
+
+
+
+
 
 // FUNGSI BARU: Proses trade kartu// FUNGSI BARU: Proses trade kartu secret (FIXED)
 function processSecretTrade(cardId) {
@@ -10357,6 +10436,8 @@ function updateQuestProgress(questName, increment) {
 }
 
 // START BATTLE
+// START BATTLE - PERBAIKAN DENGAN NAMA BOT
+// START BATTLE - VERSI DENGAN BOT ACAK
 function startBattle() {
     if (gameData.isBattleActive) return;
     
@@ -10376,12 +10457,41 @@ function startBattle() {
         sounds.battleStart.play().catch(e => console.log("Audio play failed"));
     }
     
+    // PILIH KARTU MUSUH ACAK
     const randomIndex = Math.floor(Math.random() * gameData.enemyCards.length);
     enemyCard = {...gameData.enemyCards[randomIndex]};
     
-    enemyCard.health += (gameData.level - 1) * 10;
+    // ========== TAMBAHAN: GENERATE NAMA BOT ACAK ==========
+    const botNames = [
+        "KpopMaster42", "IdolHunter99", "DanceKing77", "MusicLover88", 
+        "StanTwice", "BlinkForever", "ArmyBTS7", "MYaespa", 
+        "NewJeansFan", "LesserafimStan", "IveEnjoyer", "StayC_High",
+        "SoneGirlsGen", "ReveluvRed", "EXOLover", "Carat17",
+        "Moaville", "AtinyPirate", "StayKids", "NCTZen",
+        "WizOne", "OrbitLoona", "MoomooMamamoo", "BuddyGFriend",
+        "FantasyMonstaX", "AghaseGot7", "ShawolShinee", "CassieTVXQ",
+        "InspiritInfinite", "BanaB1A4", "MelodyBTOB", "UniversePentagon",
+        "NeverlandGIdle", "MidzyITZY", "NswerNMIXX", "DiveIVE",
+        "EngeneEnhypen", "DiveIVE", "FearnotLSF", "TokkiNewJeans",
+        "MBBMonstaX", "AhgaseGot7", "MELODYBTOB", "UNIVERSEpentagon",
+        "MOAMOO", "Reveluv", "Sone", "EXO_L",
+        "VIP_BIGBANG", "Blackjack_2NE1", "Neverland_GIDLE", "MIDZY_ITZY",
+        "ATEEZ_ATINY", "STRAY_KIDS_STAY", "TREASURE_TEUME", "ENHYPEN_ENGENE",
+        "Dreamcatcher_InSomnia", "LOONA_Orbit", "fromis_9_flover", "Weeekly_Daily",
+        "STAYC_SWITH", "Billlie_Belllie've", "P1Harmony_P1ece", "JustB_Justus"
+    ];
+    
+    // Pilih nama bot acak
+    currentBotName = botNames[Math.floor(Math.random() * botNames.length)];
+    
+    // Generate level bot (antara level player -2 sampai +2)
+    const botLevel = Math.max(1, gameData.level - 2 + Math.floor(Math.random() * 5));
+    // ========== AKHIR TAMBAHAN ==========
+    
+    // TINGKATKAN STATS MUSUH BERDASARKAN LEVEL BOT
+    enemyCard.health += (botLevel - 1) * 10;
     enemyCard.maxHealth = enemyCard.health;
-    enemyCard.attack += (gameData.level - 1) * 2;
+    enemyCard.attack += (botLevel - 1) * 2;
     
     if (Math.random() < 0.2) {
         const randomSkillIndex = Math.floor(Math.random() * gameData.storeItems.skills.length);
@@ -10390,13 +10500,23 @@ function startBattle() {
         enemySkill = null;
     }
     
+    // UPDATE TAMPILAN KARTU MUSUH
     const enemyCardImg = document.querySelector('.enemy-card .card-img');
     const enemyCardName = document.querySelector('.enemy-card .card-name');
     const enemyMaxHealth = document.getElementById('enemy-max-health');
     const enemyAttack = document.getElementById('enemy-attack');
     
     if (enemyCardImg) enemyCardImg.src = enemyCard.image;
-    if (enemyCardName) enemyCardName.textContent = enemyCard.name;
+    
+    // ========== TAMBAHAN: TAMPILKAN NAMA BOT DENGAN FORMAT HTML ==========
+    if (enemyCardName) {
+        enemyCardName.innerHTML = `
+            ${enemyCard.name}<br>
+            <span style="font-size: 0.8rem; color: #ff6b6b; font-style: italic;">@${currentBotName} • Level ${botLevel}</span>
+        `;
+    }
+    // ========== AKHIR TAMBAHAN ==========
+    
     if (enemyMaxHealth) enemyMaxHealth.textContent = enemyCard.maxHealth;
     if (enemyAttack) enemyAttack.textContent = enemyCard.attack;
     
@@ -10417,7 +10537,9 @@ function startBattle() {
     const battleLog = document.querySelector('.battle-log');
     if (battleLog) battleLog.innerHTML = '';
     
-    addToBattleLog("Battle started! Auto battle engaged!", 'player');
+    // ========== TAMBAHAN: PESAN BATTLE DENGAN NAMA BOT ==========
+    addToBattleLog(`Battle started against @${currentBotName}! Auto battle engaged!`, 'player');
+    // ========== AKHIR TAMBAHAN ==========
     
     battleInterval = setInterval(autoBattle, 1500);
 }
@@ -10511,6 +10633,7 @@ function applySkillEffects() {
 }
 
 // AUTO BATTLE
+// AUTO BATTLE (FULL CODE DENGAN PERUBAHAN NAMA BOT)
 function autoBattle() {
     if (!gameData.isBattleActive) return;
     
@@ -10568,7 +10691,8 @@ function autoBattle() {
             const enemyShieldStatus = document.getElementById('enemy-shield-status');
             if (enemyShieldEffect) enemyShieldEffect.classList.add('hidden');
             if (enemyShieldStatus) enemyShieldStatus.classList.add('hidden');
-            addToBattleLog("Enemy's shield broke!", 'enemy');
+            // PERUBAHAN DI SINI - tambahkan nama bot
+            addToBattleLog(`@${currentBotName}'s shield broke!`, 'enemy');
         }
     }
     
@@ -10579,7 +10703,8 @@ function autoBattle() {
     const enemyHealthBar = document.querySelector('.enemy-health');
     if (enemyHealthBar) enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
     
-    addToBattleLog(`${gameData.currentCard.name} attacked for ${actualDamage} damage!`, 'player');
+    // PERUBAHAN DI SINI - tambahkan nama bot di log serangan player
+    addToBattleLog(`${gameData.currentCard.name} attacked @${currentBotName} for ${actualDamage} damage!`, 'player');
     
     if (gameData.settings.sfxEnabled) {
         sounds.attack.play().catch(e => console.log("Audio play failed"));
@@ -10604,37 +10729,40 @@ function autoBattle() {
     setTimeout(() => {
         if (!gameData.isBattleActive) return;
         
-        if (Math.random() < 0.15 && !enemyShield) {
-            const shieldTypes = ['Basic Shield', 'Strong Shield', 'Epic Shield'];
-            const randomShield = shieldTypes[Math.floor(Math.random() * shieldTypes.length)];
-            const shield = gameData.storeItems.shields.find(s => s.name === randomShield);
-            
-            if (shield) {
-                enemyShield = shield;
-                enemyShieldTimeLeft = shield.duration;
-                const enemyShieldEffect = document.getElementById('enemy-shield-effect');
-                const enemyShieldStatus = document.getElementById('enemy-shield-status');
-                if (enemyShieldEffect) enemyShieldEffect.classList.remove('hidden');
-                if (enemyShieldStatus) enemyShieldStatus.classList.remove('hidden');
-                addToBattleLog(`${enemyCard.name} activated a shield!`, 'enemy');
-            }
-        }
-        
-        if (Math.random() < 0.15 && !enemyBoost) {
-            const boostTypes = ['Basic Boost', 'Strong Boost', 'Epic Boost'];
-            const randomBoost = boostTypes[Math.floor(Math.random() * boostTypes.length)];
-            const boost = gameData.storeItems.boosts.find(b => b.name === randomBoost);
-            
-            if (boost) {
-                enemyBoost = boost;
-                enemyBoostTimeLeft = boost.duration;
-                const enemyBoostEffect = document.getElementById('enemy-boost-effect');
-                const enemyBoostStatus = document.getElementById('enemy-boost-status');
-                if (enemyBoostEffect) enemyBoostEffect.classList.remove('hidden');
-                if (enemyBoostStatus) enemyBoostStatus.classList.remove('hidden');
-                addToBattleLog(`${enemyCard.name} activated an attack boost!`, 'enemy');
-            }
-        }
+        // Di dalam fungsi autoBattle(), cari bagian ini:
+if (Math.random() < 0.15 && !enemyShield) {
+    const shieldTypes = ['Basic Shield', 'Strong Shield', 'Epic Shield'];
+    const randomShield = shieldTypes[Math.floor(Math.random() * shieldTypes.length)];
+    const shield = gameData.storeItems.shields.find(s => s.name === randomShield);
+    
+    if (shield) {
+        enemyShield = shield;
+        enemyShieldTimeLeft = shield.duration;
+        const enemyShieldEffect = document.getElementById('enemy-shield-effect');
+        const enemyShieldStatus = document.getElementById('enemy-shield-status');
+        if (enemyShieldEffect) enemyShieldEffect.classList.remove('hidden');
+        if (enemyShieldStatus) enemyShieldStatus.classList.remove('hidden');
+        // PERUBAHAN DI SINI - Tambahkan currentBotName
+        addToBattleLog(`@${currentBotName} (${enemyCard.name}) activated a shield!`, 'enemy');
+    }
+}
+
+if (Math.random() < 0.15 && !enemyBoost) {
+    const boostTypes = ['Basic Boost', 'Strong Boost', 'Epic Boost'];
+    const randomBoost = boostTypes[Math.floor(Math.random() * boostTypes.length)];
+    const boost = gameData.storeItems.boosts.find(b => b.name === randomBoost);
+    
+    if (boost) {
+        enemyBoost = boost;
+        enemyBoostTimeLeft = boost.duration;
+        const enemyBoostEffect = document.getElementById('enemy-boost-effect');
+        const enemyBoostStatus = document.getElementById('enemy-boost-status');
+        if (enemyBoostEffect) enemyBoostEffect.classList.remove('hidden');
+        if (enemyBoostStatus) enemyBoostStatus.classList.remove('hidden');
+        // PERUBAHAN DI SINI - Tambahkan currentBotName
+        addToBattleLog(`@${currentBotName} (${enemyCard.name}) activated an attack boost!`, 'enemy');
+    }
+}
         
         let enemyAttackPower = enemyCard.attack + Math.floor(Math.random() * 5);
         
@@ -10648,7 +10776,8 @@ function autoBattle() {
                 const enemyBoostStatus = document.getElementById('enemy-boost-status');
                 if (enemyBoostEffect) enemyBoostEffect.classList.add('hidden');
                 if (enemyBoostStatus) enemyBoostStatus.classList.add('hidden');
-                addToBattleLog("Enemy's attack boost expired!", 'enemy');
+                // PERUBAHAN DI SINI - tambahkan nama bot
+                addToBattleLog(`@${currentBotName}'s attack boost expired!`, 'enemy');
             }
         }
         
@@ -10657,7 +10786,8 @@ function autoBattle() {
                 case 'War Blitz':
                     if (activeShield && shieldTimeLeft > 0) {
                         enemyAttackPower += 3;
-                        addToBattleLog("Enemy War Blitz bonus: +3 Attack (you have Shield)!", 'enemy');
+                        // PERUBAHAN DI SINI - tambahkan nama bot
+                        addToBattleLog(`@${currentBotName}'s War Blitz bonus: +3 Attack (you have Shield)!`, 'enemy');
                     }
                     break;
                 case 'Iron Strike':
@@ -10665,7 +10795,8 @@ function autoBattle() {
                         enemyHealth = Math.min(enemyHealth + 5, enemyCard.maxHealth);
                         const enemyHealthBar = document.querySelector('.enemy-health');
                         if (enemyHealthBar) enemyHealthBar.style.width = `${(enemyHealth / enemyCard.maxHealth) * 100}%`;
-                        addToBattleLog("Enemy Iron Strike bonus: +5 HP (you have Attack Boost)!", 'enemy');
+                        // PERUBAHAN DI SINI - tambahkan nama bot
+                        addToBattleLog(`@${currentBotName}'s Iron Strike bonus: +5 HP (you have Attack Boost)!`, 'enemy');
                     }
                     break;
                 case 'Ice Guard':
@@ -10674,7 +10805,8 @@ function autoBattle() {
                     }
                     if (activeShield && shieldTimeLeft > 0) {
                         shieldTimeLeft -= 2;
-                        addToBattleLog("Enemy Ice Guard: Your Shield duration reduced!", 'enemy');
+                        // PERUBAHAN DI SINI - tambahkan nama bot
+                        addToBattleLog(`@${currentBotName}'s Ice Guard: Your Shield duration reduced!`, 'enemy');
                     }
                     break;
             }
@@ -10706,7 +10838,8 @@ function autoBattle() {
         const playerHealthBar = document.querySelector('.player-health');
         if (playerHealthBar) playerHealthBar.style.width = `${(playerHealth / gameData.currentCard.maxHealth) * 100}%`;
         
-        addToBattleLog(`${enemyCard.name} attacked for ${damage} damage!`, 'enemy');
+        // PERUBAHAN DI SINI - tambahkan nama bot di log serangan enemy
+        addToBattleLog(`@${currentBotName} (${enemyCard.name}) attacked for ${damage} damage!`, 'enemy');
         
         if (gameData.settings.sfxEnabled) {
             sounds.attack.play().catch(e => console.log("Audio play failed"));
@@ -10728,6 +10861,9 @@ function autoBattle() {
         }
     }, 700);
 }
+
+
+
 
 // SHOW DAMAGE TEXT
 function showDamageText(targetElement, damage, isPlayer) {
@@ -10817,6 +10953,7 @@ function activateBoost() {
 }
 
 // END BATTLE
+// END BATTLE
 function endBattle(playerWon) {
     gameData.isBattleActive = false;
     clearInterval(battleInterval);
@@ -10890,7 +11027,8 @@ function endBattle(playerWon) {
             sounds.victory.play().catch(e => console.log("Audio play failed"));
         }
         
-        addToBattleLog(`You won the battle! Earned ${coinsWon} coins and ${xpWon} XP.`, 'player');
+        // PERUBAHAN DI SINI: Tambahkan nama bot di pesan kemenangan
+        addToBattleLog(`You defeated @${currentBotName} (${enemyCard.name})! Earned ${coinsWon} coins and ${xpWon} XP.`, 'player');
     } else {
         showBattleResult(false, 0, 0);
         
@@ -10898,7 +11036,8 @@ function endBattle(playerWon) {
             sounds.defeat.play().catch(e => console.log("Audio play failed"));
         }
         
-        addToBattleLog("You lost the battle!", 'enemy');
+        // PERUBAHAN DI SINI: Tambahkan nama bot di pesan kekalahan
+        addToBattleLog(`You were defeated by @${currentBotName} (${enemyCard.name})!`, 'enemy');
     }
     
     loadCollection();
@@ -10937,6 +11076,7 @@ function showBattleResult(isWin, coins, xp) {
 }
 
 // RESET BATTLE
+// RESET BATTLE
 function resetBattle() {
     playerHealth = gameData.currentCard ? gameData.currentCard.maxHealth : 0;
     enemyHealth = 100;
@@ -10973,6 +11113,14 @@ function resetBattle() {
     if (enemySkillEffect) enemySkillEffect.classList.add('hidden');
     if (enemyShieldStatus) enemyShieldStatus.classList.add('hidden');
     if (enemyBoostStatus) enemyBoostStatus.classList.add('hidden');
+    
+    // ===== TAMBAHKAN KODE INI UNTUK RESET NAMA BOT =====
+    // Reset nama bot
+    currentBotName = "";
+    
+    const enemyCardName = document.querySelector('.enemy-card .card-name');
+    if (enemyCardName) enemyCardName.textContent = "Enemy Idol";
+    // ===== AKHIR KODE RESET NAMA BOT =====
     
     const battleLog = document.querySelector('.battle-log');
     if (battleLog) {
@@ -11199,3 +11347,7 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
+
+
+
+
