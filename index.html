@@ -5006,25 +5006,29 @@ input:checked + .toggle-slider:before {
             <button class="close-modal">&times;</button>
         </div>
         <div class="topup-options">
-            <div class="topup-option" data-amount="2500" data-price="12000">
-                <div class="topup-amount">2,500 Coins</div>
+            <div class="topup-option" data-amount="3000" data-price="12000">
+                <div class="topup-amount">3,000 Coins</div>
                 <div class="topup-price">Rp 12,000</div>
             </div>
-            <div class="topup-option" data-amount="5000" data-price="21500">
-                <div class="topup-amount">5,000 Coins</div>
-                <div class="topup-price">Rp 21,500</div>
+            <div class="topup-option" data-amount="6000" data-price="21000">
+                <div class="topup-amount">6,000 Coins</div>
+                <div class="topup-price">Rp 21,000</div>
             </div>
-            <div class="topup-option" data-amount="8000" data-price="35000">
-                <div class="topup-amount">8,000 Coins</div>
+            <div class="topup-option" data-amount="8500" data-price="35000">
+                <div class="topup-amount">8,500 Coins</div>
                 <div class="topup-price">Rp 35,000</div>
             </div>
-            <div class="topup-option" data-amount="10000" data-price="75000">
-                <div class="topup-amount">10,000 Coins</div>
-                <div class="topup-price">Rp 67,000</div>                  
+            <div class="topup-option" data-amount="10000" data-price="59500">
+                <div class="topup-amount">12,000 Coins</div>
+                <div class="topup-price">Rp 59,500</div>                  
             </div>
-            <div class="topup-option" data-amount="30000" data-price="187000">
+            <div class="topup-option" data-amount="30000" data-price="185000">
                 <div class="topup-amount">30,000 Coins</div>
                 <div class="topup-price">Rp 187,000</div>                   
+            </div>
+            <div class="topup-option" data-amount="50000" data-price="227000">
+                <div class="topup-amount">50,000 Coins</div>
+                <div class="topup-price">Rp 227,000</div>                   
             </div>
         </div>
         <button class="action-btn play-btn" id="topup-close-btn" style="margin-top: 15px;">Close</button>
@@ -5743,37 +5747,37 @@ const gameData = {
     storeItems: {
         crates: [
             { id: 1, name: "Basic Crate", price: 50, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common idols only" },
-            { id: 2, name: "Premium Crate", price: 100, type: "crate", rarity: "rare", image: "premium.jpg", description: "Contains common and rare idols" },
+            { id: 2, name: "Premium Crate", price: 80, type: "crate", rarity: "rare", image: "premium.jpg", description: "Contains common and rare idols" },
             { id: 3, name: "Elite Crate", price: 200, type: "crate", rarity: "epic", image: "elite.jpg", description: "Contains common, rare and epic idols" },
-            { id: 4, name: "RisingStar Crate", price: 500, type: "crate", rarity: "risingstar", image: "secret.jpg", description: "Contains common, rare, epic and risingstar idols" },
-            { id: 5, name: "Iconic Hunters", price: 600, type: "crate", rarity: "superstar", image: "iconics.jpg", description: "Contains common, rare, epic and superstar idols" },
-            { id: 6, name: "Golden St×rs", price: 800, type: "crate", rarity: "secret", image: "goldch.jpg", description: "Contains common, rare, epic, legendary idols and secret" }
+            { id: 4, name: "RisingStar Crate", price: 400, type: "crate", rarity: "risingstar", image: "secret.jpg", description: "Contains common, rare, epic and risingstar idols" },
+            { id: 5, name: "Iconic Hunters", price: 500, type: "crate", rarity: "superstar", image: "iconics.jpg", description: "Contains common, rare, epic and superstar idols" },
+            { id: 6, name: "Golden St×rs", price: 600, type: "crate", rarity: "secret", image: "goldch.jpg", description: "Contains common, rare, epic, legendary idols and secret" }
             
             
             
             
         ],
         upgrades: [
-            { id: 1, name: "Attack Upgrade", price: 300, type: "upgrade", image: "attack.jpg", description: "Increase attack by 1 for any card" }
+            { id: 1, name: "Attack Upgrade", price: 250, type: "upgrade", image: "attack.jpg", description: "Increase attack by 1 for any card" }
         ],
         shields: [
-            { id: 1, name: "Basic Shield", price: 30, defense: 10, duration: 30, image: "Shield.jpg", description: "Reduces damage by 10 for 30 seconds" },
-            { id: 2, name: "Strong Shield", price: 80, defense: 20, duration: 25, image: "Shield.jpg", description: "Reduces damage by 20 for 25 seconds" },
-            { id: 3, name: "Epic Shield", price: 120, defense: 35, duration: 20, image: "Shield.jpg", description: "Reduces damage by 35 for 20 seconds" }
+            { id: 1, name: "Basic Shield", price: 15, defense: 10, duration: 30, image: "Shield.jpg", description: "Reduces damage by 10 for 30 seconds" },
+            { id: 2, name: "Strong Shield", price: 30, defense: 20, duration: 25, image: "Shield.jpg", description: "Reduces damage by 20 for 25 seconds" },
+            { id: 3, name: "Epic Shield", price: 70, defense: 35, duration: 20, image: "Shield.jpg", description: "Reduces damage by 35 for 20 seconds" }
         ],
         boosts: [
-            { id: 1, name: "Basic Boost", price: 30, multiplier: 1.5, duration: 15, image: "boost.jpg", description: "Increase attack by 50% for 15 seconds" },
-           { id: 2, name: "Strong Boost", price: 80, multiplier: 2, duration: 12, image: "boost.jpg", description: "Double attack for 12 seconds" },
-            { id: 3, name: "Epic Boost", price: 120, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" } 
+            { id: 1, name: "Basic Boost", price: 15, multiplier: 1.5, duration: 15, image: "boost.jpg", description: "Increase attack by 50% for 15 seconds" },
+           { id: 2, name: "Strong Boost", price: 30, multiplier: 2, duration: 12, image: "boost.jpg", description: "Double attack for 12 seconds" },
+            { id: 3, name: "Epic Boost", price: 70, multiplier: 3, duration: 10, image: "boost.jpg", description: "Triple attack for 10 seconds" } 
         ],
         luck: [
            
             { id: 3, name: "Unlimited Luck Boost", price: 1000, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 0.8% for 25 minutes" }
         ],
         skills: [
-            { id: 1, name: "War Blitz", price: 1000, type: "skill", image: "warblitz.jpg", description: "-4 HP, +7 Attack (+3 Attack when enemy uses Shield)" },
-            { id: 2, name: "Iron Strike", price: 850, type: "skill", image: "ironstrike.jpg", description: "+10 HP, -6 Attack (+5 HP when enemy uses Attack Boost)" },
-            { id: 3, name: "Valor Surge", price: 900, type: "skill", image: "valorsurge.jpg", description: "+20 damage at battle start, -5 HP when used" },
+            { id: 1, name: "War Blitz", price: 1200, type: "skill", image: "warblitz.jpg", description: "-4 HP, +7 Attack (+3 Attack when enemy uses Shield)" },
+            { id: 2, name: "Iron Strike", price: 900, type: "skill", image: "ironstrike.jpg", description: "+10 HP, -6 Attack (+5 HP when enemy uses Attack Boost)" },
+            { id: 3, name: "Valor Surge", price: 1000, type: "skill", image: "valorsurge.jpg", description: "+20 damage at battle start, -5 HP when used" },
             { id: 4, name: "Ice Guard", price: 850, type: "skill", image: "iceguard.jpg", description: "-10 damage when enemy uses Attack Boost, reduces enemy Shield duration" },
             { id: 5, name: "Gold Hunter", price: 0, type: "skill", image: "goldhunter.jpg", description: "-10 HP at battle start, +50 coins & 2x XP if win battle", tradeRequired: true }
         ],
@@ -5786,7 +5790,9 @@ const gameData = {
             { id: 105, name: "Special Sana", group: "TWICE", image: "sanaS.webp", health: 150, maxHealth: 150, attack: 18, rarity: "epic", price: 7000, description: "Exclusive photocard not available in gacha" },
             { id: 106, name: "Seorina", group: "Actress", image: "seorina.webp", health: 182, maxHealth: 182, attack: 17, rarity: "superstar", price: 8500, description: "Exclusive photocard not available in gacha" },
             { id: 107, name: "Cha Hae-In", group: "Solo Leveling", image: "chahaein.webp", health: 218, maxHealth: 218, attack: 18, rarity: "superstar", price: 15000, description: "Exclusive photocard not available in gacha" },
-            { id: 108, name: "Rose Christmas 2025", group: "BLACKPINK", image: "rosech.webp", health: 250, maxHealth: 250, attack: 28, rarity: "secret", price: 17500, description: "Exclusive photocard not available in gacha" },
+            { id: 108, name: "Rose Christmas 2025", group: "BLACKPINK", image: "rosech.webp", health: 250, maxHealth: 250, attack: 28, rarity: "secret", price: 18500, description: "Exclusive photocard not available in gacha" },            
+            { id: 555, name: "Devil's Karina", group: "aespa", image: "karinadv.webp", health: 226, maxHealth: 226, attack: 26, rarity: "superstar", price: 16000, description: "Exclusive photocard not available in gacha" },
+            
             
            
             
@@ -5905,6 +5911,9 @@ const gameData = {
         { id: 159, name: "Retro Wonhee", group: "ILLIT", image: "wonheert.webp", health: 230, maxHealth: 230, attack: 27, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 160, name: "Retro Yunjin", group: "LE-SSERAFIM", image: "yunjinrt.webp", health: 234, maxHealth: 234, attack: 28, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 161, name: "Retro Ryujin", group: "ITZY", image: "ryujinrt.webp", health: 232, maxHealth: 232, attack: 27, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 162, name: "Devil's Haerin", group: "NewJeans", image: "haerindv.webp", health: 228, maxHealth: 228, attack: 28, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+         { id: 163, name: "Devil's Ahyeon", group: "BABYMOSNTER", image: "ahyeondv.webp", health: 229, maxHealth: 229, attack: 29, rarity: "superstar", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        
         
         
     ],
@@ -5949,10 +5958,10 @@ const gameData = {
             { level: 8, reward: { type: "card", value: 23 }, unlocked: false, claimed: false },
             { level: 9, reward: { type: "attackBoost", value: 2 }, unlocked: false, claimed: false },
             { level: 10, reward: { type: "gachaCoupon", value: 2 }, unlocked: false, claimed: false },
-            { level: 11, reward: { type: "coins", value: 700 }, unlocked: false, claimed: false },
+            { level: 11, reward: { type: "coins", value: 800 }, unlocked: false, claimed: false },
             { level: 12, reward: { type: "card", value: 24 }, unlocked: false, claimed: false },
             { level: 13, reward: { type: "gachaCoupon", value: 3 }, unlocked: false, claimed: false },
-            { level: 14, reward: { type: "coins", value: 800 }, unlocked: false, claimed: false },
+            { level: 14, reward: { type: "coins", value: 1000 }, unlocked: false, claimed: false },
             { level: 15, reward: { type: "card", value: 56, rarity: "stars" }, unlocked: false, claimed: false }
         ]
     },
@@ -5991,6 +6000,9 @@ const gameData = {
          { id: 157, name: "Retro Carmen", group: "HEARTS2HEARTS", image: "carmenrt.webp", health: 233, maxHealth: 233, attack: 26, rarity: "superstar"},
         { id: 158, name: "Retro Minji", group: "NewJeans", image: "minjirt.webp", health: 235, maxHealth: 235, attack: 25, rarity: "superstar" },        
         { id: 159, name: "Retro Wonhee", group: "ILLIT", image: "wonheert.webp", health: 230, maxHealth: 230, attack: 27, rarity: "superstar" },
+        { id: 162, name: "Devil's Haerin", group: "NewJeans", image: "haerindv.webp", health: 228, maxHealth: 228, attack: 28, rarity: "superstar"},
+         { id: 163, name: "Devil's Ahyeon", group: "BABYMOSNTER", image: "ahyeondv.webp", health: 229, maxHealth: 229, attack: 29, rarity: "superstar"},
+        
         
         
         
@@ -6006,7 +6018,7 @@ const gameData = {
     },
     redeemCodes: {
         available: [
-            { code: "CHRISTMAS2025", reward: { type: "coins", value: 3000 }, maxUses: 999, used: 0 },
+            { code: "SANTACOIN", reward: { type: "coins", value: 5000 }, maxUses: 999, used: 0 },
             { code: "CREATORS", reward: { type: "coins", value: 10000 }, maxUses: 999, used: 0 },
             { code: "SANTA25", reward: { type: "gachaCoupon", value: 3 }, maxUses: 99, used: 0 },
             { code: "IDOL2025", reward: { type: "card", value: 133, rarity: "epic" }, maxUses: 1, used: 0 },
