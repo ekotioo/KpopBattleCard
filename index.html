@@ -4917,6 +4917,7 @@ input:checked + .toggle-slider:before {
 
 
 /* Album Index Styles */
+/* Album Index Styles - LIGHT VERSION */
 #album-index {
     padding: 20px;
     background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
@@ -4971,7 +4972,7 @@ input:checked + .toggle-slider:before {
     color: #aaa;
 }
 
-/* Album Categories */
+/* Album Categories - SIMPLE VERSION */
 .album-categories {
     display: flex;
     flex-wrap: wrap;
@@ -4996,18 +4997,17 @@ input:checked + .toggle-slider:before {
 }
 
 .album-category-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
 }
 
 .album-category-btn.active {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: var(--secondary);
     color: white;
-    border-color: transparent;
-    box-shadow: 0 5px 20px rgba(106, 90, 249, 0.4);
+    border-color: var(--secondary);
 }
 
-/* Album Grid */
+/* Album Grid - SIMPLE NO GLOW EFFECTS */
 .album-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -5023,24 +5023,27 @@ input:checked + .toggle-slider:before {
     transition: all 0.3s ease;
     aspect-ratio: 2/3;
     background: rgba(0, 0, 0, 0.3);
-    border: 2px solid transparent;
+    /* HAPUS SEMUA BORDER GRADIENT */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* HAPUS SEMUA ANIMASI */
 }
 
 .album-item:hover {
-    transform: translateY(-5px) scale(1.03);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     z-index: 10;
+    /* HAPUS SCALE EFFECT */
 }
 
 .album-item-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease;
 }
 
 .album-item:hover .album-item-img {
-    transform: scale(1.05);
+    transform: scale(1.02); /* Reduced from 1.05 */
 }
 
 .album-item-info {
@@ -5050,18 +5053,14 @@ input:checked + .toggle-slider:before {
     right: 0;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
     padding: 10px;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-}
-
-.album-item:hover .album-item-info {
-    transform: translateY(0);
+    /* HAPUS ANIMATION SLIDE */
 }
 
 .album-item-name {
     font-weight: 600;
     font-size: 0.9rem;
     margin-bottom: 3px;
+    color: white;
 }
 
 .album-item-group {
@@ -5076,56 +5075,39 @@ input:checked + .toggle-slider:before {
     border-radius: 10px;
     font-weight: 600;
     display: inline-block;
+    background: rgba(0, 0, 0, 0.7);
 }
 
-/* Rarity Borders */
+/* SIMPLE Rarity Colors - HANYA WARNA BIASA, TANPA GLOW */
 .album-item.rarity-common {
-    border-color: #aaa;
+    border-color: #666;
 }
 
 .album-item.rarity-rare {
     border-color: #6a5af9;
-    animation: glow 3s ease-in-out infinite;
 }
 
 .album-item.rarity-epic {
     border-color: #ff6b9d;
-    animation: glow 2s ease-in-out infinite;
 }
 
 .album-item.rarity-legendary {
     border-color: #ffd166;
-    animation: glow 1s ease-in-out infinite;
 }
 
 .album-item.rarity-risingstar {
-    border: 2px solid transparent;
-    border-radius: 12px;
-    background: 
-        linear-gradient(black, black) padding-box,
-        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
-    animation: secretGlow 2s ease-in-out infinite;
+    border-color: #ffd700;
 }
 
 .album-item.rarity-superstar {
-    border: 2px solid transparent;
-    border-radius: 12px;
-    background: 
-        linear-gradient(black, black) padding-box,
-        linear-gradient(135deg, #ff00cc, #ff9900, #ffcc00, #ff00ff) border-box;
-    animation: superstarGlow 2s ease-in-out infinite;
+    border-color: #ff00cc;
 }
 
 .album-item.rarity-secret {
-    border: 2px solid transparent;
-    border-radius: 12px;
-    background: 
-        linear-gradient(black, black) padding-box,
-        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd, #00ccff) border-box;
-    animation: secretGlow 1.5s ease-in-out infinite;
+    border-color: #ff6b00;
 }
 
-/* Rarity Badges */
+/* Rarity Badges - SIMPLE VERSION */
 .album-item-badge {
     position: absolute;
     top: 8px;
@@ -5136,27 +5118,44 @@ input:checked + .toggle-slider:before {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.85);
     z-index: 2;
 }
 
-.album-item-badge.common { color: #aaa; border: 1px solid #aaa; }
-.album-item-badge.rare { color: #6a5af9; border: 1px solid #6a5af9; }
-.album-item-badge.epic { color: #ff6b9d; border: 1px solid #ff6b9d; }
-.album-item-badge.legendary { color: #ffd166; border: 1px solid #ffd166; background: rgba(0, 0, 0, 0.9); }
+.album-item-badge.common { 
+    color: #aaa; 
+    border: 1px solid #aaa; 
+}
+
+.album-item-badge.rare { 
+    color: #6a5af9; 
+    border: 1px solid #6a5af9; 
+}
+
+.album-item-badge.epic { 
+    color: #ff6b9d; 
+    border: 1px solid #ff6b9d; 
+}
+
+.album-item-badge.legendary { 
+    color: #ffd166; 
+    border: 1px solid #ffd166; 
+}
+
 .album-item-badge.risingstar { 
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 0, 0.2), rgba(255, 0, 128, 0.2), rgba(157, 78, 221, 0.2));
+    background: rgba(255, 215, 0, 0.15);
     color: #ffd700; 
     border: 1px solid #ffd700;
 }
+
 .album-item-badge.superstar { 
-    background: linear-gradient(135deg, rgba(255, 0, 204, 0.2), rgba(255, 153, 0, 0.2), rgba(255, 204, 0, 0.2), rgba(255, 0, 255, 0.2));
+    background: rgba(255, 0, 204, 0.15);
     color: #ff00cc; 
     border: 1px solid #ff00cc;
 }
+
 .album-item-badge.secret { 
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 0, 0.2), rgba(255, 0, 128, 0.2), rgba(157, 78, 221, 0.2), rgba(0, 204, 255, 0.2));
+    background: rgba(255, 107, 0, 0.15);
     color: #ff6b00; 
     border: 1px solid #ff6b00;
 }
@@ -5178,7 +5177,7 @@ input:checked + .toggle-slider:before {
     gap: 4px;
 }
 
-/* Album Modal (Card Details) */
+/* Album Modal - LIGHT VERSION */
 #album-modal .modal-content {
     max-width: 500px;
     background: linear-gradient(135deg, rgba(26, 26, 46, 0.98), rgba(22, 33, 62, 0.98));
@@ -5196,8 +5195,9 @@ input:checked + .toggle-slider:before {
     margin: 0 auto 20px;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Reduced shadow */
     position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .album-modal-card-img {
@@ -5226,25 +5226,25 @@ input:checked + .toggle-slider:before {
 .album-modal-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    gap: 10px; /* Reduced gap */
     margin-bottom: 20px;
 }
 
 .album-stat-item {
     background: rgba(255, 255, 255, 0.05);
-    padding: 10px;
-    border-radius: 10px;
+    padding: 8px; /* Reduced padding */
+    border-radius: 8px;
 }
 
 .album-stat-value {
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Slightly smaller */
     font-weight: 700;
     color: var(--accent);
-    margin-bottom: 5px;
+    margin-bottom: 3px; /* Reduced margin */
 }
 
 .album-stat-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem; /* Smaller */
     color: #aaa;
 }
 
@@ -5257,7 +5257,17 @@ input:checked + .toggle-slider:before {
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    border: 1px solid currentColor;
 }
+
+/* Rarity colors for modal */
+.album-modal-rarity.common { background: #666; color: white; }
+.album-modal-rarity.rare { background: #6a5af9; color: white; }
+.album-modal-rarity.epic { background: #ff6b9d; color: white; }
+.album-modal-rarity.legendary { background: #ffd166; color: #333; }
+.album-modal-rarity.risingstar { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
+.album-modal-rarity.superstar { background: rgba(255, 0, 204, 0.2); color: #ff00cc; }
+.album-modal-rarity.secret { background: rgba(255, 107, 0, 0.2); color: #ff6b00; }
 
 .album-modal-actions {
     display: flex;
@@ -5271,20 +5281,20 @@ input:checked + .toggle-slider:before {
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease; /* Faster transition */
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
 .album-action-btn.buy {
-    background: linear-gradient(135deg, var(--accent), #ffb347);
+    background: var(--accent);
     color: var(--dark);
 }
 
 .album-action-btn.buy:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 209, 102, 0.4);
+    background: #ffc145;
+    transform: translateY(-1px); /* Reduced movement */
 }
 
 .album-action-btn.close {
@@ -5293,8 +5303,7 @@ input:checked + .toggle-slider:before {
 }
 
 .album-action-btn.close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.15);
 }
 
 /* Album Navigation */
@@ -5315,7 +5324,7 @@ input:checked + .toggle-slider:before {
     color: white;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease; /* Faster */
     display: flex;
     align-items: center;
     gap: 8px;
@@ -5323,7 +5332,6 @@ input:checked + .toggle-slider:before {
 
 .album-nav-btn:hover:not(:disabled) {
     background: var(--primary);
-    transform: translateY(-2px);
 }
 
 .album-nav-btn:disabled {
@@ -5336,26 +5344,36 @@ input:checked + .toggle-slider:before {
     font-size: 0.9rem;
 }
 
-/* Loading Animation */
-.album-loading {
-    text-align: center;
-    padding: 50px;
-    color: #aaa;
+/* Remove ALL problematic animations */
+@keyframes glow { /* Keep but don't use */
+    0%, 100% { box-shadow: 0 0 5px currentColor; }
+    50% { box-shadow: 0 0 10px currentColor; }
 }
 
-.album-loading i {
-    font-size: 2rem;
-    margin-bottom: 15px;
-    color: var(--primary);
-    animation: spin 1s linear infinite;
+@keyframes secretGlow { /* DISABLE COMPLETELY */
+    0%, 100% { box-shadow: none; }
+    25%, 50%, 75% { box-shadow: none; }
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes superstarGlow { /* DISABLE COMPLETELY */
+    0%, 100% { box-shadow: none; }
+    25%, 50%, 75% { box-shadow: none; }
 }
 
-/* Responsive Design */
+/* Performance optimizations */
+.album-item {
+    will-change: transform; /* Helps browser optimize */
+    backface-visibility: hidden; /* Reduces flickering */
+    -webkit-font-smoothing: antialiased; /* Better text */
+}
+
+.album-container {
+    /* Hardware acceleration */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+/* Responsive Design - OPTIMIZED */
 @media (max-width: 768px) {
     .album-container {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -5364,11 +5382,13 @@ input:checked + .toggle-slider:before {
     
     .album-categories {
         overflow-x: auto;
-        padding-bottom: 10px;
-        justify-content: flex-start;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
     }
     
     .album-category-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
         white-space: nowrap;
     }
     
@@ -5380,6 +5400,7 @@ input:checked + .toggle-slider:before {
 @media (max-width: 480px) {
     .album-container {
         grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
     
     .album-modal-stats {
@@ -5388,6 +5409,20 @@ input:checked + .toggle-slider:before {
     
     .album-modal-actions {
         flex-direction: column;
+    }
+    
+    .album-action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Reduce animations on mobile */
+    .album-item:hover {
+        transform: translateY(-3px); /* Less movement */
+    }
+    
+    .album-item-img {
+        transition: none; /* Remove image transition on mobile */
     }
 }
 
@@ -12872,8 +12907,3 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
-
-
-
-
-
