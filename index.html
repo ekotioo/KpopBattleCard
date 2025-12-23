@@ -7040,6 +7040,10 @@ function initGame() {
             gameData.username = savedUsername;
             loadGameData();
             validateGameData();
+            
+            // PERBAIKAN: Panggil checkAndResetDailyQuests SEBELUM showGameScreen
+            checkAndResetDailyQuests();
+            
             showGameScreen();
             
             // Tampilkan popup setelah 500ms
@@ -7054,7 +7058,7 @@ function initGame() {
         setupEventListeners();
         setupAdditionalEventListeners();
         setupSettingsModalEvents();
-        setupUpdatePopupEvents(); // Tambahkan ini
+        setupUpdatePopupEvents();
         
         applySettings();
         
@@ -7068,17 +7072,11 @@ function initGame() {
     } catch (error) {
         console.error("Error initializing game:", error);
         alert("Error initializing game. Please refresh the page.");
-        
-       
-console.log("Total cards:", gameData.cards.length);
-console.log("Secret cards:", gameData.cards.filter(c => c.rarity === 'secret').length);
-debugSecretCards(); // Panggil fungsi debug
-        
-        
-        
-        
     }
 }
+        
+       
+
 
 // Tambahkan juga ke fungsi close-modal umum
 document.addEventListener('DOMContentLoaded', function() {
@@ -7172,6 +7170,7 @@ function saveGameData() {
 }
 
 // LOAD GAME DATA
+// LOAD GAME DATA - VERSI DIPERBAIKI DENGAN DAILY QUEST RESET
 function loadGameData() {
     console.log("Loading game data...");
     try {
@@ -7179,6 +7178,7 @@ function loadGameData() {
         if (savedData) {
             const parsedData = JSON.parse(savedData);
             
+            // Load data dasar
             gameData.username = parsedData.username || gameData.username;
             gameData.coins = parsedData.coins || 0;
             gameData.level = parsedData.level || 1;
@@ -7198,25 +7198,125 @@ function loadGameData() {
                 unlimitedEndTime: 0
             };
             gameData.gachaCoupons = parsedData.gachaCoupons || 0;
-            gameData.quests = parsedData.quests || gameData.quests;
+            
+            // ========== PERBAIKAN UTAMA: LOAD QUESTS DENGAN SISTEM RESET ==========
+            // Load quests dari data yang disimpan
+            if (parsedData.quests) {
+                // Load main quests
+                if (parsedData.quests.main) {
+                    gameData.quests.main = parsedData.quests.main.map(savedQuest => {
+                        const defaultQuest = gameData.quests.main.find(q => q.id === savedQuest.id);
+                        if (defaultQuest) {
+                            return {
+                                ...defaultQuest,
+                                progress: savedQuest.progress || 0,
+                                completed: savedQuest.completed || false,
+                                claimed: savedQuest.claimed || false
+                            };
+                        }
+                        return savedQuest;
+                    });
+                }
+                
+                // Load daily quests - TAPI JANGAN LOAD PROGRESS, BIARKAN RESET NANTI
+                if (parsedData.quests.daily) {
+                    // Simpan data daily quests yang sudah di-claim
+                    const claimedDailyQuests = parsedData.quests.daily.filter(q => q.claimed);
+                    
+                    // Reset daily quests ke default, tapi pertahankan status claimed
+                    gameData.quests.daily = gameData.quests.daily.map(defaultQuest => {
+                        const savedQuest = parsedData.quests.daily.find(q => q.id === defaultQuest.id);
+                        
+                        if (savedQuest && savedQuest.claimed) {
+                            // Jika sudah di-claim sebelumnya, tetap pertahankan status claimed
+                            return {
+                                ...defaultQuest,
+                                progress: defaultQuest.progress, // Reset progress
+                                completed: false, // Reset completed
+                                claimed: true // Pertahankan status claimed (tapi nanti di-reset oleh checkAndResetDailyQuests)
+                            };
+                        } else {
+                            // Jika belum di-claim, reset sepenuhnya
+                            return {
+                                ...defaultQuest,
+                                progress: 0,
+                                completed: false,
+                                claimed: false
+                            };
+                        }
+                    });
+                }
+            }
+            
+            // Load battle pass
             gameData.battlePass = parsedData.battlePass || gameData.battlePass;
+            
+            // Load settings
             gameData.settings = parsedData.settings || gameData.settings;
+            
+            // Load first gacha status
             firstGachaDone = parsedData.firstGachaDone || false;
             
-            gameData.redeemCodes = parsedData.redeemCodes || { available: [], history: [] };
-            gameData.discountCards = parsedData.discountCards || { owned: [], activeDiscount: null, dailyDiscountCrateUsed: false };
+            // Load redeem codes
+            gameData.redeemCodes = parsedData.redeemCodes || { 
+                available: [...gameData.redeemCodes.available], 
+                history: [] 
+            };
             
+            // Load discount cards
+            gameData.discountCards = parsedData.discountCards || { 
+                owned: [], 
+                activeDiscount: null, 
+                dailyDiscountCrateUsed: false 
+            };
+            
+            // Load secret trade history
+            gameData.secretTradeHistory = parsedData.secretTradeHistory || [];
+            
+            // Set current card jika ada
             if (gameData.currentCard) {
                 setCurrentCard(gameData.currentCard);
             }
             
             console.log("Game data loaded successfully. Cards:", gameData.cards.length);
+            console.log("Daily quests loaded:", gameData.quests.daily.length);
+            
+            // ========== CEK DAN RESET DAILY QUESTS ==========
+            // Panggil fungsi reset setelah data diload
+            checkAndResetDailyQuests();
+            
+        } else {
+            console.log("No saved game data found, starting fresh");
+            // Untuk game baru, pastikan daily quests dalam keadaan reset
+            gameData.quests.daily.forEach(quest => {
+                quest.progress = 0;
+                quest.completed = false;
+                quest.claimed = false;
+            });
+            
+            // Set daily discount crate belum digunakan
+            gameData.discountCards.dailyDiscountCrateUsed = false;
+            
+            // Simpan tanggal reset pertama kali
+            const today = new Date().toISOString().split('T')[0];
+            localStorage.setItem('battleOfIdol_lastResetDate', today);
         }
+        
     } catch (error) {
         console.error("Error loading game data:", error);
         // Reset to default jika ada error
         gameData.cards = [];
         gameData.currentCard = null;
+        
+        // Reset quests ke default
+        gameData.quests = {
+            main: [...gameData.quests.main],
+            daily: [...gameData.quests.daily]
+        };
+        
+        // Set tanggal reset
+        const today = new Date().toISOString().split('T')[0];
+        localStorage.setItem('battleOfIdol_lastResetDate', today);
     }
 }
 
@@ -10831,6 +10931,7 @@ function completeTrade(skill, cardId) {
 }
 
 // LOAD QUESTS
+// LOAD QUESTS - Perbaikan untuk daily quest
 function loadQuests(questType) {
     const questList = document.querySelector('.quest-list');
     if (!questList) return;
@@ -10846,6 +10947,7 @@ function loadQuests(questType) {
     if (!quests) return;
     
     quests.forEach(quest => {
+        // PERBAIKAN: Hitung progress dengan benar
         const progressPercent = Math.min((quest.progress / quest.target) * 100, 100);
         const isCompleted = quest.progress >= quest.target;
         
@@ -10875,13 +10977,148 @@ function loadQuests(questType) {
         questList.appendChild(questElement);
     });
 
+    // PERBAIKAN: Setup event listener dengan benar
     document.querySelectorAll('.claim-btn:not([disabled])').forEach(button => {
         button.addEventListener('click', (e) => {
-            const questName = e.target.closest('.quest-item').querySelector('.quest-name').textContent;
+            const questElement = e.target.closest('.quest-item');
+            const questName = questElement.querySelector('.quest-name').textContent;
             claimQuestReward(questName, questType);
         });
     });
 }
+
+
+
+
+// ========== DAILY QUEST RESET SYSTEM ==========
+
+// Function to check and reset daily quests
+// PERBAIKAN UTAMA: Sistem reset daily quest
+function checkAndResetDailyQuests() {
+    console.log("Checking daily quests reset...");
+    
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Get last reset date from localStorage
+    const lastResetDate = localStorage.getItem('battleOfIdol_lastResetDate');
+    
+    // If no reset date stored or it's a new day, reset daily quests
+    if (!lastResetDate || lastResetDate !== today) {
+        console.log("Resetting daily quests for date:", today);
+        
+        // Reset PROGRESS daily quests (bukan reset quest itu sendiri)
+        gameData.quests.daily.forEach(quest => {
+            quest.progress = 0;
+            quest.completed = false;
+            quest.claimed = false;
+            console.log(`Reset quest: ${quest.name} - Progress: ${quest.progress}/${quest.target}`);
+        });
+        
+        // Reset daily discount crate
+        gameData.discountCards.dailyDiscountCrateUsed = false;
+        
+        // Update last reset date
+        localStorage.setItem('battleOfIdol_lastResetDate', today);
+        
+        // Save game data
+        saveGameData();
+        
+        // Show notification
+        if (gameData.settings.notifications) {
+            showDailyQuestResetNotification();
+        }
+        
+        console.log("Daily quests reset complete");
+    } else {
+        console.log("Daily quests already reset today:", today);
+    }
+}
+
+// Show notification when daily quests reset
+// Show notification when daily quests reset
+function showDailyQuestResetNotification() {
+    // Cek apakah sudah ada notifikasi
+    const existingNotification = document.querySelector('.daily-reset-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'daily-reset-notification';
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        z-index: 1000;
+        animation: slideIn 0.5s ease;
+        max-width: 300px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    `;
+    
+    notification.innerHTML = `
+        <i class="fas fa-sync-alt" style="font-size: 1.2rem;"></i>
+        <div>
+            <div style="font-weight: bold; margin-bottom: 3px;">Daily Reset!</div>
+            <div style="font-size: 0.9rem;">New daily quests available!</div>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.5s ease';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 500);
+    }, 5000);
+}
+
+// Add CSS animations for notification
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+    
+    .daily-reset-notification {
+        animation: slideIn 0.5s ease;
+    }
+`;
+document.head.appendChild(style);
+
+
+
+
 
 // LOAD BATTLE PASS
 function loadBattlePass() {
@@ -11066,18 +11303,33 @@ function addBattlePassXP(xp) {
 }
 
 // CLAIM QUEST REWARD
+// CLAIM QUEST REWARD - UPDATED
 function claimQuestReward(questName, questType) {
+    console.log(`Claiming quest: ${questName} (${questType})`);
+    
     let quest = null;
     
+    // Find the quest
     const foundQuest = gameData.quests[questType].find(q => q.name === questName);
     if (foundQuest) {
         quest = foundQuest;
     }
     
-    if (!quest || quest.claimed) return;
+    if (!quest || quest.claimed) {
+        console.log("Quest not found or already claimed");
+        return;
+    }
+    
+    // Check if quest is completed
+    if (!quest.completed && quest.progress < quest.target) {
+        console.log("Quest not completed yet");
+        addToBattleLog("Quest not completed yet!", 'player');
+        return;
+    }
     
     quest.claimed = true;
     
+    // Give reward
     if (quest.reward.type === 'coins') {
         gameData.coins += quest.reward.value;
         updateCoinDisplay();
@@ -11087,19 +11339,41 @@ function claimQuestReward(questName, questType) {
         const cardId = quest.reward.value;
         const card = gameData.gachaPool.find(c => c.id === cardId);
         if (card) {
-            gameData.cards.push({...card});
+            const newCard = {
+                id: card.id,
+                name: card.name,
+                group: card.group,
+                image: card.image,
+                health: card.health,
+                maxHealth: card.maxHealth,
+                attack: card.attack,
+                rarity: card.rarity,
+                wins: 0,
+                battles: 0,
+                favorite: false,
+                upgrades: 0
+            };
+            
+            gameData.cards.push(newCard);
+            
             loadCollection();
             updateHomeStats();
             addToBattleLog(`Claimed ${card.name} from ${quest.name}!`, 'player');
             
-            if (card.rarity === 'risingstar') {
-                updateQuestProgress('RisingStar Hunter', 1);
+            // Set as current card if no card equipped
+            if (!gameData.currentCard && gameData.cards.length > 0) {
+                setCurrentCard(newCard);
             }
         }
     }
     
+    // Reload quests display
     loadQuests(questType);
+    
+    // Save game data
     saveGameData();
+    
+    console.log("Quest claimed successfully");
 }
 
 // UPDATE QUEST PROGRESS
@@ -12028,7 +12302,6 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
-
 
 
 
