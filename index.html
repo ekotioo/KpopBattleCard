@@ -5001,9 +5001,8 @@ input:checked + .toggle-slider:before {
 }
 
 .album-card-portrait:hover {
-    transform: translateY(-8px) scale(1.05); /* Scale sedikit lebih besar */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* Shadow lebih kuat */
-    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Photocard Image - Portrait */
@@ -6281,6 +6280,8 @@ const gameData = {
     level: 1,
     xp: 0,
     xpToNextLevel: 100,
+    totalWins: 0,
+    totalBattles: 0,
     currentCard: null,
     isBattleActive: false,
     attackUpgrades: 0,
@@ -7285,6 +7286,10 @@ function loadGameData() {
             gameData.level = parsedData.level || 1;
             gameData.xp = parsedData.xp || 0;
             gameData.xpToNextLevel = parsedData.xpToNextLevel || 100;
+            gameData.tottalWins = 
+parsedData.tottalWins || 0;
+            gameData.totalBattles =
+parsedData.totalBattles || 0;
             gameData.currentCard = parsedData.currentCard || null;
             gameData.attackUpgrades = parsedData.attackUpgrades || 0;
             gameData.attackBoosts = parsedData.attackBoosts || [1];
@@ -8705,6 +8710,7 @@ function updateLevelDisplay() {
 }
 
 // UPDATE HOME STATS
+// GANTI fungsi updateHomeStats() dengan ini:
 function updateHomeStats() {
     const totalCards = document.getElementById('total-cards');
     const totalWins = document.getElementById('total-wins');
@@ -8713,8 +8719,8 @@ function updateHomeStats() {
     
     if (totalCards) totalCards.textContent = gameData.cards.length;
     
-    const wins = gameData.cards.reduce((total, card) => total + (card.wins || 0), 0);
-    if (totalWins) totalWins.textContent = wins;
+    // FIX: Gunakan totalWins dari gameData, bukan jumlah dari kartu
+    if (totalWins) totalWins.textContent = gameData.totalWins;
     
     if (totalCoins) totalCoins.textContent = gameData.coins;
     if (playerLevelHome) playerLevelHome.textContent = gameData.level;
@@ -12074,6 +12080,7 @@ function activateBoost() {
 
 // END BATTLE
 // END BATTLE
+// END BATTLE - VERSI DIPERBAIKI DENGAN TOTAL WINS & TOTAL BATTLES
 function endBattle(playerWon) {
     gameData.isBattleActive = false;
     clearInterval(battleInterval);
@@ -12083,10 +12090,22 @@ function endBattle(playerWon) {
     
     if (gameData.currentCard) {
         gameData.currentCard.battles++;
+        
+        // ========== PERBAIKAN UTAMA ==========
+        // Update statistik kartu
         if (playerWon) {
             gameData.currentCard.wins++;
+            
+            // Update statistik pemain secara keseluruhan
+            gameData.totalWins++;           // <-- INI YANG BARU
+            gameData.totalBattles++;        // <-- INI YANG BARU
+        } else {
+            // Update total battles saat kalah
+            gameData.totalBattles++;        // <-- INI YANG BARU
         }
+        // ========== AKHIR PERBAIKAN ==========
         
+        // Reset skill effects setelah battle
         if (gameData.skills.equipped[gameData.currentCard.id]) {
             const equippedSkill = gameData.skills.equipped[gameData.currentCard.id];
             
@@ -12104,10 +12123,12 @@ function endBattle(playerWon) {
         }
     }
     
+    // Update quest progress
     updateQuestProgress('Battle Master', playerWon ? 1 : 0);
     updateQuestProgress('Daily Battle', playerWon ? 1 : 0);
     updateQuestProgress('Battle Legend', playerWon ? 1 : 0);
     
+    // Battle result and rewards
     if (playerWon) {
         let coinsWon = 20 + Math.floor(Math.random() * 10) + (gameData.level * 5);
         let xpWon = 10 + Math.floor(Math.random() * 5);
@@ -12139,7 +12160,7 @@ function endBattle(playerWon) {
         }
         
         updateCoinDisplay();
-        updateHomeStats();
+        updateHomeStats(); // <-- PASTIKAN INI DIPANGGIL untuk update total wins
         
         showBattleResult(true, coinsWon, xpWon);
         
@@ -12147,7 +12168,6 @@ function endBattle(playerWon) {
             sounds.victory.play().catch(e => console.log("Audio play failed"));
         }
         
-        // PERUBAHAN DI SINI: Tambahkan nama bot di pesan kemenangan
         addToBattleLog(`You defeated @${currentBotName} (${enemyCard.name})! Earned ${coinsWon} coins and ${xpWon} XP.`, 'player');
     } else {
         showBattleResult(false, 0, 0);
@@ -12156,13 +12176,13 @@ function endBattle(playerWon) {
             sounds.defeat.play().catch(e => console.log("Audio play failed"));
         }
         
-        // PERUBAHAN DI SINI: Tambahkan nama bot di pesan kekalahan
         addToBattleLog(`You were defeated by @${currentBotName} (${enemyCard.name})!`, 'enemy');
     }
     
     loadCollection();
-    saveGameData();
+    saveGameData(); // <-- PASTIKAN INI DIPANGGIL untuk save total wins ke localStorage
 }
+
 
 // SHOW BATTLE RESULT
 function showBattleResult(isWin, coins, xp) {
@@ -12467,6 +12487,7 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
+
 
 
 
