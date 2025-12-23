@@ -5395,6 +5395,64 @@ input:checked + .toggle-slider:before {
     border-color: var(--secondary);
     box-shadow: 0 4px 12px rgba(106, 90, 249, 0.3);
 }
+   
+   
+/* Tambahkan di bagian CSS */
+.r-badge-portrait-mystery { 
+    color: #00ccff; /* Warna biru terang untuk exclusive */
+    border-left: 4px solid #00ccff;
+    border-right: 4px solid #00ccff;
+    background: rgba(0, 204, 255, 0.15);
+    animation: pulse 2s infinite;
+}
+
+/* Efek khusus untuk kartu album-only */
+.album-card-portrait.exclusive {
+    position: relative;
+    border: 2px solid rgba(0, 204, 255, 0.3);
+    background: rgba(0, 204, 255, 0.05);
+}
+
+.album-card-portrait.exclusive::after {
+    content: 'VIEW ONLY';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ccff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.album-card-portrait.exclusive:hover::after {
+    opacity: 10;
+}
+
+/* Overlay khusus untuk kartu eksklusif */
+.album-card-portrait .exclusive-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        transparent 0%,
+        rgba(0, 204, 255, 0.1) 50%,
+        transparent 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}   
+
+
         
     </style>
 </head>
@@ -5488,7 +5546,7 @@ input:checked + .toggle-slider:before {
 <!-- Album Screen - Portrait Photocard Design -->
 <section id="album" class="screen">
     <div class="album-header-portrait">
-        <h2 class="album-title-portrait">📸 Photocard Album</h2>
+        <h2 class="album-title-portrait">Photocard Album</h2>
         
         <div class="album-stats-portrait">
             <div class="album-stat-box-portrait">
@@ -5509,16 +5567,18 @@ input:checked + .toggle-slider:before {
                placeholder="Search idol name or group..." 
                class="album-search-portrait">
         
-        <div class="album-filters-portrait" id="album-filters-portrait">
-            <button class="filter-btn-portrait active" data-filter="all">All</button>
-            <button class="filter-btn-portrait" data-filter="common">Common</button>
-            <button class="filter-btn-portrait" data-filter="rare">Rare</button>
-            <button class="filter-btn-portrait" data-filter="epic">Epic</button>
-            <button class="filter-btn-portrait" data-filter="legendary">Legendary</button>
-            <button class="filter-btn-portrait" data-filter="risingstar">RisingStar</button>
-            <button class="filter-btn-portrait" data-filter="superstar">SuperStar</button>
-            <button class="filter-btn-portrait" data-filter="secret">Secret</button>
-        </div>
+        <!-- Di bagian album-filters-portrait, tambahkan filter: -->
+<div class="album-filters-portrait" id="album-filters-portrait">
+    <button class="filter-btn-portrait active" data-filter="all">All</button>
+    <button class="filter-btn-portrait" data-filter="common">Common</button>
+    <button class="filter-btn-portrait" data-filter="rare">Rare</button>
+    <button class="filter-btn-portrait" data-filter="epic">Epic</button>
+    <button class="filter-btn-portrait" data-filter="legendary">Legendary</button>
+    <button class="filter-btn-portrait" data-filter="risingstar">RisingStar</button>
+    <button class="filter-btn-portrait" data-filter="superstar">SuperStar</button>
+    <button class="filter-btn-portrait" data-filter="secret">Secret</button>
+    <button class="filter-btn-portrait" data-filter="mystery">Exclusive</button> <!-- TAMBAH INI -->
+</div>
     </div>
     
     <div class="album-grid-portrait" id="album-grid-portrait">
@@ -6300,6 +6360,81 @@ const gameData = {
         unlimitedEndTime: 0
     },
     gachaCoupons: 0,
+    
+    albumOnlyPhotocards: [
+        {
+            id: 2001, // ID tinggi untuk bedakan
+            name: "Lim Yoona .px",
+            group: "Actress",
+            image: "limyoo.webp",
+            health: 0, // Tidak untuk battle
+            maxHealth: 0,
+            attack: 0,
+            rarity: "superstar",            
+            albumOnly: true // Flag khusus
+        
+        },
+         {
+            id: 2002, // ID tinggi untuk bedakan
+            name: "Kang Hyewon .px",
+            group: "Actress",
+            image: "hyewonx.webp",
+            health: 0, // Tidak untuk battle
+            maxHealth: 0,
+            attack: 0,
+            rarity: "superstar",            
+            albumOnly: true // Flag khusus
+        
+        },
+        {
+            id: 2003, // ID tinggi untuk bedakan
+            name: "Kim Sohyun .px",
+            group: "Actress",
+            image: "sohyunx.webp",
+            health: 0, // Tidak untuk battle
+            maxHealth: 0,
+            attack: 0,
+            rarity: "superstar",            
+            albumOnly: true // Flag khusus
+        
+        },
+        {
+            id: 2004, // ID tinggi untuk bedakan
+            name: "G - Chaewon",
+            group: "LE-SSERAFIM",
+            image: "goldenchae.webp",
+            health: 0, // Tidak untuk battle
+            maxHealth: 0,
+            attack: 0,
+            rarity: "superstar",            
+            albumOnly: true // Flag khusus
+        
+        },
+        {
+            id: 2005, // ID tinggi untuk bedakan
+            name: "G - Lisa",
+            group: "BLACKPINK",
+            image: "goldenlisa.webp",
+            health: 0, // Tidak untuk battle
+            maxHealth: 0,
+            attack: 0,
+            rarity: "superstar",            
+            albumOnly: true // Flag khusus
+        
+        },
+        {
+            id: 2006, // ID tinggi untuk bedakan
+            name: "Queen's BLACKPINK",
+            group: "BLACKPINK",
+            image: "qbp.webp",
+            health: 0, // Tidak untuk battle
+            maxHealth: 0,
+            attack: 0,
+            rarity: "superstar",            
+            albumOnly: true // Flag khusus
+        
+        },
+    ],
     storeItems: {
         crates: [
             { id: 1, name: "Basic Crate", price: 30, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common idols only" },
@@ -6632,6 +6767,10 @@ const botNames = [
     "Dreamcatcher_InSomnia", "LOONA_Orbit", "fromis_9_flover", "Weeekly_Daily",
     "STAYC_SWITH", "Billlie_Belllie've", "P1Harmony_P1ece", "JustB_Justus", "Bobacott", "Kyuchuu", "Bocil_Kematian", "Vonzyy7", "Pandicorn", "WannaYou_Lil", "Abah66", "liliaBa", "PawPawMiaww", "ApiSha_Isyou", "aYOU_Carmen", "fanZ_GYJ"
 ];
+
+
+
+
 
 
 
@@ -7691,8 +7830,10 @@ function resetCollectionFilters() {
 // ========== ALBUM FUNCTIONS ==========
 
 // Load Album Screen
+// GANTI fungsi loadAlbum() dengan yang ini:
+// Update fungsi loadAlbum() untuk handle error jika albumOnlyPhotocards belum ada:
 function loadAlbum() {
-    console.log("Loading portrait album...");
+    console.log("Loading portrait album with exclusive cards...");
     
     const albumContainer = document.getElementById('album-grid-portrait');
     if (!albumContainer) return;
@@ -7700,19 +7841,46 @@ function loadAlbum() {
     // Clear container
     albumContainer.innerHTML = '';
     
-    // Get all unique photocards
-    const allPhotocards = [...gameData.gachaPool, ...gameData.storeItems.photocards];
+    // ========== KOMBINASI SEMUA KARTU ==========
+    // 1. Kartu dari gacha pool
+    // 2. Kartu dari store (photocards)
+    // 3. Kartu eksklusif album-only (jika ada)
+    
+    // Inisialisasi array kosong jika belum ada
+    if (!gameData.albumOnlyPhotocards) {
+        gameData.albumOnlyPhotocards = [];
+    }
+    
+    const allPhotocards = [
+        ...gameData.gachaPool,
+        ...gameData.storeItems.photocards,
+        ...gameData.albumOnlyPhotocards
+    ];
+    
+    // Filter untuk menghapus kartu yang tidak valid
+    const validPhotocards = allPhotocards.filter(card => {
+        return card && card.id && card.name;
+    });
+    
     const uniquePhotocards = [];
     const seenIds = new Set();
     
-    allPhotocards.forEach(card => {
+    validPhotocards.forEach(card => {
         if (!seenIds.has(card.id)) {
             seenIds.add(card.id);
-            // Ensure image exists
-            const cardCopy = {...card};
-            if (!cardCopy.image || cardCopy.image === '') {
-                cardCopy.image = 'placeholder.jpg';
-            }
+            // Pastikan properti ada
+            const cardCopy = {
+                id: card.id || Date.now(),
+                name: card.name || 'Unknown Card',
+                group: card.group || 'Unknown Group',
+                image: card.image || 'placeholder.jpg',
+                health: card.health || 0,
+                maxHealth: card.maxHealth || 0,
+                attack: card.attack || 0,
+                rarity: card.rarity || 'common',
+                description: card.description || '',
+                albumOnly: card.albumOnly || false
+            };
             uniquePhotocards.push(cardCopy);
         }
     });
@@ -7731,8 +7899,13 @@ function loadAlbum() {
         }
         
         // Rarity filter
-        if (activeFilter !== 'all' && card.rarity !== activeFilter) {
-            return false;
+        if (activeFilter !== 'all') {
+            if (activeFilter === 'mystery') {
+                // Filter "Exclusive" hanya tampilkan kartu mystery/albumOnly
+                return card.rarity === 'mystery' || card.albumOnly;
+            } else if (card.rarity !== activeFilter) {
+                return false;
+            }
         }
         
         return true;
@@ -7743,12 +7916,37 @@ function loadAlbum() {
         gameData.cards.some(ownedCard => ownedCard.id === card.id)
     ).length;
     
+    const exclusiveCount = uniquePhotocards.filter(card => 
+        card.albumOnly || card.rarity === 'mystery'
+    ).length;
+    
     const percentage = uniquePhotocards.length > 0 ? 
         Math.round((ownedCount / uniquePhotocards.length) * 100) : 0;
     
-    document.getElementById('total-cards-portrait').textContent = uniquePhotocards.length;
-    document.getElementById('owned-cards-portrait').textContent = ownedCount;
-    document.getElementById('percentage-portrait').textContent = `${percentage}%`;
+    // Update display stats
+    const totalCardsEl = document.getElementById('total-cards-portrait');
+    const ownedCardsEl = document.getElementById('owned-cards-portrait');
+    const percentageEl = document.getElementById('percentage-portrait');
+    
+    if (totalCardsEl) totalCardsEl.textContent = uniquePhotocards.length;
+    if (ownedCardsEl) ownedCardsEl.textContent = ownedCount;
+    if (percentageEl) percentageEl.textContent = `${percentage}%`;
+    
+    // Tambahkan info exclusive di stats
+    const statsContainer = document.querySelector('.album-stats-portrait');
+    if (statsContainer) {
+        // Hapus stat exclusive yang lama jika ada
+        const oldExclusiveStat = statsContainer.querySelector('.exclusive-stat');
+        if (oldExclusiveStat) {
+            oldExclusiveStat.remove();
+        }
+        };
+     
+        
+        
+           
+        
+        
     
     // Render cards
     if (filteredPhotocards.length === 0) {
@@ -7762,40 +7960,93 @@ function loadAlbum() {
         return;
     }
     
-    filteredPhotocards.forEach((card, index) => {
+    // Sort: owned first, then by rarity
+    const sortedCards = [...filteredPhotocards].sort((a, b) => {
+        const aOwned = gameData.cards.some(c => c.id === a.id);
+        const bOwned = gameData.cards.some(c => c.id === b.id);
+        
+        if (aOwned && !bOwned) return -1;
+        if (!aOwned && bOwned) return 1;
+        
+        const rarityOrder = {
+            'secret': 0,
+            'superstar': 1,
+            'risingstar': 2,
+            'legendary': 3,
+            'epic': 4,
+            'rare': 5,
+            'common': 6,
+            'mystery': 7
+        };
+        
+        return (rarityOrder[a.rarity] || 8) - (rarityOrder[b.rarity] || 8);
+    });
+    
+    sortedCards.forEach((card, index) => {
         const isOwned = gameData.cards.some(ownedCard => ownedCard.id === card.id);
+        const isAlbumOnly = card.albumOnly || card.rarity === 'mystery';
         
         const cardElement = document.createElement('div');
         cardElement.className = 'album-card-portrait';
+        if (isAlbumOnly) {
+            cardElement.classList.add('exclusive-card');
+        }
         cardElement.style.animationDelay = `${index * 0.05}s`;
+        
+        // Styling khusus untuk exclusive cards
+        if (isAlbumOnly) {
+            cardElement.style.border = '2px dashed rgba(0, 204, 255, 0.5)';
+            cardElement.style.background = 'linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,204,255,0.1))';
+        }
         
         cardElement.innerHTML = `
             <div class="photocard-image" 
-                 style="background-image: url('${card.image}')"
+                 style="background-image: url('${card.image}');
+                        ${isAlbumOnly ? 'filter: grayscale(30%) brightness(0.8);' : ''}"
                  onerror="this.style.backgroundImage='url(placeholder.jpg)'">
+                ${isAlbumOnly ? 
+                    `<div class="exclusive-overlay">
+                        
+                    </div>` : 
+                    ''
+                }
             </div>
             
             <div class="photocard-overlay"></div>
             
-            <div class="photocard-rarity r-badge-portrait-${card.rarity}">
-                ${card.rarity.toUpperCase()}
+            <div class="photocard-rarity r-badge-portrait-${card.rarity} ${isAlbumOnly ? 'exclusive-badge' : ''}">
+                ${isAlbumOnly ? 'EXCLUSIVE' : card.rarity.toUpperCase()}
             </div>
             
-            <div class="photocard-status ${isOwned ? 'status-owned-portrait' : 'status-missing-portrait'}">
-                ${isOwned ? '✓' : '✗'}
+            <div class="photocard-status ${isOwned ? 'status-owned-portrait' : 'status-missing-portrait'} ${isAlbumOnly ? 'exclusive-status' : ''}">
+                ${isAlbumOnly ? '⭐' : (isOwned ? '✓' : '✗')}
             </div>
             
             <div class="photocard-info">
-                <div class="photocard-name">${card.name}</div>
+                <div class="photocard-name" style="${isAlbumOnly ? 'color: #white;' : ''}">${card.name}</div>
                 <div class="photocard-group">${card.group}</div>
+                ${isAlbumOnly ? 
+                    `<div style="font-size: 0.7rem; color: #00ccff; margin-top: 5px; font-style: italic;">
+                       
+                    </div>` : 
+                    ''
+                }
             </div>
         `;
+        
+        // Tooltip untuk exclusive cards
+        if (isAlbumOnly && card.description) {
+            cardElement.title = card.description;
+            cardElement.style.cursor = 'help';
+        }
         
         albumContainer.appendChild(cardElement);
     });
     
-    console.log(`Loaded ${filteredPhotocards.length} portrait photocards`);
+    console.log(`Loaded ${filteredPhotocards.length} portrait photocards (${exclusiveCount} exclusive)`);
 }
+    
+    
 
 // Setup album event listeners
 function setupAlbumEventListeners() {
