@@ -818,17 +818,21 @@ nav {
     margin-bottom: 20px;
 }
 
+
+
+
 .collection-card {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
 }
 
 .collection-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 .collection-card-img {
@@ -2813,17 +2817,17 @@ input:checked + .toggle-slider:before {
 
 .rarity-rare {
     border: 2px solid #6a5af9;
-    animation: glow 3s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(106, 90, 249, 0.3);
 }
 
 .rarity-epic {
     border: 2px solid #ff6b9d;
-    animation: glow 2s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
 }
 
 .rarity-legendary {
     border: 2px solid #ffd166;
-    animation: glow 1s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(255, 209, 102, 0.4);
 }
 
 .rarity-risingstar {
@@ -2832,26 +2836,7 @@ input:checked + .toggle-slider:before {
     background: 
         linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
         linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
-    box-shadow: 
-        0 0 10px rgba(255, 215, 0, 0.5),
-        0 0 20px rgba(255, 107, 0, 0.3),
-        0 0 30px rgba(255, 0, 128, 0.2),
-        inset 0 0 15px rgba(157, 78, 221, 0.3);
-    animation: secretGlow 2s ease-in-out infinite;
-}
-
-.rarity-stars {
-    border: 2px solid transparent;
-    border-radius: 15px;
-    background: 
-        linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
-        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
-    box-shadow: 
-        0 0 10px rgba(255, 215, 0, 0.5),
-        0 0 20px rgba(255, 107, 0, 0.3),
-        0 0 30px rgba(255, 0, 128, 0.2),
-        inset 0 0 15px rgba(157, 78, 221, 0.3);
-    animation: secretGlow 2s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
 
 .rarity-superstar {
@@ -2859,13 +2844,8 @@ input:checked + .toggle-slider:before {
     border-radius: 15px;
     background: 
         linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
-        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
-    box-shadow: 
-        0 0 10px rgba(255, 215, 0, 0.5),
-        0 0 20px rgba(255, 107, 0, 0.3),
-        0 0 30px rgba(255, 0, 128, 0.2),
-        inset 0 0 15px rgba(157, 78, 221, 0.3);
-    animation: secretGlow 2s ease-in-out infinite;
+        linear-gradient(135deg, #ff00cc, #ff9900, #ffcc00, #ff00ff) border-box;
+    box-shadow: 0 0 15px rgba(255, 0, 204, 0.3);
 }
 
 .rarity-secret {
@@ -2873,14 +2853,8 @@ input:checked + .toggle-slider:before {
     border-radius: 15px;
     background: 
         linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
-        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd, #00ccff) border-box;
-    box-shadow: 
-        0 0 15px rgba(255, 215, 0, 0.7),
-        0 0 30px rgba(255, 107, 0, 0.5),
-        0 0 45px rgba(255, 0, 128, 0.3),
-        0 0 60px rgba(157, 78, 221, 0.2),
-        inset 0 0 20px rgba(0, 204, 255, 0.3);
-    animation: secretGlow 1.5s ease-in-out infinite;
+        linear-gradient(135deg, #ffd700, #ff6b00, #ff0080, #9d4edd) border-box;
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
 }
 
 @keyframes secretGlow {
@@ -6473,6 +6447,8 @@ const gameData = {
             { id: 5, name: "Gold Hunter", price: 0, type: "skill", image: "goldhunter.jpg", description: "-10 HP at battle start, +50 coins & 2x XP if win battle", tradeRequired: true }
         ],
         photocards: [
+        { id: 122, name: "G - Chaewon", group: "LE-SSERAFIM", image: "goldenchae.webp", health: 225, maxHealth: 225, attack: 25, rarity: "superstar", price: 25, description: "Exclusive Limited Christmas Event photocard not available in gacha"},
+        { id: 133, name: "G - Lisa", group: "BLACKPINK", image: "goldenlisa.webp", health: 225, maxHealth: 225, attack: 25, rarity: "superstar", price: 25, description: "Exclusive Limited Christmas Event photocard not available in gacha" },
             { id: 100, name: "Special Hanni", group: "NewJeans", image: "hanni_special.webp", health: 150, maxHealth: 150, attack: 18, rarity: "rare", price: 6800, description: "Exclusive photocard not available in gacha" },
             { id: 101, name: "Special Jennie", group: "BLACKPINK", image: "jennie_special.webp", health: 155, maxHealth: 155, attack: 20, rarity: "epic", price: 7500, description: "Exclusive photocard not available in gacha" },
             { id: 102, name: "Special Karina", group: "aespa", image: "karina_special.webp", health: 165, maxHealth: 165, attack: 20, rarity: "legendary", price: 7500, description: "Exclusive photocard not available in gacha" },
@@ -12738,7 +12714,6 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
-
 
 
 
