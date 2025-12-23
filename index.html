@@ -5330,6 +5330,72 @@ input:checked + .toggle-slider:before {
 .album-card-portrait {
     animation: cardAppear 0.3s ease forwards;
 }
+
+
+
+
+
+/* Collection Search Styles */
+.collection-search-container {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.collection-search-input {
+    width: 90%;
+    max-width: 400px;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 0.9rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.collection-search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+}
+
+.collection-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Filter buttons */
+.collection-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 15px 0 20px;
+}
+
+.collection-filter-btn {
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.collection-filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.collection-filter-btn.active {
+    background: var(--secondary);
+    color: white;
+    border-color: var(--secondary);
+    box-shadow: 0 4px 12px rgba(106, 90, 249, 0.3);
+}
         
     </style>
 </head>
@@ -5705,9 +5771,29 @@ input:checked + .toggle-slider:before {
         <!-- Collection Screen -->
         <section id="collection" class="screen">
             <h2 class="screen-title">Your Collection</h2>
+                    
+    
+    <!-- TAMBAHKAN SEARCH INPUT INI -->
+    <div class="collection-search-container" style="margin: 15px 0; text-align: center;">
+        <input type="text" 
+               id="collection-search-input" 
+               class="collection-search-input"
+               placeholder="Search card name or group..."
+               style="width: 90%; max-width: 400px; padding: 12px 20px; border-radius: 25px; 
+                      border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); 
+                      color: white; font-size: 0.9rem; text-align: center;">
+    </div>
+    
+   
+            
+            
+           
+            
             <div class="collection-container">
                 <!-- Cards will be populated by JavaScript -->
             </div>
+                                 
+            
             
             <button class="sell-all-btn" id="sell-all-btn">SELL ALL NON-FAVORITE CARDS</button>
             
@@ -5742,6 +5828,9 @@ input:checked + .toggle-slider:before {
                 </div>
             </div>
         </section>
+        
+        
+        
         
          <!-- Skill Modal -->
     <div id="skill-modal" class="modal">
@@ -7031,6 +7120,18 @@ function setupUpdatePopupEvents() {
     }
 }
 
+
+
+
+
+
+// aletha1
+
+
+
+
+
+
 // Tambahkan ke initGame
 function initGame() {
     console.log("Initializing game...");
@@ -7321,9 +7422,10 @@ function loadGameData() {
 }
 
 // PERBAIKAN UTAMA: LOAD COLLECTION DENGAN ERROR HANDLING YANG LEBIH BAIK
-// PERBAIKAN UTAMA: LOAD COLLECTION DENGAN ERROR HANDLING YANG LEBIH BAIK
-function loadCollection() {
-    console.log("Loading collection...");
+// GANTI function loadCollection() dengan versi yang lebih lengkap
+// GANTI function loadCollection() dengan VERSI INI:
+function loadCollection(searchTerm = '', filterRarity = 'all') {
+    console.log("Loading collection... Search:", searchTerm, "Filter:", filterRarity);
     const collectionContainer = document.querySelector('.collection-container');
     
     if (!collectionContainer) {
@@ -7341,28 +7443,73 @@ function loadCollection() {
             gameData.cards = [];
         }
         
+        // Filter kartu berdasarkan search term dan rarity
+        let filteredCards = [...gameData.cards];
+        
+        // Apply search filter
+        if (searchTerm) {
+            const searchLower = searchTerm.toLowerCase();
+            filteredCards = filteredCards.filter(card => {
+                const cardName = card.name ? card.name.toLowerCase() : '';
+                const cardGroup = card.group ? card.group.toLowerCase() : '';
+                return cardName.includes(searchLower) || cardGroup.includes(searchLower);
+            });
+        }
+        
+        // Apply rarity filter
+        if (filterRarity !== 'all') {
+            filteredCards = filteredCards.filter(card => card.rarity === filterRarity);
+        }
+        
+        console.log("Total cards:", gameData.cards.length, "Filtered cards:", filteredCards.length);
+        
         // Tampilkan pesan jika tidak ada kartu
-        if (gameData.cards.length === 0) {
-            collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px;">You don\'t have any cards yet. Go to the Store to get your first card!</div>';
-            return;
-        }
-        
-        // Validasi dan sort kartu
-        const validCards = gameData.cards.filter(card => {
-            if (!card || typeof card !== 'object') {
-                console.warn("Removing invalid card from collection:", card);
-                return false;
+        if (filteredCards.length === 0) {
+            let message = '';
+            if (gameData.cards.length === 0) {
+                message = "You don't have any cards yet. Go to the Store to get your first card!";
+            } else if (searchTerm || filterRarity !== 'all') {
+                message = `No cards found`;
+                if (searchTerm) message += ` for "${searchTerm}"`;
+                if (filterRarity !== 'all') message += ` with rarity "${filterRarity}"`;
+            } else {
+                message = "No cards available";
             }
-            return true;
-        });
-        
-        if (validCards.length === 0) {
-            collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px;">No valid cards found in your collection.</div>';
+            
+            collectionContainer.innerHTML = `
+                <div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px; color: #aaa;">
+                    <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 10px; opacity: 0.5;"></i>
+                    <p style="margin-bottom: 10px;">${message}</p>
+                    ${searchTerm || filterRarity !== 'all' ? 
+                        '<button onclick="resetCollectionFilters()" style="padding: 8px 15px; background: var(--secondary); color: white; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px;">Reset Filters</button>' : 
+                        ''}
+                </div>
+            `;
             return;
         }
+        
+        // Tambahkan info hasil filter
+        const resultsInfo = document.createElement('div');
+        resultsInfo.className = 'results-info';
+        resultsInfo.style.cssText = `
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 10px;
+            color: #aaa;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 15px;
+        `;
+        
+        let infoText = `Showing ${filteredCards.length} of ${gameData.cards.length} cards`;
+        if (searchTerm) infoText += ` for "${searchTerm}"`;
+        if (filterRarity !== 'all') infoText += ` (${filterRarity})`;
+        
+        resultsInfo.textContent = infoText;
+        collectionContainer.appendChild(resultsInfo);
         
         // SORTING: Favorite dulu, kemudian rarity tinggi ke rendah
-        const sortedCards = [...validCards].sort((a, b) => {
+        const sortedCards = [...filteredCards].sort((a, b) => {
             if (a.favorite && !b.favorite) return -1;
             if (!a.favorite && b.favorite) return 1;
             
@@ -7476,100 +7623,21 @@ function loadCollection() {
                     </div>
                 `;
                 
-                // PERBAIKAN BUG FAVORIT: TAMBAHKAN EVENT LISTENER LANGSUNG UNTUK TOMBOL FAVORIT
+                // Event listeners untuk tombol
                 const favoriteBtn = cardElement.querySelector('.favorite-btn');
-if (favoriteBtn) {
-    favoriteBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("Direct favorite button click for card ID:", safeCard.id);
-        const cardId = parseInt(this.getAttribute('data-id'));
-        if (cardId) {
-            toggleFavoriteCard(cardId);
-        }
-    });
-}
-                
-                // Tambahkan event listener langsung untuk tombol upgrade
-                const upgradeBtn = cardElement.querySelector('.upgrade-btn');
-                if (upgradeBtn && !upgradeBtn.disabled) {
-                    upgradeBtn.addEventListener('click', function(e) {
+                if (favoriteBtn) {
+                    favoriteBtn.addEventListener('click', function(e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        console.log("Direct upgrade button click for card ID:", safeCard.id);
                         const cardId = parseInt(this.getAttribute('data-id'));
                         if (cardId) {
-                            upgradeCardAttack(cardId);
+                            toggleFavoriteCard(cardId);
                         }
                     });
                 }
                 
-                // Tambahkan event listener langsung untuk tombol equip
-                const equipBtn = cardElement.querySelector('.equip-btn');
-                if (equipBtn) {
-                    equipBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log("Direct equip button click for card ID:", safeCard.id);
-                        const cardId = parseInt(this.getAttribute('data-id'));
-                        const card = gameData.cards.find(c => c.id === cardId);
-                        if (card) {
-                            setCurrentCard(card);
-                            loadCollection();
-                            addToBattleLog(`Equipped ${card.name}!`, 'player');
-                        }
-                    });
-                }
-                
-                // Tambahkan event listener langsung untuk tombol skill
-                const skillBtn = cardElement.querySelector('.skill-btn');
-                if (skillBtn) {
-                    skillBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log("Direct skill button click for card ID:", safeCard.id);
-                        const cardId = parseInt(this.getAttribute('data-id'));
-                        const card = gameData.cards.find(c => c.id === cardId);
-                        if (card) {
-                            showSkillModal(card);
-                        }
-                    });
-                }
-                
-                // Tambahkan event listener langsung untuk tombol sell
-                const sellBtn = cardElement.querySelector('.sell-btn');
-                if (sellBtn) {
-                    sellBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log("Direct sell button click for card ID:", safeCard.id);
-                        const cardId = parseInt(this.getAttribute('data-id'));
-                        const card = gameData.cards.find(c => c.id === cardId);
-                        if (card && card.rarity !== 'secret' && !card.favorite && gameData.cards.length > 1) {
-                            showSellCardModal(card);
-                        } else if (gameData.cards.length <= 1) {
-                            addToBattleLog("You can't sell your only card!", 'player');
-                        } else if (card && card.favorite) {
-                            addToBattleLog("Favorite cards cannot be sold!", 'player');
-                        } else if (card && card.rarity === 'secret') {
-                            addToBattleLog("Secret cards cannot be sold!", 'player');
-                        }
-                    });
-                }
-                
-                // Tambahkan event listener langsung untuk tombol trade
-                const tradeBtn = cardElement.querySelector('.trade-gacha-btn');
-                if (tradeBtn) {
-                    tradeBtn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        console.log("Direct trade button click for card ID:", safeCard.id);
-                        const cardId = parseInt(this.getAttribute('data-id'));
-                        if (cardId) {
-                            tradeSecretForCoupons(cardId);
-                        }
-                    });
-                }
+                // Tambahkan event listener untuk tombol lainnya...
+                // (salin kode event listeners dari fungsi lama)
                 
                 collectionContainer.appendChild(cardElement);
                 
@@ -7588,6 +7656,30 @@ if (favoriteBtn) {
         collectionContainer.innerHTML = '<div class="text-center" style="grid-column: 1 / -1; padding: 40px 20px; color: red;">Error loading collection. Please refresh the page.</div>';
     }
 }
+
+// FUNGSI BARU: Reset filter collection
+function resetCollectionFilters() {
+    console.log("Resetting collection filters");
+    
+    const searchInput = document.getElementById('collection-search-input');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+    // Set filter ke "All"
+    const filterButtons = document.querySelectorAll('.collection-filter-btn');
+    filterButtons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-rarity') === 'all') {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Load collection tanpa filter
+    loadCollection('', 'all');
+}
+
+
 
 
 
@@ -7745,6 +7837,11 @@ function setupAlbumEventListeners() {
 
 
 // FUNGSI BARU: Setup event listeners untuk collection (FIXED - dengan event delegation yang benar)
+
+
+
+// aletha2 
+
 function setupCollectionEventListeners() {
     console.log("Setting up collection event listeners...");
     
@@ -7979,6 +8076,66 @@ function setupCollectionEventListeners() {
 
 
 
+
+
+
+
+// Tambahkan fungsi baru untuk setup search dan filter
+function setupCollectionSearch() {
+    const searchInput = document.getElementById('collection-search-input');
+    let searchTimeout;
+    
+    if (searchInput) {
+        // Event listener untuk input dengan debounce
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = this.value.trim();
+                const activeFilter = document.querySelector('.collection-filter-btn.active');
+                const filterRarity = activeFilter ? activeFilter.getAttribute('data-rarity') : 'all';
+                
+                console.log(`Searching for: "${searchTerm}" with filter: "${filterRarity}"`);
+                loadCollection(searchTerm, filterRarity);
+            }, 300);
+        });
+        
+        // Clear button (opsional)
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                this.value = '';
+                loadCollection('', 'all');
+            }
+        });
+    }
+    
+    // Setup filter buttons
+    setupCollectionFilters();
+}
+
+function setupCollectionFilters() {
+    const filtersContainer = document.querySelector('.collection-filters');
+    if (!filtersContainer) return;
+    
+    const filterButtons = filtersContainer.querySelectorAll('.collection-filter-btn');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Get search term
+            const searchInput = document.getElementById('collection-search-input');
+            const searchTerm = searchInput ? searchInput.value.trim() : '';
+            
+            // Load collection with filter
+            const filterRarity = this.getAttribute('data-rarity');
+            loadCollection(searchTerm, filterRarity);
+        });
+    });
+}
+
+// alethaa
 
 
 
@@ -8464,12 +8621,18 @@ function switchScreen(screenId) {
         }
         
         
+        
+        
+        
         // Di dalam fungsi 
 if (screenId === 'album') {
     setTimeout(() => {
         loadAlbum();
     }, 50);
 }
+
+
+
         
         // ============ SHORTS AUTO-SCROLL & PLAY ============
         if (screenId === 'shorts') {
@@ -8507,16 +8670,18 @@ if (screenId === 'album') {
         
         
         
-        if (screenId === 'collection') {
-            setTimeout(() => {
-                try {
-                    updateInventoryDisplay();
-                    loadCollection();
-                } catch (error) {
-                    console.error("Error loading collection after screen switch:", error);
-                }
-            }, 50);
+        // Di dalam function switchScreen(screenId)
+if (screenId === 'collection') {
+    setTimeout(() => {
+        try {
+            updateInventoryDisplay();
+            loadCollection(); // Load dengan parameter default
+            setupCollectionSearch(); // Setup search functionality
+        } catch (error) {
+            console.error("Error loading collection after screen switch:", error);
         }
+    }, 50);
+}
         
     } catch (error) {
         console.error("Error switching screen:", error);
@@ -12302,7 +12467,6 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
-
 
 
 
