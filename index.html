@@ -13027,8 +13027,8 @@ function applySkillEffects() {
         switch(enemySkill.name) {
             case 'War Blitz':
                 enemyHealth -= 4;
-                enemyCard.attack += 7;
-                addToBattleLog(`${enemyCard.name} activated War Blitz! -4 HP, +7 Attack!`, 'enemy');
+                enemyCard.attack += 5;
+                addToBattleLog(`${enemyCard.name} activated War Blitz! -4 HP, +5 Attack!`, 'enemy');
                 break;
             case 'Iron Strike':
                 enemyHealth = Math.min(enemyHealth + 10, enemyCard.maxHealth);
