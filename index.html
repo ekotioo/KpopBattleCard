@@ -10915,13 +10915,13 @@ function checkTop1Achievement() {
                 description: "Reach #1 position on leaderboard with at least 3000 points",
                 progress: 1,
                 target: 1,
-                reward: { type: "coins", value: 5000 },
+                reward: { type: "coins", value: 8000 },
                 completed: true,
                 claimed: false
             });
             
             addToBattleLog(" NEW QUEST UNLOCKED: Top 1 Champion!", 'player');
-            addToBattleLog(" Claim 5000 coins reward in Quests screen!", 'player');
+            addToBattleLog(" Claim 8000 coins reward in Quests screen!", 'player');
             
             // Refresh quests jika sedang terbuka
             if (document.getElementById('quests')?.classList.contains('active')) {
@@ -10933,7 +10933,7 @@ function checkTop1Achievement() {
             top1Quest.completed = true;
             
             addToBattleLog(" QUEST COMPLETED: Top 1 Champion!", 'player');
-            addToBattleLog(" Claim your 5000 coins reward!", 'player');
+            addToBattleLog(" Claim your 8000 coins reward!", 'player');
         }
     }
 }
