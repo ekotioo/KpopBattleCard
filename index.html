@@ -40,7 +40,7 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
     background: 
-        url('body-bgc.jpg') center/cover no-repeat fixed,
+        url('body-bgny.webp') center/cover no-repeat fixed,
         linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
 }
 
@@ -5427,6 +5427,252 @@ input:checked + .toggle-slider:before {
 }   
 
 
+
+
+/* Tambahkan di CSS */
+#leaderboard {
+    display: none;
+    flex-direction: column;
+}
+
+#leaderboard.active {
+    display: flex;
+}
+
+.leaderboard-info {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.leaderboard-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.leaderboard-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.leaderboard-stat i {
+    color: var(--accent);
+    font-size: 1rem;
+}
+
+.leaderboard-filters {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.leaderboard-filter-btn {
+    padding: 8px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.leaderboard-filter-btn.active {
+    background: var(--secondary);
+    color: white;
+    border-color: var(--secondary);
+}
+
+.leaderboard-filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.leaderboard-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px;
+}
+
+.leaderboard-entry {
+    display: flex;
+    align-items: center;
+    padding: 13px 16px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.leaderboard-entry:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+.leaderboard-entry.current-player {
+    background: rgba(106, 90, 249, 0.15);
+    border: 1px solid var(--secondary);
+    box-shadow: 0 4px 12px rgba(106, 90, 249, 0.2);
+}
+
+.leaderboard-rank {
+    width: 40px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+}
+
+.rank-1 { color: #ffd700 !important; }
+.rank-2 { color: #c0c0c0 !important; }
+.rank-3 { color: #cd7f32 !important; }
+
+
+.rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.rank-1 .rank-badge {
+    background: linear-gradient(135deg, #ffd700, #ff9900);
+    color: #333;
+}
+
+.rank-2 .rank-badge {
+    background: linear-gradient(135deg, #00FFFF, #00FFFF);
+    color: #333;
+}
+
+.rank-3 .rank-badge {
+    background: linear-gradient(135deg, #cd7f32, #a6692e);
+    color: white;
+}
+
+.rank-4 .rank-badge {
+    background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+    color: white;
+}
+.rank-5 .rank-badge {
+    background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+    color: white;
+}
+
+
+.leaderboard-player-info {
+    flex: 1;
+}
+
+.leaderboard-player-name {
+    font-weight: 600;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.player-level-badge {
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.leaderboard-player-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.leaderboard-points {
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--accent);
+    min-width: 80px;
+    text-align: left;
+}
+
+.leaderboard-points i {
+    display: none;
+}
+
+.leaderboard-refresh {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.refresh-btn {
+    padding: 12px 25px;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.refresh-btn:hover {
+    background: #5a4ff0;
+    transform: translateY(-2px);
+}
+
+.leaderboard-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+/* Loading state */
+.leaderboard-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: #aaa;
+}
+
+.leaderboard-loading i {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+/* Empty state */
+.leaderboard-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #aaa;
+}
+
+.leaderboard-empty i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
         
     </style>
 </head>
@@ -5457,7 +5703,7 @@ input:checked + .toggle-slider:before {
     <div class="container" id="game-container" style="display: none;">
     <header id="main-header">
     <video autoplay muted loop playsinline class="header-video">
-        <source src="header-bgcs.mp4" type="video/mp4">
+        <source src="header-bgny.mp4" type="video/mp4">
         <source src="header-bg.webm" type="video/webm">
     </video>
     
@@ -5496,12 +5742,27 @@ input:checked + .toggle-slider:before {
         <i class="fas fa-fist-raised"></i> Battle
     </button>
     
+   
+    
     <button class="nav-btn" data-screen="collection">
         <i class="fas fa-id-card"></i> Collection
+        
     </button>
+    
+    
+    
+    
     <button class="nav-btn" data-screen="store">
         <i class="fas fa-shopping-cart"></i> Store
     </button>
+    
+    
+     <!-- Di dalam nav (tambahkan setelah tab quests) -->
+<button class="nav-btn" data-screen="leaderboard">
+    <i class="fas fa-trophy"></i> Leaderboard
+</button>
+    
+    
     
     <!-- Di dalam nav (sekitar line 1250-1260) -->
 <button class="nav-btn" data-screen="album">
@@ -5513,6 +5774,8 @@ input:checked + .toggle-slider:before {
         <i class="fas fa-tasks"></i> Quests
     </button>
 </nav>
+
+ 
 
 
 
@@ -5618,26 +5881,26 @@ input:checked + .toggle-slider:before {
             </div>
             
             <p class="update-message">
-                Welcome to Battle Of Idol Christmas Special Edition! 
+                Welcome to Battle Of Idol 2026 New Year Special Edition! 
                 Enjoy new features and exclusive content.
             </p>
             
             <div class="update-features">
-                <h4>🎄 New Features:</h4>
+                <h4>New Year Limited Update:</h4>
                 <ul>
-                    <li>Christmas 2025 Exclusive Photocards</li>
-                    <li>Special Lightning Effects for Secret Cards</li>
-                    <li>Christmas-themed UI Enhancements</li>
+                    <li>New Year 2026 Exclusive Photocards</li>
+                    <li>Special Limited Photocard 1 Coins, Available Only : 01-01-26</li>
+                    <li>New Year Exclusive Event Limited Open 31-12-2025 Ended 01-01-2026</li>
                     <li>New Redeem Codes Available</li>
                 </ul>
             </div>
             
             <div class="update-code">
-                Redeem Code: <strong>CHRISTMAS2025</strong>
+                Redeem Code: <strong>YEAR2026</strong>
             </div>
             
             <p class="update-note">
-                Note: Use the code in Settings → Redeem Codes to get 3000 coins!
+                Note: Use the code in Settings → Redeem Codes to get 2026 coins!
             </p>
             
             
@@ -5650,6 +5913,47 @@ input:checked + .toggle-slider:before {
     </div>
 </div>
 
+
+
+
+
+  <!-- Tambahkan setelah section quests -->
+<section id="leaderboard" class="screen">
+    <h2 class="screen-title">Top Players</h2>
+    
+    <div class="leaderboard-info">
+        <div class="leaderboard-stats">
+            <div class="leaderboard-stat">
+                <i class="fas fa-trophy"></i>
+                <span>Your Rank: <span id="player-rank">99+</span></span>
+            </div>
+            <div class="leaderboard-stat">
+                <i class="fas fa-star"></i>
+                <span>Your Points: <span id="player-points">0</span></span>
+            </div>
+        </div>
+        
+        <div class="leaderboard-filters">
+            <button class="leaderboard-filter-btn active" data-filter="all">All</button>
+            <button class="leaderboard-filter-btn" data-filter="weekly">Weekly</button>
+            <button class="leaderboard-filter-btn" data-filter="monthly">Monthly</button>
+        </div>
+    </div>
+    
+    <div class="leaderboard-list">
+        <!-- Leaderboard entries will be loaded here -->
+    </div>
+    
+    <div class="leaderboard-refresh">
+        <button class="refresh-btn" id="refresh-leaderboard-btn">
+            <i class="fas fa-sync-alt"></i> Refresh Leaderboard
+        </button>
+        <div class="leaderboard-note">
+            <i class="fas fa-info-circle"></i>
+            <span>Win battles to earn points and climb the ranks!</span>
+        </div>
+    </div>
+</section>
 
 
 
@@ -5676,28 +5980,29 @@ input:checked + .toggle-slider:before {
                     <i class="fas fa-star float"></i>
                 </div>
                 <div>
-                    <h1 class="home-title">Battle Yours Idol</h1>
+                    <h1 class="home-title">Battle Yours Idol & Happy New year 2026</h1>
                    
                    
                     
                     <p class="home-subtitle">Selamat datang, <span id="player-name-home">Player</span>!</p>
                 </div>
                                               
-                <h2 class="home-subtitle">Get Special 2025 Christmas Photocard ❄️</h2>
+                <h2 class="home-subtitle">Get Special 2026 New Year Photocard 🎆</h2>
 
                 <div class="featured-cards">
                     <div class="featured-card">
-                        <img src="hyewonch.webp" alt="Kang Hye-Won" class="featured-card-img">
+                        <img src="jisso26.webp" alt="Jisso" class="featured-card-img">
                         <div class="featured-card-name"> </div>
                     </div>
                     <div class="featured-card">
-                        <img src="daniellech.webp" alt="Danielle" class="featured-card-img">
+                        <img src="pharita26.webp" alt="Pharita" class="featured-card-img">
                         <div class="featured-card-name"> </div>
                     </div>
                     <div class="featured-card">
-                        <img src="sanach.webp" alt="Sana" class="featured-card-img">
+                        <img src="winter26.webp" alt="Winter" class="featured-card-img">
                         <div class="featured-card-name"> </div>
                     </div>
+                   
                 </div>
 
                 <div class="home-stats">
@@ -5930,6 +6235,14 @@ input:checked + .toggle-slider:before {
             </div>
         </section>
     </div>
+    
+    
+    
+  
+    
+    
+    
+    
 
     <!-- Gacha Result Modal -->
     <div id="gacha-modal" class="modal">
@@ -6322,10 +6635,30 @@ const gameData = {
     attackBoosts: [1],
     cards: [],
     shields: [1],
+    
+    
     skills: {
         owned: [],
         equipped: {}
     },
+    
+    
+    
+    
+    leaderboard: {
+        points: 0,
+        wins: 0,
+        losses: 0,
+        streak: 0,
+        lastUpdate: Date.now()
+    },
+    
+    leaderboardPlayers: [], 
+
+    
+    
+    
+    
     luckBoosts: {
         active: false,
         remainingUses: 0,
@@ -6333,7 +6666,13 @@ const gameData = {
         unlimitedActive: false,
         unlimitedEndTime: 0
     },
+    
+    
     gachaCoupons: 0,
+    
+    
+    
+    
     
     albumOnlyPhotocards: [
         {
@@ -6672,20 +7011,19 @@ const gameData = {
             rarity: "superstar",            
             albumOnly: true // Flag khusus
         
-        },
-        
+        },        
        
        
        
     ],
     storeItems: {
         crates: [
-            { id: 1, name: "Basic Crate", price: 30, type: "crate", rarity: "common", image: "basic.jpg", description: "Contains common idols only" },
-            { id: 2, name: "Premium Crate", price: 50, type: "crate", rarity: "rare", image: "premium.jpg", description: "Contains common and rare idols" },
-            { id: 3, name: "Elite Crate", price: 100, type: "crate", rarity: "epic", image: "elite.jpg", description: "Contains common, rare and epic idols" },
-            { id: 4, name: "RisingStar Crate", price: 250, type: "crate", rarity: "risingstar", image: "secret.jpg", description: "Contains common, rare, epic and risingstar idols" },
-            { id: 5, name: "Iconic Hunters", price: 400, type: "crate", rarity: "superstar", image: "iconics.jpg", description: "Contains common, rare, epic and superstar idols" },
-            { id: 6, name: "Golden St×rs", price: 500, type: "crate", rarity: "secret", image: "goldch.jpg", description: "Contains common, rare, epic, legendary idols and secret" }
+            { id: 1, name: "Basic Crate", price: 30, type: "crate", rarity: "common", image: "basicB.jpg", description: "Contains common idols only" },
+            { id: 2, name: "Premium Crate", price: 50, type: "crate", rarity: "rare", image: "premiumB.jpg", description: "Contains common and rare idols" },
+            { id: 3, name: "Elite Crate", price: 100, type: "crate", rarity: "epic", image: "eliteB.jpg", description: "Contains common, rare and epic idols" },
+            { id: 4, name: "RisingStar Crate", price: 250, type: "crate", rarity: "risingstar", image: "secretB.jpg", description: "Contains common, rare, epic and risingstar idols" },
+            { id: 5, name: "Iconic Hunters", price: 400, type: "crate", rarity: "superstar", image: "iconicss.jpg", description: "Contains common, rare, epic and superstar idols" },
+            { id: 6, name: "Golden St×rs N.Y 26", price: 500, type: "crate", rarity: "secret", image: "goldny.jpg", description: "Contains common, rare, epic, legendary idols and secret" }
             
             
             
@@ -6709,16 +7047,16 @@ const gameData = {
             { id: 3, name: "Unlimited Luck Boost", price: 800, type: "luck", image: "luck.jpg", description: "Increase gacha luck by 0.8% for 25 minutes" }
         ],
         skills: [
-            { id: 1, name: "War Blitz", price: 1200, type: "skill", image: "warblitz.jpg", description: "-4 HP, +7 Attack (+3 Attack when enemy uses Shield)" },
+            { id: 1, name: "War Blitz", price: 1200, type: "skill", image: "warblitz.jpg", description: "-4 HP, +5 Attack (+2 Attack when enemy uses Shield)" },
             { id: 2, name: "Iron Strike", price: 900, type: "skill", image: "ironstrike.jpg", description: "+10 HP, -6 Attack (+5 HP when enemy uses Attack Boost)" },
             { id: 3, name: "Valor Surge", price: 1000, type: "skill", image: "valorsurge.jpg", description: "+20 damage at battle start, -5 HP when used" },
             { id: 4, name: "Ice Guard", price: 850, type: "skill", image: "iceguard.jpg", description: "-10 damage when enemy uses Attack Boost, reduces enemy Shield duration" },
-            { id: 5, name: "Gold Hunter", price: 0, type: "skill", image: "goldhunter.jpg", description: "-10 HP at battle start, +50 coins & 2x XP if win battle", tradeRequired: true }
+            { id: 5, name: "Gold Hunter", price: 0, type: "skill", image: "goldhunter.jpg", description: "-10 HP at battle start, +80 coins & 2x XP if win battle", tradeRequired: true }
         ],
         photocards: [
         
+        { id: 68, name: "Tzuyu 2026 New Year", group: "TWICE", image: "tzuyu26.webp", health: 260, maxHealth: 260, attack: 28, rarity: "secret", price: 20260, description: "Exclusive 2026 New Year Limited photocard not available in gacha" },
         
-        { id: 108, name: "Rose Christmas 2025", group: "BLACKPINK", image: "rosech.webp", health: 250, maxHealth: 250, attack: 28, rarity: "secret", price: 18500, description: "Exclusive Limited Christmas Event photocard not available in gacha" },
         
         
         { id: 555, name: "Devil's Karina", group: "aespa", image: "karinadv.webp", health: 226, maxHealth: 226, attack: 26, rarity: "superstar", price: 16000, description: "Exclusive photocard not available in gacha" },
@@ -6837,14 +7175,16 @@ const gameData = {
         { id: 64, name: "Lisa × Jennie", group: "BLACKPINK", image: "lisajennie.webp", health: 266, maxHealth: 266, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 65, name: "Chaewon × Sakura", group: "LE-SSERAFIM", image: "chaesakura.webp", health: 266, maxHealth: 266, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 66, name: "Karina × Winter", group: "aespa", image: "karinawinter.webp", health: 266, maxHealth: 266, attack: 31, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 67, name: "Danielle Christmas 2025", group: "NewJeans", image: "daniellech.webp", health: 250, maxHealth: 250, attack: 29, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 68, name: "Sana Christmas 2025", group: "TWICE", image: "sanach.webp", health: 250, maxHealth: 250, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 69, name: "Wonyung Christmas 2025", group: "IVE", image: "wonyungch.webp", health: 250, maxHealth: 250, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 70, name: "Kang Hye-Won Christmas 2025", group: "Actress", image: "hyewonch.webp", health: 250, maxHealth: 250, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 71, name: "Sakura Christmas 2025", group: "LE-SSERAFIM", image: "sakurach.webp", health: 250, maxHealth: 250, attack: 31, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
-        { id: 72, name: "Chaewon Christmas 2025", group: "LE-SSERAFIM", image: "chaech.webp", health: 250, maxHealth: 250, attack: 28, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         
         
+{ id: 67, name: "Pharita 2026 New Year", group: "BABYMONSTER", image: "pharita26.webp", health: 260, maxHealth: 260, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        
+        { id: 69, name: "Winter 2026 New Year", group: "aespa", image: "winter26.webp", health: 260, maxHealth: 260, attack: 32, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 70, name: "Jisso 2026 New Year", group: "BLACKPINK", image: "jisso26.webp", health: 260, maxHealth: 260, attack: 31, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+        { id: 71, name: "Ahn Yujin 2026 New Year", group: "IVE", image: "yujin26.webp", health: 260, maxHealth: 260, attack: 30, rarity: "secret", wins: 0, battles: 0, favorite: false, upgrades: 0 },
+
+
+
         // Rare 2 Card
         { id: 76, name: "Jung So-min", group: "Actress", image: "somin.webp", health: 119, maxHealth: 119, attack: 15, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
         { id: 77, name: "Seorina", group: "Actress", image: "rina.webp", health: 123, maxHealth: 123, attack: 18, rarity: "rare", wins: 0, battles: 0, favorite: false, upgrades: 0 },
@@ -6891,7 +7231,7 @@ const gameData = {
     quests: {
         main: [
             { id: 0, name: "New Player Bonus", description: "Welcome to Battle Of Idol and enjoy play a game", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
-            { id: 1, name: "New Update Christmas v1.2", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
+            { id: 1, name: "New Update 2026 New Year v1.3", description: "Welcome to Battle Of Idol", progress: 1, target: 1, reward: { type: "coins", value: 1000 }, completed: false, claimed: false },
             { id: 2, name: "Idol Collector", description: "Collect 5 different idols", progress: 0, target: 5, reward: { type: "coins", value: 500 }, completed: false, claimed: false },
             { id: 3, name: "Battle Master", description: "Win 10 battles", progress: 0, target: 10, reward: { type: "card", value: 11 }, completed: false, claimed: false },
             { id: 6, name: "Level Up!", description: "Reach Level 3", progress: 0, target: 3, reward: { type: "coins", value: 200 }, completed: false, claimed: false },
@@ -6900,8 +7240,8 @@ const gameData = {
             { id: 9, name: "Battle Legend", description: "Win 50 battles", progress: 0, target: 50, reward: { type: "card", value: 10 }, completed: false, claimed: false }
         ],
         daily: [
-            { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 50 }, completed: false, claimed: false },
-            { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 30 }, completed: false, claimed: false }
+            { id: 4, name: "Daily Battle", description: "Win 3 battles today", progress: 0, target: 3, reward: { type: "coins", value: 100 }, completed: false, claimed: false },
+            { id: 5, name: "Gacha Enthusiast", description: "Open 2 crates today", progress: 0, target: 2, reward: { type: "coins", value: 50 }, completed: false, claimed: false }
             
         ]
     },
@@ -6996,11 +7336,13 @@ const gameData = {
     },
     redeemCodes: {
         available: [
-            { code: "SANTACOIN", reward: { type: "coins", value: 5000 }, maxUses: 999, used: 0 },
+            { code: "NEWUPDATES", reward: { type: "coins", value: 5000 }, maxUses: 999, used: 0 },
+            { code: "TOPONE", reward: { type: "GachaCoupon", value: 100 }, maxUses: 999, used: 0 },
             { code: "CREATORS", reward: { type: "coins", value: 10000 }, maxUses: 999, used: 0 },
             { code: "SANTA25", reward: { type: "gachaCoupon", value: 3 }, maxUses: 99, used: 0 },
             { code: "IDOL2025", reward: { type: "card", value: 133, rarity: "epic" }, maxUses: 1, used: 0 },
-            { code: "LUCK25", reward: { type: "LuckBoost", value: 1 }, maxUses: 1, used: 0 },
+            { code: "YEAR2026", reward: { type: "coins", value: 2026 }, maxUses: 1, used: 0 },
+            { code: "010126", reward: { type: "coins", value: 10000 }, maxUses: 1, used: 0 },
             { code: "DISCOUNT50", reward: { type: "discount", value: 50 }, maxUses: 1, used: 0 },
             { code: "ATTACKUP", reward: { type: "attackUpgrade", value: 2 }, maxUses: 1, used: 0 },
             { code: "LEGENDARY", reward: { type: "card", value: 10, rarity: "legendary" }, maxUses: 1, used: 0 },
@@ -7018,7 +7360,8 @@ const gameData = {
 };
 
 
-const botNames = [
+
+    const botNames = [
     "KpopMaster42", "IdolHunter99", "DanceKing77", "MusicLover88", 
     "StanTwice", "BlinkForever", "ArmyBTS7", "MYaespa", 
     "NewJeansFan", "LesserafimStan", "IveEnjoyer", "StayC_High",
@@ -7032,12 +7375,14 @@ const botNames = [
     "MBBMonstaX", "AhgaseGot7", "MELODYBTOB", "UNIVERSEpentagon",
     "MOAMOO", "Reveluv", "Sone", "PhamPhamNJ",
     "VIP_BIGBANG", "Blackjack_2NE1", "Neverland_GIDLE", "MIDZY_ITZY",
-    "ATEEZ_ATINY", "STRAY_KIDS_STAY", "TREASURE_TEUME", "ENHYPEN_ENGENE",
-    "Dreamcatcher_InSomnia", "LOONA_Orbit", "fromis_9_flover", "Weeekly_Daily",
-    "STAYC_SWITH", "Billlie_Belllie've", "P1Harmony_P1ece", "JustB_Justus", "Bobacott", "Kyuchuu", "Bocil_Kematian", "Vonzyy7", "Pandicorn", "WannaYou_Lil", "Abah66", "liliaBa", "PawPawMiaww", "ApiSha_Isyou", "aYOU_Carmen", "fanZ_GYJ"
+    "ATEEZ_ATINY", "STRAY_KIDS_STAY", "TREASURE77", "ENHYPEN_EN",
+    "Dreamcatcher_", "LOONA_Orbit", "fromis_9_flover", "Weeekly_Daily",
+    "STAYC_SWITH", "Billlie_", "P1Harmony_P1ece", "JustB_Justus", "Bobacott", "Kyuchuu", "OneBunniess_", "Vonzyy7", "Pandicorn", "WannaYou_", "Abah66", "liliaBa", "PawPawMiaww", "ApiSha_Isyou", "aYOU_Carmen", "fanZ_GYJ"  
 ];
 
 
+
+ 
 
 
 
@@ -7094,6 +7439,32 @@ let currentBotName = "";
 
 
 const shortsData = [
+{
+        id: 14,
+        video: "carmen26.mp4",
+        group: "Hearts2Hearts",
+        description: "메리 크리스마스 🎄 #carmen #h2h #hearts2hearts #Battleofidol",
+        
+        likes: 1836000,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" }
+            ]
+    },           
+            {
+        id: 15,
+        video: "iu26.mp4",
+        group: "IU",
+        description: "즐거운 연말연시 보내세요 #iu #leejieun #Battleofidol",
+        
+        likes: 912772,
+        isLiked: false,
+        duration: 21,
+        comments: [
+            { id: 1, author: "MonsterRookie", text: "Rora's voice is amazing! 🎤", time: "7 hours ago", type: "bot" }
+            ]
+    },
 
 
 {
@@ -7554,6 +7925,9 @@ function initGame() {
             // PERBAIKAN: Panggil checkAndResetDailyQuests SEBELUM showGameScreen
             checkAndResetDailyQuests();
             
+            
+            initLeaderboard();
+            
             showGameScreen();
             
             // Tampilkan popup setelah 500ms
@@ -7655,6 +8029,8 @@ function saveGameData() {
     level: gameData.level,
     xp: gameData.xp,
     xpToNextLevel: gameData.xpToNextLevel,
+    leaderboard: gameData.leaderboard,
+    leaderboardPlayers: gameData.leaderboardPlayers,
     currentCard: gameData.currentCard,
     attackUpgrades: gameData.attackUpgrades,
     attackBoosts: gameData.attackBoosts,
@@ -7688,13 +8064,30 @@ function loadGameData() {
         if (savedData) {
             const parsedData = JSON.parse(savedData);
             
+            
+            
+            
+           gameData.leaderboard = parsedData.leaderboard || {
+                points: 0,
+                wins: 0,
+                losses: 0,
+                streak: 0,
+                lastUpdate: Date.now()
+            };
+            
+            gameData.leaderboardPlayers = parsedData.leaderboardPlayers || [];
+            
+            
+            
+            
+            
             // Load data dasar
             gameData.username = parsedData.username || gameData.username;
             gameData.coins = parsedData.coins || 0;
             gameData.level = parsedData.level || 1;
             gameData.xp = parsedData.xp || 0;
             gameData.xpToNextLevel = parsedData.xpToNextLevel || 100;
-            gameData.tottalWins = 
+            gameData.totalWins = 
 parsedData.tottalWins || 0;
             gameData.totalBattles =
 parsedData.totalBattles || 0;
@@ -9157,6 +9550,13 @@ if (screenId === 'album') {
 }
 
 
+if (screenId === 'leaderboard') {
+    setTimeout(() => {
+        loadLeaderboard();
+    }, 50);
+}
+
+
 
         
         // ============ SHORTS AUTO-SCROLL & PLAY ============
@@ -10211,7 +10611,391 @@ switchScreen = function(screenId) {
 
 
 
+// Fungsi untuk inisialisasi leaderboard
+function initLeaderboard() {
+    console.log("Initializing leaderboard...");
+    
+    // Jika leaderboardPlayers kosong, buat data awal
+    if (!gameData.leaderboardPlayers || gameData.leaderboardPlayers.length === 0) {
+        generateLeaderboardPlayers();
+    }
+    
+    // Update data player di leaderboard
+    updatePlayerLeaderboardData();
+    
+    // Simpan data
+    saveGameData();
+}
 
+// Fungsi untuk generate bot players di leaderboard
+function generateLeaderboardPlayers() {
+    console.log("Generating leaderboard players...");
+    
+    // Data bot yang akan dibuat
+    const botCount = 50; // Total 50 bot players
+    gameData.leaderboardPlayers = [];
+    
+    // Tambahkan player utama
+    gameData.leaderboardPlayers.push({
+        id: 'player_' + gameData.username,
+        username: gameData.username,
+        isBot: false,
+        points: gameData.leaderboard.points,
+        wins: gameData.leaderboard.wins,
+        losses: gameData.leaderboard.losses,
+        streak: gameData.leaderboard.streak,
+        level: gameData.level,
+        lastActive: Date.now(),
+        avatarColor: getRandomColor()
+    });
+    
+    // Tambahkan bot players
+    for (let i = 0; i < botCount; i++) {
+        const botName = getRandomBotName();
+        const botLevel = Math.floor(Math.random() * 50) + 1;
+        const botWins = Math.floor(Math.random() * 100) + 10;
+        const botLosses = Math.floor(Math.random() * 30) + 5;
+        const botStreak = Math.floor(Math.random() * 10) - 5; // Streak bisa negatif
+        const botPoints = calculatePoints(botWins, botLosses, botStreak);
+        
+        gameData.leaderboardPlayers.push({
+            id: 'bot_' + i,
+            username: botName,
+            isBot: true,
+            points: botPoints,
+            wins: botWins,
+            losses: botLosses,
+            streak: botStreak,
+            level: botLevel,
+            lastActive: Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000, // Random dalam 7 hari
+            avatarColor: getRandomColor()
+        });
+    }
+    
+    console.log(`Generated ${botCount} bot players for leaderboard`);
+}
+
+// Fungsi untuk menghitung points
+function calculatePoints(wins, losses, streak) {
+    let points = (wins * 10) - (losses * 3);
+    
+    // Bonus streak
+    if (streak > 0) {
+        points += streak * 5;
+    } else if (streak < 0) {
+        points -= Math.abs(streak) * 2;
+    }
+    
+    // Bonus level
+    points += Math.floor(wins / 10) * 5;
+    
+    return Math.max(0, points);
+}
+
+// Fungsi untuk mendapatkan warna random untuk avatar
+function getRandomColor() {
+    const colors = [
+        '#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0',
+        '#118AB2', '#EF476F', '#7209B7', '#3A86FF',
+        '#FB5607', '#8338EC', '#FF006E', '#FFBE0B'
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// Fungsi untuk update data player di leaderboard
+function updatePlayerLeaderboardData() {
+    const playerIndex = gameData.leaderboardPlayers.findIndex(p => 
+        p.id === 'player_' + gameData.username
+    );
+    
+    if (playerIndex !== -1) {
+        gameData.leaderboardPlayers[playerIndex].points = gameData.leaderboard.points;
+        gameData.leaderboardPlayers[playerIndex].wins = gameData.leaderboard.wins;
+        gameData.leaderboardPlayers[playerIndex].losses = gameData.leaderboard.losses;
+        gameData.leaderboardPlayers[playerIndex].streak = gameData.leaderboard.streak;
+        gameData.leaderboardPlayers[playerIndex].level = gameData.level;
+        gameData.leaderboardPlayers[playerIndex].lastActive = Date.now();
+    } else {
+        // Jika belum ada, tambahkan
+        gameData.leaderboardPlayers.push({
+            id: 'player_' + gameData.username,
+            username: gameData.username,
+            isBot: false,
+            points: gameData.leaderboard.points,
+            wins: gameData.leaderboard.wins,
+            losses: gameData.leaderboard.losses,
+            streak: gameData.leaderboard.streak,
+            level: gameData.level,
+            lastActive: Date.now(),
+            avatarColor: getRandomColor()
+        });
+    }
+}
+
+// Fungsi untuk update points setelah battle
+function updateLeaderboardPoints(playerWon) {
+    console.log(`Updating leaderboard points - Player won: ${playerWon}`);
+    
+    // Update stats
+    if (playerWon) {
+        gameData.leaderboard.wins++;
+        gameData.leaderboard.streak = Math.max(0, gameData.leaderboard.streak) + 1;
+        gameData.leaderboard.points += 10 + (gameData.leaderboard.streak * 5);
+        
+        // Bonus untuk streak tinggi
+        if (gameData.leaderboard.streak >= 5) {
+            gameData.leaderboard.points += 10;
+        }
+        if (gameData.leaderboard.streak >= 10) {
+            gameData.leaderboard.points += 20;
+        }
+    } else {
+        gameData.leaderboard.losses++;
+        gameData.leaderboard.streak = Math.min(0, gameData.leaderboard.streak) - 1;
+        gameData.leaderboard.points = Math.max(0, gameData.leaderboard.points - 3);
+        
+        // Penalti untuk losing streak
+        if (gameData.leaderboard.streak <= -5) {
+            gameData.leaderboard.points = Math.max(0, gameData.leaderboard.points - 5);
+        }
+    }
+    
+    // Update bot points secara acak
+    updateBotPointsRandomly();
+    
+    // Update data player di leaderboard
+    updatePlayerLeaderboardData();
+    
+    // Sort leaderboard
+    sortLeaderboard();
+    
+    // Update UI jika sedang di screen leaderboard
+    if (document.getElementById('leaderboard')?.classList.contains('active')) {
+        loadLeaderboard();
+    }
+    
+    console.log(`New points: ${gameData.leaderboard.points}, Streak: ${gameData.leaderboard.streak}`);
+}
+
+// Fungsi untuk update bot points secara acak
+function updateBotPointsRandomly() {
+    const activePlayers = gameData.leaderboardPlayers.filter(p => 
+        p.isBot && Date.now() - p.lastActive < 24 * 60 * 60 * 1000
+    );
+    
+    activePlayers.forEach(player => {
+        const randomAction = Math.random();
+        
+        if (randomAction < 0.4) {
+            // Bot menang
+            player.wins++;
+            player.streak = Math.max(0, player.streak) + 1;
+            player.points += 8 + (player.streak * 3);
+        } else if (randomAction < 0.7) {
+            // Bot kalah
+            player.losses++;
+            player.streak = Math.min(0, player.streak) - 1;
+            player.points = Math.max(0, player.points - 2);
+        }
+        // 30% kemungkinan tidak melakukan apa-apa
+        
+        player.lastActive = Date.now() - Math.random() * 12 * 60 * 60 * 1000;
+    });
+}
+
+// Fungsi untuk sort leaderboard
+function sortLeaderboard() {
+    gameData.leaderboardPlayers.sort((a, b) => {
+        // Sort berdasarkan points tertinggi
+        if (b.points !== a.points) {
+            return b.points - a.points;
+        }
+        
+        // Jika points sama, sort berdasarkan win rate
+        const aWinRate = a.wins / (a.wins + a.losses) || 0;
+        const bWinRate = b.wins / (b.wins + b.losses) || 0;
+        if (bWinRate !== aWinRate) {
+            return bWinRate - aWinRate;
+        }
+        
+        // Jika masih sama, sort berdasarkan level
+        return b.level - a.level;
+    });
+}
+
+// Fungsi untuk load leaderboard UI
+function loadLeaderboard() {
+    console.log("Loading leaderboard UI...");
+    
+    const leaderboardList = document.querySelector('.leaderboard-list');
+    if (!leaderboardList) return;
+    
+    // Tampilkan loading state
+    leaderboardList.innerHTML = `
+        <div class="leaderboard-loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading leaderboard...</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        try {
+            // Sort leaderboard terlebih dahulu
+            sortLeaderboard();
+            
+            // Cari rank player
+            const playerIndex = gameData.leaderboardPlayers.findIndex(p => 
+                p.id === 'player_' + gameData.username
+            );
+            const playerRank = playerIndex + 1;
+            
+            // Update player rank display
+            const playerRankElement = document.getElementById('player-rank');
+            const playerPointsElement = document.getElementById('player-points');
+            
+            if (playerRankElement) {
+                playerRankElement.textContent = playerRank <= 50 ? playerRank : '99+';
+            }
+            
+            if (playerPointsElement) {
+                playerPointsElement.textContent = gameData.leaderboard.points;
+            }
+            
+            // Render leaderboard entries (top 50)
+            const topPlayers = gameData.leaderboardPlayers.slice(0, 50);
+            
+            if (topPlayers.length === 0) {
+                leaderboardList.innerHTML = `
+                    <div class="leaderboard-empty">
+                        <i class="fas fa-trophy"></i>
+                        <p>No players yet</p>
+                        <p style="font-size: 0.9rem;">Win battles to appear on the leaderboard!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            leaderboardList.innerHTML = '';
+            
+            topPlayers.forEach((player, index) => {
+                const isCurrentPlayer = player.id === 'player_' + gameData.username;
+                const rank = index + 1;
+                
+                const winRate = player.wins + player.losses > 0 
+                    ? Math.round((player.wins / (player.wins + player.losses)) * 100)
+                    : 0;
+                
+                const entry = document.createElement('div');
+                entry.className = `leaderboard-entry ${isCurrentPlayer ? 'current-player' : ''} rank-${rank <= 50 ? rank : ''}`;
+                entry.innerHTML = `
+                    <div class="leaderboard-rank">
+                        ${rank <= 50 ? 
+                            `<div class="rank-badge">${rank}</div>` : 
+                            `<span>${rank}</span>`
+                        }
+                    </div>
+                    
+ 
+                    
+                    <div class="leaderboard-player-info">
+                        <div class="leaderboard-player-name">
+                            ${player.username}
+                            ${player.isBot ? '<span class="player-level-badge">⭐</span>' : ''}
+                            <span class="player-level-badge">Lv. ${player.level}</span>
+                        </div>
+                        
+                        
+                       
+                         <div class="leaderboard-points"> 
+                        <i class="fas fa-star"></i> ${player.points}
+                        </div>
+                  
+                  <br>
+                        
+                        <div class="leaderboard-player-stats">
+                            <span><i class="fas fa-trophy"></i> ${player.wins}W</span>
+                            <span><i class="fas fa-times"></i> ${player.losses}L</span>
+                            <span><i class="fas fa-chart-line"></i> ${winRate}%</span>
+                            ${player.streak > 0 ? 
+                                `<span style="color: var(--success);"><i class="fas fa-fire"></i> ${player.streak}</span>` : 
+                                `<span style="color: var(--danger);"><i class="fas fa-snowflake"></i> ${Math.abs(player.streak)}</span>`
+                            }
+                        </div>
+                    </div>
+                    
+                    
+                   
+                `;
+                
+                leaderboardList.appendChild(entry);
+            });
+            
+            console.log(`Leaderboard loaded. Player rank: ${playerRank}`);
+            
+        } catch (error) {
+            console.error("Error loading leaderboard:", error);
+            leaderboardList.innerHTML = `
+                <div class="leaderboard-empty">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Error loading leaderboard</p>
+                    <button class="refresh-btn" onclick="loadLeaderboard()" style="margin-top: 10px;">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            `;
+        }
+    }, 300); // Delay kecil untuk efek loading
+}
+
+// Fungsi untuk refresh leaderboard
+function refreshLeaderboard() {
+    // Update bot points sebelum refresh
+    updateBotPointsRandomly();
+    
+    // Update player data
+    updatePlayerLeaderboardData();
+    
+    // Sort dan load
+    sortLeaderboard();
+    loadLeaderboard();
+    
+    // Efek refresh button
+    const refreshBtn = document.getElementById('refresh-leaderboard-btn');
+    if (refreshBtn) {
+        refreshBtn.innerHTML = '<i class="fas fa-check"></i> Refreshed!';
+        refreshBtn.disabled = true;
+        
+        setTimeout(() => {
+            refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Leaderboard';
+            refreshBtn.disabled = false;
+        }, 2000);
+    }
+    
+    addToBattleLog("Leaderboard refreshed!", 'player');
+}
+
+// Fungsi untuk setup event listeners leaderboard
+function setupLeaderboardEvents() {
+    // Refresh button
+    const refreshBtn = document.getElementById('refresh-leaderboard-btn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', refreshLeaderboard);
+    }
+    
+    // Filter buttons
+    document.querySelectorAll('.leaderboard-filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.leaderboard-filter-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            this.classList.add('active');
+            
+            // Note: Untuk sekarang hanya filter "All" yang berfungsi
+            // Weekly/monthly bisa diimplementasikan nanti dengan data history
+            loadLeaderboard();
+        });
+    });
+}
 
 
 
@@ -11005,8 +11789,8 @@ function setupEventListeners() {
         });
     }
     
-    // Navigation buttons
-    
+   
+    setupLeaderboardEvents();
     
     
     
@@ -12108,23 +12892,20 @@ function startBattle() {
     enemyCard = {...gameData.enemyCards[randomIndex]};
     
     // ========== TAMBAHAN: GENERATE NAMA BOT ACAK ==========
-    const botNames = [
-        "KpopMaster42", "IdolHunter99", "DanceKing77", "MusicLover88", 
-        "StanTwice", "BlinkForever", "ArmyBTS7", "MYaespa", 
-        "NewJeansFan", "LesserafimStan", "IveEnjoyer", "StayC_High",
-        "SoneGirlsGen", "ReveluvRed", "EXOLover", "Carat17",
-        "Moaville", "AtinyPirate", "StayKids", "NCTZen",
-        "WizOne", "OrbitLoona", "MoomooMamamoo", "BuddyGFriend",
-        "FantasyMonstaX", "AghaseGot7", "ShawolShinee", "CassieTVXQ",
-        "InspiritInfinite", "BanaB1A4", "MelodyBTOB", "UniversePentagon",
-        "NeverlandGIdle", "MidzyITZY", "NswerNMIXX", "DiveIVE",
-        "EngeneEnhypen", "DiveIVE", "FearnotLSF", "TokkiNewJeans",
-        "MBBMonstaX", "AhgaseGot7", "MELODYBTOB", "UNIVERSEpentagon",
-        "MOAMOO", "Reveluv", "Sone", "PhamPhamNJ",
-        "VIP_BIGBANG", "Blackjack_2NE1", "Neverland_GIDLE", "MIDZY_ITZY",
-        "ATEEZ_ATINY", "STRAY_KIDS_STAY", "TREASURE_TEUME", "ENHYPEN_ENGENE",
-        "Dreamcatcher_InSomnia", "LOONA_Orbit", "fromis_9_flover", "Weeekly_Daily",
-        "STAYC_SWITH", "Billlie_Belllie've", "P1Harmony_P1ece", "JustB_Justus", "P1Harmony_P1ece", "JustB_Justus", "Bobacott", "Kyuchuu", "Bocil_Kematian", "Vonzyy7", "Pandicorn", "WannaYou_Lil", "Abah66", "liliaBa", "PawPawMiaww", "ApiSha_Isyou", "aYOU_Carmen", "fanZ_GYJ"
+    const botNames = [  "midnight_stage", "soft_comeback", "blue_encore",
+  "silent_fanchant", "after_show", "last_rehearse",
+ "luna_stage", "echo_idol", "nova_line", "moon_unit",
+  "vibe_center", "hidden_visual", "calm_leader",  
+  "pink_noise", "black_stage", "seven_notes",
+  "new_wave", "next_scene", "daydream_live", 
+  "arae", "sorin", "haein", "minra", "yejun",
+  "doyun", "arin_play", "seoha",
+
+  "stageFocus", "softConcept", "liveSignal",
+  "finalEncore", "blueLine", "unitPlay", "silentFrame", "innerFocus", "phaseShift", "cleanMotion",
+  "lateEntry", "finalAngle", "deepControl", "microPlay", "ruang_senja", "kopi_sore", "jalan_pulang", "sudut_kota",
+  "langit_redup", "pelan_pelan", "malam_tenang", "softboba", "tinyorbit", "moondrop", "milkcloud"
+    
     ];
     
     // Pilih nama bot acak
@@ -12202,11 +12983,15 @@ function applySkillEffects() {
     }
     
     switch(equippedSkill.name) {
-        case 'War Blitz':
-            playerHealth -= 4;
-            gameData.currentCard.attack += 7;
-            addToBattleLog(`${gameData.currentCard.name} activated War Blitz! -4 HP, +7 Attack!`, 'player');
-            break;
+       case 'War Blitz':
+    playerHealth -= 4;
+    gameData.currentCard.attack += 5;
+    
+    
+    addToBattleLog(`${gameData.currentCard.name} activated War Blitz! -4 HP, +5 Attack!`, 'player');
+    break;
+    
+            
         case 'Iron Strike':
             playerHealth = Math.min(playerHealth + 10, gameData.currentCard.maxHealth);
             gameData.currentCard.attack -= 6;
@@ -12301,11 +13086,11 @@ function autoBattle() {
     if (equippedSkill) {
         switch(equippedSkill.name) {
             case 'War Blitz':
-                if (enemyShield && enemyShieldTimeLeft > 0) {
-                    playerAttackPower += 3;
-                    addToBattleLog("War Blitz bonus: +3 Attack (enemy has Shield)!", 'player');
-                }
-                break;
+    if (enemyShield && enemyShieldTimeLeft > 0) {
+        playerAttackPower += 2; 
+        addToBattleLog("War Blitz bonus: +2 Attack (enemy has Shield)!", 'player');
+    }
+    break;
             case 'Iron Strike':
                 if (enemyBoost && enemyBoostTimeLeft > 0) {
                     playerHealth = Math.min(playerHealth + 5, gameData.currentCard.maxHealth);
@@ -12631,8 +13416,8 @@ function endBattle(playerWon) {
             
             switch(equippedSkill.name) {
                 case 'War Blitz':
-                    gameData.currentCard.attack -= 7;
-                    break;
+    gameData.currentCard.attack -= 5; 
+                break;
                 case 'Iron Strike':
                     gameData.currentCard.attack += 6;
                     break;
@@ -12648,6 +13433,12 @@ function endBattle(playerWon) {
     updateQuestProgress('Daily Battle', playerWon ? 1 : 0);
     updateQuestProgress('Battle Legend', playerWon ? 1 : 0);
     
+    
+    
+    updateLeaderboardPoints(playerWon);
+    
+    
+    
     // Battle result and rewards
     if (playerWon) {
         let coinsWon = 20 + Math.floor(Math.random() * 10) + (gameData.level * 5);
@@ -12655,9 +13446,9 @@ function endBattle(playerWon) {
         
         const equippedSkill = gameData.skills.equipped[gameData.currentCard.id];
         if (equippedSkill && equippedSkill.name === 'Gold Hunter') {
-            coinsWon += 50;
+            coinsWon += 80;
             xpWon *= 2;
-            addToBattleLog("Gold Hunter bonus: +50 coins and 2x XP!", 'player');
+            addToBattleLog("Gold Hunter bonus: +80 coins and 2x XP!", 'player');
         }
         
         gameData.coins += coinsWon;
@@ -12799,6 +13590,32 @@ function addToBattleLog(message, type) {
     
     battleLog.appendChild(logEntry);
     battleLog.scrollTop = battleLog.scrollHeight;
+    
+    
+    
+      if (message.includes('You defeated') && type === 'player') {
+        // Cari rank player
+        const playerIndex = gameData.leaderboardPlayers.findIndex(p => 
+            p.id === 'player_' + gameData.username
+        );
+        
+        if (playerIndex !== -1) {
+            const playerRank = playerIndex + 1;
+            
+            // Tampilkan notifikasi jika rank top 10 atau rank naik signifikan
+            if (playerRank <= 10) {
+                setTimeout(() => {
+                    // Cek dulu apakah sudah ada notifikasi rank sebelumnya
+                    const existingRankMessages = Array.from(battleLog.querySelectorAll('.log-entry'))
+                        .filter(entry => entry.textContent.includes('rank #'));
+                    
+                    if (existingRankMessages.length === 0) {
+                        addToBattleLog(`🎉 You're now rank #${playerRank} on the leaderboard!`, 'player');
+                    }
+                }, 1500);
+            }
+        }
+    }
 }
 
 // REDEEM CODE
@@ -13007,3 +13824,7 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
+
+
+
+
