@@ -7011,7 +7011,8 @@ const gameData = {
             rarity: "superstar",            
             albumOnly: true // Flag khusus
         
-        },        
+        }, 
+        
        
        
        
@@ -10672,7 +10673,22 @@ function generateLeaderboardPlayers() {
         });
     }
     
-    console.log(`Generated ${botCount} bot players for leaderboard`);
+    
+
+    // Auto-update leaderboard setiap 2 menit
+    setInterval(() => {
+        if (gameData.leaderboardPlayers.length > 0) {
+            updateBotPointsRandomly();
+            sortLeaderboard();
+            
+            // Update UI jika leaderboard sedang aktif
+            if (document.getElementById('leaderboard')?.classList.contains('active')) {
+                loadLeaderboard();
+            }
+        }
+    }, 2 * 60 * 1000); // 2 menit
+    
+    console.log("Leaderboard system initialized with auto-update");
 }
 
 // Fungsi untuk menghitung points
@@ -10733,6 +10749,7 @@ function updatePlayerLeaderboardData() {
 }
 
 // Fungsi untuk update points setelah battle
+// PERBAIKAN: Update leaderboard points dengan sistem dynamic
 function updateLeaderboardPoints(playerWon) {
     console.log(`Updating leaderboard points - Player won: ${playerWon}`);
     
@@ -10740,27 +10757,52 @@ function updateLeaderboardPoints(playerWon) {
     if (playerWon) {
         gameData.leaderboard.wins++;
         gameData.leaderboard.streak = Math.max(0, gameData.leaderboard.streak) + 1;
-        gameData.leaderboard.points += 10 + (gameData.leaderboard.streak * 5);
         
-        // Bonus untuk streak tinggi
-        if (gameData.leaderboard.streak >= 5) {
-            gameData.leaderboard.points += 10;
+        // Base points + bonus streak
+        let pointsEarned = 10 + (gameData.leaderboard.streak * 5);
+        
+        // Bonus tambahan
+        if (gameData.leaderboard.streak >= 5) pointsEarned += 10;
+        if (gameData.leaderboard.streak >= 10) pointsEarned += 20;
+        if (gameData.leaderboard.streak >= 15) pointsEarned += 30;
+        
+        // Bonus untuk mengalahkan musuh yang lebih kuat
+        if (enemyCard && gameData.currentCard) {
+            const enemyPower = enemyCard.health + enemyCard.attack;
+            const playerPower = gameData.currentCard.maxHealth + gameData.currentCard.attack;
+            
+            if (enemyPower > playerPower * 1.2) {
+                pointsEarned += 15; // Bonus untuk mengalahkan musuh yang lebih kuat
+                addToBattleLog("⚡ Bonus points for defeating stronger opponent!", 'player');
+            }
         }
-        if (gameData.leaderboard.streak >= 10) {
-            gameData.leaderboard.points += 20;
-        }
+        
+        gameData.leaderboard.points += pointsEarned;
+        addToBattleLog(` Earned ${pointsEarned} leaderboard points!`, 'player');
+        
     } else {
         gameData.leaderboard.losses++;
         gameData.leaderboard.streak = Math.min(0, gameData.leaderboard.streak) - 1;
-        gameData.leaderboard.points = Math.max(0, gameData.leaderboard.points - 3);
         
-        // Penalti untuk losing streak
-        if (gameData.leaderboard.streak <= -5) {
-            gameData.leaderboard.points = Math.max(0, gameData.leaderboard.points - 5);
+        // Points deduction dengan sistem yang adil
+        let pointsLost = 3;
+        if (gameData.leaderboard.streak <= -5) pointsLost = 5;
+        if (gameData.leaderboard.streak <= -10) pointsLost = 8;
+        
+        gameData.leaderboard.points = Math.max(0, gameData.leaderboard.points - pointsLost);
+        
+        // Bonus points untuk musuh yang sangat kuat
+        if (enemyCard && gameData.currentCard) {
+            const enemyPower = enemyCard.health + enemyCard.attack;
+            const playerPower = gameData.currentCard.maxHealth + gameData.currentCard.attack;
+            
+            if (enemyPower > playerPower * 1.5) {
+                pointsLost = Math.max(1, Math.floor(pointsLost / 2)); // Kurangi penalty jika musuh jauh lebih kuat
+            }
         }
     }
     
-    // Update bot points secara acak
+    // Update bot points secara real-time
     updateBotPointsRandomly();
     
     // Update data player di leaderboard
@@ -10769,39 +10811,180 @@ function updateLeaderboardPoints(playerWon) {
     // Sort leaderboard
     sortLeaderboard();
     
+    // Cek achievement top 1
+    checkTop1Achievement();
+    
     // Update UI jika sedang di screen leaderboard
     if (document.getElementById('leaderboard')?.classList.contains('active')) {
         loadLeaderboard();
     }
     
-    console.log(`New points: ${gameData.leaderboard.points}, Streak: ${gameData.leaderboard.streak}`);
+    console.log(`New points: ${gameData.leaderboard.points}, Streak: ${gameData.leaderboard.streak}, Rank: ${getPlayerRank()}`);
 }
 
 // Fungsi untuk update bot points secara acak
+// GANTI fungsi updateBotPointsRandomly() yang ada dengan yang ini:
 function updateBotPointsRandomly() {
-    const activePlayers = gameData.leaderboardPlayers.filter(p => 
+    console.log("Updating bot points dynamically...");
+    
+    // Dapatkan semua bot yang aktif (dalam 24 jam terakhir)
+    const activeBots = gameData.leaderboardPlayers.filter(p => 
         p.isBot && Date.now() - p.lastActive < 24 * 60 * 60 * 1000
     );
     
-    activePlayers.forEach(player => {
+    // Tentukan intensitas update berdasarkan waktu (lebih sering di prime time)
+    const hour = new Date().getHours();
+    let updateIntensity = 0.3; // Default
+    
+    if (hour >= 18 || hour <= 6) { // Prime time (sore-malam)
+        updateIntensity = 0.6;
+    } else if (hour >= 12 && hour <= 17) { // Siang
+        updateIntensity = 0.4;
+    }
+    
+    activeBots.forEach(player => {
         const randomAction = Math.random();
         
-        if (randomAction < 0.4) {
-            // Bot menang
-            player.wins++;
-            player.streak = Math.max(0, player.streak) + 1;
-            player.points += 8 + (player.streak * 3);
-        } else if (randomAction < 0.7) {
-            // Bot kalah
-            player.losses++;
-            player.streak = Math.min(0, player.streak) - 1;
-            player.points = Math.max(0, player.points - 2);
-        }
-        // 30% kemungkinan tidak melakukan apa-apa
+        // AI yang lebih pintar - bot dengan level tinggi lebih mungkin menang
+        const winChance = 0.3 + (player.level / 100) - (player.streak < 0 ? 0.1 : 0);
         
-        player.lastActive = Date.now() - Math.random() * 12 * 60 * 60 * 1000;
+        if (randomAction < updateIntensity) {
+            // Bot melakukan battle
+            if (Math.random() < winChance) {
+                // Bot MENANG
+                player.wins++;
+                player.streak = Math.max(0, player.streak) + 1;
+                
+                // Hitung points yang didapat
+                let pointsEarned = 8 + (player.streak * 3);
+                
+                // Bonus untuk streak tinggi
+                if (player.streak >= 5) pointsEarned += 5;
+                if (player.streak >= 10) pointsEarned += 10;
+                
+                player.points += pointsEarned;
+                
+                // Update last active dengan variasi
+                player.lastActive = Date.now() - Math.random() * 4 * 60 * 60 * 1000;
+                
+                console.log(`🤖 Bot ${player.username} WON (+${pointsEarned} points)`);
+                
+            } else {
+                // Bot KALAH
+                player.losses++;
+                player.streak = Math.min(0, player.streak) - 1;
+                
+                // Points berkurang, tapi tidak bisa negatif
+                let pointsLost = 2 + (player.streak < -5 ? 3 : 0);
+                player.points = Math.max(0, player.points - pointsLost);
+                
+                // Update last active
+                player.lastActive = Date.now() - Math.random() * 6 * 60 * 60 * 1000;
+                
+                console.log(`🤖 Bot ${player.username} LOST (-${pointsLost} points)`);
+            }
+            
+            // Update level bot secara natural (1 level per 10 win)
+            if (player.wins % 10 === 0) {
+                player.level++;
+                console.log(`🤖 Bot ${player.username} leveled up to ${player.level}`);
+            }
+        }
     });
+    
+    // 20% kemungkinan bot baru bergabung
+    if (Math.random() < 0.2 && gameData.leaderboardPlayers.filter(p => p.isBot).length < 100) {
+        addNewBotPlayer();
+    }
 }
+
+
+// FUNGSI BARU: Cek achievement top 1
+function checkTop1Achievement() {
+    const playerRank = getPlayerRank();
+    
+    if (playerRank === 1 && gameData.leaderboard.points >= 3000) {
+        // Cek apakah quest sudah ada atau belum
+        const top1Quest = gameData.quests.main.find(q => q.name === "Top 1 Champion");
+        
+        if (!top1Quest) {
+            // Tambahkan quest baru jika belum ada
+            gameData.quests.main.push({
+                id: 99,
+                name: "Top 1 Champion",
+                description: "Reach #1 position on leaderboard with at least 3000 points",
+                progress: 1,
+                target: 1,
+                reward: { type: "coins", value: 5000 },
+                completed: true,
+                claimed: false
+            });
+            
+            addToBattleLog(" NEW QUEST UNLOCKED: Top 1 Champion!", 'player');
+            addToBattleLog(" Claim 5000 coins reward in Quests screen!", 'player');
+            
+            // Refresh quests jika sedang terbuka
+            if (document.getElementById('quests')?.classList.contains('active')) {
+                loadQuests('main');
+            }
+        } else if (!top1Quest.completed) {
+            // Update quest jika sudah ada
+            top1Quest.progress = 1;
+            top1Quest.completed = true;
+            
+            addToBattleLog(" QUEST COMPLETED: Top 1 Champion!", 'player');
+            addToBattleLog(" Claim your 5000 coins reward!", 'player');
+        }
+    }
+}
+
+// FUNGSI BARU: Dapatkan rank player
+function getPlayerRank() {
+    const playerIndex = gameData.leaderboardPlayers.findIndex(p => 
+        p.id === 'player_' + gameData.username
+    );
+    return playerIndex + 1;
+}
+
+
+
+
+
+// FUNGSI BARU: Tambah bot player baru
+function addNewBotPlayer() {
+    const botNames = [
+        "UltimateHunter", "IdolMasterPro", "KpopGod", "BattleLegend", 
+        "TopRanker", "WinStreaker", "ProPlayerX", "MasterOfIdols",
+        "UnbeatableQueen", "KingOfKPOP", "RisingChampion", "VictorySeeker",
+        "EliteWarrior", "BattleRoyale", "ProGamerGG", "LegendSlayer",
+        "WinMachine", "Top1Hunter", "RankPushGod", "LeaderboardKing"
+    ];
+    
+    const botName = botNames[Math.floor(Math.random() * botNames.length)];
+    const botLevel = Math.floor(Math.random() * 30) + 1;
+    const botWins = Math.floor(Math.random() * 50) + 5;
+    const botLosses = Math.floor(Math.random() * 15) + 1;
+    const botStreak = Math.random() < 0.7 ? Math.floor(Math.random() * 8) : -Math.floor(Math.random() * 3);
+    const botPoints = calculatePoints(botWins, botLosses, botStreak);
+    
+    const newBot = {
+        id: 'bot_' + Date.now(),
+        username: botName,
+        isBot: true,
+        points: botPoints,
+        wins: botWins,
+        losses: botLosses,
+        streak: botStreak,
+        level: botLevel,
+        lastActive: Date.now() - Math.random() * 12 * 60 * 60 * 1000,
+        avatarColor: getRandomColor()
+    };
+    
+    gameData.leaderboardPlayers.push(newBot);
+    console.log(`🤖 New bot added: ${botName} (Level ${botLevel}, ${botPoints} points)`);
+}
+
+
 
 // Fungsi untuk sort leaderboard
 function sortLeaderboard() {
@@ -10824,23 +11007,40 @@ function sortLeaderboard() {
 }
 
 // Fungsi untuk load leaderboard UI
+// FUNGSI FULL: Load Leaderboard UI dengan Semua Fitur Baru
 function loadLeaderboard() {
     console.log("Loading leaderboard UI...");
     
     const leaderboardList = document.querySelector('.leaderboard-list');
     if (!leaderboardList) return;
     
-    // Tampilkan loading state
+    // Tampilkan loading state yang lebih menarik
     leaderboardList.innerHTML = `
-        <div class="leaderboard-loading">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Loading leaderboard...</p>
+        <div class="leaderboard-loading" style="text-align: center; padding: 40px 20px;">
+            <div style="margin-bottom: 15px;">
+                <i class="fas fa-trophy fa-spin" style="font-size: 2.5rem; color: var(--accent);"></i>
+            </div>
+            <p style="color: #aaa; margin-bottom: 10px;">Loading competitive rankings...</p>
+            <div style="width: 60%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin: 0 auto;">
+                <div style="width: 70%; height: 100%; background: var(--accent); border-radius: 2px; animation: loadingBar 1.5s infinite;"></div>
+            </div>
+            <style>
+                @keyframes loadingBar {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(250%); }
+                }
+            </style>
         </div>
     `;
     
     setTimeout(() => {
         try {
-            // Sort leaderboard terlebih dahulu
+            // Pastikan leaderboardPlayers ada
+            if (!gameData.leaderboardPlayers || gameData.leaderboardPlayers.length === 0) {
+                initLeaderboard();
+            }
+            
+            // Sort leaderboard terlebih dahulu berdasarkan points tertinggi
             sortLeaderboard();
             
             // Cari rank player
@@ -10849,16 +11049,24 @@ function loadLeaderboard() {
             );
             const playerRank = playerIndex + 1;
             
-            // Update player rank display
+            // Update player rank display dengan emoji
             const playerRankElement = document.getElementById('player-rank');
             const playerPointsElement = document.getElementById('player-points');
             
             if (playerRankElement) {
-                playerRankElement.textContent = playerRank <= 50 ? playerRank : '99+';
+                let rankDisplay = playerRank <= 50 ? `#${playerRank}` : '99+';
+                let rankEmoji = '';
+                
+                if (playerRank === 1) rankEmoji = ' ';
+                else if (playerRank <= 3) rankEmoji = ' ';
+                else if (playerRank <= 10) rankEmoji = ' ';
+                else if (playerRank <= 50) rankEmoji = ' ';
+                
+                playerRankElement.innerHTML = `${rankEmoji}${rankDisplay}`;
             }
             
             if (playerPointsElement) {
-                playerPointsElement.textContent = gameData.leaderboard.points;
+                playerPointsElement.textContent = gameData.leaderboard.points.toLocaleString();
             }
             
             // Render leaderboard entries (top 50)
@@ -10866,10 +11074,15 @@ function loadLeaderboard() {
             
             if (topPlayers.length === 0) {
                 leaderboardList.innerHTML = `
-                    <div class="leaderboard-empty">
-                        <i class="fas fa-trophy"></i>
-                        <p>No players yet</p>
-                        <p style="font-size: 0.9rem;">Win battles to appear on the leaderboard!</p>
+                    <div class="leaderboard-empty" style="text-align: center; padding: 60px 20px; color: #aaa;">
+                        <div style="margin-bottom: 15px;">
+                            <i class="fas fa-users-slash" style="font-size: 3rem; opacity: 0.5;"></i>
+                        </div>
+                        <p style="font-size: 1.1rem; margin-bottom: 10px;">Leaderboard is Empty</p>
+                        <p style="font-size: 0.9rem; margin-bottom: 20px;">Win battles to appear on the leaderboard!</p>
+                        <button class="refresh-btn" onclick="refreshLeaderboard()" style="padding: 10px 20px; background: var(--secondary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                            <i class="fas fa-user-plus"></i> Generate Bot Players
+                        </button>
                     </div>
                 `;
                 return;
@@ -10877,77 +11090,352 @@ function loadLeaderboard() {
             
             leaderboardList.innerHTML = '';
             
+            // Tambahkan header dengan info leaderboard
+            const leaderboardHeader = document.createElement('div');
+            leaderboardHeader.className = 'leaderboard-header';
+            leaderboardHeader.style.cssText = `
+                padding: 15px;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+                margin-bottom: 15px;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            `;
+            
+            const totalPlayers = gameData.leaderboardPlayers.length;
+            const botCount = gameData.leaderboardPlayers.filter(p => p.isBot).length;
+            const topPlayer = gameData.leaderboardPlayers[0];
+            
+            leaderboardHeader.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div style="text-align: left;">
+                        <div style="font-size: 0.8rem; color: #aaa;">Total Players</div>
+                        <div style="font-size: 1.2rem; font-weight: 700;">${totalPlayers}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.8rem; color: #aaa;">Current #1</div>
+                        <div style="font-size: 1rem; font-weight: 600; color: #ffd700;">${topPlayer?.username || 'N/A'}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 0.8rem; color: #aaa;">Active Bots</div>
+                        <div style="font-size: 1.2rem; font-weight: 700; color: #6a5af9;">${botCount}</div>
+                    </div>
+                </div>
+                <div style="font-size: 0.8rem; color: #aaa; background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 15px; margin-top: 5px;">
+                    <i class="fas fa-info-circle"></i> Updates every 2 minutes • Points change with battles
+                </div>
+            `;
+            
+            leaderboardList.appendChild(leaderboardHeader);
+            
+            // Render setiap player entry
             topPlayers.forEach((player, index) => {
                 const isCurrentPlayer = player.id === 'player_' + gameData.username;
                 const rank = index + 1;
                 
+                // Hitung win rate
                 const winRate = player.wins + player.losses > 0 
                     ? Math.round((player.wins / (player.wins + player.losses)) * 100)
                     : 0;
                 
+                // Tentukan emoji dan warna berdasarkan rank
+                let rankEmoji = '';
+                let rankColor = '';
+                let rankClass = '';
+                
+                switch(rank) {
+                    case 1:
+                        rankEmoji = '';
+                        rankColor = '#ffd700';
+                        rankClass = 'rank-1';
+                        break;
+                    case 2:
+                        rankEmoji = '';
+                        rankColor = '#c0c0c0';
+                        rankClass = 'rank-2';
+                        break;
+                    case 3:
+                        rankEmoji = '';
+                        rankColor = '#cd7f32';
+                        rankClass = 'rank-3';
+                        break;
+                    case 4:
+                    case 5:
+                        rankEmoji = '';
+                        rankColor = '#6a5af9';
+                        rankClass = 'rank-4';
+                        break;
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                    case 10:
+                        rankEmoji = '';
+                        rankColor = '#4cd964';
+                        rankClass = 'rank-5';
+                        break;
+                    default:
+                        rankEmoji = '';
+                        rankColor = '#aaa';
+                }
+                
+                // Hitung trending status (naik/turun rank)
+                const oldRank = player.lastRank || rank;
+                const rankChange = oldRank - rank;
+                let trendingIcon = '';
+                let trendingColor = '';
+                
+                if (rankChange > 0) {
+                    trendingIcon = `<i class="fas fa-arrow-up" style="color: #4cd964;"></i> ${rankChange}`;
+                    trendingColor = '#4cd964';
+                } else if (rankChange < 0) {
+                    trendingIcon = `<i class="fas fa-arrow-down" style="color: #ff6b6b;"></i> ${Math.abs(rankChange)}`;
+                    trendingColor = '#ff6b6b';
+                } else {
+                    trendingIcon = `<i class="fas fa-minus" style="color: #aaa;"></i> 0`;
+                }
+                
+                // Simpan rank saat ini untuk perbandingan berikutnya
+                player.lastRank = rank;
+                
+                // Tentukan badge berdasarkan performance
+                let performanceBadge = '';
+                if (winRate >= 80) {
+                    performanceBadge = '<span style="background: linear-gradient(135deg, #ffd700, #ff9900); padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; color: #333; font-weight: bold;"><i class="fas fa-crown"></i> ELITE</span>';
+                } else if (player.streak >= 5) {
+                    performanceBadge = `<span style="background: linear-gradient(135deg, #ff6b6b, #ff8e53); padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; color: white; font-weight: bold;"><i class="fas fa-fire"></i> HOT ${player.streak}</span>`;
+                } else if (player.level >= 30) {
+                    performanceBadge = '<span style="background: linear-gradient(135deg, #6a5af9, #8a82ff); padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; color: white; font-weight: bold;"><i class="fas fa-star"></i> VETERAN</span>';
+                }
+                
+                // Buat entry element
                 const entry = document.createElement('div');
-                entry.className = `leaderboard-entry ${isCurrentPlayer ? 'current-player' : ''} rank-${rank <= 50 ? rank : ''}`;
+                entry.className = `leaderboard-entry ${isCurrentPlayer ? 'current-player' : ''} ${rankClass}`;
+                
+                // Styling khusus untuk current player
+                if (isCurrentPlayer) {
+                    entry.style.cssText = `
+                        background: linear-gradient(135deg, rgba(106, 90, 249, 0.2), rgba(255, 107, 157, 0.2));
+                        border: 2px solid var(--secondary);
+                        box-shadow: 0 0 20px rgba(106, 90, 249, 0.3);
+                        transform: scale(1.02);
+                        position: relative;
+                    `;
+                    
+                    // Tambahkan badge "YOU"
+                    entry.innerHTML += `<div style="position: absolute; top: -8px; right: -8px; background: var(--secondary); color: white; padding: 3px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; z-index: 10;">YOU</div>`;
+                }
+                
+                // Isi konten entry
                 entry.innerHTML = `
-                    <div class="leaderboard-rank">
-                        ${rank <= 50 ? 
-                            `<div class="rank-badge">${rank}</div>` : 
-                            `<span>${rank}</span>`
-                        }
+                    <div class="leaderboard-rank" style="min-width: 60px; text-align: center;">
+                        <div class="rank-badge" style="
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin: 0 auto;
+                            font-weight: 700;
+                            font-size: 1.1rem;
+                            ${rank <= 3 ? 'color: #333;' : 'color: white;'}
+                            ${rank === 1 ? 'background: linear-gradient(135deg, #ffd700, #ff9900);' : ''}
+                            ${rank === 2 ? 'background: linear-gradient(135deg, #c0c0c0, #a0a0a0);' : ''}
+                            ${rank === 3 ? 'background: linear-gradient(135deg, #cd7f32, #a6692e);' : ''}
+                            ${rank > 3 && rank <= 10 ? 'background: linear-gradient(135deg, #6a5af9, #8a82ff);' : ''}
+                            ${rank > 10 ? 'background: rgba(255,255,255,0.1);' : ''}
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                        ">
+                            ${rankEmoji} ${rank}
+                        </div>
+                        <div style="margin-top: 5px; font-size: 0.8rem; color: ${trendingColor}">
+                            ${trendingIcon}
+                        </div>
                     </div>
                     
- 
-                    
-                    <div class="leaderboard-player-info">
-                        <div class="leaderboard-player-name">
-                            ${player.username}
-                            ${player.isBot ? '<span class="player-level-badge">⭐</span>' : ''}
-                            <span class="player-level-badge">Lv. ${player.level}</span>
+                    <div class="leaderboard-player-info" style="flex: 1; min-width: 0;">
+                        <div class="leaderboard-player-name" style="
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            margin-bottom: 8px;
+                            flex-wrap: wrap;
+                        ">
+                            <span style="font-weight: 600; font-size: 0.95rem; ${isCurrentPlayer ? 'color: var(--accent);' : ''}">
+                                ${player.username}
+                            </span>
+                            
+                            ${player.isBot ? 
+                                '<span style="background: rgba(106, 90, 249, 0.2); color: #8a82ff; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; font-weight: 600;"><i class="fas fa-robot"></i> BOT</span>' : 
+                                '<span style="background: rgba(6, 214, 160, 0.2); color: #06d6a0; padding: 2px 6px; border-radius: 10px; font-size: 0.7rem; font-weight: 600;"><i class="fas fa-user"></i> PLAYER</span>'
+                            }
+                            
+                            <span style="background: rgba(255,255,255,0.1); color: var(--text-light); padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 600;">
+                                Lv. ${player.level}
+                            </span>
+                            
+                            ${performanceBadge}
                         </div>
                         
-                        
-                       
-                         <div class="leaderboard-points"> 
-                        <i class="fas fa-star"></i> ${player.points}
-                        </div>
-                  
-                  <br>
-                        
-                        <div class="leaderboard-player-stats">
-                            <span><i class="fas fa-trophy"></i> ${player.wins}W</span>
-                            <span><i class="fas fa-times"></i> ${player.losses}L</span>
-                            <span><i class="fas fa-chart-line"></i> ${winRate}%</span>
+                        <div class="leaderboard-player-stats" style="
+                            display: flex;
+                            gap: 12px;
+                            font-size: 0.8rem;
+                            color: #aaa;
+                            flex-wrap: wrap;
+                        ">
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-trophy" style="color: #ffd700;"></i>
+                                ${player.wins}W
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-times" style="color: #ff6b6b;"></i>
+                                ${player.losses}L
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <i class="fas fa-chart-line" style="color: #4cd964;"></i>
+                                ${winRate}%
+                            </span>
                             ${player.streak > 0 ? 
-                                `<span style="color: var(--success);"><i class="fas fa-fire"></i> ${player.streak}</span>` : 
-                                `<span style="color: var(--danger);"><i class="fas fa-snowflake"></i> ${Math.abs(player.streak)}</span>`
+                                `<span style="display: flex; align-items: center; gap: 4px; color: #ff6b6b;">
+                                    <i class="fas fa-fire" style="color: #ff6b6b;"></i>
+                                    ${player.streak} streak
+                                </span>` : 
+                                `<span style="display: flex; align-items: center; gap: 4px; color: #6a5af9;">
+                                    <i class="fas fa-snowflake" style="color: #6a5af9;"></i>
+                                    ${Math.abs(player.streak)} loss
+                                </span>`
                             }
                         </div>
+                        
+                        <!-- Progress bar untuk win rate -->
+                        <div style="margin-top: 8px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-bottom: 3px;">
+                                <span style="color: #aaa">Win Rate</span>
+                                <span style="color: var(--accent); font-weight: 600">${winRate}%</span>
+                            </div>
+                            <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;">
+                                <div style="width: ${winRate}%; height: 100%; background: linear-gradient(90deg, #4cd964, #06d6a0); border-radius: 2px;"></div>
+                            </div>
+                        </div>
                     </div>
                     
-                    
-                   
+                    <div class="leaderboard-points" style="
+                        min-width: 90px;
+                        text-align: right;
+                        padding-left: 10px;
+                    ">
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 5px;">
+                            ${player.points.toLocaleString()}
+                        </div>
+                        <div style="font-size: 0.8rem; color: #aaa;">
+                            <i class="fas fa-star" style="color: #ffd700;"></i> Points
+                        </div>
+                        ${player.points >= 3000 ? 
+                            `<div style="margin-top: 5px; font-size: 0.7rem; background: rgba(255, 215, 0, 0.2); color: #ffd700; padding: 2px 6px; border-radius: 10px; font-weight: 600;">
+                                <i class="fas fa-award"></i> TOP TIER
+                            </div>` : 
+                            ''
+                        }
+                    </div>
                 `;
+                
+                // Tambahkan tooltip untuk info lebih detail
+                entry.title = `${player.username}\nLevel ${player.level}\n${player.wins} Wins / ${player.losses} Losses\nWin Rate: ${winRate}%\nCurrent Streak: ${player.streak}\nLast Active: ${formatTimeAgo(player.lastActive)}`;
+                
+                // Tambahkan efek hover
+                entry.style.transition = 'all 0.3s ease';
+                entry.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(5px)';
+                    this.style.boxShadow = '0 6px 15px rgba(0,0,0,0.3)';
+                });
+                
+                entry.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                    this.style.boxShadow = '';
+                });
                 
                 leaderboardList.appendChild(entry);
             });
             
-            console.log(`Leaderboard loaded. Player rank: ${playerRank}`);
+            // Tambahkan footer dengan info update
+            const leaderboardFooter = document.createElement('div');
+            leaderboardFooter.className = 'leaderboard-footer';
+            leaderboardFooter.style.cssText = `
+                padding: 15px;
+                text-align: center;
+                color: #aaa;
+                font-size: 0.85rem;
+                margin-top: 15px;
+                border-top: 1px solid rgba(255,255,255,0.1);
+                background: rgba(0,0,0,0.1);
+                border-radius: 0 0 10px 10px;
+            `;
+            
+            const lastUpdate = formatTimeAgo(Date.now());
+            leaderboardFooter.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="text-align: left; font-size: 0.8rem;">
+                        <i class="fas fa-sync-alt" style="margin-right: 5px;"></i>
+                        Auto-update in 2 min
+                    </div>
+                    <div style="text-align: center;">
+                        <i class="fas fa-info-circle" style="margin-right: 5px;"></i>
+                        Top 1 reward: 5000 coins
+                    </div>
+                    <div style="text-align: right; font-size: 0.8rem;">
+                        <i class="fas fa-clock" style="margin-right: 5px;"></i>
+                        Updated just now
+                    </div>
+                </div>
+            `;
+            
+            leaderboardList.appendChild(leaderboardFooter);
+            
+            console.log(`Leaderboard loaded. Player rank: ${playerRank}/${totalPlayers}`);
             
         } catch (error) {
             console.error("Error loading leaderboard:", error);
             leaderboardList.innerHTML = `
-                <div class="leaderboard-empty">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>Error loading leaderboard</p>
-                    <button class="refresh-btn" onclick="loadLeaderboard()" style="margin-top: 10px;">
+                <div class="leaderboard-empty" style="text-align: center; padding: 40px 20px; color: #ff6b6b;">
+                    <div style="margin-bottom: 15px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <p style="font-size: 1rem; margin-bottom: 10px;">Failed to load leaderboard</p>
+                    <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 15px;">${error.message}</p>
+                    <button class="refresh-btn" onclick="loadLeaderboard()" style="padding: 10px 20px; background: var(--secondary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
                         <i class="fas fa-redo"></i> Try Again
                     </button>
                 </div>
             `;
         }
-    }, 300); // Delay kecil untuk efek loading
+    }, 500); // Delay untuk efek loading
 }
 
+// FUNGSI BANTUAN: Format waktu
+function formatTimeAgo(timestamp) {
+    const now = Date.now();
+    const diff = now - timestamp;
+    
+    const minutes = Math.floor(diff / (1000 * 60));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    return `${days}d ago`;
+}
+
+
+
+
+
+// disini 11
+
 // Fungsi untuk refresh leaderboard
+// Perbaiki fungsi refreshLeaderboard():
 function refreshLeaderboard() {
     // Update bot points sebelum refresh
     updateBotPointsRandomly();
@@ -10959,19 +11447,29 @@ function refreshLeaderboard() {
     sortLeaderboard();
     loadLeaderboard();
     
-    // Efek refresh button
+    // Efek refresh button yang lebih keren
     const refreshBtn = document.getElementById('refresh-leaderboard-btn');
     if (refreshBtn) {
-        refreshBtn.innerHTML = '<i class="fas fa-check"></i> Refreshed!';
+        refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
         refreshBtn.disabled = true;
         
+        // Simulasi loading
         setTimeout(() => {
-            refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Leaderboard';
-            refreshBtn.disabled = false;
-        }, 2000);
+            refreshBtn.innerHTML = '<i class="fas fa-check"></i> Updated!';
+            refreshBtn.style.background = "linear-gradient(135deg, #4cd964, #2ecc71)";
+            
+            // Tampilkan statistik update
+            const botsUpdated = gameData.leaderboardPlayers.filter(p => p.isBot).length;
+            const topPlayer = gameData.leaderboardPlayers[0];
+            addToBattleLog(`🔄 Leaderboard updated! ${botsUpdated} bots active. Current top: ${topPlayer.username} (${topPlayer.points} pts)`, 'player');
+            
+            setTimeout(() => {
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Leaderboard';
+                refreshBtn.style.background = "";
+                refreshBtn.disabled = false;
+            }, 2000);
+        }, 800);
     }
-    
-    addToBattleLog("Leaderboard refreshed!", 'player');
 }
 
 // Fungsi untuk setup event listeners leaderboard
@@ -13824,7 +14322,5 @@ setInterval(resetDailyDiscountCrate, 24 * 60 * 60 * 1000);
  </script>
 </body>
 </html>
-
-
 
 
