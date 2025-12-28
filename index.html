@@ -11202,7 +11202,7 @@ function updateBotPointsRandomly() {
 function checkTop1Achievement() {
     const playerRank = getPlayerRank();
     
-    if (playerRank === 1 && gameData.leaderboard.points >= 3000) {
+    if (playerRank === 1 && gameData.leaderboard.points >= 7000) {
         // Cek apakah quest sudah ada atau belum
         const top1Quest = gameData.quests.main.find(q => q.name === "Top 1 Champion");
         
@@ -11211,16 +11211,16 @@ function checkTop1Achievement() {
             gameData.quests.main.push({
                 id: 99,
                 name: "Top 1 Champion",
-                description: "Reach #1 position on leaderboard with at least 3000 points",
+                description: "Reach #1 position on leaderboard with at least 7000 points",
                 progress: 1,
                 target: 1,
-                reward: { type: "coins", value: 8000 },
+                reward: { type: "coins", value: 10000 },
                 completed: true,
                 claimed: false
             });
             
             addToBattleLog(" NEW QUEST UNLOCKED: Top 1 Champion!", 'player');
-            addToBattleLog(" Claim 8000 coins reward in Quests screen!", 'player');
+            addToBattleLog(" Claim 10000 coins reward in Quests screen!", 'player');
             
             // Refresh quests jika sedang terbuka
             if (document.getElementById('quests')?.classList.contains('active')) {
@@ -11232,7 +11232,7 @@ function checkTop1Achievement() {
             top1Quest.completed = true;
             
             addToBattleLog(" QUEST COMPLETED: Top 1 Champion!", 'player');
-            addToBattleLog(" Claim your 8000 coins reward!", 'player');
+            addToBattleLog(" Claim your 10000 coins reward!", 'player');
         }
     }
 }
@@ -11631,7 +11631,7 @@ function loadLeaderboard() {
                         <div style="font-size: 0.8rem; color: #aaa;">
                             <i class="fas fa-star" style="color: #ffd700;"></i> Points
                         </div>
-                        ${player.points >= 3000 ? 
+                        ${player.points >= 7000 ? 
                             `<div style="margin-top: 5px; font-size: 0.7rem; background: rgba(255, 215, 0, 0.2); color: #ffd700; padding: 2px 6px; border-radius: 10px; font-weight: 600;">
                                 <i class="fas fa-award"></i> TOP TIER
                             </div>` : 
@@ -11681,7 +11681,7 @@ function loadLeaderboard() {
                     </div>
                     <div style="text-align: center;">
                         <i class="fas fa-info-circle" style="margin-right: 5px;"></i>
-                        Top 1 reward: 5000 coins
+                        Top 1 reward: 10000 coins
                     </div>
                     <div style="text-align: right; font-size: 0.8rem;">
                         <i class="fas fa-clock" style="margin-right: 5px;"></i>
