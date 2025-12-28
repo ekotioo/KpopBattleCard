@@ -5673,6 +5673,254 @@ input:checked + .toggle-slider:before {
     opacity: 0.5;
 }
 
+
+/* Global Chat Styles */
+.global-chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+}
+
+.chat-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+}
+
+.online-count {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--success);
+}
+
+.online-count i {
+    font-size: 1rem;
+}
+
+.chat-rules {
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.message {
+    display: flex;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.message-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 3px;
+}
+
+.message-username {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.message-badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.badge-bot {
+    background: linear-gradient(135deg, var(--secondary), #8a82ff);
+    color: white;
+}
+
+.badge-player {
+    background: linear-gradient(135deg, var(--primary), #ff4d8d);
+    color: white;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    color: #aaa;
+    margin-left: auto;
+}
+
+.message-text {
+    font-size: 0.9rem;
+    line-height: 1.3;
+    word-wrap: break-word;
+}
+
+.message-text a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.message-text a:hover {
+    text-decoration: underline;
+}
+
+.chat-input-container {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.chat-input:focus {
+    outline: 2px solid var(--primary);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.send-chat-btn {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.send-chat-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+}
+
+.send-chat-btn:active {
+    transform: translateY(0);
+}
+
+.send-chat-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* System messages */
+.message.system {
+    background: rgba(106, 90, 249, 0.1);
+    border-left: 3px solid var(--secondary);
+}
+
+.message.system .message-text {
+    color: #8a82ff;
+    font-style: italic;
+}
+
+/* Achievement messages */
+.message.achievement {
+    background: rgba(255, 215, 0, 0.1);
+    border-left: 3px solid #ffd700;
+    animation: achievementGlow 2s ease-in-out infinite;
+}
+
+@keyframes achievementGlow {
+    0%, 100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+}
+
+.message.achievement .message-text {
+    color: #ffd700;
+    font-weight: 600;
+}
+
+/* Typing indicator */
+.typing-indicator {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: typingAnimation 1.4s infinite;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingAnimation {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-5px); }
+}
+
+
+
+
         
     </style>
 </head>
@@ -5770,9 +6018,18 @@ input:checked + .toggle-slider:before {
 </button>
     
     
+    
+    
     <button class="nav-btn" data-screen="quests">
         <i class="fas fa-tasks"></i> Quests
     </button>
+    
+    
+    
+    <!-- Tambahkan button di nav -->
+<button class="nav-btn" data-screen="global-chat">
+    <i class="fas fa-comments"></i> Global Chat
+</button>
 </nav>
 
  
@@ -5917,6 +6174,10 @@ input:checked + .toggle-slider:before {
 
 
 
+
+
+
+
   <!-- Tambahkan setelah section quests -->
 <section id="leaderboard" class="screen">
     <h2 class="screen-title">Top Players</h2>
@@ -5954,6 +6215,9 @@ input:checked + .toggle-slider:before {
         </div>
     </div>
 </section>
+
+
+
 
 
 
@@ -6048,6 +6312,41 @@ input:checked + .toggle-slider:before {
                 </div>
             </div>
         </section>
+
+
+
+<!-- Global Chat Screen -->
+<section id="global-chat" class="screen">
+    <div class="global-chat-container">
+        <h2 class="screen-title">Global Chat</h2>
+        
+        <div class="chat-info-bar">
+            <div class="online-count">
+                <i class="fas fa-users"></i>
+                <span id="online-count">1</span> online
+            </div>
+            <div class="chat-rules">
+                <i class="fas fa-info-circle"></i>
+                Be respectful to other players
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will be loaded here -->
+        </div>
+        
+        <div class="chat-input-container">
+            <input type="text" 
+                   id="chat-input" 
+                   class="chat-input" 
+                   placeholder="Type your message here..."
+                   maxlength="100">
+            <button id="send-chat-btn" class="send-chat-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
 
 
 
@@ -6656,6 +6955,64 @@ const gameData = {
     leaderboardPlayers: [], 
 
     
+    // Tambahkan di dalam gameData (setelah leaderboardPlayers)
+globalChat: {
+    messages: [],
+    botsTyping: false,
+    lastBotMessageTime: Date.now(),
+    botMessageInterval: 15000, // Bot akan chat setiap 15 detik
+    playerLastMessageTime: 0,
+    messageCooldown: 3000 // 3 detik cooldown antar pesan player
+},
+
+// Tambahkan array bot chat messages
+botChatMessages: [
+    // Pamer kartu
+    "Just pulled a Secret card from gacha! 😎",
+    "My idol collection is getting huge!",
+    "Reached top 10 in leaderboard today! 🏆",
+    "Completed all daily quests in 10 minutes!",
+    "Got 5 Gacha Coupons from trading duplicate cards!",
+    
+    // Minta bantuan
+    "Anyone know how to get more coins fast?",
+    "Which skill is best for RisingStar cards?",
+    "Should I sell my duplicate Common cards?",
+    "How do I unlock Battle Pass?",
+    "What's the best strategy for battle?",
+    
+    // Chat random
+    "The new update is awesome!",
+    "Who's your favorite idol?",
+    "I love the photocard album feature!",
+    "This game is so addictive!",
+    "Good luck with your gacha pulls! 🍀",
+    "NewJeans Never Die!!!",
+    "How Are You Guys?",   
+    "Carmen it's so Cute 😍",
+    "I Love Hearts2Hearts",
+    "I Hate This game! 😈",
+    
+    // Pamer kemenangan
+    "Just won 10 battles in a row! 🎮",
+    "Defeated a Superstar card with my Rare card!",
+    "Reached level 30 today! ⚡",
+    "Got 1000 coins from quests! 💰",
+    "My card has 80% win rate! 📈",
+    "I keep winning, anyone dare to duel with me? 🤣",    
+    "You all are too bad 😂",
+    "Even though my card is a Superstar, it can beat secret cards 🤣🤣",    
+        
+    // Emoji fun
+    "Let's battle sometime! ⚔️",
+    "Gacha time! Wish me luck! ✨",
+    "Collecting all photocards! 📸",
+    "The grind never stops! 💪",
+    "See you in the arena! 👑"
+],
+    
+    
+    
     
     
     
@@ -7011,8 +7368,7 @@ const gameData = {
             rarity: "superstar",            
             albumOnly: true // Flag khusus
         
-        }, 
-        
+        },         
        
        
        
@@ -7364,10 +7720,10 @@ const gameData = {
 
     const botNames = [
     "KpopMaster42", "IdolHunter99", "DanceKing77", "MusicLover88", 
-    "StanTwice", "BlinkForever", "ArmyBTS7", "MYaespa", 
+    "StanTwice", "BlinkForever", "ArmyBP", "MYaespa", 
     "NewJeansFan", "LesserafimStan", "IveEnjoyer", "StayC_High",
-    "SoneGirlsGen", "ReveluvRed", "EXOLover", "Carat17",
-    "Moaville", "AtinyPirate", "StayKids", "NCTZen",
+    "SoneGirlsGen", "ReveluvRed", "IVELover", "Carat17",
+    "Moaville", "AtinyPirate", "MikirKids", "SakuraZen",
     "WizOne", "OrbitLoona", "MoomooMamamoo", "BuddyGFriend",
     "FantasyMonstaX", "AghaseGot7", "ShawolShinee", "CassieTVXQ",
     "InspiritInfinite", "BanaB1A4", "MelodyBTOB", "UniversePentagon",
@@ -7375,10 +7731,10 @@ const gameData = {
     "EngeneEnhypen", "DiveIVE", "FearnotLSF", "TokkiNewJeans",
     "MBBMonstaX", "AhgaseGot7", "MELODYBTOB", "UNIVERSEpentagon",
     "MOAMOO", "Reveluv", "Sone", "PhamPhamNJ",
-    "VIP_BIGBANG", "Blackjack_2NE1", "Neverland_GIDLE", "MIDZY_ITZY",
-    "ATEEZ_ATINY", "STRAY_KIDS_STAY", "TREASURE77", "ENHYPEN_EN",
+    "VIP_BBYMONSTER", "Blackjack_", "Neverland_GIDLE", "MIDZY_ITZY",
+    "ATEEZ_ATINY", "Stray7", "PREASURE", "BMON_EN",
     "Dreamcatcher_", "LOONA_Orbit", "fromis_9_flover", "Weeekly_Daily",
-    "STAYC_SWITH", "Billlie_", "P1Harmony_P1ece", "JustB_Justus", "Bobacott", "Kyuchuu", "OneBunniess_", "Vonzyy7", "Pandicorn", "WannaYou_", "Abah66", "liliaBa", "PawPawMiaww", "ApiSha_Isyou", "aYOU_Carmen", "fanZ_GYJ"  
+    "STAYC_SWITH", "Billlie_", "P1Harmony_P1ece", "JustB_Justus", "Bobacott", "Kyuchuu", "OneBunniess_", "Vonzyy7", "Pandicorn", "WannaYou_", "Abah66", "liliaBa", "PawPawMiaww", "ApiSha_Isyou", "aYOU_Carmen", "fanZ_GYJ", "Cats_Haerin", "TokkiMinji", "SuperNJ", "MyJiwooH2H", "MenCarmen7", "Chaewhoo", "LalisaMonaB", "KimJenZ", "IllitClub", "OneOnlyIve", "BABYMOO_7", "PharitaMy_LOVE", "MyIdolsKR", "SoheeNZ", "GEN7Z_Rei", "RealMoka18", "EunieChan", "OfficialKarina®", "OfficialHanni®", "OfficialCarmen®", "OfficialEunchae®", "OfficialItsWinter®", "OfficialChaewonChae®", "OfficialSohee®", "OfficialJN®", "OfficialJiyu®", "BrandoBocil®", "Pandicorn®", "Shaturday®", "Eruma7®", "LPiee®",
 ];
 
 
@@ -7944,6 +8300,8 @@ function initGame() {
         setupAdditionalEventListeners();
         setupSettingsModalEvents();
         setupUpdatePopupEvents();
+        setupGlobalChatEvents();
+        setupGlobalChat(); 
         
         applySettings();
         
@@ -8032,9 +8390,10 @@ function saveGameData() {
     xpToNextLevel: gameData.xpToNextLevel,
     leaderboard: gameData.leaderboard,
     leaderboardPlayers: gameData.leaderboardPlayers,
+    globalChat: gameData.globalChat,
     currentCard: gameData.currentCard,
     attackUpgrades: gameData.attackUpgrades,
-    attackBoosts: gameData.attackBoosts,
+    attackBoosts: gameData.attackBoosts,   
     cards: gameData.cards,
     shields: gameData.shields,
     skills: gameData.skills,
@@ -8047,6 +8406,7 @@ function saveGameData() {
     redeemCodes: gameData.redeemCodes,
     discountCards: gameData.discountCards,
     secretTradeHistory: gameData.secretTradeHistory  // <-- TAMBAH INI
+    
 };
         
         localStorage.setItem('battleOfIdol_gameData', JSON.stringify(gameDataToSave));
@@ -8078,7 +8438,16 @@ function loadGameData() {
             
             gameData.leaderboardPlayers = parsedData.leaderboardPlayers || [];
             
-            
+          
+          
+gameData.globalChat = parsedData.globalChat || {
+    messages: [],
+    botsTyping: false,
+    lastBotMessageTime: Date.now(),
+    botMessageInterval: 15000,
+    playerLastMessageTime: 0,
+    messageCooldown: 3000
+};  
             
             
             
@@ -9558,6 +9927,20 @@ if (screenId === 'leaderboard') {
 }
 
 
+if (screenId === 'global-chat') {
+    setTimeout(() => {
+        loadChatMessages();
+        updateOnlineCount();
+        document.getElementById('chat-input')?.focus();
+    }, 50);
+}
+
+
+
+
+
+
+
 
         
         // ============ SHORTS AUTO-SCROLL & PLAY ============
@@ -9594,6 +9977,8 @@ if (screenId === 'leaderboard') {
         }
            
         
+  
+  
         
         
         // Di dalam function switchScreen(screenId)
@@ -9613,6 +9998,11 @@ if (screenId === 'collection') {
         console.error("Error switching screen:", error);
     }
 }
+
+
+
+
+
 
 // UPDATE COIN DISPLAY
 function updateCoinDisplay() {
@@ -10633,7 +11023,7 @@ function generateLeaderboardPlayers() {
     console.log("Generating leaderboard players...");
     
     // Data bot yang akan dibuat
-    const botCount = 8500; // Total 50 bot players
+    const botCount = 350; // Total 50 bot players
     gameData.leaderboardPlayers = [];
     
     // Tambahkan player utama
@@ -10867,7 +11257,7 @@ function updateBotPointsRandomly() {
                 // Update last active dengan variasi
                 player.lastActive = Date.now() - Math.random() * 4 * 60 * 60 * 1000;
                 
-                console.log(`🤖 Bot ${player.username} WON (+${pointsEarned} points)`);
+                console.log(`⭐ ${player.username} WON (+${pointsEarned} points)`);
                 
             } else {
                 // Bot KALAH
@@ -10881,13 +11271,13 @@ function updateBotPointsRandomly() {
                 // Update last active
                 player.lastActive = Date.now() - Math.random() * 6 * 60 * 60 * 1000;
                 
-                console.log(`🤖 Bot ${player.username} LOST (-${pointsLost} points)`);
+                console.log(`⭐ ${player.username} LOST (-${pointsLost} points)`);
             }
             
             // Update level bot secara natural (1 level per 10 win)
             if (player.wins % 10 === 0) {
                 player.level++;
-                console.log(`🤖 Bot ${player.username} leveled up to ${player.level}`);
+                console.log(`⭐ ${player.username} leveled up to ${player.level}`);
             }
         }
     });
@@ -11495,6 +11885,360 @@ function setupLeaderboardEvents() {
     });
 }
 
+
+
+
+
+// Global Chat Functions
+function setupGlobalChat() {
+    console.log("Setting up global chat...");
+    
+    // Initialize chat with welcome messages
+    if (gameData.globalChat.messages.length === 0) {
+        addSystemMessage("Welcome to Global Chat! Say hi to other players!");
+        addSystemMessage("Bot players will also chat here in real-time");
+        
+        // Add initial bot messages
+        setTimeout(() => {
+            addBotMessage("Hello everyone! 👋");
+        }, 1000);
+        
+        setTimeout(() => {
+            addBotMessage("How's everyone doing today?");
+        }, 3000);
+    }
+    
+    // Start bot auto-chat system
+    startBotChatSystem();
+    
+    // Load existing messages
+    loadChatMessages();
+}
+
+function loadChatMessages() {
+    const chatMessages = document.getElementById('chat-messages');
+    if (!chatMessages) return;
+    
+    chatMessages.innerHTML = '';
+    
+    gameData.globalChat.messages.forEach(message => {
+        addMessageToUI(message);
+    });
+    
+    // Scroll to bottom
+    setTimeout(() => {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 100);
+}
+
+function addMessageToUI(message) {
+    const chatMessages = document.getElementById('chat-messages');
+    if (!chatMessages) return;
+    
+    const messageElement = document.createElement('div');
+    messageElement.className = `message ${message.type || ''}`;
+    
+    // Generate avatar based on username
+    const avatarText = message.username.substring(0, 2).toUpperCase();
+    const avatarColor = message.avatarColor || getAvatarColor(message.username);
+    
+    messageElement.innerHTML = `
+        <div class="message-avatar" style="background: ${avatarColor}">
+            ${avatarText}
+        </div>
+        <div class="message-content">
+            <div class="message-header">
+                <span class="message-username">${message.username}</span>
+                <span class="message-badge ${message.isBot ? 'badge-bot' : 'badge-player'}">
+                    ${message.isBot ? '⭐ ' : '👤 PLAYER'}
+                </span>
+                <span class="message-time">${formatChatTime(message.timestamp)}</span>
+            </div>
+            <div class="message-text">${message.text}</div>
+        </div>
+    `;
+    
+    chatMessages.appendChild(messageElement);
+    
+    // Scroll to bottom
+    setTimeout(() => {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 50);
+}
+
+function addPlayerMessage(text) {
+    const now = Date.now();
+    
+    // Check cooldown
+    if (now - gameData.globalChat.playerLastMessageTime < gameData.globalChat.messageCooldown) {
+        const remaining = Math.ceil((gameData.globalChat.messageCooldown - (now - gameData.globalChat.playerLastMessageTime)) / 1000);
+        addToBattleLog(`Please wait ${remaining} seconds before sending another message`, 'player');
+        return;
+    }
+    
+    // Update cooldown
+    gameData.globalChat.playerLastMessageTime = now;
+    
+    const message = {
+        id: Date.now(),
+        username: gameData.username,
+        text: text,
+        isBot: false,
+        timestamp: now,
+        type: 'player',
+        avatarColor: getAvatarColor(gameData.username)
+    };
+    
+    gameData.globalChat.messages.push(message);
+    
+    // Keep only last 100 messages
+    if (gameData.globalChat.messages.length > 100) {
+        gameData.globalChat.messages = gameData.globalChat.messages.slice(-100);
+    }
+    
+    addMessageToUI(message);
+    saveGameData();
+    
+    // Bot might reply to player message
+    setTimeout(() => {
+        if (Math.random() < 0.3) { // 30% chance bot replies
+            const botReply = getBotReplyToPlayer(text);
+            if (botReply) {
+                addBotMessage(botReply);
+            }
+        }
+    }, 1000 + Math.random() * 2000);
+}
+
+function addBotMessage(text) {
+    // Get random bot name
+    const botName = getRandomBotName();
+    
+    const message = {
+        id: Date.now(),
+        username: botName,
+        text: text,
+        isBot: true,
+        timestamp: Date.now(),
+        type: 'bot',
+        avatarColor: getAvatarColor(botName)
+    };
+    
+    gameData.globalChat.messages.push(message);
+    
+    // Keep only last 100 messages
+    if (gameData.globalChat.messages.length > 100) {
+        gameData.globalChat.messages = gameData.globalChat.messages.slice(-100);
+    }
+    
+    // Update last bot message time
+    gameData.globalChat.lastBotMessageTime = Date.now();
+    
+    // If chat is visible, show message
+    if (document.getElementById('global-chat')?.classList.contains('active')) {
+        addMessageToUI(message);
+    }
+    
+    saveGameData();
+}
+
+function addSystemMessage(text) {
+    const message = {
+        id: Date.now(),
+        username: 'System',
+        text: text,
+        isBot: false,
+        timestamp: Date.now(),
+        type: 'system'
+    };
+    
+    gameData.globalChat.messages.push(message);
+    
+    // Keep only last 100 messages
+    if (gameData.globalChat.messages.length > 100) {
+        gameData.globalChat.messages = gameData.globalChat.messages.slice(-100);
+    }
+    
+    if (document.getElementById('global-chat')?.classList.contains('active')) {
+        addMessageToUI(message);
+    }
+    
+    saveGameData();
+}
+
+function startBotChatSystem() {
+    // Bot will send messages periodically
+    setInterval(() => {
+        if (Math.random() < 0.7) { // 70% chance bot will chat
+            const randomMessage = gameData.botChatMessages[
+                Math.floor(Math.random() * gameData.botChatMessages.length)
+            ];
+            addBotMessage(randomMessage);
+        }
+    }, gameData.globalChat.botMessageInterval);
+    
+    // Bot might chat about achievements
+    setInterval(() => {
+        if (Math.random() < 0.4) { // 40% chance
+            const achievementMessage = getBotAchievementMessage();
+            if (achievementMessage) {
+                addBotMessage(achievementMessage);
+            }
+        }
+    }, 30000); // Every 30 seconds
+}
+
+function getBotAchievementMessage() {
+    const achievements = [
+        `Just collected my 50th photocard! 📸`,
+        `Won against a player with higher level! 🎮`,
+        `Got a RisingStar card from Basic Crate! ✨`,
+        `Reached 1000 coins today! 💰`,
+        `Completed 50 battles this week! ⚔️`,
+        `Traded 3 duplicate cards for coupons! 🔄`,
+        `My main card reached 10 upgrades! ⚡`,
+        `Unlocked a new skill from store! 🔮`
+    ];
+    
+    return achievements[Math.floor(Math.random() * achievements.length)];
+}
+
+function getBotReplyToPlayer(playerMessage) {
+    const playerMsg = playerMessage.toLowerCase();
+    
+    // Simple keyword matching for bot replies
+    if (playerMsg.includes('hello') || playerMsg.includes('hi') || playerMsg.includes('hey')) {
+        return `Hey ${gameData.username}! 👋`;
+    }
+    
+    if (playerMsg.includes('help') || playerMsg.includes('how')) {
+        const helpReplies = [
+            "Check the tutorial in Settings!",
+            "Try opening Premium crates for better cards!",
+            "Use shields during tough battles!",
+            "Complete daily quests for free coins!"
+        ];
+        return helpReplies[Math.floor(Math.random() * helpReplies.length)];
+    }
+    
+    if (playerMsg.includes('card') || playerMsg.includes('gacha')) {
+        return "Good luck with your gacha pulls! 🍀";
+    }
+    
+    if (playerMsg.includes('battle') || playerMsg.includes('fight')) {
+        return "See you in the arena! ⚔️";
+    }
+    
+    if (playerMsg.includes('coin') || playerMsg.includes('money')) {
+        return "Complete quests for coins! 💰";
+    }
+    
+    // 20% chance of generic reply
+    if (Math.random() < 0.2) {
+        const genericReplies = [
+            "Nice!",
+            "Cool!",
+            "I agree!",
+            "Good point!",
+            "Interesting! 🤔"
+        ];
+        return genericReplies[Math.floor(Math.random() * genericReplies.length)];
+    }
+    
+    return null;
+}
+
+function getAvatarColor(username) {
+    // Generate consistent color based on username
+    let hash = 0;
+    for (let i = 0; i < username.length; i++) {
+        hash = username.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    const colors = [
+        '#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0',
+        '#118AB2', '#EF476F', '#7209B7', '#3A86FF',
+        '#FB5607', '#8338EC', '#FF006E', '#FFBE0B'
+    ];
+    
+    return colors[Math.abs(hash) % colors.length];
+}
+
+function formatChatTime(timestamp) {
+    const now = Date.now();
+    const diff = now - timestamp;
+    
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    
+    if (seconds < 60) return 'just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function setupGlobalChatEvents() {
+    // Send message on button click
+    const sendButton = document.getElementById('send-chat-btn');
+    const chatInput = document.getElementById('chat-input');
+    
+    if (sendButton && chatInput) {
+        sendButton.addEventListener('click', sendChatMessage);
+        
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+    }
+    
+    // Clear typing indicator when switching screens
+    const originalSwitchScreen = switchScreen;
+    switchScreen = function(screenId) {
+        originalSwitchScreen(screenId);
+        
+        if (screenId === 'global-chat') {
+            // Load chat when entering
+            setTimeout(() => {
+                loadChatMessages();
+                updateOnlineCount();
+            }, 100);
+        }
+    };
+}
+
+function sendChatMessage() {
+    const chatInput = document.getElementById('chat-input');
+    if (!chatInput) return;
+    
+    const message = chatInput.value.trim();
+    
+    if (!message) {
+        addToBattleLog("Please enter a message!", 'player');
+        return;
+    }
+    
+    if (message.length > 100) {
+        addToBattleLog("Message too long (max 100 characters)!", 'player');
+        return;
+    }
+    
+    addPlayerMessage(message);
+    chatInput.value = '';
+    chatInput.focus();
+}
+
+function updateOnlineCount() {
+    const onlineCount = document.getElementById('online-count');
+    if (onlineCount) {
+        // Simulate random online count (1-50)
+        const count = 1 + Math.floor(Math.random() * 49);
+        onlineCount.textContent = count;
+    }
+}
 
 
 
